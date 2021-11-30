@@ -8,6 +8,9 @@
     "prettier"
   ],
   "rules": {
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "camelcase": "warn",
+    "no-unsafe-optional-chaining": "warn",
+    "no-use-before-define": "warn"
   }
 }
