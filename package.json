@@ -5,9 +5,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint:fix": "eslint --fix 'pages/**/*.{ts, tsx}'",
+    "lint:css": "stylelint 'pages/**/*.{ts, tsx}'",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "axios": "^0.24.0",
     "next": "12.0.4",
     "react": "17.0.2",
     "react-dom": "17.0.2"
@@ -15,8 +20,22 @@
   "devDependencies": {
     "@types/node": "16.11.10",
     "@types/react": "17.0.37",
-    "eslint": "7",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "commitlint": "^15.0.0",
+    "commitlint-config-gitmoji": "^2.2.5",
+    "eslint": "<8.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-next": "12.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "husky": ">=6",
+    "lint-staged": ">=10",
+    "prettier": "^2.5.0",
     "typescript": "4.5.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": "eslint --cache --fix",
+    "*.{ts,tsx,js,css,md}": "prettier --write"
   }
 }
