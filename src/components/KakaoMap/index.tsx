@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
+import KakaoMapMarker from "@components/KakaoMapMarker";
 import { Coord } from "../../types/map";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 
@@ -94,41 +95,6 @@ const KakaoMap = (): JSX.Element => {
     });
   }, []);
 
-  useEffect(() => {
-    if (map) {
-      const imageSrc =
-        "https://e7.pngegg.com/pngimages/225/85/png-clipart-graphy-computer-icons-paok-fc-other-photography-thumbnail.png";
-      const imageSize = new kakao.maps.Size(64, 69);
-      const imageOption = { offset: new kakao.maps.Point(27, 69) };
-
-      const markerImage = new kakao.maps.MarkerImage(
-        imageSrc,
-        imageSize,
-        imageOption
-      );
-
-      dummyBasketballCourts.forEach((court) => {
-        const markerPosition = new kakao.maps.LatLng(
-          court.position[0],
-          court.position[1]
-        );
-
-        const marker = new kakao.maps.Marker({
-          position: markerPosition,
-          image: markerImage,
-          clickable: true,
-        });
-
-        marker.setMap(map);
-
-        // TODO: remove Event Listner를 위한 wrapping 또는 정보 저장 필요
-        kakao.maps.event.addListener(marker, "click", () => {
-          console.log("클릭");
-        });
-      });
-    }
-  }, [map]);
-
   useKakaoMapEvent(map, "bounds_changed", handleBoundChanged);
 
   return (
@@ -146,6 +112,9 @@ const KakaoMap = (): JSX.Element => {
         현재 위치를 받아오는 중입니다.
       </div>
       <div id="result"></div>
+      {dummyBasketballCourts.map((court) => (
+        <KakaoMapMarker key={court.name} map={map} court={court} />
+      ))}
     </>
   );
 };
