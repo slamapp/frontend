@@ -9,6 +9,29 @@ declare global {
   }
 }
 
+const dummyBasketballCourts = [
+  {
+    name: "한나 농구장",
+    address: "한나시 한나구 한나동 한나번지 한나",
+    position: [37.53526455544585, 126.90261795958715],
+  },
+  {
+    name: "헤이헤이 농구장",
+    address: "서울 영등포구 노들로 221",
+    position: [37.5359439, 126.9023724],
+  },
+  {
+    name: "플로라로라 농구장",
+    address: "서울 영등포구 당산로47길 19",
+    position: [37.5347279, 126.9033882],
+  },
+  {
+    name: "젤리젤리 농구장",
+    address: "서울 영등포구 당산로48길 11",
+    position: [37.5347279, 126.9023882],
+  },
+];
+
 const KakaoMap = (): JSX.Element => {
   const [map, setMap] = useState<kakao.maps.Map>();
   const mapRef = useRef<HTMLDivElement>(null);
@@ -29,6 +52,7 @@ const KakaoMap = (): JSX.Element => {
     resultDiv!.innerHTML = message;
   };
 
+  // TODO: 현재 위치를 받아오는 연산이 느릴 때가 있어서 로딩 처리 필요할 수 있음
   const handleChangeCenterPosition = useCallback(() => {
     getCurrentLocation(([latitude, longitude]: Coord) => {
       if (map) {
@@ -70,6 +94,41 @@ const KakaoMap = (): JSX.Element => {
     });
   }, []);
 
+  useEffect(() => {
+    if (map) {
+      const imageSrc =
+        "https://e7.pngegg.com/pngimages/225/85/png-clipart-graphy-computer-icons-paok-fc-other-photography-thumbnail.png";
+      const imageSize = new kakao.maps.Size(64, 69);
+      const imageOption = { offset: new kakao.maps.Point(27, 69) };
+
+      const markerImage = new kakao.maps.MarkerImage(
+        imageSrc,
+        imageSize,
+        imageOption
+      );
+
+      dummyBasketballCourts.forEach((court) => {
+        const markerPosition = new kakao.maps.LatLng(
+          court.position[0],
+          court.position[1]
+        );
+
+        const marker = new kakao.maps.Marker({
+          position: markerPosition,
+          image: markerImage,
+          clickable: true,
+        });
+
+        marker.setMap(map);
+
+        // TODO: remove Event Listner를 위한 wrapping 또는 정보 저장 필요
+        kakao.maps.event.addListener(marker, "click", () => {
+          console.log("클릭");
+        });
+      });
+    }
+  }, [map]);
+
   useKakaoMapEvent(map, "bounds_changed", handleBoundChanged);
 
   return (
@@ -83,10 +142,9 @@ const KakaoMap = (): JSX.Element => {
       <button type="button" onClick={handleZoomOut}>
         축소(줌 레벨 +1)
       </button>
-      <div
-        ref={mapRef}
-        style={{ width: "80vw", height: "60vh", backgroundColor: "gray" }}
-      ></div>
+      <div ref={mapRef} style={{ width: "80vw", height: "60vh" }}>
+        현재 위치를 받아오는 중입니다.
+      </div>
       <div id="result"></div>
     </>
   );
