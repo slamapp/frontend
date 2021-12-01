@@ -9,6 +9,7 @@
   ],
   "rules": {
     "import/extensions": "off",
+    "import/prefer-default-export": "off",
     "camelcase": "warn",
     "no-unsafe-optional-chaining": "warn",
     "no-use-before-define": "warn",

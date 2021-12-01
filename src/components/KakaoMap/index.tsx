@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
+import { Coord } from "../../types/map";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 
 declare global {
@@ -6,14 +8,6 @@ declare global {
     kakao: any;
   }
 }
-
-// const setKakaoMapEvent = <T extends kakao.maps.event.EventTarget>(
-//   target: T | undefined,
-//   type: string,
-//   callback: (target: T, ...args: any[]) => void
-// ) => {
-//     useEffect
-// };
 
 const KakaoMap = (): JSX.Element => {
   const [map, setMap] = useState<kakao.maps.Map>();
@@ -35,16 +29,44 @@ const KakaoMap = (): JSX.Element => {
     resultDiv!.innerHTML = message;
   };
 
+  const handleChangeCenterPosition = useCallback(() => {
+    getCurrentLocation(([latitude, longitude]: Coord) => {
+      if (map) {
+        map.setCenter(new kakao.maps.LatLng(latitude, longitude));
+      }
+    });
+  }, [map]);
+
+  const handleZoomIn = useCallback(() => {
+    if (map) {
+      const level = map.getLevel();
+      map.setLevel(level - 1);
+    }
+  }, [map]);
+
+  const handleZoomOut = useCallback(() => {
+    if (map) {
+      const level = map.getLevel();
+      map.setLevel(level + 1);
+    }
+  }, [map]);
+
   useEffect(() => {
+    if (!mapRef.current) {
+      return;
+    }
+
     window.kakao.maps.load(() => {
-      const container = document.getElementById("map");
       const options = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+        center: new window.kakao.maps.LatLng(...DEFAULT_POSITION),
         level: 3,
       };
 
-      const newMap = new window.kakao.maps.Map(container, options);
-      setMap(newMap);
+      getCurrentLocation(([latitude, longitude]: Coord) => {
+        const newMap = new window.kakao.maps.Map(mapRef.current, options);
+        newMap.setCenter(new kakao.maps.LatLng(latitude, longitude));
+        setMap(newMap);
+      });
     });
   }, []);
 
@@ -52,9 +74,19 @@ const KakaoMap = (): JSX.Element => {
 
   return (
     <>
-      <div ref={mapRef} id="map" style={{ width: "80vw", height: "60vh" }}>
-        지도 페이지
-      </div>
+      <button type="button" onClick={handleChangeCenterPosition}>
+        현재 내 위치 받아오기
+      </button>
+      <button type="button" onClick={handleZoomIn}>
+        확대(줌 레벨 -1)
+      </button>
+      <button type="button" onClick={handleZoomOut}>
+        축소(줌 레벨 +1)
+      </button>
+      <div
+        ref={mapRef}
+        style={{ width: "80vw", height: "60vh", backgroundColor: "gray" }}
+      ></div>
       <div id="result"></div>
     </>
   );
