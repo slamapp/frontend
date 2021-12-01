@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import KakaoLogin from "@/components/KaKaoLogin";
+import KakaoLogin from "@components/KaKaoLogin";
 
 const Login: NextPage = () => (
   <div>
