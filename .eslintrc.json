@@ -11,6 +11,9 @@
     "import/extensions": "off",
     "camelcase": "warn",
     "no-unsafe-optional-chaining": "warn",
-    "no-use-before-define": "warn"
+    "no-use-before-define": "warn",
+    "consistent-return": "warn",
+    "default-param-last": "warn",
+    "no-shadow": "warn"
   }
 }
