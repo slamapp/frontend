@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import "./Text.css";
+import "./Text.module.css";
 
 interface Props {
   children: ReactNode;
