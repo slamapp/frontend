@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface Props {
   // ? undefined 허용해도 되는지?
   map: kakao.maps.Map | undefined;
   court: any; // 추후 API 명세 나오면 수정 예정
+  onClick: (court: any) => void;
 }
 
-const KakaoMapMarker = ({ map, court }: Props): JSX.Element => {
+const KakaoMapMarker = ({ map, court, onClick }: Props): JSX.Element => {
   useEffect(() => {
     if (map) {
       const imageSrc =
@@ -35,12 +36,13 @@ const KakaoMapMarker = ({ map, court }: Props): JSX.Element => {
 
       // TODO: remove Event Listner를 위한 wrapping 또는 정보 저장 필요
       kakao.maps.event.addListener(marker, "click", () => {
-        console.log("클릭");
+        onClick(court);
       });
     }
-  }, [map, court.position]);
+  }, [map, court, onClick]);
 
-  return <div>{court.name}</div>;
+  // TODO: 일단 반환 해놓은 더미 없애기
+  return <div></div>;
 };
 
 export default KakaoMapMarker;
