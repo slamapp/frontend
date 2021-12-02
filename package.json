@@ -5,8 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint:fix": "eslint --fix 'pages/**/*.{ts, tsx}'",
-    "lint:css": "stylelint 'pages/**/*.{ts, tsx}'",
+    "lint:fix": "eslint --fix 'src/**/*.{ts, tsx}'",
+    "lint:css": "stylelint 'src/**/*.{ts, tsx}'",
     "prepare": "husky install"
   },
   "dependencies": {

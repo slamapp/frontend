@@ -18,7 +18,7 @@ const Map: NextPage = () => {
       <Script
         strategy="beforeInteractive"
         type="text/javascript"
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_LOGIN_KEY}&autoload=false`}
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=4e0c821163e2de09042a77b3ff837910&autoload=false`}
       />
       <KakaoMap
         onMarkerClick={(court: any) => {

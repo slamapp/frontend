@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import Button from "@components/Button";
 
 const Home: NextPage = () => (
@@ -11,6 +12,9 @@ const Home: NextPage = () => (
     </Head>
     <h1>홈 페이지</h1>
     <Button>Click Me!</Button>
+    <Link href="/map" passHref>
+      <a>Map</a>
+    </Link>
   </div>
 );
 

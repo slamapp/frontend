@@ -1,17 +1,26 @@
 import { useEffect } from "react";
 
 interface Props {
-  // ? undefined 허용해도 되는지?
-  map: kakao.maps.Map | undefined;
+  map: kakao.maps.Map;
   court: any; // 추후 API 명세 나오면 수정 예정
   onClick: (court: any) => void;
 }
 
+const PAUSE_COURT_NUMBER = 0;
+const FIRE_COURT_NUMBER = 6;
+
 const KakaoMapMarker = ({ map, court, onClick }: Props): JSX.Element => {
   useEffect(() => {
     if (map) {
-      const imageSrc =
-        "https://e7.pngegg.com/pngimages/225/85/png-clipart-graphy-computer-icons-paok-fc-other-photography-thumbnail.png";
+      let imageSrc = "/assets/basketball-transparent.gif";
+      imageSrc =
+        court.number === PAUSE_COURT_NUMBER
+          ? "/assets/basketball-pause.png"
+          : imageSrc;
+      imageSrc =
+        court.number >= FIRE_COURT_NUMBER
+          ? "/assets/basketball-fire.gif"
+          : imageSrc;
       const imageSize = new kakao.maps.Size(64, 69);
       const imageOption = { offset: new kakao.maps.Point(27, 69) };
 
