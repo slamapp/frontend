@@ -13,13 +13,18 @@
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "axios": "^0.24.0",
+    "feather-icons": "^4.28.0",
     "next": "12.0.4",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "^17.0.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/feather-icons": "^4.7.0",
     "@types/node": "16.11.10",
     "@types/react": "17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "commitlint": "^15.0.0",
