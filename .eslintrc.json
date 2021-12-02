@@ -11,6 +11,15 @@
     "import/extensions": "off",
     "camelcase": "warn",
     "no-unsafe-optional-chaining": "warn",
-    "no-use-before-define": "warn"
+    "no-use-before-define": "warn",
+    "consistent-return": "warn",
+    "default-param-last": "warn",
+    "no-shadow": "warn",
+    "no-underscore-dangle": "warn",
+    "no-else-return": "off",
+    "arrow-body-style": "off",
+    "@typescript-eslint/no-empty-function": "warn",
+    "no-nested-ternary": "warn",
+    "no-param-reassign": "warn"
   }
 }
