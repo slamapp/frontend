@@ -9,35 +9,25 @@ declare global {
     kakao: any;
   }
 }
-// const geocoder = new window.kakao.maps.services.Geocoder();
-
-// const searchDetailAddressFromCoord = (coords: kakao.maps.LatLng) =>
-//   geocoder.coord2Address(coords.getLng(), coords.getLat());
-
-// console.log(searchDetailAddressFromCoord)
 
 const dummyBasketballCourts = [
   {
     name: "한나 농구장",
-    address: "한나시 한나구 한나동 한나번지 한나",
     position: [37.53526455544585, 126.90261795958715],
     number: 6,
   },
   {
     name: "헤이헤이 농구장",
-    address: "서울 영등포구 노들로 221",
-    position: [37.5359439, 126.9023724],
+    position: [37.538227498425, 126.902404444577],
     number: 3,
   },
   {
     name: "플로라로라 농구장",
-    address: "서울 영등포구 당산로47길 19",
     position: [37.5347279, 126.9033882],
     number: 0,
   },
   {
     name: "젤리젤리 농구장",
-    address: "서울 영등포구 당산로48길 11",
     position: [37.5347279, 126.9023882],
     number: 10,
   },
@@ -88,10 +78,6 @@ const KakaoMap = ({ onMarkerClick }: any): JSX.Element => {
 
   useEffect(() => {
     if (!mapRef.current) {
-      return;
-    }
-    if (typeof window === "undefined") {
-      console.log("window is undefined");
       return;
     }
 
