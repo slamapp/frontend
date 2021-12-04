@@ -5,8 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint:fix": "eslint --fix 'pages/**/*.{ts, tsx}'",
-    "lint:css": "stylelint 'pages/**/*.{ts, tsx}'",
+    "lint:fix": "eslint --fix 'src/**/*.{ts, tsx}'",
+    "lint:css": "stylelint 'src/**/*.{ts, tsx}'",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -35,6 +35,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
     "husky": ">=6",
+    "kakao.maps.d.ts": "^0.1.24",
     "lint-staged": ">=10",
     "prettier": "^2.5.0",
     "typescript": "4.5.2"
