@@ -1,11 +1,12 @@
 import type { AppProps } from "next/app";
 import { DefaultLayout } from "@components/layout";
 import Providers from "@contexts/Providers";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <head>
+      <Head>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
@@ -13,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
-      </head>
+      </Head>
       <Providers>
         <DefaultLayout>
           <Component {...pageProps} />
