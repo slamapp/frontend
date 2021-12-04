@@ -6,7 +6,7 @@ import { ContextProps } from "./types";
 export const Context = createContext<ContextProps>({
   navigationProps: initialData,
   pageType,
-  onMountPage: (pageType) => {},
+  useMountPage: (pageType) => {},
   setNavigationEvent: ({ back, next }) => {},
   clearNavigationEvent: () => {},
 });
