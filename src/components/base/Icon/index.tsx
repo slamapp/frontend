@@ -7,6 +7,7 @@ interface Props {
   strokeWidth?: number;
   rotate?: number;
   color?: string;
+  [prop: string]: any;
 }
 
 const Icon = ({

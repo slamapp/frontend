@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { KakaoLogin } from "@components/domain";
-import { useNavigationContext } from "@contexts/NavigationProvider/hook";
+import { useNavigationContext } from "@contexts/NavigationProvider";
 
 const Login: NextPage = () => {
   const { useMountPage } = useNavigationContext();

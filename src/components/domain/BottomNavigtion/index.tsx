@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import Link from "next/link";
-import { useNavigationContext } from "@contexts/NavigationProvider/hook";
+import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Icon } from "@components/base";
 
 const BottomNavigation = () => {
