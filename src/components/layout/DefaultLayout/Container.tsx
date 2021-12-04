@@ -1,24 +1,25 @@
 import styled from "@emotion/styled";
-import { ReactNode, useEffect, useState } from "react";
+import { forwardRef, ReactNode, useEffect, useState } from "react";
 
-interface Props {
-  children: ReactNode;
-}
+const Container = forwardRef<HTMLDivElement, { children: ReactNode }>(
+  ({ children }, ref) => {
+    const [height, setHeight] = useState<number>(0);
 
-const Container = ({ children }: Props) => {
-  const [height, setHeight] = useState(window.innerHeight);
+    const handleResize = () => setHeight(window.innerHeight);
 
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
+    useEffect(() => {
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-  const handleResize = () => {
-    setHeight(window.innerHeight);
-  };
-
-  return <StyledContainer height={height}>{children}</StyledContainer>;
-};
+    return (
+      <StyledContainer ref={ref} height={height}>
+        {children}
+      </StyledContainer>
+    );
+  }
+);
 
 export default Container;
 
@@ -31,5 +32,4 @@ const StyledContainer = styled.div<{ height: number }>`
   margin: auto;
   background-color: #fafafa;
   height: ${({ height }) => `${height}`}px;
-  transition: height 200ms;
 `;
