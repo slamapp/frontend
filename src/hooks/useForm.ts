@@ -3,12 +3,12 @@ import { ChangeEvent, FormEvent, useState } from "react";
 interface UseFormArgs<T> {
   initialValues: T;
   onSubmit: (values: T) => void;
-  validate: (values: T) => T;
+  validate: (values: T) => Partial<T>;
 }
 
 const useForm = <T>({ initialValues, onSubmit, validate }: UseFormArgs<T>) => {
   const [values, setValues] = useState<T>(initialValues);
-  const [errors, setErrors] = useState<T>(initialValues);
+  const [errors, setErrors] = useState<{ [P in keyof T]?: T[P] }>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,8 +19,7 @@ const useForm = <T>({ initialValues, onSubmit, validate }: UseFormArgs<T>) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     e.preventDefault();
-    console.log("hi");
-    const newErrors = validate ? validate(values) : initialValues;
+    const newErrors = validate ? validate(values) : {};
     if (Object.keys(newErrors).length === 0) {
       await onSubmit(values);
     }
