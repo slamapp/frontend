@@ -7,6 +7,7 @@ import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
 import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
 import { useNavigationContext } from "@contexts/NavigationProvider";
+import { ModalSheet } from "@components/base";
 import { Coord } from "../../types/map";
 
 declare global {
@@ -56,17 +57,22 @@ const Map: NextPage = () => {
 
   const { map } = useMapContext();
 
-  const [visible, setVisible] = useState<boolean>(false);
-  const [selectedCourt, setSelectedCourt] = useState<any>();
-  const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [level, setLevel] = useState<number>(3);
   const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
   const [position, setPosition] = useState<Coord>();
+  const [selectedCourt, setSelectedCourt] = useState<any>();
+  const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const onClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
     const geocoder = new kakao.maps.services.Geocoder();
 
     setIsAddressLoading(true);
+
     const callback = (result: any, status: any) => {
       if (status === kakao.maps.services.Status.OK) {
         // 도로명 주소
@@ -98,11 +104,11 @@ const Map: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const handleMarkerClick = (court: any) => {
-    setVisible(true);
+  const handleMarkerClick = useCallback((court: any) => {
+    setIsOpen(true);
     searchAddrFromCoords(court.position);
     setSelectedCourt(court);
-  };
+  }, []);
 
   const handleInitCenter = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
@@ -176,14 +182,17 @@ const Map: NextPage = () => {
           ))}
       </KakaoMap>
 
-      {isAddressLoading ? <div>로딩중...</div> : null}
-      {!isAddressLoading && visible ? (
-        <>
-          <div>{selectedCourt?.name}</div>
-          <div>{selectedCourt?.address}</div>
-          <div>{selectedCourt?.number}</div>
-        </>
-      ) : null}
+      <ModalSheet isOpen={isOpen} onClose={onClose}>
+        {isAddressLoading ? (
+          <div>로딩중...</div>
+        ) : (
+          <>
+            <div>{selectedCourt?.name}</div>
+            <div>{selectedCourt?.address}</div>
+            <div>{selectedCourt?.number}</div>
+          </>
+        )}
+      </ModalSheet>
     </>
   );
 };
