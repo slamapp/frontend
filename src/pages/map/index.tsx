@@ -1,13 +1,15 @@
 import { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useState, useCallback, useEffect } from "react";
+
 import KakaoMap from "@components/KakaoMap";
 import { getCurrentLocation, DEFAULT_POSITION } from "@utils/geolocation";
 import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
 import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import { ModalSheet } from "@components/base";
+import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Coord } from "../../types/map";
 
 declare global {
@@ -190,6 +192,14 @@ const Map: NextPage = () => {
             <div>{selectedCourt?.name}</div>
             <div>{selectedCourt?.address}</div>
             <div>{selectedCourt?.number}</div>
+            <button type="button">즐겨찾기</button>
+            <Link href="/chats" passHref>
+              <button type="button">채팅방</button>
+            </Link>
+            <button type="button">공유하기</button>
+            <Link href="/reserve" passHref>
+              <button type="button">참여하기</button>
+            </Link>
           </>
         )}
       </ModalSheet>

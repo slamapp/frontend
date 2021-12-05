@@ -80,7 +80,7 @@ const KakaoMap = ({
 
   return (
     <>
-      <div ref={mapRef} style={{ width: "100%", height: "100%", ...style }}>
+      <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
         현재 위치를 받아오는 중입니다.
         {children}
       </div>
