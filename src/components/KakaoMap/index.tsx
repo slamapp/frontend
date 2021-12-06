@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import { DEFAULT_POSITION } from "@utils/geolocation";
-import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
+import { useMapContext } from "@contexts/MapProvider";
 import { Coord } from "../../types/map";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 
@@ -10,34 +11,12 @@ declare global {
   }
 }
 
-const dummyBasketballCourts = [
-  {
-    name: "한나 농구장",
-    position: [37.53526455544585, 126.90261795958715],
-    number: 6,
-  },
-  {
-    name: "헤이헤이 농구장",
-    position: [37.538227498425, 126.902404444577],
-    number: 3,
-  },
-  {
-    name: "플로라로라 농구장",
-    position: [37.5347279, 126.9033882],
-    number: 0,
-  },
-  {
-    name: "젤리젤리 농구장",
-    position: [37.5347279, 126.9023882],
-    number: 10,
-  },
-];
-
 interface Props {
   level: number;
   center: Coord;
   onClick: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
   onDragEnd: (_: kakao.maps.Map) => void;
+  children: ReactNode;
 }
 
 const KakaoMap = ({
@@ -45,9 +24,9 @@ const KakaoMap = ({
   center,
   onClick,
   onDragEnd,
-  position,
+  children,
 }: Props): JSX.Element => {
-  const [map, setMap] = useState<kakao.maps.Map>();
+  const { map, handleInitMap } = useMapContext();
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,9 +52,10 @@ const KakaoMap = ({
         level: 3,
       };
       const newMap = new window.kakao.maps.Map(mapRef.current, options);
-      setMap(newMap);
+
+      handleInitMap(newMap);
     });
-  }, []);
+  }, [handleInitMap]);
 
   useKakaoMapEvent<kakao.maps.Map>(map, "click", onClick);
   useKakaoMapEvent<kakao.maps.Map>(map, "dragend", onDragEnd);
@@ -84,8 +64,8 @@ const KakaoMap = ({
     <>
       <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
         현재 위치를 받아오는 중입니다.
+        {children}
       </div>
-      {position && <GeneralMarker map={map} position={position} />}
     </>
   );
 };

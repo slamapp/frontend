@@ -3,6 +3,8 @@ import { useState, useCallback, useEffect } from "react";
 import KakaoMap from "@components/KakaoMap";
 import { getCurrentLocation, DEFAULT_POSITION } from "@utils/geolocation";
 import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
+import { useMapContext } from "@contexts/MapProvider";
+import { BasketballMarker } from "@components/KakaoMapMarker";
 import { Coord } from "../../types/map";
 
 declare global {
@@ -10,6 +12,29 @@ declare global {
     kakao: any;
   }
 }
+
+const dummyBasketballCourts = [
+  {
+    name: "한나 농구장",
+    position: [37.53526455544585, 126.90261795958715],
+    number: 6,
+  },
+  {
+    name: "헤이헤이 농구장",
+    position: [37.538227498425, 126.902404444577],
+    number: 3,
+  },
+  {
+    name: "플로라로라 농구장",
+    position: [37.5347279, 126.9033882],
+    number: 0,
+  },
+  {
+    name: "젤리젤리 농구장",
+    position: [37.5347279, 126.9023882],
+    number: 10,
+  },
+];
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (
@@ -24,6 +49,8 @@ interface Geocoder extends kakao.maps.services.Geocoder {
 }
 
 const Map: NextPage = () => {
+  const { map } = useMapContext();
+
   const [visible, setVisible] = useState<boolean>(false);
   const [selectedCourt, setSelectedCourt] = useState<any>();
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
@@ -72,7 +99,7 @@ const Map: NextPage = () => {
     setSelectedCourt(court);
   };
 
-  const handleChangeCenterPosition = useCallback(() => {
+  const handleInitCenter = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
       setCenter([latitude, longitude]);
     });
@@ -81,8 +108,8 @@ const Map: NextPage = () => {
   const handleGetMapCenter = useCallback((map: kakao.maps.Map) => {
     const bounds = map.getBounds();
     const swLatlng = bounds.getSouthWest();
-    // cons neLatlng = bounds.getNorthEast();
 
+    // NOTE 추후에 필요할 때 로그를 setter로 대체할 수 있음s
     console.log([swLatlng.getLat(), swLatlng.getLng()]);
   }, []);
 
@@ -90,14 +117,10 @@ const Map: NextPage = () => {
     _: kakao.maps.Map,
     mouseEvent: kakao.maps.event.MouseEvent
   ) => {
-    // 클릭한 위도, 경도 정보를 가져옵니다
-    const latlng = mouseEvent.latLng;
+    const { latLng } = mouseEvent;
 
-    if (latlng) {
-      console.log(
-        `클릭한 위치의 위도는 ${latlng.getLat()} 이고, 경도는 ${latlng.getLng()} 입니다`
-      );
-      setPosition([latlng.getLat(), latlng.getLng()]);
+    if (latLng) {
+      setPosition([latLng.getLat(), latLng.getLng()]);
     }
   };
 
@@ -110,12 +133,12 @@ const Map: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    handleChangeCenterPosition();
-  }, [handleChangeCenterPosition]);
+    handleInitCenter();
+  }, [handleInitCenter]);
 
   return (
     <>
-      <button type="button" onClick={handleChangeCenterPosition}>
+      <button type="button" onClick={handleInitCenter}>
         현재 내 위치 받아오기
       </button>
       <button type="button" onClick={handleZoomIn}>
@@ -129,8 +152,21 @@ const Map: NextPage = () => {
         center={center}
         onClick={onClick}
         onDragEnd={handleGetMapCenter}
-        position={position}
-      />
+      >
+        {map && position ? (
+          <GeneralMarker map={map} position={position} />
+        ) : null}
+
+        {map &&
+          dummyBasketballCourts.map((court, i) => (
+            <BasketballMarker
+              key={i}
+              map={map}
+              court={court}
+              onClick={handleMarkerClick}
+            />
+          ))}
+      </KakaoMap>
 
       {isAddressLoading ? <div>로딩중...</div> : null}
       {!isAddressLoading && visible ? (
