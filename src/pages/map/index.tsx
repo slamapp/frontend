@@ -9,7 +9,7 @@ import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
 import { ModalSheet } from "@components/base";
 import { useNavigationContext } from "@contexts/NavigationProvider";
-import { DatePicker } from "@components/domain";
+import { DatePicker, SlotPicker } from "@components/domain";
 import { Coord } from "../../types/map";
 
 declare global {
@@ -17,6 +17,25 @@ declare global {
     kakao: any;
   }
 }
+
+type Slot = "dawn" | "morning" | "afternoon" | "night";
+
+const getSlotFromDate = (date: Date): Slot => {
+  const hour = date.getHours();
+  let slot = "" as Slot;
+
+  if (hour < 6) {
+    slot = "dawn";
+  } else if (hour < 12) {
+    slot = "morning";
+  } else if (hour < 18) {
+    slot = "afternoon";
+  } else if (hour <= 23) {
+    slot = "night";
+  }
+
+  return slot;
+};
 
 const dummyBasketballCourts = [
   {
@@ -70,6 +89,9 @@ const Map: NextPage = () => {
 
     return today;
   });
+  const [selectedSlot, setSelectedSlot] = useState<Slot>(() =>
+    getSlotFromDate(new Date())
+  );
 
   const onClose = useCallback(() => {
     setIsOpen(false);
@@ -139,9 +161,13 @@ const Map: NextPage = () => {
     });
   }, []);
 
-  const handleDateClick = (date: Date) => {
+  const handleChangeSlot = useCallback((e) => {
+    setSelectedSlot(e.target.value);
+  }, []);
+
+  const handleDateClick = useCallback((date: Date) => {
     setSelectedDate(date);
-  };
+  }, []);
 
   useEffect(() => {
     handleInitCenter();
@@ -167,6 +193,7 @@ const Map: NextPage = () => {
       <button type="button" onClick={handleZoomOut}>
         축소(줌 레벨 +1)
       </button>
+      <SlotPicker selectedSlot={selectedSlot} onChange={handleChangeSlot} />
       <KakaoMap level={level} center={center} onDragEnd={handleGetMapCenter}>
         {map &&
           dummyBasketballCourts.map((court, i) => (
