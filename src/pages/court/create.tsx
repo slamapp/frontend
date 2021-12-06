@@ -1,9 +1,12 @@
+import { useState } from "react";
 import Input from "@components/base/Input";
 import Spacer from "@components/base/Spacer";
 import Text from "@components/base/Text";
 import Button from "@components/Button";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Sheet from "react-modal-sheet";
+import KakaoMap from "@components/KakaoMap";
 import useForm from "../../hooks/useForm";
 
 interface Values {
@@ -50,6 +53,8 @@ const createCourt: NextPage = () => {
       },
     });
 
+  const [isOpen, setOpen] = useState(false);
+
   return (
     <div>
       <Head>
@@ -70,7 +75,7 @@ const createCourt: NextPage = () => {
           </div>
           <div>
             <Text>위치</Text>
-            <Button type="button" onClick={() => alert("//TODO: 모달 띄우기")}>
+            <Button type="button" onClick={() => setOpen(true)}>
               지도 맵 영역
             </Button>
           </div>
@@ -90,6 +95,24 @@ const createCourt: NextPage = () => {
           <Button type="submit">{isLoading ? "Loading..." : "제출하기"}</Button>
         </Spacer>
       </form>
+
+      <Sheet
+        isOpen={isOpen}
+        disableDrag={true}
+        springConfig={{ stiffness: 500, damping: 50 }}
+        onClose={() => setOpen(false)}
+      >
+        <Sheet.Container>
+          <Sheet.Header />
+          <Sheet.Content>
+            <KakaoMap></KakaoMap>
+            <Button type="button" onClick={() => setOpen(false)}>
+              모달 끄기
+            </Button>
+          </Sheet.Content>
+        </Sheet.Container>
+        <Sheet.Backdrop />
+      </Sheet>
     </div>
   );
 };
