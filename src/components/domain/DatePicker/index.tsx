@@ -10,14 +10,19 @@ const StyledFlicking = styled(Flicking)`
   }
 `;
 
-const DatePicker: React.FC<any> = ({ onClick, selectedDate }) => {
+interface Props {
+  onClick: (date: Date) => void;
+  selectedDate: Date;
+}
+
+const DatePicker: React.FC<Props> = ({ onClick, selectedDate }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   return (
     <StyledFlicking moveType="freeScroll" bound={true}>
       {[
-        new Date(today),
+        new Date(today.getTime()),
         ...Array.from(
           { length: DAY_RANGE - 1 },
           () => new Date(today.setDate(today.getDate() + 1))

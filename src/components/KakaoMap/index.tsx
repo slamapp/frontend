@@ -16,10 +16,10 @@ interface Props {
   center: Coord;
   draggable?: boolean;
   zoomable?: boolean;
-  onClick: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
-  onDragEnd?: (_: kakao.maps.Map) => void;
-  children: ReactNode;
   style?: CSSProperties;
+  children: ReactNode;
+  onClick?: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
+  onDragEnd?: (_: kakao.maps.Map) => void;
 }
 
 const KakaoMap = ({
