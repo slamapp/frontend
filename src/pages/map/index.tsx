@@ -10,6 +10,7 @@ import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
 import { ModalSheet } from "@components/base";
 import { useNavigationContext } from "@contexts/NavigationProvider";
+import { DatePicker } from "@components/domain";
 import { Coord } from "../../types/map";
 
 declare global {
@@ -65,6 +66,7 @@ const Map: NextPage = () => {
   const [selectedCourt, setSelectedCourt] = useState<any>();
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const onClose = useCallback(() => {
     setIsOpen(false);
@@ -149,11 +151,17 @@ const Map: NextPage = () => {
     handleInitCenter();
   }, [handleInitCenter]);
 
+  const onClickDate = useCallback((date: Date) => {
+    console.log(date.getTime());
+    setSelectedDate(date);
+  }, []);
+
   return (
     <>
       <Head>
         <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
+      <DatePicker selectedDate={selectedDate} onClick={onClickDate} />\
       <button type="button" onClick={handleInitCenter}>
         현재 내 위치 받아오기
       </button>
@@ -183,7 +191,6 @@ const Map: NextPage = () => {
             />
           ))}
       </KakaoMap>
-
       <ModalSheet isOpen={isOpen} onClose={onClose}>
         {isAddressLoading ? (
           <div>로딩중...</div>

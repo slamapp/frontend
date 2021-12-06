@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@egjs/react-flicking": "^4.4.2",
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "axios": "^0.24.0",
