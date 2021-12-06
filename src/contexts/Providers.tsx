@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { AuthProvider, NavigationProvider } from ".";
+import MapProvider from "./MapProvider";
 
 interface Props {
   children: ReactNode;
@@ -8,9 +9,12 @@ interface Props {
 const Providers = ({ children }: Props) => {
   return (
     <AuthProvider>
-      <NavigationProvider>{children}</NavigationProvider>;
+      <NavigationProvider>
+        <MapProvider>{children}</MapProvider>
+      </NavigationProvider>;
     </AuthProvider>
   );
 };
 
 export default Providers;
+

@@ -13,8 +13,6 @@ const useAsync = (fn: AsyncFn, deps: DependencyList): stateProps => {
     callback();
   }, [callback]);
 
-  console.log(state);
-
   return state;
 };
 

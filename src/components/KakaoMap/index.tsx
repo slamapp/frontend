@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
-import KakaoMapMarker from "@components/KakaoMapMarker";
+import React, { useEffect, useRef } from "react";
+import type { ReactNode } from "react";
+import { DEFAULT_POSITION } from "@utils/geolocation";
+import { useMapContext } from "@contexts/MapProvider";
 import { Coord } from "../../types/map";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 
@@ -10,71 +11,35 @@ declare global {
   }
 }
 
-const dummyBasketballCourts = [
-  {
-    name: "한나 농구장",
-    position: [37.53526455544585, 126.90261795958715],
-    number: 6,
-  },
-  {
-    name: "헤이헤이 농구장",
-    position: [37.538227498425, 126.902404444577],
-    number: 3,
-  },
-  {
-    name: "플로라로라 농구장",
-    position: [37.5347279, 126.9033882],
-    number: 0,
-  },
-  {
-    name: "젤리젤리 농구장",
-    position: [37.5347279, 126.9023882],
-    number: 10,
-  },
-];
+interface Props {
+  level: number;
+  center: Coord;
+  onClick: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
+  onDragEnd: (_: kakao.maps.Map) => void;
+  children: ReactNode;
+}
 
-const KakaoMap = ({ onMarkerClick }: any): JSX.Element => {
-  const [map, setMap] = useState<kakao.maps.Map>();
+const KakaoMap = ({
+  level,
+  center,
+  onClick,
+  onDragEnd,
+  children,
+}: Props): JSX.Element => {
+  const { map, handleInitMap } = useMapContext();
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const handleBoundChanged = (target: kakao.maps.Map) => {
-    const bounds = target.getBounds();
-
-    // 영역 정보의 남서쪽 정보를 얻어옵니다
-    const swLatlng = bounds.getSouthWest();
-
-    // 영역 정보의 북동쪽 정보
-    const neLatlng = bounds.getNorthEast();
-
-    let message = `<p>영역좌표는 남서쪽 위도, 경도는  ${swLatlng.toString()}이고 <br>`;
-    message += `북동쪽 위도, 경도는  ${neLatlng.toString()}입니다 </p>`;
-
-    const resultDiv = document.getElementById("result");
-    resultDiv!.innerHTML = message;
-  };
-
-  // TODO: 현재 위치를 받아오는 연산이 느릴 때가 있어서 로딩 처리 필요할 수 있음
-  const handleChangeCenterPosition = useCallback(() => {
-    getCurrentLocation(([latitude, longitude]: Coord) => {
-      if (map) {
-        map.setCenter(new kakao.maps.LatLng(latitude, longitude));
-      }
-    });
-  }, [map]);
-
-  const handleZoomIn = useCallback(() => {
+  useEffect(() => {
     if (map) {
-      const level = map.getLevel();
-      map.setLevel(level - 1);
+      map.setCenter(new kakao.maps.LatLng(center[0], center[1]));
     }
-  }, [map]);
+  }, [map, center]);
 
-  const handleZoomOut = useCallback(() => {
+  useEffect(() => {
     if (map) {
-      const level = map.getLevel();
-      map.setLevel(level + 1);
+      map.setLevel(level);
     }
-  }, [map]);
+  }, [map, level]);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -86,41 +51,21 @@ const KakaoMap = ({ onMarkerClick }: any): JSX.Element => {
         center: new window.kakao.maps.LatLng(...DEFAULT_POSITION),
         level: 3,
       };
+      const newMap = new window.kakao.maps.Map(mapRef.current, options);
 
-      getCurrentLocation(([latitude, longitude]: Coord) => {
-        const newMap = new window.kakao.maps.Map(mapRef.current, options);
-        newMap.setCenter(new kakao.maps.LatLng(latitude, longitude));
-        setMap(newMap);
-      });
+      handleInitMap(newMap);
     });
-  }, []);
+  }, [handleInitMap]);
 
-  useKakaoMapEvent(map, "bounds_changed", handleBoundChanged);
+  useKakaoMapEvent<kakao.maps.Map>(map, "click", onClick);
+  useKakaoMapEvent<kakao.maps.Map>(map, "dragend", onDragEnd);
 
   return (
     <>
-      <button type="button" onClick={handleChangeCenterPosition}>
-        현재 내 위치 받아오기
-      </button>
-      <button type="button" onClick={handleZoomIn}>
-        확대(줌 레벨 -1)
-      </button>
-      <button type="button" onClick={handleZoomOut}>
-        축소(줌 레벨 +1)
-      </button>
-      <div ref={mapRef} style={{ width: "80vw", height: "60vh" }}>
+      <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
         현재 위치를 받아오는 중입니다.
+        {children}
       </div>
-      <div id="result"></div>
-      {map &&
-        dummyBasketballCourts.map((court) => (
-          <KakaoMapMarker
-            key={court.name}
-            map={map}
-            court={court}
-            onClick={onMarkerClick}
-          />
-        ))}
     </>
   );
 };
