@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Input from "@components/base/Input";
 import Spacer from "@components/base/Spacer";
 import Text from "@components/base/Text";
@@ -7,6 +7,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Sheet from "react-modal-sheet";
 import KakaoMap from "@components/KakaoMap";
+import styled from "@emotion/styled";
+import { DEFAULT_POSITION } from "@utils/geolocation";
 import useForm from "../../hooks/useForm";
 
 interface Values {
@@ -19,6 +21,22 @@ interface Values {
 }
 
 const createCourt: NextPage = () => {
+  const [isOpen, setOpen] = useState(false);
+  const [level, setLevel] = useState<number>(3);
+  const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
+  const [position, setPosition] = useState<Coord>();
+
+  const onClick = (
+    _: kakao.maps.Map,
+    mouseEvent: kakao.maps.event.MouseEvent
+  ) => {
+    const { latLng } = mouseEvent;
+
+    if (latLng) {
+      setPosition([latLng.getLat(), latLng.getLng()]);
+    }
+  };
+
   const { values, errors, isLoading, handleChange, handleSubmit } =
     useForm<Values>({
       initialValues: {
@@ -53,8 +71,6 @@ const createCourt: NextPage = () => {
       },
     });
 
-  const [isOpen, setOpen] = useState(false);
-
   return (
     <div>
       <Head>
@@ -75,9 +91,17 @@ const createCourt: NextPage = () => {
           </div>
           <div>
             <Text>위치</Text>
-            <Button type="button" onClick={() => setOpen(true)}>
-              지도 맵 영역
-            </Button>
+            <MapContainer>
+              {values.longitude && values.latitude ? (
+                <KakaoMap level={level} center={center} />
+              ) : (
+                <div>
+                  <button type="button" onClick={() => setOpen(true)}>
+                    지도 맵 영역
+                  </button>
+                </div>
+              )}
+            </MapContainer>
           </div>
           <div>
             <Input
@@ -96,25 +120,55 @@ const createCourt: NextPage = () => {
         </Spacer>
       </form>
 
-      <Sheet
+      <CustomSheet
         isOpen={isOpen}
         disableDrag={true}
-        springConfig={{ stiffness: 500, damping: 50 }}
+        springConfig={{ from: 0 }}
         onClose={() => setOpen(false)}
       >
         <Sheet.Container>
-          <Sheet.Header />
           <Sheet.Content>
-            <KakaoMap></KakaoMap>
-            <Button type="button" onClick={() => setOpen(false)}>
-              모달 끄기
-            </Button>
+            {/* <KakaoMap></KakaoMap> */}
+            <div style={{ height: "70%" }}>모달</div>
+            <button type="button" onClick={() => setOpen(false)}>
+              저장하기
+            </button>
           </Sheet.Content>
         </Sheet.Container>
-        <Sheet.Backdrop />
-      </Sheet>
+      </CustomSheet>
     </div>
   );
 };
 
 export default createCourt;
+
+const MapContainer = styled.div`
+  width: 100%;
+  height: 100px;
+
+  & > div {
+    width: 100%;
+    height: 100%;
+    background-image: url("https://user-images.githubusercontent.com/84858773/144864259-1d91a4b2-937c-441d-bb96-22758ab90294.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: contrast(70%);
+  }
+`;
+
+const CustomSheet = styled(Sheet)`
+  max-width: 640px;
+  margin: auto;
+
+  .react-modal-sheet-container {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background-color: #fafafa !important;
+    height: 100vh !important;
+  }import { DEFAULT_POSITION } from '@utils/geolocation';
+import { DEFAULT_POSITION } from '@utils/geolocation';
+
+`;
