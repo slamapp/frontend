@@ -22,8 +22,6 @@ const DefaultLayout = ({ children }: Props) => {
     topNavigationRef.current &&
     setIsTransparent(topNavigationRef.current.offsetTop < 56);
 
-  console.log(isTransparent);
-
   useEffect(() => {
     containerRef.current?.addEventListener("scroll", handleScroll);
     return () =>
