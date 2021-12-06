@@ -1,5 +1,6 @@
+import { Reducer } from "react";
 import { pageType } from "./actionTypes";
-import { Action, DataProps } from "./types";
+import { ReducerAction, DataProps } from "./types";
 
 export const initialData = {
   isTopNavigation: true,
@@ -15,7 +16,10 @@ export const initialData = {
   title: "",
 };
 
-export const reducer = (state: DataProps, { type, payload }: Action) => {
+export const reducer: Reducer<DataProps, ReducerAction> = (
+  state,
+  { type, payload }
+) => {
   switch (type) {
     case pageType.NONE: {
       return {

@@ -3,10 +3,12 @@ import { pageType } from "./actionTypes";
 import { initialData } from "./reducer";
 import { ContextProps } from "./types";
 
-export const Context = createContext<ContextProps>({
+const initialContext = {
   navigationProps: initialData,
   pageType,
-  useMountPage: (pageType) => {},
-  setNavigationEvent: ({ back, next }) => {},
+  useMountPage: () => {},
+  setNavigationEvent: () => {},
   clearNavigationEvent: () => {},
-});
+};
+
+export const Context = createContext<ContextProps>(initialContext);
