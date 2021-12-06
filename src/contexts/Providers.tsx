@@ -1,12 +1,16 @@
 import { ReactNode } from "react";
-import NavigationProvider from "./NavigationProvider";
+import { AuthProvider, NavigationProvider } from ".";
 
 interface Props {
   children: ReactNode;
 }
 
 const Providers = ({ children }: Props) => {
-  return <NavigationProvider>{children}</NavigationProvider>;
+  return (
+    <AuthProvider>
+      <NavigationProvider>{children}</NavigationProvider>;
+    </AuthProvider>
+  );
 };
 
 export default Providers;
