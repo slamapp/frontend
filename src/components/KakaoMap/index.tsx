@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
-import KakaoMapMarker from "@components/KakaoMapMarker";
+import React, { useEffect, useRef, useState } from "react";
+import { DEFAULT_POSITION } from "@utils/geolocation";
+import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
 import { Coord } from "../../types/map";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 
@@ -33,48 +33,34 @@ const dummyBasketballCourts = [
   },
 ];
 
-const KakaoMap = ({ onMarkerClick }: any): JSX.Element => {
+interface Props {
+  level: number;
+  center: Coord;
+  onClick: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
+  onDragEnd: (_: kakao.maps.Map) => void;
+}
+
+const KakaoMap = ({
+  level,
+  center,
+  onClick,
+  onDragEnd,
+  position,
+}: Props): JSX.Element => {
   const [map, setMap] = useState<kakao.maps.Map>();
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const handleBoundChanged = (target: kakao.maps.Map) => {
-    const bounds = target.getBounds();
-
-    // 영역 정보의 남서쪽 정보를 얻어옵니다
-    const swLatlng = bounds.getSouthWest();
-
-    // 영역 정보의 북동쪽 정보
-    const neLatlng = bounds.getNorthEast();
-
-    let message = `<p>영역좌표는 남서쪽 위도, 경도는  ${swLatlng.toString()}이고 <br>`;
-    message += `북동쪽 위도, 경도는  ${neLatlng.toString()}입니다 </p>`;
-
-    const resultDiv = document.getElementById("result");
-    resultDiv!.innerHTML = message;
-  };
-
-  // TODO: 현재 위치를 받아오는 연산이 느릴 때가 있어서 로딩 처리 필요할 수 있음
-  const handleChangeCenterPosition = useCallback(() => {
-    getCurrentLocation(([latitude, longitude]: Coord) => {
-      if (map) {
-        map.setCenter(new kakao.maps.LatLng(latitude, longitude));
-      }
-    });
-  }, [map]);
-
-  const handleZoomIn = useCallback(() => {
+  useEffect(() => {
     if (map) {
-      const level = map.getLevel();
-      map.setLevel(level - 1);
+      map.setCenter(new kakao.maps.LatLng(center[0], center[1]));
     }
-  }, [map]);
+  }, [map, center]);
 
-  const handleZoomOut = useCallback(() => {
+  useEffect(() => {
     if (map) {
-      const level = map.getLevel();
-      map.setLevel(level + 1);
+      map.setLevel(level);
     }
-  }, [map]);
+  }, [map, level]);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -86,41 +72,20 @@ const KakaoMap = ({ onMarkerClick }: any): JSX.Element => {
         center: new window.kakao.maps.LatLng(...DEFAULT_POSITION),
         level: 3,
       };
-
-      getCurrentLocation(([latitude, longitude]: Coord) => {
-        const newMap = new window.kakao.maps.Map(mapRef.current, options);
-        newMap.setCenter(new kakao.maps.LatLng(latitude, longitude));
-        setMap(newMap);
-      });
+      const newMap = new window.kakao.maps.Map(mapRef.current, options);
+      setMap(newMap);
     });
   }, []);
 
-  useKakaoMapEvent(map, "bounds_changed", handleBoundChanged);
+  useKakaoMapEvent<kakao.maps.Map>(map, "click", onClick);
+  useKakaoMapEvent<kakao.maps.Map>(map, "dragend", onDragEnd);
 
   return (
     <>
-      <button type="button" onClick={handleChangeCenterPosition}>
-        현재 내 위치 받아오기
-      </button>
-      <button type="button" onClick={handleZoomIn}>
-        확대(줌 레벨 -1)
-      </button>
-      <button type="button" onClick={handleZoomOut}>
-        축소(줌 레벨 +1)
-      </button>
-      <div ref={mapRef} style={{ width: "80vw", height: "60vh" }}>
+      <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
         현재 위치를 받아오는 중입니다.
       </div>
-      <div id="result"></div>
-      {map &&
-        dummyBasketballCourts.map((court) => (
-          <KakaoMapMarker
-            key={court.name}
-            map={map}
-            court={court}
-            onClick={onMarkerClick}
-          />
-        ))}
+      {position && <GeneralMarker map={map} position={position} />}
     </>
   );
 };
