@@ -22,9 +22,11 @@ export interface DataProps {
   handleClickNext: null | (() => void);
 }
 
+export type GetPageType = (page: PageType) => PageTypeUnion;
+
 interface EventsAvailableToSet {
-  back: null | ((...args: any[]) => void);
-  next: null | ((...args: any[]) => void);
+  back?: null | ((...args: any[]) => void);
+  next?: null | ((...args: any[]) => void);
 }
 
 export interface ContextProps {
@@ -35,7 +37,7 @@ export interface ContextProps {
   clearNavigationEvent: () => void;
 }
 
-export type Action = {
+export type ReducerAction = {
   type: ActionTypeUnion;
   payload?: any;
 };

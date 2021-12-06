@@ -2,7 +2,7 @@ import { useCallback, useReducer, ReactNode, useEffect } from "react";
 import { pageType, eventType } from "./actionTypes";
 import { Context } from "./context";
 import { reducer, initialData } from "./reducer";
-import { PageType, PageTypeUnion } from "./types";
+import { GetPageType } from "./types";
 
 interface Props {
   children: ReactNode;
@@ -15,9 +15,10 @@ const NavigationProvider = ({ children }: Props) => {
     dispatch({ type: pageType });
   }, []);
 
-  const useMountPage = (getPageType: (page: PageType) => PageTypeUnion) =>
+  const useMountPage = (getPageType: GetPageType) =>
     useEffect(() => {
-      setCurrentPage(getPageType(pageType));
+      const currentPage = getPageType(pageType);
+      setCurrentPage(currentPage);
       return () => setCurrentPage(pageType.NONE);
     }, []);
 
