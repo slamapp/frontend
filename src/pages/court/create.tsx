@@ -39,6 +39,9 @@ interface Geocoder extends kakao.maps.services.Geocoder {
 const CreateCourt: NextPage = () => {
   const { map } = useMapContext();
 
+  const { useMountPage } = useNavigationContext();
+  useMountPage((page) => page.COURT_CREATE);
+
   const [isOpen, setOpen] = useState(false);
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [level, setLevel] = useState<number>(3);
