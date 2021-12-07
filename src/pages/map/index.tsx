@@ -102,6 +102,7 @@ const Map: NextPage = () => {
   const [selectedCourt, setSelectedCourt] = useState<any>();
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [snap, setSnap] = useState<number>(1);
 
   const onClose = useCallback(() => {
     setIsOpen(false);
@@ -187,6 +188,10 @@ const Map: NextPage = () => {
     setSelectedCourt(court);
   }, []);
 
+  const handleChangeSnap = useCallback((snap: number) => {
+    setSnap(snap);
+  }, []);
+
   const handleInitCenter = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
       setMapOptions((prev) => ({
@@ -243,7 +248,7 @@ const Map: NextPage = () => {
         <div>현재 위치를 받아오는 중입니다.</div>
       )}
 
-      <ModalSheet isOpen={isOpen} onClose={onClose}>
+      <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
         {isAddressLoading ? (
           <div>로딩중...</div>
         ) : (
@@ -259,6 +264,24 @@ const Map: NextPage = () => {
             <Link href="/reserve" passHref>
               <button type="button">참여하기</button>
             </Link>
+
+            {snap === 0 ? (
+              <>
+                <div>농구장 사진</div>
+                <div
+                  style={{
+                    width: "80%",
+                    height: 200,
+                    backgroundColor: "orange",
+                  }}
+                >
+                  농구장 사진사진
+                </div>
+
+                <div>코트 바닥 정보</div>
+                <div>고무고무</div>
+              </>
+            ) : null}
           </>
         )}
       </ModalSheet>
