@@ -38,7 +38,8 @@
     "kakao.maps.d.ts": "^0.1.24",
     "lint-staged": ">=10",
     "prettier": "^2.5.0",
-    "typescript": "4.5.2"
+    "typescript": "4.5.2",
+    "@netlify/plugin-nextjs": "^4.0.0-beta.12"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": "eslint --cache --fix",
