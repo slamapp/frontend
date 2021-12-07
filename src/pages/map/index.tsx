@@ -5,6 +5,7 @@ import { getCurrentLocation, DEFAULT_POSITION } from "@utils/geolocation";
 import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
 import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
+import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Coord } from "../../types/map";
 
 declare global {
@@ -49,6 +50,9 @@ interface Geocoder extends kakao.maps.services.Geocoder {
 }
 
 const Map: NextPage = () => {
+  const { useMountPage } = useNavigationContext();
+  useMountPage((page) => page.MAP);
+
   const { map } = useMapContext();
 
   const [visible, setVisible] = useState<boolean>(false);
