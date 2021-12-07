@@ -22,6 +22,7 @@
     "class-methods-use-this": "off",
     "consistent-return": "off",
     "no-shadow": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "camelcase": "off"
   }
 }
