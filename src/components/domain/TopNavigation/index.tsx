@@ -132,6 +132,7 @@ const Title = styled.h1`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: 16px;
   font-weight: 700;
   pointer-events: none;
 `;
