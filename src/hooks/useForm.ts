@@ -1,14 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 
+export type Error<T> = { [P in keyof T]?: string };
+
 interface UseFormArgs<T> {
   initialValues: T;
   onSubmit: (values: T) => void;
-  validate: (values: T) => Partial<T>;
+  validate: (values: T) => Error<T>;
 }
 
 const useForm = <T>({ initialValues, onSubmit, validate }: UseFormArgs<T>) => {
   const [values, setValues] = useState<T>(initialValues);
-  const [errors, setErrors] = useState<{ [P in keyof T]?: T[P] }>({});
+  const [errors, setErrors] = useState<Error<T>>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
