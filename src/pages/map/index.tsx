@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 
 import KakaoMap from "@components/KakaoMap";
 import { getCurrentLocation } from "@utils/geolocation";
@@ -10,6 +10,7 @@ import { BasketballMarker } from "@components/KakaoMapMarker";
 import { ModalSheet } from "@components/base";
 import { useNavigationContext } from "@contexts/NavigationProvider";
 import { DatePicker, SlotPicker } from "@components/domain";
+import { SlotKeyUnion } from "@components/domain/SlotPicker/types";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -18,11 +19,22 @@ declare global {
   }
 }
 
-type Slot = "dawn" | "morning" | "afternoon" | "night";
+// TODO: 노체와 중복되는 타입 공통화해서 중복 줄이기
+interface Geocoder extends kakao.maps.services.Geocoder {
+  coord2Address: (
+    latitude: number,
+    longitude: number,
+    callback?: (result: any, status: any) => void
+  ) => string;
+  addressSearch: (
+    address: string,
+    callback?: (result: any, status: any) => void
+  ) => void;
+}
 
-const getSlotFromDate = (date: Date): Slot => {
+const getSlotFromDate = (date: Date): SlotKeyUnion => {
   const hour = date.getHours();
-  let slot = "" as Slot;
+  let slot = "" as SlotKeyUnion;
 
   if (hour < 6) {
     slot = "dawn";
@@ -60,46 +72,42 @@ const dummyBasketballCourts = [
   },
 ];
 
-interface Geocoder extends kakao.maps.services.Geocoder {
-  coord2Address: (
-    latitude: number,
-    longitude: number,
-    callback?: (result: any, status: any) => void
-  ) => string;
-  addressSearch: (
-    address: string,
-    callback?: (result: any, status: any) => void
-  ) => void;
-}
-
 const Map: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.MAP);
 
   const { map } = useMapContext();
 
-  const [level, setLevel] = useState<number>(3);
-  const [center, setCenter] = useState<Coord>();
+  const today = useMemo(() => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+
+    return date;
+  }, []);
+
+  const [mapOptions, setMapOptions] = useState<{
+    level: number;
+    center: Coord | undefined;
+  }>({
+    level: 3,
+    center: undefined,
+  });
+
+  const [selectedDateAndSlot, setSelectedDateAndSlot] = useState<{
+    selectedDate: Date;
+    selectedSlot: SlotKeyUnion;
+  }>(() => ({ selectedDate: today, selectedSlot: getSlotFromDate(today) }));
+
+  // TODO: API 명세 나올 경우 any 수정해주기
   const [selectedCourt, setSelectedCourt] = useState<any>();
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedDateAndSlot, setSelectedDateAndSlot] =
-    useState<{ selectedDate: Date; selectedSlot: Slot }>();
-
-  const [selectedDate, setSelectedDate] = useState<Date>(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    return today;
-  });
-  const [selectedSlot, setSelectedSlot] = useState<Slot>(() =>
-    getSlotFromDate(new Date())
-  );
 
   const onClose = useCallback(() => {
     setIsOpen(false);
   }, []);
 
+  // TODO: 노체 코드와 동일한 부분 중복 줄이기, hooks로 빼기
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
     const geocoder = new kakao.maps.services.Geocoder();
 
@@ -136,40 +144,56 @@ const Map: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
+  const handleChangedMapBounds = useCallback((map: kakao.maps.Map) => {
+    const bounds = map.getBounds();
+    // const swLatlng = bounds.getSouthWest();
+    // const neLatLng = bounds.getNorthEast();
+
+    // TODO: map의 bounds를 전달하여 api 콜하기
+    console.log(bounds);
+  }, []);
+
+  const handleZoomIn = useCallback(() => {
+    setMapOptions((prev) => ({
+      ...prev,
+      level: prev.level - 1,
+    }));
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    setMapOptions((prev) => ({
+      ...prev,
+      level: prev.level + 1,
+    }));
+  }, []);
+
+  const handleChangeSlot = useCallback((e) => {
+    setSelectedDateAndSlot((prev) => ({
+      ...prev,
+      selectedSlot: e.target.value,
+    }));
+  }, []);
+
+  const handleDateClick = useCallback((selectedDate: Date) => {
+    setSelectedDateAndSlot((prev) => ({
+      ...prev,
+      selectedDate,
+    }));
+  }, []);
+
   const handleMarkerClick = useCallback((court: any) => {
     setIsOpen(true);
     searchAddrFromCoords(court.position);
     setSelectedCourt(court);
   }, []);
 
-  const handleGetMapCenter = useCallback((map: kakao.maps.Map) => {
-    const bounds = map.getBounds();
-    const swLatlng = bounds.getSouthWest();
-
-    // NOTE 추후에 필요할 때 로그를 setter로 대체할 수 있음s
-    console.log([swLatlng.getLat(), swLatlng.getLng()]);
-  }, []);
-
-  const handleZoomIn = useCallback(() => {
-    setLevel((level) => level - 1);
-  }, []);
-
-  const handleZoomOut = useCallback(() => {
-    setLevel((level) => level + 1);
-  }, []);
-
   const handleInitCenter = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
-      setCenter([latitude, longitude]);
+      setMapOptions((prev) => ({
+        ...prev,
+        center: [latitude, longitude],
+      }));
     });
-  }, []);
-
-  const handleChangeSlot = useCallback((e) => {
-    setSelectedSlot(e.target.value);
-  }, []);
-
-  const handleDateClick = useCallback((date: Date) => {
-    setSelectedDate(date);
   }, []);
 
   useEffect(() => {
@@ -181,7 +205,10 @@ const Map: NextPage = () => {
       <Head>
         <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
-      <DatePicker selectedDate={selectedDate} onClick={handleDateClick} />\
+      <DatePicker
+        selectedDate={selectedDateAndSlot.selectedDate}
+        onClick={handleDateClick}
+      />
       <button type="button" onClick={handleInitCenter}>
         현재 내 위치 받아오기
       </button>
@@ -191,9 +218,16 @@ const Map: NextPage = () => {
       <button type="button" onClick={handleZoomOut}>
         축소(줌 레벨 +1)
       </button>
-      <SlotPicker selectedSlot={selectedSlot} onChange={handleChangeSlot} />
-      {center ? (
-        <KakaoMap level={level} center={center} onDragEnd={handleGetMapCenter}>
+      <SlotPicker
+        selectedSlot={selectedDateAndSlot.selectedSlot}
+        onChange={handleChangeSlot}
+      />
+      {mapOptions.center ? (
+        <KakaoMap
+          level={mapOptions.level}
+          center={mapOptions.center}
+          onDragEnd={handleChangedMapBounds}
+        >
           {map &&
             dummyBasketballCourts.map((court, i) => (
               <BasketballMarker
@@ -204,7 +238,10 @@ const Map: NextPage = () => {
               />
             ))}
         </KakaoMap>
-      ) : null}
+      ) : (
+        <div>현재 위치를 받아오는 중입니다.</div>
+      )}
+
       <ModalSheet isOpen={isOpen} onClose={onClose}>
         {isAddressLoading ? (
           <div>로딩중...</div>
