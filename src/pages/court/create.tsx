@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Input from "@components/base/Input";
 import Spacer from "@components/base/Spacer";
 import Text from "@components/base/Text";
@@ -8,23 +8,70 @@ import Head from "next/head";
 import Sheet from "react-modal-sheet";
 import KakaoMap from "@components/KakaoMap";
 import styled from "@emotion/styled";
-import { DEFAULT_POSITION } from "@utils/geolocation";
-import useForm from "../../hooks/useForm";
+import { getCurrentLocation } from "@utils/geolocation";
+import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
+import useForm, { Error } from "@hooks/useForm";
+import { useMapContext } from "@contexts/MapProvider";
+import { useNavigationContext } from "@contexts/NavigationProvider";
+import { Coord } from "../../types/map";
 
 interface Values {
-  longitude: number;
-  latitude: number;
+  longitude?: number;
+  latitude?: number;
   image: string | null;
   texture: string | null;
-  basketCount: string; // TODO: 백엔드에 string으로 수정 요청
+  basketCount: number;
   courtName: string;
 }
 
-const createCourt: NextPage = () => {
+interface Geocoder extends kakao.maps.services.Geocoder {
+  coord2Address: (
+    latitude: number,
+    longitude: number,
+    callback?: (result: any, status: any) => void
+  ) => string;
+  addressSearch: (
+    address: string,
+    callback?: (result: any, status: any) => void
+  ) => void;
+}
+
+const CreateCourt: NextPage = () => {
+  const { map } = useMapContext();
+
   const [isOpen, setOpen] = useState(false);
+  const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [level, setLevel] = useState<number>(3);
-  const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
+  const [center, setCenter] = useState<Coord>();
   const [position, setPosition] = useState<Coord>();
+  const [savedPosition, setSavedPosition] = useState<Coord>();
+  const [address, setAddress] = useState<string>();
+
+  const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    setIsAddressLoading(true);
+    const callback = (result: any, status: any) => {
+      if (status === kakao.maps.services.Status.OK) {
+        // 도로명 주소
+        if (result[0].road_address) {
+          setAddress(result[0].road_address.address_name);
+        }
+        // 법정 주소
+        else if (result[0].address.address_name) {
+          setAddress(result[0].address.address_name);
+        }
+        // 주소가 없는 경우
+        else {
+          setAddress("주소가 존재하지 않습니다.");
+        }
+      }
+
+      setIsAddressLoading(false);
+    };
+
+    (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
+  };
 
   const onClick = (
     _: kakao.maps.Map,
@@ -34,37 +81,67 @@ const createCourt: NextPage = () => {
 
     if (latLng) {
       setPosition([latLng.getLat(), latLng.getLng()]);
+      searchAddrFromCoords([latLng.getLat(), latLng.getLng()]);
     }
   };
+
+  const handleInitCenter = useCallback(() => {
+    getCurrentLocation(([latitude, longitude]) => {
+      setCenter([latitude, longitude]);
+    });
+  }, []);
+
+  const handleZoomIn = useCallback(() => {
+    setLevel((level) => level - 1);
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    setLevel((level) => level + 1);
+  }, []);
+
+  const savedLocation = () => {
+    setOpen(false);
+    setSavedPosition(position);
+    setCenter(position);
+  };
+
+  useEffect(() => {
+    if (center) {
+      return;
+    }
+    handleInitCenter();
+  }, [handleInitCenter]);
 
   const { values, errors, isLoading, handleChange, handleSubmit } =
     useForm<Values>({
       initialValues: {
-        longitude: 0,
-        latitude: 0,
         image: null,
         texture: null,
-        basketCount: "1",
+        basketCount: 1,
         courtName: "",
       },
       onSubmit: (values) => {
-        alert(JSON.stringify(values));
+        if (position) {
+          const [longitude, latitude] = position;
+          const valuesWithPosition = {
+            longitude,
+            latitude,
+            ...values,
+          };
+          alert(JSON.stringify(valuesWithPosition));
+        }
       },
-      validate: ({
-        // longitude,
-        // latitude,
-        // image,
-        // texture,
-        basketCount,
-        courtName,
-      }) => {
-        const errors: Partial<Values> = {};
+      validate: ({ basketCount, courtName }) => {
+        const errors: Error<Values> = {};
 
         if (!courtName) {
           errors.courtName = "농구장 이름을 입력해주세요.";
         }
         if (!basketCount) {
           errors.basketCount = "골대 개수를 입력해주세요.";
+        }
+        if (!savedPosition) {
+          errors.longitude = "위치를 지정해주세요.";
         }
 
         return errors;
@@ -76,6 +153,48 @@ const createCourt: NextPage = () => {
       <Head>
         <title>새 농구장 추가</title>
       </Head>
+
+      <CustomSheet
+        isOpen={isOpen}
+        disableDrag={true}
+        onClose={() => setOpen(false)}
+      >
+        <Sheet.Container>
+          <Sheet.Header />
+          <Sheet.Content>
+            <p style={{ textAlign: "center" }}>
+              {address ?? <span>위치를 지정해주세요.</span>}
+            </p>
+            <button type="button" onClick={handleInitCenter}>
+              현재 내 위치 받아오기
+            </button>
+            <button type="button" onClick={handleZoomIn}>
+              확대(줌 레벨 -1)
+            </button>
+            <button type="button" onClick={handleZoomOut}>
+              축소(줌 레벨 +1)
+            </button>
+            <MapContainer>
+              {isOpen ? (
+                <KakaoMap
+                  level={level}
+                  center={center!}
+                  draggable={true}
+                  zoomable={true}
+                  onClick={onClick}
+                >
+                  {position ? (
+                    <GeneralMarker map={map!} position={position} />
+                  ) : null}
+                </KakaoMap>
+              ) : null}
+            </MapContainer>
+            <button type="button" onClick={savedLocation}>
+              저장하기
+            </button>
+          </Sheet.Content>
+        </Sheet.Container>
+      </CustomSheet>
 
       <form onSubmit={handleSubmit}>
         <Spacer size={24} type="vertical">
@@ -91,25 +210,40 @@ const createCourt: NextPage = () => {
           </div>
           <div>
             <Text>위치</Text>
-            <MapContainer>
-              {values.longitude && values.latitude ? (
-                <KakaoMap level={level} center={center} />
-              ) : (
+            <PreviewContainer>
+              {savedPosition && !isOpen ? (
                 <div>
+                  <p>{address}</p>
                   <button type="button" onClick={() => setOpen(true)}>
-                    지도 맵 영역
+                    위치 수정하기
                   </button>
+                  <KakaoMap
+                    level={level}
+                    center={savedPosition}
+                    draggable={false}
+                    zoomable={false}
+                    style={{ width: "100%", height: "200px" }}
+                  >
+                    <GeneralMarker map={map!} position={savedPosition} />
+                  </KakaoMap>
                 </div>
+              ) : (
+                <PreviewBanner>
+                  <button type="button" onClick={() => setOpen(true)}>
+                    위치 등록하기
+                  </button>
+                  {errors.longitude}
+                </PreviewBanner>
               )}
-            </MapContainer>
+            </PreviewContainer>
           </div>
           <div>
             <Input
               label="골대 개수"
               type="number"
-              name="courtCount"
-              min="0"
-              max="100"
+              name="basketCount"
+              min="1"
+              max="99"
               onChange={handleChange}
               value={values.basketCount}
               required
@@ -119,56 +253,33 @@ const createCourt: NextPage = () => {
           <Button type="submit">{isLoading ? "Loading..." : "제출하기"}</Button>
         </Spacer>
       </form>
-
-      <CustomSheet
-        isOpen={isOpen}
-        disableDrag={true}
-        springConfig={{ from: 0 }}
-        onClose={() => setOpen(false)}
-      >
-        <Sheet.Container>
-          <Sheet.Content>
-            {/* <KakaoMap></KakaoMap> */}
-            <div style={{ height: "70%" }}>모달</div>
-            <button type="button" onClick={() => setOpen(false)}>
-              저장하기
-            </button>
-          </Sheet.Content>
-        </Sheet.Container>
-      </CustomSheet>
     </div>
   );
 };
 
-export default createCourt;
+export default CreateCourt;
 
-const MapContainer = styled.div`
+const PreviewContainer = styled.div`
+  width: 100%;
+`;
+
+const PreviewBanner = styled.div`
   width: 100%;
   height: 100px;
+  background-image: url("https://user-images.githubusercontent.com/84858773/144864259-1d91a4b2-937c-441d-bb96-22758ab90294.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: contrast(70%);
+`;
 
-  & > div {
-    width: 100%;
-    height: 100%;
-    background-image: url("https://user-images.githubusercontent.com/84858773/144864259-1d91a4b2-937c-441d-bb96-22758ab90294.png");
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    filter: contrast(70%);
-  }
+const MapContainer = styled.div`
+  height: 70%;
 `;
 
 const CustomSheet = styled(Sheet)`
   max-width: 640px;
   margin: auto;
-
-  .react-modal-sheet-container {
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    background-color: #fafafa !important;
-    height: 100vh !important;
-  }import { DEFAULT_POSITION } from '@utils/geolocation';
-import { DEFAULT_POSITION } from '@utils/geolocation';
-
 `;
