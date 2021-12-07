@@ -29,6 +29,7 @@ const ModalSheet: React.FC<Props> = ({ isOpen = true, onClose, children }) => {
       initialSnap={1}
     >
       <Sheet.Container>
+        <Sheet.Header />
         <Sheet.Content>{children}</Sheet.Content>
       </Sheet.Container>
     </CustomSheet>

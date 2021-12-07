@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useState, useCallback, useEffect } from "react";
 
 import KakaoMap from "@components/KakaoMap";
-import { getCurrentLocation, DEFAULT_POSITION } from "@utils/geolocation";
+import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
 import { ModalSheet } from "@components/base";
 import { useNavigationContext } from "@contexts/NavigationProvider";
 import { DatePicker, SlotPicker } from "@components/domain";
-import { Coord } from "../../types/map";
+import type { Coord } from "../../types/map";
 
 declare global {
   interface Window {
@@ -79,10 +79,13 @@ const Map: NextPage = () => {
   const { map } = useMapContext();
 
   const [level, setLevel] = useState<number>(3);
-  const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
+  const [center, setCenter] = useState<Coord>();
   const [selectedCourt, setSelectedCourt] = useState<any>();
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedDateAndSlot, setSelectedDateAndSlot] =
+    useState<{ selectedDate: Date; selectedSlot: Slot }>();
+
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -173,17 +176,12 @@ const Map: NextPage = () => {
     handleInitCenter();
   }, [handleInitCenter]);
 
-  const onClickDate = useCallback((date: Date) => {
-    console.log(date.getTime());
-    setSelectedDate(date);
-  }, []);
-
   return (
     <>
       <Head>
         <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
-      <DatePicker selectedDate={selectedDate} onClick={onClickDate} />\
+      <DatePicker selectedDate={selectedDate} onClick={handleDateClick} />\
       <button type="button" onClick={handleInitCenter}>
         현재 내 위치 받아오기
       </button>
@@ -194,17 +192,19 @@ const Map: NextPage = () => {
         축소(줌 레벨 +1)
       </button>
       <SlotPicker selectedSlot={selectedSlot} onChange={handleChangeSlot} />
-      <KakaoMap level={level} center={center} onDragEnd={handleGetMapCenter}>
-        {map &&
-          dummyBasketballCourts.map((court, i) => (
-            <BasketballMarker
-              key={i}
-              map={map}
-              court={court}
-              onClick={handleMarkerClick}
-            />
-          ))}
-      </KakaoMap>
+      {center ? (
+        <KakaoMap level={level} center={center} onDragEnd={handleGetMapCenter}>
+          {map &&
+            dummyBasketballCourts.map((court, i) => (
+              <BasketballMarker
+                key={i}
+                map={map}
+                court={court}
+                onClick={handleMarkerClick}
+              />
+            ))}
+        </KakaoMap>
+      ) : null}
       <ModalSheet isOpen={isOpen} onClose={onClose}>
         {isAddressLoading ? (
           <div>로딩중...</div>
