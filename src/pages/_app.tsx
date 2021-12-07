@@ -7,6 +7,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
+        <title>Slam | 우리 주변 농구장</title>
+        <meta property="og:image" content="/public/link_image.png" />
+        <meta property="og:title" content="슬램" />
+        <meta name="description" content="우리 주변 농구장을 빠르게" />
+        <meta property="og:description" content="우리 주변 농구장을 빠르게" />
+        <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
