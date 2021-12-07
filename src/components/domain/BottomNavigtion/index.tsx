@@ -27,9 +27,9 @@ const BottomNavigation = () => {
       isCurrentPage: currentPage === pageType.BOOK,
     },
     {
-      href: "/activities",
+      href: "/activity",
       name: "users",
-      isCurrentPage: currentPage === pageType.ACTIVITIES,
+      isCurrentPage: currentPage === pageType.ACTIVITY,
     },
     // 테스트 용
     {
