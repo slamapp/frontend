@@ -1,6 +1,7 @@
 import Flicking from "@egjs/react-flicking";
 import styled from "@emotion/styled";
-import DateChild from "./Date";
+import React, { useMemo } from "react";
+import DateItem from "./DateItem";
 
 const DAY_RANGE = 14;
 
@@ -13,22 +14,27 @@ const StyledFlicking = styled(Flicking)`
 interface Props {
   onClick: (date: Date) => void;
   selectedDate: Date;
+  startDate: Date;
 }
 
-const DatePicker: React.FC<Props> = ({ onClick, selectedDate }) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
+  const twoWeekDates = useMemo(
+    () => [
+      ...Array.from({ length: DAY_RANGE }, (_, index) => {
+        const copiedDate = new Date(startDate.getTime());
+
+        copiedDate.setDate(startDate.getDate() + index);
+
+        return copiedDate;
+      }),
+    ],
+    [startDate]
+  );
 
   return (
     <StyledFlicking moveType="freeScroll" bound={true}>
-      {[
-        new Date(today.getTime()),
-        ...Array.from(
-          { length: DAY_RANGE - 1 },
-          () => new Date(today.setDate(today.getDate() + 1))
-        ),
-      ].map((date, i) => (
-        <DateChild
+      {twoWeekDates.map((date, i) => (
+        <DateItem
           key={i}
           date={date}
           onClick={onClick}
@@ -38,5 +44,4 @@ const DatePicker: React.FC<Props> = ({ onClick, selectedDate }) => {
     </StyledFlicking>
   );
 };
-
 export default DatePicker;
