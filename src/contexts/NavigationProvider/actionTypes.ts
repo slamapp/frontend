@@ -9,5 +9,5 @@ export const pageType = {
   LOGIN: "LOGIN",
   MAP: "MAP",
   BOOK: "BOOK",
-  ACTIVITIES: "ACTIVITIES",
+  ACTIVITY: "ACTIVITY",
 } as const;

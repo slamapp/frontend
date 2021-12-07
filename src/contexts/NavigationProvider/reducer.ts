@@ -60,7 +60,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isProfile: true,
         isNext: false,
         isMenu: false,
-        title: "",
+        title: "농구장 탐색",
       };
     }
     case pageType.BOOK: {
@@ -77,7 +77,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "",
       };
     }
-    case pageType.ACTIVITIES: {
+    case pageType.ACTIVITY: {
       return {
         ...state,
         isTopNavigation: true,
@@ -88,7 +88,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isProfile: true,
         isNext: false,
         isMenu: false,
-        title: "",
+        title: "활동",
       };
     }
     case pageType.LOGIN: {
@@ -102,7 +102,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isProfile: true,
         isNext: false,
         isMenu: false,
-        title: "",
+        title: "로그인",
       };
     }
     default: {
