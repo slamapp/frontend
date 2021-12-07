@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Head from "next/head";
 import { useState, useCallback, useEffect } from "react";
 import KakaoMap from "@components/KakaoMap";
 import { getCurrentLocation, DEFAULT_POSITION } from "@utils/geolocation";
@@ -142,6 +143,9 @@ const Map: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
+      </Head>
       <button type="button" onClick={handleInitCenter}>
         현재 내 위치 받아오기
       </button>

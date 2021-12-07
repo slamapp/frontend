@@ -1,12 +1,20 @@
+import React from "react";
+import Head from "next/head";
 import { useNavigationContext } from "@contexts/NavigationProvider";
 import { NextPage } from "next";
-import React from "react";
 
 const Activity: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.ACTIVITY);
 
-  return <div>Activity</div>;
+  return (
+    <div>
+      <Head>
+        <title>활동 | Slam - 우리 주변 농구장을 빠르게</title>
+      </Head>
+      Activity
+    </div>
+  );
 };
 
 export default Activity;
