@@ -162,9 +162,9 @@ const CreateCourt: NextPage = () => {
         disableDrag={true}
         onClose={() => setOpen(false)}
       >
-        <Sheet.Container>
-          <Sheet.Header />
-          <Sheet.Content>
+        <Sheet.Container onViewportBoxUpdate={() => {}}>
+          <Sheet.Header onViewportBoxUpdate={() => {}} />
+          <Sheet.Content onViewportBoxUpdate={() => {}}>
             <p style={{ textAlign: "center" }}>
               {address ?? <span>위치를 지정해주세요.</span>}
             </p>

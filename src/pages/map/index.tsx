@@ -1,19 +1,53 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import { useState, useCallback, useEffect } from "react";
+import Link from "next/link";
+import { useState, useCallback, useEffect, useMemo } from "react";
+
 import KakaoMap from "@components/KakaoMap";
-import { getCurrentLocation, DEFAULT_POSITION } from "@utils/geolocation";
-import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
+import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
+import { ModalSheet } from "@components/base";
 import { useNavigationContext } from "@contexts/NavigationProvider";
-import { Coord } from "../../types/map";
+import { DatePicker, SlotPicker } from "@components/domain";
+import { SlotKeyUnion } from "@components/domain/SlotPicker/types";
+import type { Coord } from "../../types/map";
 
 declare global {
   interface Window {
     kakao: any;
   }
 }
+
+// TODO: 노체와 중복되는 타입 공통화해서 중복 줄이기
+interface Geocoder extends kakao.maps.services.Geocoder {
+  coord2Address: (
+    latitude: number,
+    longitude: number,
+    callback?: (result: any, status: any) => void
+  ) => string;
+  addressSearch: (
+    address: string,
+    callback?: (result: any, status: any) => void
+  ) => void;
+}
+
+const getSlotFromDate = (date: Date): SlotKeyUnion => {
+  const hour = date.getHours();
+  let slot = "" as SlotKeyUnion;
+
+  if (hour < 6) {
+    slot = "dawn";
+  } else if (hour < 12) {
+    slot = "morning";
+  } else if (hour < 18) {
+    slot = "afternoon";
+  } else if (hour <= 23) {
+    slot = "night";
+  }
+
+  return slot;
+};
 
 const dummyBasketballCourts = [
   {
@@ -38,35 +72,43 @@ const dummyBasketballCourts = [
   },
 ];
 
-interface Geocoder extends kakao.maps.services.Geocoder {
-  coord2Address: (
-    latitude: number,
-    longitude: number,
-    callback?: (result: any, status: any) => void
-  ) => string;
-  addressSearch: (
-    address: string,
-    callback?: (result: any, status: any) => void
-  ) => void;
-}
-
 const Map: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.MAP);
 
   const { map } = useMapContext();
 
-  const [visible, setVisible] = useState<boolean>(false);
+  const today = useMemo(() => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+
+    return date;
+  }, []);
+
+  const [level, setLevel] = useState<number>(3);
+  const [center, setCenter] = useState<Coord>();
+
+  const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
+    getSlotFromDate(today)
+  );
+
+  // TODO: API 명세 나올 경우 any 수정해주기
   const [selectedCourt, setSelectedCourt] = useState<any>();
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
-  const [level, setLevel] = useState<number>(3);
-  const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
-  const [position, setPosition] = useState<Coord>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [snap, setSnap] = useState<number>(1);
 
+  const onClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  // TODO: 노체 코드와 동일한 부분 중복 줄이기, hooks로 빼기
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
     const geocoder = new kakao.maps.services.Geocoder();
 
     setIsAddressLoading(true);
+
     const callback = (result: any, status: any) => {
       if (status === kakao.maps.services.Status.OK) {
         // 도로명 주소
@@ -98,36 +140,14 @@ const Map: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const handleMarkerClick = (court: any) => {
-    setVisible(true);
-    searchAddrFromCoords(court.position);
-    setSelectedCourt(court);
-  };
-
-  const handleInitCenter = useCallback(() => {
-    getCurrentLocation(([latitude, longitude]) => {
-      setCenter([latitude, longitude]);
-    });
-  }, []);
-
-  const handleGetMapCenter = useCallback((map: kakao.maps.Map) => {
+  const handleChangedMapBounds = useCallback((map: kakao.maps.Map) => {
     const bounds = map.getBounds();
-    const swLatlng = bounds.getSouthWest();
+    // const swLatlng = bounds.getSouthWest();
+    // const neLatLng = bounds.getNorthEast();
 
-    // NOTE 추후에 필요할 때 로그를 setter로 대체할 수 있음s
-    console.log([swLatlng.getLat(), swLatlng.getLng()]);
+    // TODO: map의 bounds를 전달하여 api 콜하기
+    console.log(bounds);
   }, []);
-
-  const onClick = (
-    _: kakao.maps.Map,
-    mouseEvent: kakao.maps.event.MouseEvent
-  ) => {
-    const { latLng } = mouseEvent;
-
-    if (latLng) {
-      setPosition([latLng.getLat(), latLng.getLng()]);
-    }
-  };
 
   const handleZoomIn = useCallback(() => {
     setLevel((level) => level - 1);
@@ -135,6 +155,30 @@ const Map: NextPage = () => {
 
   const handleZoomOut = useCallback(() => {
     setLevel((level) => level + 1);
+  }, []);
+
+  const handleChangeSlot = useCallback((e) => {
+    setSelectedSlot(e.target.value);
+  }, []);
+
+  const handleDateClick = useCallback((selectedDate: Date) => {
+    setSelectedDate(selectedDate);
+  }, []);
+
+  const handleMarkerClick = useCallback((court: any) => {
+    setIsOpen(true);
+    searchAddrFromCoords(court.position);
+    setSelectedCourt(court);
+  }, []);
+
+  const handleChangeSnap = useCallback((snap: number) => {
+    setSnap(snap);
+  }, []);
+
+  const handleInitCenter = useCallback(() => {
+    getCurrentLocation(([latitude, longitude]) => {
+      setCenter([latitude, longitude]);
+    });
   }, []);
 
   useEffect(() => {
@@ -146,6 +190,11 @@ const Map: NextPage = () => {
       <Head>
         <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
+      <DatePicker
+        startDate={today}
+        selectedDate={selectedDate}
+        onClick={handleDateClick}
+      />
       <button type="button" onClick={handleInitCenter}>
         현재 내 위치 받아오기
       </button>
@@ -155,35 +204,64 @@ const Map: NextPage = () => {
       <button type="button" onClick={handleZoomOut}>
         축소(줌 레벨 +1)
       </button>
-      <KakaoMap
-        level={level}
-        center={center}
-        onClick={onClick}
-        onDragEnd={handleGetMapCenter}
-      >
-        {map && position ? (
-          <GeneralMarker map={map} position={position} />
-        ) : null}
+      <SlotPicker selectedSlot={selectedSlot} onChange={handleChangeSlot} />
+      {center ? (
+        <KakaoMap
+          level={level}
+          center={center}
+          onDragEnd={handleChangedMapBounds}
+        >
+          {map &&
+            dummyBasketballCourts.map((court, i) => (
+              <BasketballMarker
+                key={i}
+                map={map}
+                court={court}
+                onClick={handleMarkerClick}
+              />
+            ))}
+        </KakaoMap>
+      ) : (
+        <div>현재 위치를 받아오는 중입니다.</div>
+      )}
 
-        {map &&
-          dummyBasketballCourts.map((court, i) => (
-            <BasketballMarker
-              key={i}
-              map={map}
-              court={court}
-              onClick={handleMarkerClick}
-            />
-          ))}
-      </KakaoMap>
+      <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
+        {isAddressLoading ? (
+          <div>로딩중...</div>
+        ) : (
+          <>
+            <div>{selectedCourt?.name}</div>
+            <div>{selectedCourt?.address}</div>
+            <div>{selectedCourt?.number}</div>
+            <button type="button">즐겨찾기</button>
+            <Link href="/chats" passHref>
+              <button type="button">채팅방</button>
+            </Link>
+            <button type="button">공유하기</button>
+            <Link href="/reserve" passHref>
+              <button type="button">참여하기</button>
+            </Link>
 
-      {isAddressLoading ? <div>로딩중...</div> : null}
-      {!isAddressLoading && visible ? (
-        <>
-          <div>{selectedCourt?.name}</div>
-          <div>{selectedCourt?.address}</div>
-          <div>{selectedCourt?.number}</div>
-        </>
-      ) : null}
+            {snap === 0 ? (
+              <>
+                <div>농구장 사진</div>
+                <div
+                  style={{
+                    width: "80%",
+                    height: 200,
+                    backgroundColor: "orange",
+                  }}
+                >
+                  농구장 사진사진
+                </div>
+
+                <div>코트 바닥 정보</div>
+                <div>고무고무</div>
+              </>
+            ) : null}
+          </>
+        )}
+      </ModalSheet>
     </>
   );
 };

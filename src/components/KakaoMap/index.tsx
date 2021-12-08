@@ -16,10 +16,10 @@ interface Props {
   center: Coord;
   draggable?: boolean;
   zoomable?: boolean;
-  onClick: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
-  onDragEnd?: (_: kakao.maps.Map) => void;
-  children: ReactNode;
   style?: CSSProperties;
+  children: ReactNode;
+  onClick?: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
+  onDragEnd?: (_: kakao.maps.Map) => void;
 }
 
 const KakaoMap = ({
@@ -80,8 +80,7 @@ const KakaoMap = ({
 
   return (
     <>
-      <div ref={mapRef} style={{ width: "100%", height: "100%", ...style }}>
-        현재 위치를 받아오는 중입니다.
+      <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
         {children}
       </div>
     </>
