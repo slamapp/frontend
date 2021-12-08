@@ -14,7 +14,7 @@ const Login: NextPage = () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
       <KakaoLogin
-        token={process.env.NEXT_PUBLIC_KAKAO_LOGIN_KEY as string}
+        token={process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string}
         onSuccess={(result) => {
           alert(`로그인에 성공하셨습니다. ${JSON.stringify(result)}`);
           console.log(result);
