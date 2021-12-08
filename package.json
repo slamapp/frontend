@@ -14,9 +14,11 @@
     "@emotion/styled": "^11.6.0",
     "axios": "^0.24.0",
     "feather-icons": "^4.28.0",
+    "framer-motion": "^5.3.3",
     "next": "12.0.4",
     "react": "17.0.2",
     "react-dom": "^17.0.2",
+    "react-modal-sheet": "^1.4.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

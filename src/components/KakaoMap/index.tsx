@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, CSSProperties } from "react";
 import type { ReactNode } from "react";
 import { DEFAULT_POSITION } from "@utils/geolocation";
 import { useMapContext } from "@contexts/MapProvider";
@@ -14,17 +14,23 @@ declare global {
 interface Props {
   level: number;
   center: Coord;
+  draggable?: boolean;
+  zoomable?: boolean;
   onClick: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
-  onDragEnd: (_: kakao.maps.Map) => void;
+  onDragEnd?: (_: kakao.maps.Map) => void;
   children: ReactNode;
+  style?: CSSProperties;
 }
 
 const KakaoMap = ({
   level,
   center,
+  draggable = true,
+  zoomable = true,
   onClick,
   onDragEnd,
   children,
+  style,
 }: Props): JSX.Element => {
   const { map, handleInitMap } = useMapContext();
   const mapRef = useRef<HTMLDivElement>(null);
@@ -40,6 +46,18 @@ const KakaoMap = ({
       map.setLevel(level);
     }
   }, [map, level]);
+
+  useEffect(() => {
+    if (map) {
+      map.setDraggable(draggable);
+    }
+  }, [map, draggable]);
+
+  useEffect(() => {
+    if (map) {
+      map.setZoomable(zoomable);
+    }
+  }, [map, zoomable]);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -62,7 +80,7 @@ const KakaoMap = ({
 
   return (
     <>
-      <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
+      <div ref={mapRef} style={{ width: "100%", height: "100%", ...style }}>
         현재 위치를 받아오는 중입니다.
         {children}
       </div>

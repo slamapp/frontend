@@ -10,4 +10,5 @@ export const pageType = {
   MAP: "MAP",
   BOOK: "BOOK",
   ACTIVITY: "ACTIVITY",
+  COURT_CREATE: "COURT_CREATE",
 } as const;
