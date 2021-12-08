@@ -85,18 +85,13 @@ const Map: NextPage = () => {
     return date;
   }, []);
 
-  const [mapOptions, setMapOptions] = useState<{
-    level: number;
-    center: Coord | undefined;
-  }>({
-    level: 3,
-    center: undefined,
-  });
+  const [level, setLevel] = useState<number>(3);
+  const [center, setCenter] = useState<Coord>();
 
-  const [selectedDateAndSlot, setSelectedDateAndSlot] = useState<{
-    selectedDate: Date;
-    selectedSlot: SlotKeyUnion;
-  }>(() => ({ selectedDate: today, selectedSlot: getSlotFromDate(today) }));
+  const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
+    getSlotFromDate(today)
+  );
 
   // TODO: API 명세 나올 경우 any 수정해주기
   const [selectedCourt, setSelectedCourt] = useState<any>();
@@ -155,31 +150,19 @@ const Map: NextPage = () => {
   }, []);
 
   const handleZoomIn = useCallback(() => {
-    setMapOptions((prev) => ({
-      ...prev,
-      level: prev.level - 1,
-    }));
+    setLevel((level) => level - 1);
   }, []);
 
   const handleZoomOut = useCallback(() => {
-    setMapOptions((prev) => ({
-      ...prev,
-      level: prev.level + 1,
-    }));
+    setLevel((level) => level + 1);
   }, []);
 
   const handleChangeSlot = useCallback((e) => {
-    setSelectedDateAndSlot((prev) => ({
-      ...prev,
-      selectedSlot: e.target.value,
-    }));
+    setSelectedSlot(e.target.value);
   }, []);
 
   const handleDateClick = useCallback((selectedDate: Date) => {
-    setSelectedDateAndSlot((prev) => ({
-      ...prev,
-      selectedDate,
-    }));
+    setSelectedDate(selectedDate);
   }, []);
 
   const handleMarkerClick = useCallback((court: any) => {
@@ -194,10 +177,7 @@ const Map: NextPage = () => {
 
   const handleInitCenter = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
-      setMapOptions((prev) => ({
-        ...prev,
-        center: [latitude, longitude],
-      }));
+      setCenter([latitude, longitude]);
     });
   }, []);
 
@@ -212,7 +192,7 @@ const Map: NextPage = () => {
       </Head>
       <DatePicker
         startDate={today}
-        selectedDate={selectedDateAndSlot.selectedDate}
+        selectedDate={selectedDate}
         onClick={handleDateClick}
       />
       <button type="button" onClick={handleInitCenter}>
@@ -224,14 +204,11 @@ const Map: NextPage = () => {
       <button type="button" onClick={handleZoomOut}>
         축소(줌 레벨 +1)
       </button>
-      <SlotPicker
-        selectedSlot={selectedDateAndSlot.selectedSlot}
-        onChange={handleChangeSlot}
-      />
-      {mapOptions.center ? (
+      <SlotPicker selectedSlot={selectedSlot} onChange={handleChangeSlot} />
+      {center ? (
         <KakaoMap
-          level={mapOptions.level}
-          center={mapOptions.center}
+          level={level}
+          center={center}
           onDragEnd={handleChangedMapBounds}
         >
           {map &&
