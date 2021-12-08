@@ -30,9 +30,9 @@ const ModalSheet: React.FC<Props> = ({ isOpen, onClose, children, onSnap }) => {
       initialSnap={1}
       onSnap={onSnap}
     >
-      <Sheet.Container>
-        <Sheet.Header />
-        <Sheet.Content>{children}</Sheet.Content>
+      <Sheet.Container onViewportBoxUpdate={() => {}}>
+        <Sheet.Header onViewportBoxUpdate={() => {}} />
+        <Sheet.Content onViewportBoxUpdate={() => {}}>{children}</Sheet.Content>
       </Sheet.Container>
     </CustomSheet>
   );
