@@ -105,6 +105,20 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "로그인",
       };
     }
+    case pageType.COURT_CREATE: {
+      return {
+        ...state,
+        isTopNavigation: true,
+        isBottomNavigation: true,
+        currentPage: type,
+        isBack: true,
+        isNotifications: true,
+        isProfile: true,
+        isNext: false,
+        isMenu: false,
+        title: "새 농구장 추가",
+      };
+    }
     default: {
       return { ...state };
     }
