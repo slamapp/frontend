@@ -5,3 +5,4 @@ export { default as DatePicker } from "./DatePicker";
 export { default as SlotPicker } from "./SlotPicker";
 export { default as AuthLoading } from "./AuthLoading";
 export { default as Favorites } from "./Favorites";
+export { default as TimeTable } from "./TimeTable";
