@@ -1,11 +1,16 @@
-const ACTIVE_NUMBER = 6;
+const ACTIVE_PEOPLE_NUMBER = 6;
 
-const TimeTableItem: React.FC<any> = ({ number, row }) => {
+const TimeTableItem: React.FC<any> = ({
+  peopleCount,
+  ballCount,
+  users,
+  onClick,
+}) => {
   let color = "white";
 
-  if (number >= ACTIVE_NUMBER) {
+  if (peopleCount >= ACTIVE_PEOPLE_NUMBER) {
     color = "orange";
-  } else if (number > 0) {
+  } else if (peopleCount > 0) {
     color = "gray";
   }
 
@@ -13,12 +18,31 @@ const TimeTableItem: React.FC<any> = ({ number, row }) => {
     <div style={{ display: "flex" }}>
       <div
         style={{
-          width: "80%",
+          width: "70%",
           height: 50,
           backgroundColor: color,
           marginLeft: "auto",
         }}
+        onClick={peopleCount !== 0 ? () => onClick(users) : () => {}}
       ></div>
+      <div
+        style={{
+          width: "10%",
+          height: 50,
+          textAlign: "center",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {peopleCount === 0 ? (
+          " "
+        ) : ballCount === 0 ? (
+          <span>😭</span>
+        ) : (
+          <span>{ballCount}</span>
+        )}
+      </div>
     </div>
   );
 };
@@ -45,10 +69,10 @@ const SubDivider = () => (
   ></div>
 );
 
-const TimeTable: React.FC<any> = ({ timeTableArr }) => {
+const TimeTable: React.FC<any> = ({ timeTableArr, onClickTimeBlock }) => {
   return (
     <>
-      {timeTableArr.map((number: any, index: number) => (
+      {timeTableArr.map((item: any, index: number) => (
         <div key={index}>
           {index % 2 === 0 ? (
             <div style={{ display: "flex" }}>
@@ -65,7 +89,14 @@ const TimeTable: React.FC<any> = ({ timeTableArr }) => {
           ) : (
             <SubDivider />
           )}
-          <TimeTableItem key={index} row={index} number={number} />
+          <TimeTableItem
+            key={index}
+            row={index}
+            peopleCount={item.peopleCount}
+            ballCount={item.ballCount}
+            users={item.users}
+            onClick={onClickTimeBlock}
+          />
           {index === timeTableArr.length - 1 ? <MainDivider /> : null}
         </div>
       ))}
