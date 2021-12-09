@@ -1,9 +1,9 @@
 const ACTIVE_PEOPLE_NUMBER = 6;
 
 const TimeTableItem: React.FC<any> = ({
+  index,
   peopleCount,
   ballCount,
-  users,
   onClick,
 }) => {
   let color = "white";
@@ -23,7 +23,7 @@ const TimeTableItem: React.FC<any> = ({
           backgroundColor: color,
           marginLeft: "auto",
         }}
-        onClick={peopleCount !== 0 ? () => onClick(users) : () => {}}
+        onClick={peopleCount !== 0 ? () => onClick(index) : () => {}}
       ></div>
       <div
         style={{
@@ -91,7 +91,7 @@ const TimeTable: React.FC<any> = ({ timeTableArr, onClickTimeBlock }) => {
           )}
           <TimeTableItem
             key={index}
-            row={index}
+            index={index}
             peopleCount={item.peopleCount}
             ballCount={item.ballCount}
             users={item.users}
