@@ -1,8 +1,8 @@
 import { useCallback, useReducer, ReactNode, useEffect } from "react";
-import { pageType, eventType } from "./actionTypes";
+import { pageType, eventType, navigationType } from "./actionTypes";
 import { Context } from "./context";
 import { reducer, initialData } from "./reducer";
-import { GetPageType } from "./types";
+import { GetPageType, DataProps } from "./types";
 
 interface Props {
   children: ReactNode;
@@ -21,6 +21,10 @@ const NavigationProvider = ({ children }: Props) => {
       setCurrentPage(currentPage);
       return () => setCurrentPage(pageType.NONE);
     }, []);
+
+  const changeNavigation = (data: Partial<DataProps>) => {
+    dispatch({ type: navigationType.CHANGE_NAVIGATION, payload: data });
+  };
 
   const setNavigationEvent = useCallback(
     (events = { back: null, next: null }) => {
@@ -41,6 +45,7 @@ const NavigationProvider = ({ children }: Props) => {
         useMountPage,
         setNavigationEvent,
         clearNavigationEvent,
+        changeNavigation,
       }}
     >
       {children}

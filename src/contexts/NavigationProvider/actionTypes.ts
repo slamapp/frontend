@@ -11,4 +11,9 @@ export const pageType = {
   BOOK: "BOOK",
   ACTIVITY: "ACTIVITY",
   COURT_CREATE: "COURT_CREATE",
+  USER: "USER",
+} as const;
+
+export const navigationType = {
+  CHANGE_NAVIGATION: "CHANGE_NAVIGATION",
 } as const;

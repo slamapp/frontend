@@ -1,5 +1,5 @@
 import { Reducer } from "react";
-import { pageType } from "./actionTypes";
+import { navigationType, pageType } from "./actionTypes";
 import { ReducerAction, DataProps } from "./types";
 
 export const initialData = {
@@ -117,6 +117,26 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isNext: false,
         isMenu: false,
         title: "새 농구장 추가",
+      };
+    }
+    case pageType.USER: {
+      return {
+        ...state,
+        isTopNavigation: true,
+        isBottomNavigation: true,
+        currentPage: type,
+        isBack: true,
+        isNotifications: true,
+        isProfile: true,
+        isNext: false,
+        isMenu: false,
+        title: "",
+      };
+    }
+    case navigationType.CHANGE_NAVIGATION: {
+      return {
+        ...state,
+        ...payload,
       };
     }
     default: {

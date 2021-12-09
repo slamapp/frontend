@@ -1,11 +1,13 @@
-import { pageType, eventType } from "./actionTypes";
+import { pageType, eventType, navigationType } from "./actionTypes";
 
 export type PageType = typeof pageType;
 export type PageTypeUnion = PageType[keyof PageType];
 export type EventType = typeof eventType;
 export type EventTypeUnion = EventType[keyof EventType];
+export type NavigationType = typeof navigationType;
+export type NavigationTypeUnion = NavigationType[keyof NavigationType];
 
-export type ActionType = PageType & EventType;
+export type ActionType = PageType & EventType & NavigationType;
 export type ActionTypeUnion = ActionType[keyof ActionType];
 
 export interface DataProps {
@@ -35,6 +37,7 @@ export interface ContextProps {
   useMountPage: (getPageType: (pageType: PageType) => PageTypeUnion) => void;
   setNavigationEvent: (events: EventsAvailableToSet) => void;
   clearNavigationEvent: () => void;
+  changeNavigation: (data: Partial<DataProps>) => void;
 }
 
 export type ReducerAction = {
