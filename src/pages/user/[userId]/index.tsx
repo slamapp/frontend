@@ -33,7 +33,20 @@ const User: NextPage = () => {
     description: "내 이름은 슬램, 농구인이죠",
     skill: "BEGINNER",
     position: "PF",
-    favoriteCourt: ["설악산", "한강공원", "굴다리"],
+    favoriteCourts: [
+      {
+        courtId: 123,
+        courtName: "용왕산 공원 농구장",
+      },
+      {
+        courtId: 124,
+        courtName: "설악산 공원 농구장",
+      },
+      {
+        courtId: 125,
+        courtName: "북한산 공원 농구장",
+      },
+    ],
   };
   const follows = [
     {
@@ -73,7 +86,7 @@ const User: NextPage = () => {
     description,
     skill,
     position,
-    favoriteCourt,
+    favoriteCourts,
   } = userInfo;
 
   const skillToKorean = (skill: ISkill) => {
@@ -170,8 +183,12 @@ const User: NextPage = () => {
       {userType === "other" ? (
         <div>
           <p>즐겨찾기 농구장</p>
-          {favoriteCourt.map((court, index) => (
-            <Tag key={index}>{court}</Tag>
+          {favoriteCourts.map(({ courtId, courtName }, index) => (
+            <Tag key={index}>
+              <Link href={`/courts?courtId=${courtId}`} passHref>
+                <a>{courtName}</a>
+              </Link>
+            </Tag>
           ))}
         </div>
       ) : null}
