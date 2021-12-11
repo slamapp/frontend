@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "@components/base";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import { serviceApi } from "service";
+import Link from "next/link";
 
 const RedirectPage = () => {
+  const [isNeedReLogin, setIsNeedReLogin] = useState(false);
+
   const router = useRouter();
   const { code: kakaoAuthCode } = router.query;
 
@@ -18,9 +21,10 @@ const RedirectPage = () => {
       console.log(serviceToken);
 
       // 로그인 완료
-      // router.replace("/");
+      router.replace("/");
     } catch (e) {
-      router.replace("/login");
+      console.error(e);
+      setIsNeedReLogin(() => true);
     }
   };
 
@@ -34,6 +38,13 @@ const RedirectPage = () => {
 
   return (
     <PageContainer>
+      {isNeedReLogin && (
+        <Link href="/login">
+          <a>
+            <button>다시 로그인을 시도해주세요</button>
+          </a>
+        </Link>
+      )}
       <Spinner />
     </PageContainer>
   );
