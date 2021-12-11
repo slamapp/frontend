@@ -9,6 +9,7 @@ const initialContext = {
   useMountPage: () => {},
   setNavigationEvent: () => {},
   clearNavigationEvent: () => {},
+  changeNavigation: () => {},
 };
 
 export const Context = createContext<ContextProps>(initialContext);
