@@ -1,3 +1,5 @@
+import { Spinner } from "@components/base";
+import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -7,7 +9,18 @@ const RedirectPage = () => {
   console.log(query);
   console.log(query.code);
 
-  return <div>Redirect</div>;
+  return (
+    <PageContainer>
+      <Spinner />
+    </PageContainer>
+  );
 };
 
 export default RedirectPage;
+
+const PageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
