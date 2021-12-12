@@ -1,9 +1,9 @@
-import { ReactChild } from "react";
+import { ReactNode } from "react";
 import styled from "@emotion/styled";
 import Sheet from "react-modal-sheet";
 
 interface Props {
-  children: ReactChild;
+  children: ReactNode;
   onClose: () => void;
   isOpen: boolean;
   onSnap?: (snap: number) => void;

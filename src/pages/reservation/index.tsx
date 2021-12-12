@@ -8,12 +8,22 @@ const Reservation: NextPage = () => {
   const [timeTable, setTimeTable] = useTimeTable();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedBlockUsers, setSelectedBlockUsers] = useState<any>(null);
+  const [selectedBlock, setSelectedBlock] = useState<any>({
+    index: null,
+    users: null,
+  });
 
-  const onClickTimeBlock = useCallback((index: number) => {
-    setIsOpen(true);
-    setSelectedBlockUsers(timeTable[index].users);
-  }, []);
+  const handleClickStatusBlock = useCallback(
+    (index: number) => {
+      const { users } = timeTable[index];
+      setIsOpen(true);
+      setSelectedBlock({
+        index,
+        users,
+      });
+    },
+    [timeTable]
+  );
 
   const onClose = useCallback(() => {
     setIsOpen(false);
@@ -21,12 +31,17 @@ const Reservation: NextPage = () => {
 
   return (
     <div>
-      <TimeTable timeTableArr={timeTable} onClickTimeBlock={onClickTimeBlock} />
+      <TimeTable
+        timeTable={timeTable}
+        onClickStatusBlock={handleClickStatusBlock}
+        selectedIndex={selectedBlock.index}
+      />
       <ModalSheet isOpen={isOpen} onClose={onClose}>
-        {selectedBlockUsers &&
-          selectedBlockUsers.map(({ userId, avatarImgSrc }: any) => (
+        {selectedBlock.users &&
+          selectedBlock.users.map(({ userId, avatarImgSrc }: any) => (
             <div key={userId}>{userId}</div>
           ))}
+        <button type="button">예약하러 가기</button>
       </ModalSheet>
     </div>
   );

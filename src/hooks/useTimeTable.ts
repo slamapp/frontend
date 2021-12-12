@@ -12,7 +12,7 @@ const data = {
       courtId: 7,
       startTime: "2021-01-01T12:00:00",
       endTime: "2021-01-01T14:00:00",
-      hasBall: "false",
+      hasBall: true,
     },
     {
       reservationId: 13,
@@ -20,7 +20,7 @@ const data = {
       courtId: 7,
       startTime: "2021-01-01T12:00:00",
       endTime: "2021-01-01T15:00:00",
-      hasBall: "true",
+      hasBall: false,
     },
     {
       reservationId: 17,
@@ -28,7 +28,7 @@ const data = {
       courtId: 7,
       startTime: "2021-01-01T12:00:00",
       endTime: "2021-01-01T15:00:00",
-      hasBall: "false",
+      hasBall: false,
     },
     {
       reservationId: 21,
@@ -36,7 +36,7 @@ const data = {
       courtId: 7,
       startTime: "2021-01-01T12:00:00",
       endTime: "2021-01-01T14:00:00",
-      hasBall: "false",
+      hasBall: false,
     },
     {
       reservationId: 24,
@@ -44,7 +44,7 @@ const data = {
       courtId: 7,
       startTime: "2021-01-01T12:00:00",
       endTime: "2021-01-01T14:00:00",
-      hasBall: "false",
+      hasBall: false,
     },
     {
       reservationId: 27,
@@ -52,17 +52,9 @@ const data = {
       courtId: 7,
       startTime: "2021-01-01T12:00:00",
       endTime: "2021-01-01T15:00:00",
-      hasBall: "false",
+      hasBall: false,
     },
   ],
-};
-
-const castingStringToBoolean = (value: string) => {
-  if (value === "false") {
-    return false;
-  } else {
-    return true;
-  }
 };
 
 const getRowFromDate = (dateString: string) => {
@@ -89,7 +81,7 @@ const getTimeTableInfoFromReservations = (reservations: any) => {
     for (let i = startRow; i < endRow; i += 1) {
       acc[i].peopleCount += 1;
 
-      acc[i].ballCount = castingStringToBoolean(reservation.hasBall)
+      acc[i].ballCount = reservation.hasBall
         ? acc[i].ballCount + 1
         : acc[i].ballCount;
 
