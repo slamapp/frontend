@@ -31,7 +31,6 @@ const KakaoLogin = ({
 
   const handleButtonClick = () => {
     const method = useLoginForm ? "loginForm" : "login";
-
     (window.Kakao?.Auth)[method]({
       throughTalk,
       persistAccessToken,
@@ -42,10 +41,6 @@ const KakaoLogin = ({
             url: "/v2/user/me",
             success: (profile) => {
               const result = { response, profile };
-
-              // /oauth/authorize?client_id={REST_API_KEY}&redirect_uri={REDIRECT_URI}&response_type=code
-              const url = `/oauth/authorize?client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`;
-
               onSuccess(result);
             },
             fail: onFail,
@@ -54,6 +49,11 @@ const KakaoLogin = ({
       },
       fail: onFail,
     });
+    // window.Kakao.Auth.authorize({
+    //   redirectUri: "localhost:8080",
+    //   state: "hi, hello",
+    //   scope: "account_email,gender",
+    // });
   };
 
   const handleLogout = () => {

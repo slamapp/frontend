@@ -29,6 +29,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
+          userId: payload.userId,
         },
       };
     }
