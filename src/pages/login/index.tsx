@@ -3,11 +3,10 @@ import Head from "next/head";
 import { KakaoLogin } from "@components/domain";
 import { useNavigationContext } from "@contexts/NavigationProvider";
 import Link from "next/link";
-import axios from "axios";
-import { MouseEvent } from "react";
 import { useRouter } from "next/router";
+import UtilRoute from "UtilRoute";
 
-const Login: NextPage = () => {
+const Login: NextPage = UtilRoute("prevented", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.LOGIN);
   const router = useRouter();
@@ -50,6 +49,6 @@ const Login: NextPage = () => {
       />
     </div>
   );
-};
+});
 
 export default Login;
