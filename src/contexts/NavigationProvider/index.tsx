@@ -22,10 +22,6 @@ const NavigationProvider = ({ children }: Props) => {
       return () => setCurrentPage(pageType.NONE);
     }, []);
 
-  const changeNavigation = (data: Partial<DataProps>) => {
-    dispatch({ type: navigationType.CHANGE_NAVIGATION, payload: data });
-  };
-
   const setNavigationEvent = useCallback(
     (events: Events = { back: null, customButton: null }) => {
       dispatch({ type: eventType.BIND, payload: events });
@@ -56,7 +52,6 @@ const NavigationProvider = ({ children }: Props) => {
         setNavigationEvent,
         setCustomButtonEvent,
         clearNavigationEvent,
-        changeNavigation,
       }}
     >
       {children}

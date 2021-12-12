@@ -10,7 +10,6 @@ export interface ContextProps {
   setNavigationEvent: (events: Events) => void;
   setCustomButtonEvent: (title: string, handleClick: any) => void;
   clearNavigationEvent: () => void;
-  changeNavigation: (data: Partial<DataProps>) => void;
 }
 
 const initialContext = {
@@ -20,7 +19,6 @@ const initialContext = {
   setNavigationEvent: () => {},
   setCustomButtonEvent: () => {},
   clearNavigationEvent: () => {},
-  changeNavigation: () => {},
 };
 
 const Context = createContext<ContextProps>(initialContext);
