@@ -15,12 +15,18 @@ const Login: NextPage = () => {
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code`;
   const handleClick = () => router.replace(kakaoUrl);
 
+  const jellyKakaoUrl = `http://localhost:8080/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`;
+
   return (
     <div>
       <Head>
         <title>로그인 | Slam - 우리 주변 농구장을 빠르게</title>
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
+
+      <Link href={jellyKakaoUrl}>
+        <a>젤리의 카카오 계정 로그인</a>
+      </Link>
 
       <button onClick={handleClick}>카카오 계정 로그인</button>
 

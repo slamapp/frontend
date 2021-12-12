@@ -1,51 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { Spinner } from "@components/base";
+import { Header, Spinner } from "@components/base";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import { serviceApi } from "service";
 import Link from "next/link";
+import useLocalStorage from "@hooks/useLocalStorage";
+import { useAuthContext } from "@contexts/AuthProvider";
 
 const RedirectPage = () => {
   const [isNeedReLogin, setIsNeedReLogin] = useState(false);
+  const [_, setToken] = useLocalStorage("slam_token", "");
+  const { getCurrentUser } = useAuthContext();
+  const {
+    query: { token: serviceToken },
+  } = useRouter();
 
-  const router = useRouter();
-  const { code: kakaoAuthCode } = router.query;
-
-  const getServiceToken = async (kakaoAuthCode: string) => {
+  const getUserDataByToken = async (serviceToken: string) => {
+    setToken(serviceToken);
     try {
-      const {
-        data: { serviceToken },
-      } = await serviceApi.getServiceToken({ kakaoAuthCode });
-
-      // TODO: 서비스 토큰 로컬스토리지에 저장하기
-      console.log(serviceToken);
-
-      // 로그인 완료
-      router.replace("/");
-    } catch (e) {
-      console.error(e);
-      setIsNeedReLogin(() => true);
+      await getCurrentUser(serviceToken);
+    } catch (error) {
+      console.error(error);
+      setIsNeedReLogin(true);
     }
   };
 
   useEffect(() => {
-    if (kakaoAuthCode) {
-      console.log("hi");
-
-      getServiceToken(router.query.code as string);
+    if (serviceToken) {
+      getUserDataByToken(serviceToken as string);
     }
-  }, [kakaoAuthCode]);
+  }, [serviceToken]);
+
+  const NeedReLoginMarkUp = () => {
+    return (
+      <div>
+        <Header>유효한 접근이 아닙니다.</Header>
+        <Link href="/login">
+          <a>
+            <button>다시 로그인하러 가기</button>
+          </a>
+        </Link>
+      </div>
+    );
+  };
 
   return (
     <PageContainer>
-      {isNeedReLogin && (
-        <Link href="/login">
-          <a>
-            <button>다시 로그인을 시도해주세요</button>
-          </a>
-        </Link>
-      )}
-      <Spinner />
+      {isNeedReLogin ? <NeedReLoginMarkUp /> : <Spinner />}
     </PageContainer>
   );
 };
@@ -54,6 +54,7 @@ export default RedirectPage;
 
 const PageContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;

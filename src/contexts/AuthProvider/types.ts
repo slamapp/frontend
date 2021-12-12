@@ -36,6 +36,7 @@ export interface DataProps {
 
 export interface ContextProps {
   authProps: DataProps;
+  getCurrentUser: any;
 }
 
 export type ReducerAction = {

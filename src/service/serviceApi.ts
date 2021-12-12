@@ -1,16 +1,11 @@
-import axios from "axios";
 import axiosInstance, { API_METHOD } from "./fetcher";
 
 const request = async (config: any) => axiosInstance(config);
-
 export default {
-  getServiceToken: ({ kakaoAuthCode }: { kakaoAuthCode: string }) =>
+  getUserData: (token: string) =>
     request({
-      method: API_METHOD.POST,
-      url: "/join",
-      data: { kakaoAuthCode },
+      method: API_METHOD.GET,
+      headers: { authorization: `Bearer ${token}` },
+      url: "/users/me",
     }),
-
-  jsonPlaceholder: () =>
-    axios.get("https://jsonplaceholder.typicode.com/todos/1"),
 };
