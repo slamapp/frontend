@@ -51,21 +51,25 @@ const getSlotFromDate = (date: Date): SlotKeyUnion => {
 
 const dummyBasketballCourts = [
   {
+    courtId: 6,
     name: "한나 농구장",
     position: [37.53526455544585, 126.90261795958715],
     number: 6,
   },
   {
+    courtId: 3,
     name: "헤이헤이 농구장",
     position: [37.538227498425, 126.902404444577],
     number: 3,
   },
   {
+    courtId: 0,
     name: "플로라로라 농구장",
     position: [37.5347279, 126.9033882],
     number: 0,
   },
   {
+    courtId: 10,
     name: "젤리젤리 농구장",
     position: [37.5347279, 126.9023882],
     number: 10,
@@ -234,7 +238,7 @@ const Map: NextPage = () => {
             <div>{selectedCourt?.address}</div>
             <div>{selectedCourt?.number}</div>
             <button type="button">즐겨찾기</button>
-            <Link href="/chats" passHref>
+            <Link href={`/chatroom/court/${selectedCourt?.courtId}`} passHref>
               <button type="button">채팅방</button>
             </Link>
             <button type="button">공유하기</button>

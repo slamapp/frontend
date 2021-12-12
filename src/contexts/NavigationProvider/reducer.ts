@@ -126,11 +126,25 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isBottomNavigation: true,
         currentPage: type,
         isBack: true,
-        isNotifications: true,
-        isProfile: true,
+        isNotifications: false,
+        isProfile: false,
+        isNext: false,
+        isMenu: true,
+        title: "",
+      };
+    }
+    case pageType.USER_MENU: {
+      return {
+        ...state,
+        isTopNavigation: true,
+        isBottomNavigation: false,
+        currentPage: type,
+        isBack: true,
+        isNotifications: false,
+        isProfile: false,
         isNext: false,
         isMenu: false,
-        title: "",
+        title: "사용자 메뉴",
       };
     }
     case navigationType.CHANGE_NAVIGATION: {

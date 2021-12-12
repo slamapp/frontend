@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import Link from "next/link";
 import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Icon, Avatar, Badge } from "@components/base";
+import { useRouter } from "next/router";
 
 interface Props {
   isTransparent: boolean;
@@ -23,7 +24,14 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
       },
     } = useNavigationContext();
 
-    const handleDefault = () => {};
+    const router = useRouter();
+
+    const handleDefaultBack = () => {
+      router.back();
+    };
+    const handleDefaultNext = () => {
+      console.log("다음버튼을 눌렀습니다. 기본 다음 버튼 이벤트가 실행됩니다.");
+    };
 
     return (
       <Container isTransparent={isTransparent} ref={ref}>
@@ -33,7 +41,7 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
               <CursorIcon
                 name="chevron-left"
                 size={24}
-                onClick={handleClickBack || handleDefault}
+                onClick={handleClickBack || handleDefaultBack}
               />
             )}
           </IconGroup>
@@ -60,7 +68,7 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
               </Link>
             )}
             {isMenu && (
-              <Link href={`/user/${1}/menu`}>
+              <Link href={`/user/menu`}>
                 <a>
                   <Icon name="menu" size={24} />
                 </a>
@@ -68,7 +76,7 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
             )}
 
             {isNext && (
-              <NextButton onClick={handleClickNext || handleDefault}>
+              <NextButton onClick={handleClickNext || handleDefaultNext}>
                 다음
               </NextButton>
             )}
