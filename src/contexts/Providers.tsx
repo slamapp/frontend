@@ -11,10 +11,9 @@ const Providers = ({ children }: Props) => {
     <AuthProvider>
       <NavigationProvider>
         <MapProvider>{children}</MapProvider>
-      </NavigationProvider>;
+      </NavigationProvider>
     </AuthProvider>
   );
 };
 
 export default Providers;
-
