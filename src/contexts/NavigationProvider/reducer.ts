@@ -63,7 +63,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "농구장 탐색",
       };
     }
-    case pageType.BOOK: {
+    case pageType.RESERVATIONS: {
       return {
         ...state,
         isTopNavigation: true,
@@ -74,7 +74,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isProfile: true,
         isNext: false,
         isMenu: false,
-        title: "",
+        title: "예약 목록",
       };
     }
     case pageType.ACTIVITY: {

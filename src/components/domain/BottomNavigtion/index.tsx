@@ -22,9 +22,9 @@ const BottomNavigation = () => {
       isCurrentPage: currentPage === pageType.MAP,
     },
     {
-      href: "/book",
+      href: "/reservations",
       name: "calendar",
-      isCurrentPage: currentPage === pageType.BOOK,
+      isCurrentPage: currentPage === pageType.RESERVATIONS,
     },
     {
       href: "/activity",
