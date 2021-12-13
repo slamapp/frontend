@@ -1,16 +1,20 @@
 import axios from "axios";
-import { onFulfilled, onRejected } from "./common";
+import { setInterceptors } from "./interceptor";
+import { requestTypes } from "./type";
 
-const axiosInstance = axios.create();
-axiosInstance.defaults.baseURL = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT;
-// axiosInstance.interceptors.response.use(onFulfilled, onRejected);
+const baseURL = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string;
 
-export default axiosInstance;
+const request = setInterceptors(
+  axios.create({ baseURL }),
+  requestTypes.DEFAULT
+);
+const authRequest = setInterceptors(
+  axios.create({ baseURL }),
+  requestTypes.AUTH
+);
+const authFileRequest = setInterceptors(
+  axios.create({ baseURL }),
+  requestTypes.AUTH_FILE
+);
 
-export const API_METHOD = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
-  DELETE: "DELETE",
-  PATCH: "PATCH",
-};
+export { request, authRequest, authFileRequest };
