@@ -1,5 +1,6 @@
 export const eventType = {
   BIND: "BIND",
+  BIND_CUSTOM_BUTTON: "BIND_CUSTOM_BUTTON",
   CLEAR: "CLEAR",
 } as const;
 
