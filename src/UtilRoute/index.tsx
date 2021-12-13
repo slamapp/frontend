@@ -37,11 +37,13 @@ const UtilRouteHOCWrapper = ({
   useEffect(() => {
     const { pathname } = router;
 
+    console.log(pathname);
+
     switch (option) {
       case routeOption.private:
         if (localToken) {
           setIsShowChildren(true);
-          router.replace(`/${pathname}`);
+          router.replace(`${pathname}`);
         } else {
           router.replace("/login");
         }
@@ -51,7 +53,7 @@ const UtilRouteHOCWrapper = ({
           router.replace("/");
         } else {
           setIsShowChildren(true);
-          router.replace(`/${pathname}`);
+          router.replace(`${pathname}`);
         }
         break;
       default:
