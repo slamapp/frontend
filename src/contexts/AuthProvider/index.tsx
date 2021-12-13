@@ -32,7 +32,11 @@ const AuthProvider = ({ children }: Props) => {
   }, [router]);
 
   useEffect(() => {
-    if (token) getCurrentUser();
+    if (token) {
+      getCurrentUser();
+    } else {
+      dispatch({ type: "LOADING_OFF" });
+    }
   }, []);
 
   return (
