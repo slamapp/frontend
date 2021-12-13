@@ -1,8 +1,8 @@
 import { useCallback, useReducer, ReactNode, useEffect } from "react";
 import { pageType, eventType, navigationType } from "./actionTypes";
 import { Context } from "./context";
-import { reducer, initialData } from "./reducer";
-import { GetPageType, DataProps } from "./types";
+import { reducer, initialData, DataProps } from "./reducer";
+import { GetPageType } from "./types";
 
 interface Props {
   children: ReactNode;

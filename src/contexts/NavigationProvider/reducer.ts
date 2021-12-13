@@ -1,6 +1,24 @@
 import { Reducer } from "react";
-import { navigationType, pageType } from "./actionTypes";
-import { ReducerAction, DataProps } from "./types";
+import {
+  ActionTypeUnion,
+  navigationType,
+  pageType,
+  PageTypeUnion,
+} from "./actionTypes";
+
+export interface DataProps {
+  isTopNavigation: boolean;
+  isBottomNavigation: boolean;
+  currentPage: PageTypeUnion;
+  isBack: boolean;
+  isNotifications: boolean;
+  isProfile: boolean;
+  isNext: boolean;
+  isMenu: boolean;
+  title: string;
+  handleClickBack: null | (() => void);
+  handleClickNext: null | (() => void);
+}
 
 export const initialData = {
   isTopNavigation: true,
@@ -14,6 +32,11 @@ export const initialData = {
   handleClickNext: null,
   isMenu: false,
   title: "",
+};
+
+export type ReducerAction = {
+  type: ActionTypeUnion;
+  payload?: any;
 };
 
 export const reducer: Reducer<DataProps, ReducerAction> = (

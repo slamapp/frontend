@@ -1,6 +1,10 @@
 import { createContext } from "react";
-import { initialData } from "./reducer";
-import { ContextProps } from "./types";
+import { DataProps, initialData } from "./reducer";
+
+export interface ContextProps {
+  authProps: DataProps;
+  getCurrentUser: any;
+}
 
 export const initialContext = {
   authProps: initialData,

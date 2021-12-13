@@ -1,6 +1,28 @@
 import { Reducer } from "react";
-import { actionTypes } from "./actionTypes";
-import { ReducerAction, DataProps } from "./types";
+import { actionTypes, ActionTypeUnion } from "./actionTypes";
+import { Follow } from "./types";
+
+export interface DataProps {
+  currentUser: {
+    userId: number | null;
+    email: string | null;
+    profileImageUrl: string | null;
+    skill: string | null;
+    role: string | null;
+    position: string | null;
+    description: string | null;
+    nickname: string | null;
+    followers: Follow[];
+    following: Follow[];
+    notifications: Notification[];
+  };
+  isLoading: boolean;
+}
+
+export type ReducerAction = {
+  type: ActionTypeUnion;
+  payload?: any;
+};
 
 export const initialData = {
   currentUser: {

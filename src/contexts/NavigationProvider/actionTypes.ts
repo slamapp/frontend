@@ -25,3 +25,13 @@ export const pageType = {
 export const navigationType = {
   CHANGE_NAVIGATION: "CHANGE_NAVIGATION",
 } as const;
+
+export type PageType = typeof pageType;
+export type PageTypeUnion = PageType[keyof PageType];
+export type EventType = typeof eventType;
+export type EventTypeUnion = EventType[keyof EventType];
+export type NavigationType = typeof navigationType;
+export type NavigationTypeUnion = NavigationType[keyof NavigationType];
+
+export type ActionType = PageType & EventType & NavigationType;
+export type ActionTypeUnion = ActionType[keyof ActionType];

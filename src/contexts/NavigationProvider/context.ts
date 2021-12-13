@@ -1,7 +1,16 @@
 import { createContext } from "react";
-import { pageType } from "./actionTypes";
-import { initialData } from "./reducer";
-import { ContextProps } from "./types";
+import { PageType, pageType } from "./actionTypes";
+import { DataProps, initialData } from "./reducer";
+import { EventsAvailableToSet, GetPageType } from "./types";
+
+export interface ContextProps {
+  navigationProps: DataProps;
+  pageType: PageType;
+  useMountPage: (getPageType: GetPageType) => void;
+  setNavigationEvent: (events: EventsAvailableToSet) => void;
+  clearNavigationEvent: () => void;
+  changeNavigation: (data: Partial<DataProps>) => void;
+}
 
 const initialContext = {
   navigationProps: initialData,
