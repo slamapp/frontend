@@ -4,7 +4,7 @@ import Lottie from "react-lottie";
 import * as animationData from "../../../public/assets/lottie/basketball.json";
 
 const width = 13;
-const delay = 200;
+const fadeoutTimeMs = 400;
 
 const defaultOptions = {
   loop: true,
@@ -26,7 +26,7 @@ const AuthLoading = ({ isShow }: Props) => {
 
   useEffect(() => {
     if (!isShow) {
-      setTimeout(() => setIsDisplay(false), delay);
+      setTimeout(() => setIsDisplay(false), fadeoutTimeMs);
     }
   }, [isShow]);
 
@@ -59,7 +59,7 @@ const LoadingContainer = styled.div<{ isShow: boolean }>`
   backdrop-filter: blur(8px);
 
   // 애니메이션
-  transition: all ${delay}ms ease-out;
+  transition: all ${fadeoutTimeMs}ms ease-out;
   opacity: ${({ isShow }) => (isShow ? 1 : 0)};
 `;
 
