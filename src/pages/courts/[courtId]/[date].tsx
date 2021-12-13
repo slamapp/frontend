@@ -1,6 +1,7 @@
 import { ModalSheet } from "@components/base";
 import { TimeTable } from "@components/domain";
-import { NextPage } from "next";
+import { NextPage, NextPageContext } from "next";
+import { useRouter } from "next/router";
 import {
   ChangeEvent,
   useCallback,
@@ -64,7 +65,7 @@ const data = {
       hasBall: false,
     },
     {
-      reservationId: 27,
+      reservationId: 28,
       userId: 9,
       courtId: 7,
       startTime: "2021-01-01T14:00:00",
@@ -72,14 +73,20 @@ const data = {
       hasBall: false,
     },
     {
-      reservationId: 27,
-      userId: 9,
+      reservationId: 29,
+      userId: "me",
       courtId: 7,
       startTime: "2021-01-01T14:00:00",
       endTime: "2021-01-01T15:00:00",
       hasBall: false,
     },
   ],
+};
+
+const getTimeStringFromIndex = (index: number) => {
+  const startHours = Math.floor(index / 2);
+
+  return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
 };
 
 const getRowFromDate = (dateString: string) => {
@@ -92,42 +99,62 @@ const getRowFromDate = (dateString: string) => {
 };
 
 // 48칸
-const getTimeTableInfoFromReservations = (reservations: any) => {
-  const tables = Array.from({ length: TIME_TABLE_ROWS }, () => ({
+const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
+  const timeTable = Array.from({ length: TIME_TABLE_ROWS }, () => ({
     peopleCount: 0,
     ballCount: 0,
     users: [],
+    hasReservation: false,
   }));
 
-  return reservations.reduce((acc: any, reservation: any) => {
-    const startRow = getRowFromDate(reservation.startTime);
-    const endRow = getRowFromDate(reservation.endTime);
+  return reservations.reduce(
+    (acc: any, reservation: any) => {
+      const startRow = getRowFromDate(reservation.startTime);
+      const endRow = getRowFromDate(reservation.endTime);
 
-    for (let i = startRow; i < endRow; i += 1) {
-      acc[i].peopleCount += 1;
+      let hasReservation = false;
+      if (reservation.userId === userId) {
+        acc.existedReservations.push({
+          reservationId: reservation.reservationId,
+          startIndex: startRow,
+          endIndex: endRow - 1,
+        });
 
-      acc[i].ballCount = reservation.hasBall
-        ? acc[i].ballCount + 1
-        : acc[i].ballCount;
+        hasReservation = true;
+      }
 
-      acc[i].users.push({
-        userId: reservation.userId,
-        avatarImgSrc: reservation.avatarImgSrc,
-      });
-    }
+      for (let i = startRow; i < endRow; i += 1) {
+        acc.timeTable[i].peopleCount += 1;
 
-    return acc;
-  }, tables);
+        acc.timeTable[i].ballCount = reservation.hasBall
+          ? acc.timeTable[i].ballCount + 1
+          : acc.timeTable[i].ballCount;
+
+        acc.timeTable[i].users.push({
+          userId: reservation.userId,
+          avatarImgSrc: reservation.avatarImgSrc,
+        });
+
+        acc.timeTable[i].hasReservation = hasReservation;
+      }
+
+      return acc;
+    },
+    { timeTable, existedReservations: [] }
+  );
 };
+
 const initialState = {
   step: 1,
-  type: "create",
+  mode: "create",
   startIndex: null,
   endIndex: null,
-  timeTable: null,
-  originalTimeTable: null,
+  timeTable: [],
+  originalTimeTable: [],
   modalContentData: null,
   hasBall: false,
+  existedReservations: [],
+  selectedReservationId: null,
 };
 
 const reducer = (state: any, { type, payload }: any) => {
@@ -135,18 +162,37 @@ const reducer = (state: any, { type, payload }: any) => {
     case "SET_TIMETABLE": {
       const { reservations } = payload;
 
-      const timeTable = getTimeTableInfoFromReservations(reservations);
+      const { timeTable, existedReservations } =
+        getTimeTableInfoFromReservations(reservations, "me");
 
       return {
         ...state,
         timeTable,
         originalTimeTable: timeTable,
+        existedReservations,
       };
     }
-    case "INCREASE_STEP": {
+    case "START_CREATE": {
       return {
         ...state,
         step: state.step + 1,
+      };
+    }
+    case "START_UPDATE": {
+      const { existedReservations, selectedReservationId } = state;
+
+      const selectedReservation = existedReservations.find(
+        ({ reservationId }: any) => reservationId === selectedReservationId
+      );
+
+      const { startIndex, endIndex } = selectedReservation;
+
+      return {
+        ...state,
+        step: state.step + 1,
+        mode: "update",
+        startIndex,
+        endIndex,
       };
     }
     case "DECREASE_STEP": {
@@ -165,12 +211,13 @@ const reducer = (state: any, { type, payload }: any) => {
       return {
         ...state,
         startIndex,
+        selectedReservationId: null,
         modalContentData: state.timeTable[startIndex].users,
       };
     }
     case "SET_END_INDEX": {
       let { endIndex } = payload;
-      const { originalTimeTable, startIndex, hasBall } = state;
+      const { mode, originalTimeTable, startIndex, hasBall } = state;
 
       if (endIndex < startIndex) return state;
 
@@ -181,17 +228,14 @@ const reducer = (state: any, { type, payload }: any) => {
 
       const timeTable = [...originalTimeTable];
       const modalContentData = [];
-
       for (let i = startIndex; i <= endIndex; i += 1) {
         const { users, peopleCount, ballCount } = timeTable[i];
-
         timeTable[i] = {
           ...timeTable[i],
           users: [...users, { userId: "me" }],
           peopleCount: peopleCount + 1,
           ballCount: hasBall ? ballCount + 1 : ballCount,
         };
-
         modalContentData.push({ index: i, users });
       }
 
@@ -207,7 +251,6 @@ const reducer = (state: any, { type, payload }: any) => {
       const { hasBall } = payload;
 
       const nextTimeTable = [...timeTable];
-
       for (let i = startIndex; i <= endIndex; i += 1) {
         nextTimeTable[i] = {
           ...timeTable[i],
@@ -223,12 +266,38 @@ const reducer = (state: any, { type, payload }: any) => {
         hasBall,
       };
     }
+    case "CLICK_RESERVATION_MARKER": {
+      const { existedReservations, timeTable } = state;
+      const { selectedReservationId } = payload;
+
+      const selectedReservation = existedReservations.find(
+        ({ reservationId }: any) => reservationId === selectedReservationId
+      );
+
+      const { startIndex, endIndex } = selectedReservation;
+      const modalContentData = [];
+      for (let i = startIndex; i <= endIndex; i += 1) {
+        const { users } = timeTable[i];
+        modalContentData.push({ index: i, users });
+      }
+
+      return {
+        ...state,
+        selectedReservationId,
+        modalContentData,
+        startIndex: null,
+      };
+    }
+
     default:
       return state;
   }
 };
 
 const Reservation: NextPage = () => {
+  const {
+    query: { courtId, date },
+  } = useRouter();
   const [reservation, dispatch] = useReducer(reducer, initialState);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -247,9 +316,9 @@ const Reservation: NextPage = () => {
     setIsOpen(false);
   }, []);
 
-  const handleIncreaseStep = useCallback(() => {
+  const handleStartCreate = useCallback(() => {
     setIsOpen(false);
-    dispatch({ type: "INCREASE_STEP" });
+    dispatch({ type: "START_CREATE" });
   }, []);
 
   const handleDecreaseStep = useCallback(() => {
@@ -257,14 +326,51 @@ const Reservation: NextPage = () => {
     dispatch({ type: "DECREASE_STEP" });
   }, []);
 
-  const handleSubmitReservations = useCallback(() => {
+  const handleStartUpdate = useCallback(() => {
+    setIsOpen(false);
+    dispatch({ type: "START_UPDATE" });
+  }, []);
+
+  const handleCreateReservation = useCallback(() => {
+    if (!date || !courtId) {
+      return;
+    }
+
+    const data = {
+      courtId,
+      userId: "me",
+      startDate: new Date(
+        `${date} ${getTimeStringFromIndex(reservation.startIndex)}`
+      ).toISOString(),
+      endDate: new Date(
+        `${date} ${getTimeStringFromIndex(reservation.endIndex)}`
+      ).toISOString(),
+      hasBall: reservation.hasBall,
+    };
+
+    console.log(data);
     // TODO: crateReservation API CALL
-    console.log("create reservation API CALL");
+    // alert(JSON.stringify(data));
+  }, [courtId, date, reservation]);
+
+  const handleDeleteReservation = useCallback((reservationId: number) => {
+    console.log(`delete /reservations/${reservationId}`);
   }, []);
 
   const handleClickHasBall = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "SET_HAS_BALL", payload: { hasBall: e.target.checked } });
   }, []);
+
+  const handleClickReservationMarker = useCallback(
+    (selectedReservationId: number) => {
+      setIsOpen(true);
+      dispatch({
+        type: "CLICK_RESERVATION_MARKER",
+        payload: { selectedReservationId },
+      });
+    },
+    []
+  );
 
   useEffect(() => {
     // TODO: getCourtReservations API CALL
@@ -286,23 +392,58 @@ const Reservation: NextPage = () => {
         onClickStatusBlock={
           reservation.step === 1 ? handleSetStartIndex : handleSetEndIndex
         }
+        onClickReservationMarker={handleClickReservationMarker}
         startIndex={reservation.startIndex}
         endIndex={reservation.endIndex}
         step={reservation.step}
+        selectedReservationId={reservation.selectedReservationId}
+        existedReservations={reservation.existedReservations}
       />
       <ModalSheet isOpen={isOpen} onClose={onClose}>
-        {isOpen && reservation.step === 1 && reservation.modalContentData && (
-          <>
-            {reservation.modalContentData.map(
-              ({ userId, avatarImgSrc }: any, index: number) => (
-                <div key={index}>{userId}</div>
-              )
-            )}
-            <button type="button" onClick={handleIncreaseStep}>
-              예약하기
-            </button>
-          </>
-        )}
+        {isOpen &&
+          reservation.step === 1 &&
+          reservation.startIndex &&
+          reservation.modalContentData && (
+            <>
+              {reservation.modalContentData.map(
+                ({ userId, avatarImgSrc }: any, index: number) => (
+                  <div key={index}>{userId}</div>
+                )
+              )}
+              {!reservation.timeTable[reservation.startIndex]
+                .hasReservation && (
+                <button type="button" onClick={handleStartCreate}>
+                  예약하기
+                </button>
+              )}
+            </>
+          )}
+
+        {isOpen &&
+          reservation.step === 1 &&
+          reservation.selectedReservationId &&
+          reservation.modalContentData && (
+            <>
+              {reservation.modalContentData.map(({ index, users }: any) => (
+                <div key={index}>
+                  {users.map(({ userId }: any, i: any) => (
+                    <span key={i}>{userId}</span>
+                  ))}
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() =>
+                  handleDeleteReservation(reservation.selectedReservationId)
+                }
+              >
+                예약 취소
+              </button>
+              <button type="button" onClick={handleStartUpdate}>
+                예약 수정
+              </button>
+            </>
+          )}
 
         {isOpen && reservation.step === 2 && reservation.modalContentData && (
           <>
@@ -322,7 +463,7 @@ const Reservation: NextPage = () => {
                 checked={reservation.hasBall}
               />
             </label>
-            <button type="button" onClick={handleSubmitReservations}>
+            <button type="button" onClick={handleCreateReservation}>
               예약 완료
             </button>
           </>

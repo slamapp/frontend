@@ -112,7 +112,7 @@ const VerticalDivider = styled.div`
   background-color: black;
 `;
 
-const Selector = styled.div`
+const Selector = styled.div<any>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -124,20 +124,38 @@ const Selector = styled.div`
   border: 8px solid orange;
   box-sizing: border-box;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  width: ${({ hasReservation }) => hasReservation && "75%"};
+  margin-left: auto;
 `;
 
-const StartRangeSelector = styled.div<any>`
+const StartRangeSelector = styled.div`
   border-radius: 16px 16px 4px 4px;
   background-color: black;
   height: 23px;
 `;
 
-const EndRangeSelector = styled.div<any>`
-  position: relative;
-  top: -23px;
+const EndRangeSelector = styled.div`
   border-radius: 4px 4px 16px 16px;
   background-color: black;
   height: 23px;
+`;
+
+const ReservationMarker = styled.div<any>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  ${({ top, left, width, height, selected }) => css`
+    top: ${top}px;
+    left: ${left}px;
+    width: ${width}px;
+    height: ${height}px;
+    border: ${selected && "8px solid orange"};
+  `};
+  background-color: black;
+  color: white;
+  border-radius: 16px;
+  box-sizing: border-box;
 `;
 
 export {
@@ -153,4 +171,5 @@ export {
   Selector,
   StartRangeSelector,
   EndRangeSelector,
+  ReservationMarker,
 };

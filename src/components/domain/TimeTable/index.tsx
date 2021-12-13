@@ -15,9 +15,12 @@ const ACTIVE_RESERVATION_COUNT = 6;
 const TimeTable = ({
   timeTable,
   onClickStatusBlock,
+  onClickReservationMarker,
   startIndex,
   endIndex,
   step,
+  existedReservations,
+  selectedReservationId,
 }: any) => {
   const [height, setHeight] = useState(0);
 
@@ -41,7 +44,7 @@ const TimeTable = ({
           index={index}
           reservationCount={item.peopleCount}
           ballCount={item.ballCount}
-          // selected={selectedIndex === index}
+          hasReservation={item.hasReservation}
           onClickStatusBlock={onClickStatusBlock}
           selected={startIndex === index}
           step={step}
@@ -53,6 +56,25 @@ const TimeTable = ({
           startIndex={startIndex}
           endIndex={endIndex}
         />
+      )}
+      {existedReservations.map(
+        ({ reservationId, startIndex, endIndex }: any) => (
+          <>
+            {step === 2 && selectedReservationId === reservationId ? null : (
+              <S.ReservationMarker
+                key={reservationId}
+                width={height}
+                height={height * (endIndex - startIndex + 1)}
+                top={height * (startIndex + 1)}
+                left={height}
+                selected={reservationId === selectedReservationId}
+                onClick={() => onClickReservationMarker(reservationId)}
+              >
+                <span>나의 예약</span>
+              </S.ReservationMarker>
+            )}
+          </>
+        )
       )}
       <ActionTimeBlockUnit height={height} next />
     </S.TimeTableContainer>
@@ -81,6 +103,7 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
   reservationCount,
   ballCount,
   selected,
+  hasReservation,
   onClickStatusBlock,
   step,
 }) => {
@@ -112,7 +135,7 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
         }}
       >
         {selected && step === 1 && (
-          <S.Selector>
+          <S.Selector hasReservation={hasReservation}>
             <span>{getTimeSlotFromIndex(index)}</span>
           </S.Selector>
         )}
@@ -163,39 +186,36 @@ const RangeSelector = ({ unit, startIndex, endIndex }: any) => {
           top: unit * (startIndex + 1) - 23,
         }}
       />
-
-      {endIndex && (
-        <>
-          <div
-            style={{
-              position: "absolute",
-              left: unit,
-              top: unit * (startIndex + 1) - 3,
-              height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
-              width: 8,
-              backgroundColor: "black",
-            }}
-          ></div>
-          <div
-            style={{
-              position: "absolute",
-              left: unit * 5 - 8,
-              top: unit * (startIndex + 1) - 3,
-              height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
-              width: 8,
-              backgroundColor: "black",
-            }}
-          ></div>
-          <S.EndRangeSelector
-            style={{
-              width: unit * 4,
-              position: "absolute",
-              left: unit,
-              top: unit * (endIndex + 2),
-            }}
-          />
-        </>
-      )}
+      <>
+        <div
+          style={{
+            position: "absolute",
+            left: unit,
+            top: unit * (startIndex + 1) - 3,
+            height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
+            width: 8,
+            backgroundColor: "black",
+          }}
+        ></div>
+        <div
+          style={{
+            position: "absolute",
+            left: unit * 5 - 8,
+            top: unit * (startIndex + 1) - 3,
+            height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
+            width: 8,
+            backgroundColor: "black",
+          }}
+        ></div>
+        <S.EndRangeSelector
+          style={{
+            width: unit * 4,
+            position: "absolute",
+            left: unit,
+            top: unit * (endIndex + 2),
+          }}
+        />
+      </>
     </>
   );
 };
