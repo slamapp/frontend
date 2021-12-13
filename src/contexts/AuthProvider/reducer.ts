@@ -38,7 +38,7 @@ export const initialData = {
     following: [],
     notifications: [],
   },
-  isLoading: false,
+  isLoading: true,
 };
 
 export const reducer: Reducer<DataProps, ReducerAction> = (
