@@ -13,6 +13,7 @@
     "@egjs/react-flicking": "^4.4.2",
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
+    "@stomp/stompjs": "^6.1.2",
     "axios": "^0.24.0",
     "feather-icons": "^4.28.0",
     "framer-motion": "^5.3.3",
