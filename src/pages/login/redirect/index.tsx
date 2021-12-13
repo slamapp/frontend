@@ -10,13 +10,14 @@ const RedirectPage = () => {
   const [isNeedReLogin, setIsNeedReLogin] = useState(false);
   const [_, setToken] = useLocalToken();
   const { getCurrentUser } = useAuthContext();
-  const { query } = useRouter();
-  const { token } = query;
+  const router = useRouter();
+  const { token } = router.query;
 
   const getCurrentUserData = useCallback(async () => {
     setToken(token);
     try {
       await getCurrentUser();
+      router.replace("/");
     } catch (error) {
       console.error(error);
       setIsNeedReLogin(true);

@@ -21,9 +21,8 @@ const AuthProvider = ({ children }: Props) => {
       const data = await userAPI.getUserData();
       dispatch({ type: "GET_CURRENT_USER", payload: data });
       console.log(data);
-      router.replace("/");
     } catch (error) {
-      // setToken("");
+      setToken("");
       console.error(error);
       router.replace("/login");
     } finally {
