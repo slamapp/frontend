@@ -1,8 +1,8 @@
-import useLocalStorage from "@hooks/useLocalStorage";
+import { useLocalToken } from "@hooks/domain";
 import { useRouter } from "next/router";
-import { useReducer, ReactNode } from "react";
+import { useReducer, ReactNode, useEffect, useCallback } from "react";
+import userAPI from "service/userApi";
 import { Context } from "./context";
-import { useHandles } from "./handles";
 import { initialData, reducer } from "./reducer";
 
 interface Props {
@@ -10,28 +10,30 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-  const router = useRouter();
   const [authProps, dispatch] = useReducer(reducer, initialData);
-  const [token, setToken] = useLocalStorage("slam_token", "");
+  const [token, setToken] = useLocalToken();
 
-  const { handleGetCurrentUser } = useHandles();
+  const router = useRouter();
 
-  const getCurrentUser = async (token: string) => {
+  const getCurrentUser = useCallback(async () => {
     dispatch({ type: "LOADING_ON" });
     try {
-      const { data } = await handleGetCurrentUser(token);
+      const data = await userAPI.getUserData();
       dispatch({ type: "GET_CURRENT_USER", payload: data });
       console.log(data);
       router.replace("/");
     } catch (error) {
+      // setToken("");
       console.error(error);
-      throw new Error(
-        "유저 정보 받아오기 실패! 토큰이 만료되거나 잘못된 토큰으로 사용자 정보를 요청했습니다."
-      );
+      router.replace("/login");
     } finally {
       dispatch({ type: "LOADING_OFF" });
     }
-  };
+  }, [router]);
+
+  useEffect(() => {
+    if (token) getCurrentUser();
+  }, []);
 
   return (
     <Context.Provider
