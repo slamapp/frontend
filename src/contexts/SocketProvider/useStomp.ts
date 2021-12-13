@@ -1,15 +1,27 @@
+import { useLocalToken } from "@hooks/domain";
 import { CompatClient } from "@stomp/stompjs";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { socketApi } from "service";
 
 type UseStomp = () => [
   compatClient: CompatClient | null,
-  isSocketReady: boolean
+  isConnected: boolean,
+  isLoading: boolean
 ];
 
 const useStomp: UseStomp = () => {
+  const [token, _] = useLocalToken();
   const [compatClient, setCompatClient] = useState<CompatClient | null>(null);
-  const [isSocketReady, setIsSocketReady] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleConnected = useCallback(() => {
+    setIsConnected(true);
+  }, []);
+  const handleError = useCallback(() => {}, []);
+  const handleClose = useCallback(() => {
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     try {
@@ -20,14 +32,21 @@ const useStomp: UseStomp = () => {
       console.error(error);
     }
 
-    return () => {};
+    if (compatClient) {
+      compatClient.connect(
+        { token: `Beaer ${token}` },
+        handleConnected,
+        handleError,
+        handleClose
+      );
+    }
+
+    return () => {
+      if (compatClient) compatClient.disconnect();
+    };
   }, []);
 
-  useEffect(() => {
-    if (compatClient?.connected) setIsSocketReady(true);
-  }, [compatClient?.connected]);
-
-  return [compatClient, isSocketReady];
+  return [compatClient, isConnected, isLoading];
 };
 
 export default useStomp;
