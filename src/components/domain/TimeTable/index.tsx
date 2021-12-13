@@ -12,7 +12,13 @@ import type {
 const MAJOR_UNIT = 12;
 const ACTIVE_RESERVATION_COUNT = 6;
 
-const TimeTable = ({ timeTable, onClickStatusBlock, selectedIndex }: any) => {
+const TimeTable = ({
+  timeTable,
+  onClickStatusBlock,
+  startIndex,
+  endIndex,
+  step,
+}: any) => {
   const [height, setHeight] = useState(0);
 
   const ref = useResize<HTMLDivElement>((rect) => {
@@ -26,7 +32,7 @@ const TimeTable = ({ timeTable, onClickStatusBlock, selectedIndex }: any) => {
   }, [ref]);
 
   return (
-    <>
+    <S.TimeTableContainer>
       <ActionTimeBlockUnit rowRef={ref} height={height} previous />
       {timeTable.map((item: any, index: number) => (
         <TimeBlockUnit
@@ -37,11 +43,19 @@ const TimeTable = ({ timeTable, onClickStatusBlock, selectedIndex }: any) => {
           ballCount={item.ballCount}
           // selected={selectedIndex === index}
           onClickStatusBlock={onClickStatusBlock}
-          selected={selectedIndex === index}
+          selected={startIndex === index}
+          step={step}
         />
       ))}
+      {step === 2 && (
+        <RangeSelector
+          unit={height}
+          startIndex={startIndex}
+          endIndex={endIndex}
+        />
+      )}
       <ActionTimeBlockUnit height={height} next />
-    </>
+    </S.TimeTableContainer>
   );
 };
 
@@ -68,6 +82,7 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
   ballCount,
   selected,
   onClickStatusBlock,
+  step,
 }) => {
   const isEven = index % 2 === 0;
   const hasBlackTopBorder = index % MAJOR_UNIT === 0;
@@ -96,11 +111,11 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
           onClickStatusBlock(index);
         }}
       >
-        {selected ? (
+        {selected && step === 1 && (
           <S.Selector>
             <span>{getTimeSlotFromIndex(index)}</span>
           </S.Selector>
-        ) : null}
+        )}
       </S.StatusColumn>
       <S.VerticalDivider />
       <S.BallColumn className="time-block__ball">
@@ -136,3 +151,51 @@ const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
     <S.OneSixthColumn className="time-block__action" />
   </S.TimeBlockUnitWrapper>
 );
+
+const RangeSelector = ({ unit, startIndex, endIndex }: any) => {
+  return (
+    <>
+      <S.StartRangeSelector
+        style={{
+          width: unit * 4,
+          position: "absolute",
+          left: unit,
+          top: unit * (startIndex + 1) - 23,
+        }}
+      />
+
+      {endIndex && (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              left: unit,
+              top: unit * (startIndex + 1) - 3,
+              height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
+              width: 8,
+              backgroundColor: "black",
+            }}
+          ></div>
+          <div
+            style={{
+              position: "absolute",
+              left: unit * 5 - 8,
+              top: unit * (startIndex + 1) - 3,
+              height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
+              width: 8,
+              backgroundColor: "black",
+            }}
+          ></div>
+          <S.EndRangeSelector
+            style={{
+              width: unit * 4,
+              position: "absolute",
+              left: unit,
+              top: unit * (endIndex + 2),
+            }}
+          />
+        </>
+      )}
+    </>
+  );
+};

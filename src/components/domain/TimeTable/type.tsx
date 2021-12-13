@@ -14,6 +14,7 @@ interface TimeBlockUnitProps extends Pick<TimeBlockUnitWrapperProps, "height"> {
   reservationCount: number;
   ballCount: number;
   selected: boolean;
+  step: number;
   onClickStatusBlock: (index: number) => void;
 }
 

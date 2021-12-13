@@ -2,6 +2,10 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { TimeBlockUnitWrapperProps, StatusProps } from "./type";
 
+const TimeTableContainer = styled.div`
+  position: relative;
+`;
+
 const OneSixthColumn = styled.div`
   flex-grow: 1;
   flex-basis: 0;
@@ -122,7 +126,22 @@ const Selector = styled.div`
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
 `;
 
+const StartRangeSelector = styled.div<any>`
+  border-radius: 16px 16px 4px 4px;
+  background-color: black;
+  height: 23px;
+`;
+
+const EndRangeSelector = styled.div<any>`
+  position: relative;
+  top: -23px;
+  border-radius: 4px 4px 16px 16px;
+  background-color: black;
+  height: 23px;
+`;
+
 export {
+  TimeTableContainer,
   OneSixthColumn,
   FourSixthColumn,
   TimeBlockUnitWrapper,
@@ -132,4 +151,6 @@ export {
   BallColumn,
   VerticalDivider,
   Selector,
+  StartRangeSelector,
+  EndRangeSelector,
 };
