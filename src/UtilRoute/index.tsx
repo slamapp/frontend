@@ -41,9 +41,9 @@ const UtilRouteHOCWrapper = ({
       case routeOption.private:
         if (localToken) {
           setIsShowChildren(true);
-          router.replace(`${pathname}`);
+          router.replace(`/${pathname}`);
         } else {
-          router.replace("login");
+          router.replace("/login");
         }
         break;
       case routeOption.prevented:
@@ -51,7 +51,7 @@ const UtilRouteHOCWrapper = ({
           router.replace("/");
         } else {
           setIsShowChildren(true);
-          router.replace(`${pathname}`);
+          router.replace(`/${pathname}`);
         }
         break;
       default:
