@@ -1,6 +1,6 @@
 import { ModalSheet } from "@components/base";
 import { TimeTable } from "@components/domain";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   ChangeEvent,
@@ -80,6 +80,14 @@ const data = {
       endTime: "2021-01-01T15:00:00",
       hasBall: false,
     },
+    {
+      reservationId: 290,
+      userId: "me",
+      courtId: 7,
+      startTime: "2021-01-01T19:00:00",
+      endTime: "2021-01-01T21:00:00",
+      hasBall: true,
+    },
   ],
 };
 
@@ -118,6 +126,7 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
           reservationId: reservation.reservationId,
           startIndex: startRow,
           endIndex: endRow - 1,
+          hasBall: reservation.hasBall,
         });
 
         hasReservation = true;
@@ -155,6 +164,7 @@ const initialState = {
   hasBall: false,
   existedReservations: [],
   selectedReservationId: null,
+  submitDisabled: false,
 };
 
 const reducer = (state: any, { type, payload }: any) => {
@@ -175,6 +185,7 @@ const reducer = (state: any, { type, payload }: any) => {
     case "START_CREATE": {
       return {
         ...state,
+        mode: "create",
         step: state.step + 1,
       };
     }
@@ -185,7 +196,7 @@ const reducer = (state: any, { type, payload }: any) => {
         ({ reservationId }: any) => reservationId === selectedReservationId
       );
 
-      const { startIndex, endIndex } = selectedReservation;
+      const { startIndex, endIndex, hasBall } = selectedReservation;
 
       return {
         ...state,
@@ -193,6 +204,7 @@ const reducer = (state: any, { type, payload }: any) => {
         mode: "update",
         startIndex,
         endIndex,
+        hasBall,
       };
     }
     case "DECREASE_STEP": {
@@ -201,6 +213,7 @@ const reducer = (state: any, { type, payload }: any) => {
         step: state.step - 1,
         endIndex: null,
         startIndex: null,
+        selectedReservationId: null,
         timeTable: state.originalTimeTable,
         hasBall: false,
       };
@@ -211,13 +224,21 @@ const reducer = (state: any, { type, payload }: any) => {
       return {
         ...state,
         startIndex,
+        lastIndex: null,
         selectedReservationId: null,
         modalContentData: state.timeTable[startIndex].users,
       };
     }
     case "SET_END_INDEX": {
       let { endIndex } = payload;
-      const { mode, originalTimeTable, startIndex, hasBall } = state;
+      const {
+        mode,
+        originalTimeTable,
+        startIndex,
+        hasBall,
+        existedReservations,
+        selectedReservationId,
+      } = state;
 
       if (endIndex < startIndex) return state;
 
@@ -226,40 +247,151 @@ const reducer = (state: any, { type, payload }: any) => {
         endIndex = startIndex + MAX_UNITS - 1;
       }
 
-      const timeTable = [...originalTimeTable];
-      const modalContentData = [];
-      for (let i = startIndex; i <= endIndex; i += 1) {
-        const { users, peopleCount, ballCount } = timeTable[i];
-        timeTable[i] = {
-          ...timeTable[i],
-          users: [...users, { userId: "me" }],
-          peopleCount: peopleCount + 1,
-          ballCount: hasBall ? ballCount + 1 : ballCount,
-        };
-        modalContentData.push({ index: i, users });
-      }
+      if (mode === "create") {
+        const timeTable = [...originalTimeTable];
 
-      return {
-        ...state,
-        endIndex,
-        timeTable,
-        modalContentData,
-      };
+        const modalContentData = [];
+        let requestDisabled = false;
+
+        for (let i = startIndex; i <= endIndex; i += 1) {
+          const { users, peopleCount, ballCount, hasReservation } =
+            timeTable[i];
+
+          timeTable[i] = {
+            ...timeTable[i],
+            users: hasReservation ? users : [...users, { userId: "me" }],
+            peopleCount: hasReservation ? peopleCount : peopleCount + 1,
+            ballCount: hasBall ? ballCount + 1 : ballCount,
+          };
+
+          modalContentData.push({ index: i, users: timeTable[i].users });
+
+          if (timeTable[i].hasReservation) {
+            requestDisabled = true;
+          }
+        }
+
+        return {
+          ...state,
+          endIndex,
+          timeTable,
+          modalContentData,
+          requestDisabled,
+        };
+      } else {
+        const timeTable = [...originalTimeTable];
+
+        const modalContentData = [];
+        let requestDisabled = false;
+
+        const selectedReservation = existedReservations.find(
+          ({ reservationId }: any) => reservationId === selectedReservationId
+        );
+
+        if (selectedReservation.endIndex - endIndex > 0) {
+          for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
+            const { users, peopleCount, ballCount } = timeTable[i];
+            timeTable[i] = {
+              ...timeTable[i],
+              users: users.filter(
+                ({ userId }: any) => userId !== selectedReservation.userId
+              ),
+              peopleCount: peopleCount - 1,
+              ballCount: hasBall ? ballCount - 1 : ballCount,
+            };
+          }
+        }
+
+        for (let i = startIndex; i <= endIndex; i += 1) {
+          const { users, peopleCount, ballCount, hasReservation } =
+            timeTable[i];
+
+          if (
+            !(
+              i >= selectedReservation.startIndex &&
+              i <= selectedReservation.endIndex
+            )
+          ) {
+            timeTable[i] = {
+              ...timeTable[i],
+              users: [...users, { userId: "me" }],
+              peopleCount: peopleCount + 1,
+              ballCount: hasBall ? ballCount + 1 : ballCount,
+            };
+          }
+
+          modalContentData.push({ index: i, users: timeTable[i].users });
+
+          if (
+            i < selectedReservation.startIndex &&
+            i > selectedReservation.endIndex &&
+            hasReservation
+          ) {
+            requestDisabled = true;
+          }
+        }
+
+        return {
+          ...state,
+          endIndex,
+          requestDisabled,
+          timeTable,
+          modalContentData,
+        };
+      }
     }
     case "SET_HAS_BALL": {
-      const { startIndex, endIndex, originalTimeTable, timeTable } = state;
+      const {
+        mode,
+        startIndex,
+        endIndex,
+        originalTimeTable,
+        timeTable,
+        selectedReservationId,
+        existedReservations,
+      } = state;
       const { hasBall } = payload;
 
       const nextTimeTable = [...timeTable];
-      for (let i = startIndex; i <= endIndex; i += 1) {
-        nextTimeTable[i] = {
-          ...timeTable[i],
-          ballCount: hasBall
-            ? originalTimeTable[i].ballCount + 1
-            : originalTimeTable[i].ballCount,
-        };
-      }
 
+      if (mode === "create") {
+        for (let i = startIndex; i <= endIndex; i += 1) {
+          nextTimeTable[i] = {
+            ...timeTable[i],
+            ballCount: hasBall
+              ? originalTimeTable[i].ballCount + 1
+              : originalTimeTable[i].ballCount,
+          };
+        }
+      } else {
+        const selectedReservation = existedReservations.find(
+          ({ reservationId }: any) => reservationId === selectedReservationId
+        );
+        for (let i = startIndex; i <= endIndex; i += 1) {
+          //  예약 범위
+          if (
+            i >= selectedReservation.startIndex &&
+            i <= selectedReservation.endIndex
+          ) {
+            nextTimeTable[i] = {
+              ...timeTable[i],
+              ballCount:
+                hasBall === selectedReservation.hasBall
+                  ? originalTimeTable[i].ballCount
+                  : hasBall
+                  ? originalTimeTable[i].ballCount + 1
+                  : originalTimeTable[i].ballCount - 1,
+            };
+          } else {
+            nextTimeTable[i] = {
+              ...timeTable[i],
+              ballCount: hasBall
+                ? originalTimeTable[i].ballCount + 1
+                : originalTimeTable[i].ballCount,
+            };
+          }
+        }
+      }
       return {
         ...state,
         timeTable: nextTimeTable,
@@ -392,7 +524,9 @@ const Reservation: NextPage = () => {
         onClickStatusBlock={
           reservation.step === 1 ? handleSetStartIndex : handleSetEndIndex
         }
-        onClickReservationMarker={handleClickReservationMarker}
+        onClickReservationMarker={
+          reservation.step === 1 ? handleClickReservationMarker : () => {}
+        }
         startIndex={reservation.startIndex}
         endIndex={reservation.endIndex}
         step={reservation.step}
@@ -454,6 +588,9 @@ const Reservation: NextPage = () => {
                 ))}
               </div>
             ))}
+            {reservation.requestDisabled ? (
+              <div>이미 예약한 시간이 포함되어 있습니다.</div>
+            ) : null}
             <label>
               농구공 가지고 참여
               <input
@@ -463,7 +600,11 @@ const Reservation: NextPage = () => {
                 checked={reservation.hasBall}
               />
             </label>
-            <button type="button" onClick={handleCreateReservation}>
+            <button
+              type="button"
+              disabled={reservation.requestDisabled}
+              onClick={handleCreateReservation}
+            >
               예약 완료
             </button>
           </>
