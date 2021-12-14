@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
 import ShareButton from "@components/ShareButton";
+import { useNavigationContext } from "@contexts/NavigationProvider";
 
 interface BasketballCourt {
   id: number;
@@ -18,7 +19,10 @@ declare global {
 
 type BasketballCourts = BasketballCourt[];
 
-const Bookmark: NextPage = () => {
+const Favorites: NextPage = () => {
+  const { useMountPage } = useNavigationContext();
+  useMountPage((page) => page.FAVORITES);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.Kakao.init("c6f32516ffb011a356a9f8ea036ca21f"); // TODO env 파일로 바꾸기
@@ -44,23 +48,21 @@ const Bookmark: NextPage = () => {
 
   if (basketballCourts.length === 0) {
     return (
-      <>
-        <Spacer>
-          <div>즐겨찾는 농구장이 없으시네요?</div>
-          <Link href="/map">
-            <button>나의 농구장 찾기</button>
-          </Link>
-        </Spacer>
-      </>
+      <Spacer>
+        <div>즐겨찾는 농구장이 없으시네요?</div>
+        <Link href="/map">
+          <button>나의 농구장 찾기</button>
+        </Link>
+      </Spacer>
     );
   }
 
   return (
     <Spacer>
-      {basketballCourts.map((basketballCourt) => (
-        <BorderDiv key={basketballCourt.id}>
-          <p>{basketballCourt.name}</p>
-          <p>{basketballCourt.address}</p>
+      {basketballCourts.map(({ id, name, address }) => (
+        <BorderDiv key={id}>
+          <p>{name}</p>
+          <p>{address}</p>
           <button>즐겨찾기</button>
           <Link href="/chat">
             <button>채팅</button>
@@ -80,4 +82,4 @@ const BorderDiv = styled.div`
   margin-top: 30px;
 `;
 
-export default Bookmark;
+export default Favorites;

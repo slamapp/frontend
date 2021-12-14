@@ -70,7 +70,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isNotifications: true,
         isProfile: true,
         isMenu: false,
-        title: "",
+        title: "즐겨찾는 농구장",
       };
     }
     case pageType.MAP: {
