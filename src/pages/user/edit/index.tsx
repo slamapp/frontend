@@ -32,12 +32,13 @@ const UserEditPage: NextPage = () => {
   // 더미 데이터
   const userInfo: Values = {
     nickname: "slam",
-    profileImage:
-      "https://user-images.githubusercontent.com/84858773/145361283-80b23317-3038-42e6-a784-f82015535514.png",
+    profileImage: null,
     description: "내 이름은 슬램, 농구인이죠",
     proficiency: "BEGINNER",
     positions: ["PF", "SF"],
   };
+
+  const baseProfileImageUrl = "/assets/default_profile.svg";
 
   const { nickname, profileImage, description, proficiency, positions } =
     userInfo;
@@ -111,8 +112,12 @@ const UserEditPage: NextPage = () => {
 
       <Center>
         <Upload>
-          <Avatar edit src={profileImage!} shape="circle" __TYPE="Avatar" />
-          {/* 에러 임시 처리 */}
+          <Avatar
+            edit
+            src={profileImage ?? baseProfileImageUrl}
+            shape="circle"
+            __TYPE="Avatar"
+          />
         </Upload>
         <button>기본 프로필 이미지로 변경하기</button>
       </Center>
