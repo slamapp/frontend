@@ -76,37 +76,3 @@ const UpcomingReservations = () => {
 };
 
 export default UpcomingReservations;
-
-// const getTime = (startTime: any) => {
-//   const beforeOneHour = new Date(startTime).getTime() - new Date().getTime();
-//   return beforeOneHour - 3600000;
-// };
-
-// const Reservation = ({ reserve }: any) => {
-//   const [loude, setLoude] = useState(false);
-
-//   useEffect(() => {
-//     const beforeTime = getTime(reserve.startTime);
-
-//     const timerId = setTimeout(() => {
-//       setLoude(true);
-//     }, beforeTime);
-
-//     return () => {
-//       clearTimeout(timerId);
-//     };
-//   }, []);
-
-//   return (
-//     <BorderDiv key={reserve.reservationId}>
-//       <p>{reserve.courtName}</p>
-//       <p>{reserve.startTime}</p>
-//       <p>{reserve.numberOfReservations} / 6 명</p>
-//       {loude && <button>확성기</button>}
-//       <Link href="/">
-//         <button>예약 보기</button>
-//       </Link>
-//       <Participants />
-//     </BorderDiv>
-//   );
-// };
