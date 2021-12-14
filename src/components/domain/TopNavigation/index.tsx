@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Icon, Avatar, Badge } from "@components/base";
 import { useRouter } from "next/router";
+import { useAuthContext } from "@contexts/AuthProvider";
 
 interface Props {
   isTransparent: boolean;
@@ -11,6 +12,11 @@ interface Props {
 
 const TopNavigation = forwardRef<HTMLElement, Props>(
   ({ isTransparent }, ref) => {
+    const {
+      authProps: { currentUser },
+    } = useAuthContext();
+    const { userId, profileImageUrl } = currentUser;
+
     const {
       navigationProps: {
         isBack,
@@ -27,9 +33,6 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
 
     const handleDefaultBack = () => {
       router.back();
-    };
-    const handleDefaultNext = () => {
-      console.log("다음버튼을 눌렀습니다. 기본 다음 버튼 이벤트가 실행됩니다.");
     };
 
     return (
@@ -55,11 +58,16 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
               </Badge>
             )}
             {isProfile && (
-              <Link href={`/user/${1}`}>
+              <Link
+                href={`/user/${
+                  1 || userId // TODO:  나중에 로그인이 안정화 되면 1대신 userId 넣자
+                }`}
+              >
                 <a>
                   <Avatar
                     size={32}
                     src={
+                      profileImageUrl ||
                       "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
                     }
                   />
@@ -75,9 +83,7 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
             )}
 
             {customButton && (
-              <CustomButton
-                onClick={customButton.handleClick || handleDefaultNext}
-              >
+              <CustomButton onClick={customButton.handleClick}>
                 {customButton.title}
               </CustomButton>
             )}
