@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { type } from "os";
 import React, { useState } from "react";
 import styled from "@emotion/styled";
@@ -13,7 +12,7 @@ interface ReserveList {
 
 type ReserveLists = ReserveList[];
 
-const CompletedReservations: NextPage = () => {
+const CompletedReservations = () => {
   const DummyReserves = [
     {
       reservationId: 1,

@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { type } from "os";
 import React from "react";
 import styled from "@emotion/styled";
@@ -24,7 +23,7 @@ const BorderDiv = styled.div`
   margin-top: 30px;
 `;
 
-const UpcomingReservations: NextPage = () => {
+const UpcomingReservations = () => {
   const DummyReserve = [
     {
       reservationId: 1,

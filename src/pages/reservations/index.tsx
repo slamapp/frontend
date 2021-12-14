@@ -8,7 +8,7 @@ import styled from "@emotion/styled";
 
 const Reservations: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.BOOK);
+  useMountPage((page) => page.RESERVATIONS);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
