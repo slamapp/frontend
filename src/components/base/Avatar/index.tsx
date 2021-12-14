@@ -4,7 +4,7 @@ import ImageComponent from "../Image";
 import AvatarGroup from "./AvatarGroup";
 import { AvatarShape } from "./types";
 
-interface Props {
+export interface Props {
   lazy?: boolean;
   threshold?: number;
   src: string;
@@ -14,6 +14,7 @@ interface Props {
   alt?: string;
   mode?: "cover" | "fill" | "contain";
   __TYPE: "Avatar";
+  edit?: boolean;
 }
 
 const Avatar = ({
@@ -26,6 +27,7 @@ const Avatar = ({
   alt,
   mode = "cover",
   __TYPE = "Avatar",
+  edit = false,
   ...props
 }: Props) => {
   const [loaded, setLoaded] = useState(false);
@@ -50,6 +52,7 @@ const Avatar = ({
         mode={mode}
         style={{ opacity: loaded ? 1 : 0 }}
       />
+      {edit ? <Filter>+</Filter> : null}
     </AvatarWrapper>
   );
 };
@@ -74,6 +77,17 @@ const AvatarWrapper = styled.div<AvatarWrapperProps>`
   > img {
     transition: opacity 0.2s ease;
   }
+`;
+
+const Filter = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  font-size: 50px;
+  text-align: center;
+  color: white;
 `;
 
 Avatar.defaultProps = {
