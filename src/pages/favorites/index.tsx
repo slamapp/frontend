@@ -7,9 +7,13 @@ import ShareButton from "@components/ShareButton";
 import { useNavigationContext } from "@contexts/NavigationProvider";
 
 interface BasketballCourt {
-  id: number;
-  name: string;
-  address: string;
+  favoriteId: number;
+  courtId: number;
+  courtName: string;
+  latitude: number;
+  longtitude: number;
+  createdAt: string;
+  updatedAt: string;
 }
 declare global {
   interface Window {
@@ -30,19 +34,22 @@ const Favorites: NextPage = () => {
   }, []);
   const basketballCourts = [
     {
-      id: 1,
-      name: "용왕산 근린 공원 농구장",
-      address: "서울 양천구 신곡 2동 3002번지 19번지 19번지 19번지 199-51",
+      favoriteId: 1,
+      courtId: 1,
+      courtName: "용왕산 근린 공원 농구장",
+      latitude: 523954.0,
+      longtitude: 1084098.0,
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
     },
     {
-      id: 2,
-      name: "백두산 근린 공원 농구장",
-      address: "서울 양천구 신곡 2동 3002번지 19번지 19번지 19번지 199-51",
-    },
-    {
-      id: 3,
-      name: "북한산 근린 공원 농구장",
-      address: "서울 양천구 신곡 2동 3002번지 19번지 19번지 19번지 199-51",
+      favoriteId: 2,
+      courtId: 2,
+      courtName: "백두산 근린 공원 농구장",
+      latitude: 533396.88,
+      longtitude: 1084098.0,
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
     },
   ];
 
@@ -51,7 +58,7 @@ const Favorites: NextPage = () => {
       <Spacer>
         <div>즐겨찾는 농구장이 없으시네요?</div>
         <Link href="/map">
-          <button>나의 농구장 찾기</button>
+          <button>내 주변 농구장 찾기</button>
         </Link>
       </Spacer>
     );
@@ -59,20 +66,27 @@ const Favorites: NextPage = () => {
 
   return (
     <Spacer>
-      {basketballCourts.map(({ id, name, address }) => (
-        <BorderDiv key={id}>
-          <p>{name}</p>
-          <p>{address}</p>
-          <button>즐겨찾기</button>
-          <Link href="/chat">
-            <button>채팅</button>
-          </Link>
-          <ShareButton />
-          <Link href="/reserve">
-            <button>예약하기</button>
-          </Link>
-        </BorderDiv>
-      ))}
+      {basketballCourts.map(
+        ({ favoriteId, courtName, latitude, longtitude }) => (
+          <BorderDiv key={favoriteId}>
+            <p>{courtName}</p>
+            <button>즐겨찾기</button>
+            <Link href="/chat">
+              <button>채팅</button>
+            </Link>
+            <ShareButton />
+            <Link href="/reserve">
+              <button>예약하기</button>
+            </Link>
+            <a
+              href={`https://map.kakao.com/?urlX=${latitude}&urlY=${longtitude}&name=${courtName}`}
+              target="_blank" rel="noreferrer"
+            >
+              <button>카카오맵</button>
+            </a>
+          </BorderDiv>
+        )
+      )}
     </Spacer>
   );
 };
