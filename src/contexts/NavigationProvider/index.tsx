@@ -65,5 +65,3 @@ const NavigationProvider = ({ children }: Props) => {
 };
 
 export default NavigationProvider;
-
-export { default as useNavigationContext } from "./hook";

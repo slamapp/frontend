@@ -1,10 +1,9 @@
 import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Icon, Avatar, Badge } from "@components/base";
 import { useRouter } from "next/router";
-import { useAuthContext } from "@contexts/AuthProvider";
+import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 
 interface Props {
   isTransparent: boolean;

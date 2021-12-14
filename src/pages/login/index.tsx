@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { KakaoLogin } from "@components/domain";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import UtilRoute from "UtilRoute";
 import { useEffect } from "react";
+import { useNavigationContext } from "@contexts/hooks";
 
 const Login: NextPage = UtilRoute("prevented", () => {
   const { useMountPage, setCustomButtonEvent, clearNavigationEvent } =

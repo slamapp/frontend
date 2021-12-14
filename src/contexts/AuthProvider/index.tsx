@@ -1,8 +1,8 @@
 import { useLocalToken } from "@hooks/domain";
 import { useRouter } from "next/router";
 import { useReducer, ReactNode, useEffect, useCallback } from "react";
-import userAPI from "service/userApi";
-import AuthLoading from "./AuthLoading";
+import userAPI from "@service/userApi";
+import { AuthLoading } from "@components/domain";
 import { Context } from "./context";
 import { initialData, reducer } from "./reducer";
 
@@ -23,13 +23,12 @@ const AuthProvider = ({ children }: Props) => {
       dispatch({ type: "GET_CURRENT_USER", payload: data });
       console.log(data);
     } catch (error) {
-      setToken("");
-      console.error(error);
+      localStorage.clear();
       router.replace("/login");
     } finally {
       dispatch({ type: "LOADING_OFF" });
     }
-  }, [router]);
+  }, [router, setToken]);
 
   useEffect(() => {
     if (token) {
@@ -46,12 +45,10 @@ const AuthProvider = ({ children }: Props) => {
         getCurrentUser,
       }}
     >
-      <AuthLoading isShow={authProps.isLoading} />
+      <AuthLoading />
       {children}
     </Context.Provider>
   );
 };
 
 export default AuthProvider;
-
-export { default as useAuthContext } from "./hook";

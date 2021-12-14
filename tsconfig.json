@@ -24,7 +24,8 @@
       "@hooks/*": ["hooks/*"],
       "@stories/*": ["stories/*"],
       "@styles/*": ["styles/*"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@service/*": ["service/*"]
     },
     "types": ["kakao.maps.d.ts"]
   },
