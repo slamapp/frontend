@@ -11,4 +11,6 @@ export const initialContext = {
   getCurrentUser: () => {},
 };
 
-export const Context = createContext<ContextProps>(initialContext);
+const Context = createContext<ContextProps>(initialContext);
+
+export default Context;

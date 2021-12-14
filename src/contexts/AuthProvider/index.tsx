@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useReducer, ReactNode, useEffect, useCallback } from "react";
 import userAPI from "@service/userApi";
 import { AuthLoading } from "@components/domain";
-import { Context } from "./context";
+import Context from "./context";
 import { initialData, reducer } from "./reducer";
 
 interface Props {

@@ -153,7 +153,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     }
     case pageType.USER_EDIT: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,

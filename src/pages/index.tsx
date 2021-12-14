@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Button from "@components/Button";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import Link from "next/link";
+import { useNavigationContext } from "@contexts/hooks";
 
 const Home: NextPage = () => {
   const { useMountPage } = useNavigationContext();

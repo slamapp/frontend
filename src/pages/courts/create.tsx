@@ -11,8 +11,7 @@ import styled from "@emotion/styled";
 import { getCurrentLocation } from "@utils/geolocation";
 import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
 import useForm, { Error } from "@hooks/useForm";
-import { useMapContext } from "@contexts/MapProvider";
-import { useNavigationContext } from "@contexts/NavigationProvider";
+import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { Coord } from "../../types/map";
 
 interface Values {

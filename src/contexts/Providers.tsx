@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
-import { AuthProvider, NavigationProvider } from ".";
-import MapProvider from "./MapProvider";
+import { AuthProvider, NavigationProvider, MapProvider } from ".";
 
 interface Props {
   children: ReactNode;

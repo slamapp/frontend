@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Spacer from "@components/base/Spacer";
-import { type } from "os";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { NextPage } from "next";

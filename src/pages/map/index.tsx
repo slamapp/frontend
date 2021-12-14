@@ -2,15 +2,13 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useState, useCallback, useEffect, useMemo } from "react";
-
 import KakaoMap from "@components/KakaoMap";
 import { getCurrentLocation } from "@utils/geolocation";
-import { useMapContext } from "@contexts/MapProvider";
 import { BasketballMarker } from "@components/KakaoMapMarker";
 import { ModalSheet } from "@components/base";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import { DatePicker, SlotPicker } from "@components/domain";
 import { SlotKeyUnion } from "@components/domain/SlotPicker/types";
+import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -79,7 +77,6 @@ const dummyBasketballCourts = [
 const Map: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.MAP);
-
   const { map } = useMapContext();
 
   const today = useMemo(() => {

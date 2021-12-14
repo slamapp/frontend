@@ -4,9 +4,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "@emotion/styled";
-
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Avatar } from "@components/base";
+import { useNavigationContext } from "@contexts/hooks";
 
 type IUserType = "other" | "me";
 type ISkill = "BEGINNER" | "INTERMEDIATE" | "MASTER";

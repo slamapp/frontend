@@ -23,4 +23,6 @@ const initialContext = {
   changeNavigation: () => {},
 };
 
-export const Context = createContext<ContextProps>(initialContext);
+const Context = createContext<ContextProps>(initialContext);
+
+export default Context;

@@ -1,10 +1,9 @@
 import CompletedReservations from "@components/Reservations/CompletedReservations";
 import UpcomingReservations from "@components/Reservations/UpcomingReservations";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import { NextPage } from "next";
-import { type } from "os";
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import { useNavigationContext } from "@contexts/hooks";
 
 const Reservations: NextPage = () => {
   const { useMountPage } = useNavigationContext();

@@ -1,4 +1,4 @@
-import { useNavigationContext } from "@contexts/NavigationProvider";
+import { useNavigationContext } from "@contexts/hooks";
 import { NextPage } from "next";
 import React from "react";
 import UtilRoute from "UtilRoute";

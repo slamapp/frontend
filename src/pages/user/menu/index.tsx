@@ -1,7 +1,7 @@
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import { NextPage } from "next";
 import React from "react";
 import UtilRoute from "UtilRoute";
+import { useNavigationContext } from "@contexts/hooks";
 
 const Menu: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();

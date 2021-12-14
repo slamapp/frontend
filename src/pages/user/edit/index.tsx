@@ -2,12 +2,10 @@ import { useState, useCallback, ChangeEvent } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import styled from "@emotion/styled";
-
-// import UtilRoute from "UtilRoute";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import useForm, { Error } from "@hooks/useForm";
 import { Avatar, Spacer, Upload } from "@components/base";
 import Input from "@components/base/Input";
+import { useNavigationContext } from "@contexts/hooks";
 import {
   PositionKeyUnion,
   ProficiencyKeyUnion,
@@ -15,7 +13,7 @@ import {
 import {
   PositionsPicker,
   ProficiencyPicker,
-} from "../../../components/domain/UserInfoPicker";
+} from "@components/domain/UserInfoPicker";
 
 interface Values {
   nickname: string;
