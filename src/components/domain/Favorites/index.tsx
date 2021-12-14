@@ -4,7 +4,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
 import ShareButton from "@components/ShareButton";
-import { useNavigationContext } from "@contexts/NavigationProvider";
+import { useNavigationContext } from "@contexts/hooks";
 
 interface BasketballCourt {
   favoriteId: number;
@@ -28,7 +28,7 @@ const Favorites: NextPage = () => {
   useMountPage((page) => page.FAVORITES);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && !window.Kakao.isInitialized()) {
       window.Kakao.init("c6f32516ffb011a356a9f8ea036ca21f"); // TODO env 파일로 바꾸기
     }
   }, []);
@@ -80,7 +80,8 @@ const Favorites: NextPage = () => {
             </Link>
             <a
               href={`https://map.kakao.com/?urlX=${latitude}&urlY=${longtitude}&name=${courtName}`}
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               <button>카카오맵</button>
             </a>

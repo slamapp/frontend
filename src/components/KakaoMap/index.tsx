@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, CSSProperties } from "react";
 import type { ReactNode } from "react";
 import { DEFAULT_POSITION } from "@utils/geolocation";
-import { useMapContext } from "@contexts/MapProvider";
+import { useMapContext } from "@contexts/hooks";
 import { Coord } from "../../types/map";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 

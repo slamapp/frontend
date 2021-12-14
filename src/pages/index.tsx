@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useNavigationContext } from "@contexts/hooks";
-import Favorites from "./favorites";
+import { Favorites } from "@components/domain";
 
 const Home: NextPage = () => {
   const { useMountPage } = useNavigationContext();
