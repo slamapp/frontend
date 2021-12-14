@@ -7,6 +7,14 @@ interface Props {
   participantsPerBlock: any[];
 }
 
+const getTimeFromIndex = (index: number) => {
+  const startHours = Math.floor(index / 2)
+    .toString()
+    .padStart(2, "0");
+
+  return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
+};
+
 const StepTwoModalCommonContent = ({
   timeSlot,
   participantsPerBlock,
@@ -21,7 +29,7 @@ const StepTwoModalCommonContent = ({
         <Text>함께하는 사람</Text>
         {participantsPerBlock.map(({ index, users }: any) => (
           <ParticipantWithTimeWrapper key={index}>
-            <span>{index}</span>
+            <span>{getTimeFromIndex(index)}</span>
             <S.AvatarGroup>
               {users.map(({ userId, avatarImgSrc }: any) => (
                 <Avatar key={userId} src={avatarImgSrc} shape="circle" />

@@ -1,6 +1,6 @@
 import * as S from "./style";
-import { MAJOR_TIME_BLOCK_UNIT, ACTIVE_RESERVATION_COUNT } from "./constants";
-import { TimeBlockUnitProps, Status } from "./type";
+import { MAJOR_TIME_BLOCK_UNIT, ACTIVE_RESERVATION_COUNT } from "../constants";
+import { TimeBlockUnitProps, Status } from "../type";
 
 import Hour from "./Hour";
 

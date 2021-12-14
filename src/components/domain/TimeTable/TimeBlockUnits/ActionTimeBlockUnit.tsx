@@ -1,5 +1,5 @@
 import * as S from "./style";
-import { ActionTimeBlockUnitProps } from "./type";
+import { ActionTimeBlockUnitProps } from "../type";
 import Hour from "./Hour";
 
 const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({

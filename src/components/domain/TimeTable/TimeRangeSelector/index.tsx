@@ -1,6 +1,12 @@
 import * as S from "./style";
 
-const RangeSelector = ({ unit, startIndex, endIndex }: any) => {
+interface Props {
+  unit: number;
+  startIndex: number;
+  endIndex: number;
+}
+
+const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
   return (
     <>
       <S.StartRangeSelector

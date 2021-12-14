@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+
 import { useResize } from "@hooks/.";
+import { TimeBlockUnit, ActionTimeBlockUnit } from "./TimeBlockUnits";
+import TimeRangeSelector from "./TimeRangeSelector";
 import * as S from "./style";
-import ActionTimeBlockUnit from "./ActionTimeBlockUnit";
-import TimeBlockUnit from "./TimeBlockUnit";
-import RangeSelector from "./RangeSelector";
 
 const TimeTable = ({
   timeTable,
@@ -44,7 +44,7 @@ const TimeTable = ({
         />
       ))}
       {step === 2 && (
-        <RangeSelector
+        <TimeRangeSelector
           unit={height}
           startIndex={startIndex}
           endIndex={endIndex}
