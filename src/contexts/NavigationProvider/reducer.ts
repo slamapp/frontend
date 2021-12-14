@@ -156,6 +156,20 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "",
       };
     }
+    case pageType.USER_EDIT: {
+      return {
+        ...state,
+        isTopNavigation: true,
+        isBottomNavigation: true,
+        currentPage: type,
+        isBack: true,
+        isNotifications: false,
+        isProfile: false,
+        isNext: false,
+        isMenu: false,
+        title: "프로필 편집",
+      };
+    }
     case pageType.USER_MENU: {
       return {
         ...state,
