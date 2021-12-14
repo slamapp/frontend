@@ -6,6 +6,7 @@ import {
   ChangeEvent,
   useCallback,
   useEffect,
+  useMemo,
   useReducer,
   useState,
 } from "react";
@@ -92,12 +93,14 @@ const data = {
 };
 
 const getTimeStringFromIndex = (index: number) => {
-  const startHours = Math.floor(index / 2);
+  const startHours = Math.floor(index / 2)
+    .toString()
+    .padStart(2, "0");
 
   return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
 };
 
-const getRowFromDate = (dateString: string) => {
+const getIndexFromDate = (dateString: string) => {
   const date = new Date(dateString);
 
   const hour = date.getHours();
@@ -106,7 +109,6 @@ const getRowFromDate = (dateString: string) => {
   return hour * 2 + (minute === HALF_TIME ? 1 : 0);
 };
 
-// 48칸
 const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   const timeTable = Array.from({ length: TIME_TABLE_ROWS }, () => ({
     peopleCount: 0,
@@ -117,8 +119,8 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
 
   return reservations.reduce(
     (acc: any, reservation: any) => {
-      const startRow = getRowFromDate(reservation.startTime);
-      const endRow = getRowFromDate(reservation.endTime);
+      const startRow = getIndexFromDate(reservation.startTime);
+      const endRow = getIndexFromDate(reservation.endTime);
 
       let hasReservation = false;
       if (reservation.userId === userId) {
@@ -431,6 +433,10 @@ const Reservation: NextPage = () => {
     query: { courtId, date },
   } = useRouter();
   const [reservation, dispatch] = useReducer(reducer, initialState);
+  const reservationDateText = useMemo(() => {
+    const day = new Date(date as string);
+    return `${day.getFullYear()}년 ${day.getMonth()}월 ${day.getDate()}일`;
+  }, [date]);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -534,6 +540,16 @@ const Reservation: NextPage = () => {
         existedReservations={reservation.existedReservations}
       />
       <ModalSheet isOpen={isOpen} onClose={onClose}>
+        <div>선택한 시간</div>
+        <div>{reservationDateText}</div>
+        <div>
+          {reservation.startIndex && (
+            <span>{getTimeStringFromIndex(reservation.startIndex)}</span>
+          )}
+          {reservation.endIndex && (
+            <span> - {getTimeStringFromIndex(reservation.endIndex)}</span>
+          )}
+        </div>
         {isOpen &&
           reservation.step === 1 &&
           reservation.startIndex &&
@@ -547,6 +563,7 @@ const Reservation: NextPage = () => {
               {!reservation.timeTable[reservation.startIndex]
                 .hasReservation && (
                 <button type="button" onClick={handleStartCreate}>
+                  선택한 {getTimeStringFromIndex(reservation.startIndex)}부터
                   예약하기
                 </button>
               )}
@@ -605,7 +622,8 @@ const Reservation: NextPage = () => {
               disabled={reservation.requestDisabled}
               onClick={handleCreateReservation}
             >
-              예약 완료
+              {getTimeStringFromIndex(reservation.startIndex)} -{" "}
+              {getTimeStringFromIndex(reservation.endIndex)} 예약하기
             </button>
           </>
         )}
