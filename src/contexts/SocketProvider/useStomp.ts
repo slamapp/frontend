@@ -34,7 +34,7 @@ const useStomp: UseStomp = () => {
 
     if (compatClient) {
       compatClient.connect(
-        { token: `Beaer ${token}` },
+        { token: `Bearer ${token}` },
         handleConnected,
         handleError,
         handleClose
