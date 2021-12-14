@@ -37,8 +37,6 @@ const UtilRouteHOCWrapper = ({
   useEffect(() => {
     const { pathname } = router;
 
-    console.log(pathname);
-
     switch (option) {
       case routeOption.private:
         if (localToken) {

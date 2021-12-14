@@ -3,8 +3,8 @@ import { Header, Spinner } from "@components/base";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useAuthContext } from "@contexts/AuthProvider";
 import { useLocalToken } from "@hooks/domain";
+import { useAuthContext } from "@contexts/hooks";
 
 const RedirectPage = () => {
   const [isNeedReLogin, setIsNeedReLogin] = useState(false);
@@ -26,7 +26,7 @@ const RedirectPage = () => {
 
   useEffect(() => {
     if (token) getCurrentUserData();
-  }, [token, getCurrentUserData]);
+  }, [token]);
 
   const NeedReLoginMarkUp = () => {
     return (
