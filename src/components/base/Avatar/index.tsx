@@ -74,6 +74,7 @@ const AvatarWrapper = styled.div<AvatarWrapperProps>`
   border-radius: ${({ shape }) => ShapeToCssValue[shape]};
   background-color: #eee;
   overflow: hidden;
+
   > img {
     transition: opacity 0.2s ease;
   }

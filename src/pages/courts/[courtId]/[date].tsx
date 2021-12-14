@@ -1,5 +1,9 @@
 import { ModalSheet } from "@components/base";
-import { TimeTable } from "@components/domain";
+import {
+  TimeTable,
+  ReservationModalContent as ModalContent,
+} from "@components/domain";
+import { getTimeFromIndex } from "@components/domain/TimeTable/utils";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -12,8 +16,8 @@ import {
 } from "react";
 
 const TIME_TABLE_ROWS = 24 * 2;
-const HALF_TIME = 30;
-const MAX_UNITS = 6;
+const MAX_RESERVATION_TIME_BLOCK_UNIT = 6;
+const MINUTES_PER_TIME_BLOCK = 30;
 
 const data = {
   reservations: [
@@ -92,21 +96,13 @@ const data = {
   ],
 };
 
-const getTimeStringFromIndex = (index: number) => {
-  const startHours = Math.floor(index / 2)
-    .toString()
-    .padStart(2, "0");
-
-  return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
-};
-
 const getIndexFromDate = (dateString: string) => {
   const date = new Date(dateString);
 
   const hour = date.getHours();
   const minute = date.getMinutes();
 
-  return hour * 2 + (minute === HALF_TIME ? 1 : 0);
+  return hour * 2 + (minute === MINUTES_PER_TIME_BLOCK ? 1 : 0);
 };
 
 const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
@@ -119,34 +115,34 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
 
   return reservations.reduce(
     (acc: any, reservation: any) => {
+      const { existedReservations, timeTable } = acc;
       const startRow = getIndexFromDate(reservation.startTime);
-      const endRow = getIndexFromDate(reservation.endTime);
+      // TODO: 왜 -1 해야 되더라
+      const endRow = getIndexFromDate(reservation.endTime) - 1;
+      const hasReservation = reservation.userId === userId;
 
-      let hasReservation = false;
-      if (reservation.userId === userId) {
-        acc.existedReservations.push({
+      if (hasReservation) {
+        existedReservations.push({
           reservationId: reservation.reservationId,
           startIndex: startRow,
-          endIndex: endRow - 1,
+          endIndex: endRow,
           hasBall: reservation.hasBall,
         });
-
-        hasReservation = true;
       }
 
-      for (let i = startRow; i < endRow; i += 1) {
-        acc.timeTable[i].peopleCount += 1;
+      for (let i = startRow; i <= endRow; i += 1) {
+        timeTable[i].peopleCount += 1;
 
-        acc.timeTable[i].ballCount = reservation.hasBall
-          ? acc.timeTable[i].ballCount + 1
-          : acc.timeTable[i].ballCount;
+        timeTable[i].ballCount = reservation.hasBall
+          ? timeTable[i].ballCount + 1
+          : timeTable[i].ballCount;
 
-        acc.timeTable[i].users.push({
+        timeTable[i].users.push({
           userId: reservation.userId,
           avatarImgSrc: reservation.avatarImgSrc,
         });
 
-        acc.timeTable[i].hasReservation = hasReservation;
+        timeTable[i].hasReservation = hasReservation;
       }
 
       return acc;
@@ -166,7 +162,7 @@ const initialState = {
   hasBall: false,
   existedReservations: [],
   selectedReservationId: null,
-  submitDisabled: false,
+  requestDisabled: false,
 };
 
 const reducer = (state: any, { type, payload }: any) => {
@@ -193,7 +189,6 @@ const reducer = (state: any, { type, payload }: any) => {
     }
     case "START_UPDATE": {
       const { existedReservations, selectedReservationId } = state;
-
       const selectedReservation = existedReservations.find(
         ({ reservationId }: any) => reservationId === selectedReservationId
       );
@@ -244,9 +239,9 @@ const reducer = (state: any, { type, payload }: any) => {
 
       if (endIndex < startIndex) return state;
 
-      if (endIndex - startIndex >= MAX_UNITS) {
+      if (endIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
         console.log("3시간을 초과하여 예약할 수 없습니다.");
-        endIndex = startIndex + MAX_UNITS - 1;
+        endIndex = startIndex + MAX_RESERVATION_TIME_BLOCK_UNIT - 1;
       }
 
       if (mode === "create") {
@@ -433,6 +428,19 @@ const Reservation: NextPage = () => {
     query: { courtId, date },
   } = useRouter();
   const [reservation, dispatch] = useReducer(reducer, initialState);
+  const {
+    startIndex,
+    endIndex,
+    mode,
+    step,
+    timeTable,
+    existedReservations,
+    requestDisabled,
+    selectedReservationId,
+    modalContentData,
+    hasBall,
+  } = reservation;
+
   const reservationDateText = useMemo(() => {
     const day = new Date(date as string);
     return `${day.getFullYear()}년 ${day.getMonth()}월 ${day.getDate()}일`;
@@ -478,26 +486,50 @@ const Reservation: NextPage = () => {
       courtId,
       userId: "me",
       startDate: new Date(
-        `${date} ${getTimeStringFromIndex(reservation.startIndex)}`
+        `${date} ${getTimeFromIndex(startIndex)}`
       ).toISOString(),
-      endDate: new Date(
-        `${date} ${getTimeStringFromIndex(reservation.endIndex)}`
-      ).toISOString(),
-      hasBall: reservation.hasBall,
+      endDate: new Date(`${date} ${getTimeFromIndex(endIndex)}`).toISOString(),
+      hasBall,
     };
 
-    console.log(data);
+    console.log("create", data);
     // TODO: crateReservation API CALL
     // alert(JSON.stringify(data));
-  }, [courtId, date, reservation]);
+  }, [courtId, date, endIndex, hasBall, startIndex]);
+
+  const handleUpdateReservation = useCallback(() => {
+    if (!date || !courtId) {
+      return;
+    }
+
+    const data = {
+      courtId,
+      userId: "me",
+      startDate: new Date(
+        `${date} ${getTimeFromIndex(startIndex)}`
+      ).toISOString(),
+      endDate: new Date(`${date} ${getTimeFromIndex(endIndex)}`).toISOString(),
+      hasBall,
+    };
+
+    console.log("update", data);
+    // TODO: crateReservation API CALL
+    // alert(JSON.stringify(data));
+  }, [courtId, date, endIndex, hasBall, startIndex]);
 
   const handleDeleteReservation = useCallback((reservationId: number) => {
     console.log(`delete /reservations/${reservationId}`);
   }, []);
 
-  const handleClickHasBall = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_HAS_BALL", payload: { hasBall: e.target.checked } });
-  }, []);
+  const handleChangeHasBall = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      dispatch({
+        type: "SET_HAS_BALL",
+        payload: { hasBall: e.target.checked },
+      });
+    },
+    []
+  );
 
   const handleClickReservationMarker = useCallback(
     (selectedReservationId: number) => {
@@ -520,112 +552,65 @@ const Reservation: NextPage = () => {
 
   return (
     <div>
-      {reservation.step > 1 && (
+      {step > 1 && (
         <button type="button" onClick={handleDecreaseStep}>
           뒤로 가기
         </button>
       )}
       <TimeTable
-        timeTable={reservation.timeTable || []}
+        timeTable={timeTable || []}
         onClickStatusBlock={
-          reservation.step === 1 ? handleSetStartIndex : handleSetEndIndex
+          step === 1 ? handleSetStartIndex : handleSetEndIndex
         }
         onClickReservationMarker={
-          reservation.step === 1 ? handleClickReservationMarker : () => {}
+          step === 1 ? handleClickReservationMarker : () => {}
         }
-        startIndex={reservation.startIndex}
-        endIndex={reservation.endIndex}
-        step={reservation.step}
-        selectedReservationId={reservation.selectedReservationId}
-        existedReservations={reservation.existedReservations}
+        startIndex={startIndex}
+        endIndex={endIndex}
+        step={step}
+        selectedReservationId={selectedReservationId}
+        existedReservations={existedReservations}
       />
       <ModalSheet isOpen={isOpen} onClose={onClose}>
-        <div>선택한 시간</div>
-        <div>{reservationDateText}</div>
-        <div>
-          {reservation.startIndex && (
-            <span>{getTimeStringFromIndex(reservation.startIndex)}</span>
-          )}
-          {reservation.endIndex && (
-            <span> - {getTimeStringFromIndex(reservation.endIndex)}</span>
-          )}
-        </div>
-        {isOpen &&
-          reservation.step === 1 &&
-          reservation.startIndex &&
-          reservation.modalContentData && (
-            <>
-              {reservation.modalContentData.map(
-                ({ userId, avatarImgSrc }: any, index: number) => (
-                  <div key={index}>{userId}</div>
-                )
-              )}
-              {!reservation.timeTable[reservation.startIndex]
-                .hasReservation && (
-                <button type="button" onClick={handleStartCreate}>
-                  선택한 {getTimeStringFromIndex(reservation.startIndex)}부터
-                  예약하기
-                </button>
-              )}
-            </>
-          )}
-
-        {isOpen &&
-          reservation.step === 1 &&
-          reservation.selectedReservationId &&
-          reservation.modalContentData && (
-            <>
-              {reservation.modalContentData.map(({ index, users }: any) => (
-                <div key={index}>
-                  {users.map(({ userId }: any, i: any) => (
-                    <span key={i}>{userId}</span>
-                  ))}
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() =>
-                  handleDeleteReservation(reservation.selectedReservationId)
-                }
-              >
-                예약 취소
-              </button>
-              <button type="button" onClick={handleStartUpdate}>
-                예약 수정
-              </button>
-            </>
-          )}
-
-        {isOpen && reservation.step === 2 && reservation.modalContentData && (
-          <>
-            {reservation.modalContentData.map(({ index, users }: any) => (
-              <div key={index}>
-                {users.map(({ userId }: any, i: any) => (
-                  <span key={i}>{userId}</span>
-                ))}
-              </div>
-            ))}
-            {reservation.requestDisabled ? (
-              <div>이미 예약한 시간이 포함되어 있습니다.</div>
-            ) : null}
-            <label>
-              농구공 가지고 참여
-              <input
-                type="checkbox"
-                defaultChecked={false}
-                onChange={handleClickHasBall}
-                checked={reservation.hasBall}
-              />
-            </label>
-            <button
-              type="button"
-              disabled={reservation.requestDisabled}
-              onClick={handleCreateReservation}
-            >
-              {getTimeStringFromIndex(reservation.startIndex)} -{" "}
-              {getTimeStringFromIndex(reservation.endIndex)} 예약하기
-            </button>
-          </>
+        {isOpen && step === 1 && startIndex && modalContentData && (
+          <ModalContent.BlockStatus
+            startTime={getTimeFromIndex(startIndex)}
+            endTime={getTimeFromIndex(startIndex + 1)}
+            participants={modalContentData}
+            onStartCreate={handleStartCreate}
+            availableReservation={!timeTable[startIndex].hasReservation}
+          />
+        )}
+        {isOpen && step === 1 && selectedReservationId && modalContentData && (
+          <ModalContent.ExistedReservation
+            timeSlot={`${getTimeFromIndex(startIndex)} -${getTimeFromIndex(
+              endIndex
+            )}
+              `}
+            reservationId={selectedReservationId}
+            participantsPerBlock={modalContentData}
+            onDeleteReservation={handleDeleteReservation}
+            onStartUpdate={handleStartUpdate}
+          />
+        )}
+        {isOpen && step === 2 && modalContentData && (
+          <ModalContent.SelectedRange
+            timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
+              endIndex
+            )}`}
+            participantsPerBlock={modalContentData}
+            hasBall={hasBall}
+            requestDisabled={requestDisabled}
+            onChangeHasBall={handleChangeHasBall}
+            onCreateReservation={
+              mode === "create"
+                ? handleCreateReservation
+                : handleUpdateReservation
+            }
+            buttonText={
+              mode === "create" ? "에 예약하기" : "으로 예약 수정하기"
+            }
+          />
         )}
       </ModalSheet>
     </div>
