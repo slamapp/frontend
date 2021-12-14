@@ -1,9 +1,11 @@
 import { Reducer } from "react";
+
 import {
   ActionTypeUnion,
   navigationType,
   pageType,
   PageTypeUnion,
+  eventType,
 } from "./actionTypes";
 
 export interface DataProps {
@@ -13,11 +15,13 @@ export interface DataProps {
   isBack: boolean;
   isNotifications: boolean;
   isProfile: boolean;
-  isNext: boolean;
   isMenu: boolean;
   title: string;
   handleClickBack: null | (() => void);
-  handleClickNext: null | (() => void);
+  customButton: null | {
+    title: string;
+    handleClick: () => void;
+  };
 }
 
 export const initialData = {
@@ -25,13 +29,12 @@ export const initialData = {
   isBottomNavigation: true,
   currentPage: pageType.NONE,
   isBack: true,
-  handleClickBack: null,
   isNotifications: true,
   isProfile: true,
-  isNext: false,
-  handleClickNext: null,
   isMenu: false,
-  title: "",
+  title: "커스텀",
+  handleClickBack: null,
+  customButton: null,
 };
 
 export type ReducerAction = {
@@ -40,118 +43,110 @@ export type ReducerAction = {
 };
 
 export const reducer: Reducer<DataProps, ReducerAction> = (
-  state,
+  prevState,
   { type, payload }
 ) => {
   switch (type) {
     case pageType.NONE: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: false,
         isNotifications: true,
         isProfile: true,
-        isNext: false,
         isMenu: false,
         title: "",
       };
     }
     case pageType.FAVORITES: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: false,
         isNotifications: true,
         isProfile: true,
-        isNext: false,
         isMenu: false,
         title: "",
       };
     }
     case pageType.MAP: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: false,
-        isNotifications: true,
-        isProfile: true,
-        isNext: false,
+        isNotifications: false,
+        isProfile: false,
         isMenu: false,
         title: "농구장 탐색",
       };
     }
     case pageType.RESERVATIONS: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: false,
         isNotifications: true,
         isProfile: true,
-        isNext: false,
         isMenu: false,
         title: "예약 목록",
       };
     }
     case pageType.ACTIVITY: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: false,
         isNotifications: true,
         isProfile: true,
-        isNext: false,
         isMenu: false,
         title: "활동",
       };
     }
     case pageType.LOGIN: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: false,
         isNotifications: false,
         isProfile: false,
-        isNext: false,
         isMenu: false,
         title: "로그인",
       };
     }
     case pageType.COURT_CREATE: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: true,
         isNotifications: true,
         isProfile: true,
-        isNext: false,
         isMenu: false,
         title: "새 농구장 추가",
       };
     }
     case pageType.USER: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: type,
         isBack: true,
         isNotifications: false,
         isProfile: false,
-        isNext: false,
         isMenu: true,
         title: "",
       };
@@ -172,26 +167,48 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     }
     case pageType.USER_MENU: {
       return {
-        ...state,
+        ...prevState,
         isTopNavigation: true,
         isBottomNavigation: false,
         currentPage: type,
         isBack: true,
         isNotifications: false,
         isProfile: false,
-        isNext: false,
         isMenu: false,
         title: "사용자 메뉴",
       };
     }
     case navigationType.CHANGE_NAVIGATION: {
       return {
-        ...state,
+        ...prevState,
         ...payload,
       };
     }
+    case eventType.BIND: {
+      return {
+        ...prevState,
+        back: payload.back,
+        customButton: payload.customButton,
+      };
+    }
+    case eventType.BIND_CUSTOM_BUTTON: {
+      return {
+        ...prevState,
+        customButton: {
+          title: payload.title,
+          handleClick: payload.handleClick,
+        },
+      };
+    }
+    case eventType.CLEAR: {
+      return {
+        ...prevState,
+        handleClickBack: null,
+        customButton: null,
+      };
+    }
     default: {
-      return { ...state };
+      return { ...prevState };
     }
   }
 };

@@ -2,7 +2,7 @@ import { useCallback, useReducer, ReactNode, useEffect } from "react";
 import { pageType, eventType, navigationType } from "./actionTypes";
 import { Context } from "./context";
 import { reducer, initialData, DataProps } from "./reducer";
-import { GetPageType } from "./types";
+import { CustomButton, Events, GetPageType } from "./types";
 
 interface Props {
   children: ReactNode;
@@ -27,8 +27,18 @@ const NavigationProvider = ({ children }: Props) => {
   };
 
   const setNavigationEvent = useCallback(
-    (events = { back: null, next: null }) => {
+    (events: Events = { back: null, customButton: null }) => {
       dispatch({ type: eventType.BIND, payload: events });
+    },
+    []
+  );
+
+  const setCustomButtonEvent = useCallback(
+    (title: string, handleClick: any) => {
+      dispatch({
+        type: eventType.BIND_CUSTOM_BUTTON,
+        payload: { title, handleClick },
+      });
     },
     []
   );
@@ -44,6 +54,7 @@ const NavigationProvider = ({ children }: Props) => {
         pageType,
         useMountPage,
         setNavigationEvent,
+        setCustomButtonEvent,
         clearNavigationEvent,
         changeNavigation,
       }}

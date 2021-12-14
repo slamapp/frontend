@@ -18,9 +18,8 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
         isProfile,
         title,
         isMenu,
-        isNext,
         handleClickBack,
-        handleClickNext,
+        customButton,
       },
     } = useNavigationContext();
 
@@ -75,10 +74,12 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
               </Link>
             )}
 
-            {isNext && (
-              <NextButton onClick={handleClickNext || handleDefaultNext}>
-                다음
-              </NextButton>
+            {customButton && (
+              <CustomButton
+                onClick={customButton.handleClick || handleDefaultNext}
+              >
+                {customButton.title}
+              </CustomButton>
             )}
           </IconGroup>
         </Wrapper>
@@ -156,7 +157,7 @@ const CursorIcon = styled(Icon)`
   cursor: pointer;
 `;
 
-const NextButton = styled.div`
+const CustomButton = styled.div`
   padding: 12px;
   font-weight: 700;
 `;

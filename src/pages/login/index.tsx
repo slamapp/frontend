@@ -5,9 +5,11 @@ import { useNavigationContext } from "@contexts/NavigationProvider";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import UtilRoute from "UtilRoute";
+import { useEffect } from "react";
 
 const Login: NextPage = UtilRoute("prevented", () => {
-  const { useMountPage } = useNavigationContext();
+  const { useMountPage, setCustomButtonEvent, clearNavigationEvent } =
+    useNavigationContext();
   useMountPage((page) => page.LOGIN);
   const router = useRouter();
 
@@ -15,6 +17,11 @@ const Login: NextPage = UtilRoute("prevented", () => {
   const handleClick = () => router.replace(kakaoUrl);
 
   const jellyKakaoUrl = `http://localhost:8080/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`;
+
+  useEffect(() => {
+    setCustomButtonEvent("취소", () => alert("페이지에서 바인딩"));
+    return clearNavigationEvent;
+  }, []);
 
   return (
     <div>
