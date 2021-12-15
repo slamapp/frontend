@@ -1,11 +1,11 @@
 import { FC, ReactNode } from "react";
-import "./Text.module.css";
+import styled from "@emotion/styled";
 
 interface Props {
   children: ReactNode;
   block?: boolean;
   paragraph?: boolean;
-  size?: number | "small" | "normal" | "large";
+  size?: number | "xs" | "sm" | "base" | "md" | "lg" | "xl";
   strong?: boolean;
   underline?: boolean;
   delete?: boolean;
@@ -19,7 +19,7 @@ const Text: FC<Props> = ({
   children,
   block,
   paragraph,
-  size,
+  size = "base",
   strong,
   underline,
   delete: del,
@@ -30,12 +30,14 @@ const Text: FC<Props> = ({
 }) => {
   const Tag = block ? "div" : paragraph ? "p" : "span";
 
-  const fontStyle = {
-    fontWeight: strong ? "bold" : undefined,
-    fontSize: typeof size === "string" ? undefined : size,
-    textDecoration: underline ? "underline" : undefined,
-    color,
-  };
+  const StyledText = styled(Tag)<Props>`
+    font-size: ${({ theme }) =>
+      typeof size === "string" ? theme.fontSizes[size] : `${size}px`};
+    color: ${({ theme }) => theme.colors.gray900};
+    color: ${color && color};
+    font-weight: ${strong && "bold"};
+    text-decoration: ${underline && "underline"};
+  `;
 
   if (mark) {
     children = <mark>{children}</mark>;
@@ -48,13 +50,9 @@ const Text: FC<Props> = ({
   }
 
   return (
-    <Tag
-      className={typeof size === "string" ? `Text--size-${size}` : undefined}
-      style={{ ...rest.style, ...fontStyle }}
-      {...rest}
-    >
+    <StyledText style={{ ...rest.style }} {...rest}>
       {children}
-    </Tag>
+    </StyledText>
   );
 };
 
