@@ -13,10 +13,12 @@ const Login: NextPage = UtilRoute("prevented", () => {
   useMountPage((page) => page.LOGIN);
   const router = useRouter();
 
+  const endpoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string;
+
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code`;
   const handleClick = () => router.replace(kakaoUrl);
 
-  const jellyKakaoUrl = `http://localhost:8080/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`;
+  const jellyKakaoUrl = `${endpoint}/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`;
 
   useEffect(() => {
     setCustomButtonEvent("취소", () => alert("페이지에서 바인딩"));

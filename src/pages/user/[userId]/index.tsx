@@ -12,7 +12,7 @@ type ISkill = "BEGINNER" | "INTERMEDIATE" | "MASTER";
 type IPosition = "PF" | "SF" | "SG" | "PG" | "C" | "UNDEFINED";
 
 const User: NextPage = () => {
-  const { useMountPage, changeNavigation } = useNavigationContext();
+  const { useMountPage, setNavigationTitle } = useNavigationContext();
   useMountPage((page) => page.USER);
 
   const { asPath } = useRouter();
@@ -60,15 +60,10 @@ const User: NextPage = () => {
     // TODO: path의 userId와 AuthContext의 userId 비교하기
     if (userId === myUserId) {
       setUserType("me");
-      changeNavigation({
-        title: "내 프로필",
-        isProfile: false,
-      });
+      setNavigationTitle("내 프로필");
     } else {
       // TODO: 유저 정보 조회 API 통신으로 해당 유저 정보 받아오기
-      changeNavigation({
-        title: `${nickname}님의 프로필`,
-      });
+      setNavigationTitle(`${nickname}님의 프로필`);
     }
 
     // TODO: 내가 팔로우한 유저 목록 받아오기

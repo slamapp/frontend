@@ -2,7 +2,9 @@ import axios from "axios";
 import { setInterceptors } from "./interceptor";
 import { requestTypes } from "./type";
 
-const baseURL = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string;
+const endPoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string;
+const subfix = process.env.NEXT_PUBLIC_SERVICE_API_SUB_FIX as string;
+const baseURL = endPoint + subfix;
 
 const request = setInterceptors(
   axios.create({ baseURL }),
