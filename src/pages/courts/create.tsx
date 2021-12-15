@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Input from "@components/base/Input";
 import Spacer from "@components/base/Spacer";
 import Text from "@components/base/Text";
-import Button from "@components/Button";
+import Button from "@components/base/Button";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Sheet from "react-modal-sheet";

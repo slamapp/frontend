@@ -52,18 +52,9 @@ const theme = {
   },
   iconButtonPadding: "13px",
   buttonPaddings: {
-    sm: {
-      topBottom: "6px",
-      rightLeft: "16px",
-    },
-    md: {
-      topBottom: "10px",
-      rightLeft: "20px",
-    },
-    lg: {
-      topBottom: "15px",
-      rightLeft: "20px",
-    },
+    sm: "6px 16px",
+    md: "10px 20px",
+    lg: "15px 20px",
   },
   fontSizes: {
     xs: "12px",
