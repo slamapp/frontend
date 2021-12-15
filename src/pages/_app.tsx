@@ -2,6 +2,8 @@ import type { AppProps } from "next/app";
 import { DefaultLayout } from "@components/layout";
 import Providers from "@contexts/Providers";
 import Head from "next/head";
+import { ThemeProvider } from "@emotion/react";
+import theme from "@styles/theme";
 import "@styles/global.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -23,9 +25,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <Providers>
-        <DefaultLayout>
-          <Component {...pageProps} />
-        </DefaultLayout>
+        <ThemeProvider theme={theme}>
+          <DefaultLayout>
+            <Component {...pageProps} />
+          </DefaultLayout>
+        </ThemeProvider>
       </Providers>
     </>
   );
