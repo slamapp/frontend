@@ -1,16 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
-import Input from "@components/base/Input";
-import Spacer from "@components/base/Spacer";
-import Text from "@components/base/Text";
-import Button from "@components/base/Button";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Sheet from "react-modal-sheet";
-import KakaoMap from "@components/KakaoMap";
 import styled from "@emotion/styled";
+
+import { Input, Spacer, Text, Button } from "@components/base";
+import { KakaoMap, GeneralMarker } from "@components/domain";
+import { useForm, Error } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
-import GeneralMarker from "@components/KakaoMapMarker/GeneralMarker";
-import useForm, { Error } from "@hooks/useForm";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { Coord } from "../../types/map";
 
@@ -252,7 +249,9 @@ const CreateCourt: NextPage = () => {
             />
             <span>{errors.basketCount}</span>
           </div>
-          <Button type="submit">{isLoading ? "Loading..." : "제출하기"}</Button>
+          <Button type="submit" onClick={() => {}}>
+            {isLoading ? "Loading..." : "제출하기"}
+          </Button>
         </Spacer>
       </form>
     </div>

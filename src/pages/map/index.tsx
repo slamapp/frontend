@@ -1,13 +1,17 @@
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useState, useCallback, useEffect, useMemo } from "react";
-import KakaoMap from "@components/KakaoMap";
+
 import { getCurrentLocation } from "@utils/geolocation";
-import { BasketballMarker } from "@components/KakaoMapMarker";
 import { ModalSheet } from "@components/base";
-import { DatePicker, SlotPicker } from "@components/domain";
-import { SlotKeyUnion } from "@components/domain/SlotPicker/types";
+import {
+  DatePicker,
+  SlotPicker,
+  BasketballMarker,
+  KakaoMap,
+  SlotKeyUnion,
+} from "@components/domain";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import type { Coord } from "../../types/map";
 

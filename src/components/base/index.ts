@@ -18,3 +18,4 @@ export { default as Toggle } from "./Toggle";
 export { default as Upload } from "./Upload";
 export { default as ModalSheet } from "./ModalSheet";
 export { default as Button } from "./Button";
+export { default as Input } from "./Input";
