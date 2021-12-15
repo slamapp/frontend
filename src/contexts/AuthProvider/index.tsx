@@ -20,7 +20,6 @@ const AuthProvider = ({ children }: Props) => {
     dispatch({ type: "LOADING_ON" });
     try {
       const data = await userAPI.getUserData();
-
       dispatch({ type: "GET_CURRENT_USER", payload: data });
     } catch (error) {
       localStorage.clear();

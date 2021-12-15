@@ -51,7 +51,15 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          userId: payload.userId,
+          userId: payload.id,
+          nickname: payload.nickname,
+          notifications: payload.notifications,
+          email: payload.email,
+          positions: payload.positions,
+          proficiency: payload.proficiency,
+          profileImageUrl: payload.profileImage,
+          role: payload.role,
+          description: payload.description,
         },
       };
     }

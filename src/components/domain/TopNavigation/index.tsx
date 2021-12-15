@@ -57,11 +57,7 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
               </Badge>
             )}
             {isProfile && (
-              <Link
-                href={`/user/${
-                  1 || userId // TODO:  나중에 로그인이 안정화 되면 1대신 userId 넣자
-                }`}
-              >
+              <Link href={`/user/${userId || 1}`}>
                 <a>
                   <Avatar
                     size={32}
