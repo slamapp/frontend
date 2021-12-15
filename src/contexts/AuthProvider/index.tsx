@@ -2,10 +2,10 @@ import { useLocalToken } from "@hooks/domain";
 import { useRouter } from "next/router";
 import { useReducer, ReactNode, useEffect, useCallback } from "react";
 import userAPI from "@service/userApi";
-import { AuthLoading } from "@components/domain";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { actionTypes } from "./actionTypes";
+import AuthLoading from "./AuthLoading";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
