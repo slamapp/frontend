@@ -1,10 +1,10 @@
 import { IconButton } from "@components/base";
 import styled from "@emotion/styled";
 
-const PositionAction = styled.div`
+const PositionAction = styled.div<{ bottom?: number }>`
   position: absolute;
-  bottom: 25px;
-  left: 25px;
+  bottom: ${({ bottom }) => (bottom ? `${bottom + 110}px` : "110px")};
+  right: 12px;
   z-index: 10;
 `;
 
@@ -14,15 +14,15 @@ const MapIconButton = styled(IconButton)`
   border-radius: 0;
 `;
 
-const ZoomActions = styled.div`
+const ZoomActions = styled.div<{ bottom?: number }>`
   display: inline-flex;
   flex-direction: column;
   position: absolute;
   right: 12px;
-  bottom: 170px;
+  bottom: ${({ bottom }) => (bottom ? `${bottom + 230}px` : "230px")};
   z-index: 10;
 
-  button:first-child {
+  button:first-of-type {
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray200};
   }
 `;

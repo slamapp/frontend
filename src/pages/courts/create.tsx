@@ -5,7 +5,7 @@ import Sheet from "react-modal-sheet";
 import styled from "@emotion/styled";
 
 import { Input, Spacer, Text, Button } from "@components/base";
-import { KakaoMap, GeneralMarker } from "@components/domain";
+import { Map, GeneralMarker, BottomFixedButton } from "@components/domain";
 import { useForm, Error } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
@@ -84,7 +84,7 @@ const CreateCourt: NextPage = () => {
     }
   };
 
-  const handleInitCenter = useCallback(() => {
+  const handleGetCurrentLocation = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
       setCenter([latitude, longitude]);
     });
@@ -105,11 +105,8 @@ const CreateCourt: NextPage = () => {
   };
 
   useEffect(() => {
-    if (center) {
-      return;
-    }
-    handleInitCenter();
-  }, [handleInitCenter]);
+    handleGetCurrentLocation();
+  }, [handleGetCurrentLocation]);
 
   const { values, errors, isLoading, handleChange, handleSubmit } =
     useForm<Values>({
@@ -160,37 +157,46 @@ const CreateCourt: NextPage = () => {
       >
         <Sheet.Container onViewportBoxUpdate={() => {}}>
           <Sheet.Header onViewportBoxUpdate={() => {}} />
-          <Sheet.Content onViewportBoxUpdate={() => {}}>
+          <Sheet.Content
+            onViewportBoxUpdate={() => {}}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <p style={{ textAlign: "center" }}>
               {address ?? <span>위치를 지정해주세요.</span>}
             </p>
-            <button type="button" onClick={handleInitCenter}>
-              현재 내 위치 받아오기
-            </button>
-            <button type="button" onClick={handleZoomIn}>
-              확대(줌 레벨 -1)
-            </button>
-            <button type="button" onClick={handleZoomOut}>
-              축소(줌 레벨 +1)
-            </button>
-            <MapContainer>
-              {isOpen ? (
-                <KakaoMap
-                  level={level}
-                  center={center!}
-                  draggable={true}
-                  zoomable={true}
-                  onClick={onClick}
-                >
-                  {position ? (
-                    <GeneralMarker map={map!} position={position} />
-                  ) : null}
-                </KakaoMap>
-              ) : null}
-            </MapContainer>
-            <button type="button" onClick={savedLocation}>
-              저장하기
-            </button>
+            {!center && <Text>현재 위치를 받아오는 중입니다.</Text>}
+            {center && isOpen ? (
+              <Map.KakaoMap
+                level={level}
+                center={center!}
+                draggable={true}
+                zoomable={true}
+                onClick={onClick}
+              >
+                <Map.ZoomButton
+                  onZoomIn={handleZoomIn}
+                  onZoomOut={handleZoomOut}
+                  bottom={120}
+                />
+                <Map.CurrentLocationButton
+                  onGetCurrentLocation={handleGetCurrentLocation}
+                  bottom={120}
+                />
+                {position ? (
+                  <GeneralMarker map={map!} position={position} />
+                ) : null}
+              </Map.KakaoMap>
+            ) : null}
+            <BottomFixedButton
+              type="button"
+              disabled={!center}
+              onClick={savedLocation}
+            >
+              농구장 위치 저장하기
+            </BottomFixedButton>
           </Sheet.Content>
         </Sheet.Container>
       </CustomSheet>
@@ -216,7 +222,7 @@ const CreateCourt: NextPage = () => {
                   <button type="button" onClick={() => setOpen(true)}>
                     위치 수정하기
                   </button>
-                  <KakaoMap
+                  <Map.KakaoMap
                     level={level}
                     center={savedPosition}
                     draggable={false}
@@ -224,12 +230,12 @@ const CreateCourt: NextPage = () => {
                     style={{ width: "100%", height: "200px" }}
                   >
                     <GeneralMarker map={map!} position={savedPosition} />
-                  </KakaoMap>
+                  </Map.KakaoMap>
                 </div>
               ) : (
                 <PreviewBanner>
                   <button type="button" onClick={() => setOpen(true)}>
-                    위치 등록하기
+                    농구장 등록하기
                   </button>
                   {errors.longitude}
                 </PreviewBanner>

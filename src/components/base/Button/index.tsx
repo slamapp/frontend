@@ -11,6 +11,7 @@ interface Props {
   secondary?: boolean;
   fullWidth?: boolean;
   block?: boolean;
+  disabled?: boolean;
   style?: CSSProperties;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
@@ -19,6 +20,7 @@ const Button: React.FC<Props> = ({
   children,
   fullWidth = false,
   block = false,
+  disabled = false,
   secondary = false,
   type = "button",
   size = "md",
@@ -34,6 +36,7 @@ const Button: React.FC<Props> = ({
       secondary={secondary}
       onClick={onClick}
       style={style}
+      disabled={disabled}
     >
       {children}
     </StyledButton>
@@ -67,6 +70,11 @@ const StyledButton = styled.button<Omit<Props, "children">>`
   border: none;
   outline: none;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    filter: contrast(-0.8);
+  }
 `;
 
 export default Button;

@@ -2,11 +2,15 @@ import { MouseEvent } from "react";
 import * as S from "./style";
 
 interface Props {
+  bottom?: number;
   onGetCurrentLocation: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-const CurrentLocationButton: React.FC<Props> = ({ onGetCurrentLocation }) => (
-  <S.PositionAction>
+const CurrentLocationButton: React.FC<Props> = ({
+  onGetCurrentLocation,
+  bottom,
+}) => (
+  <S.PositionAction bottom={bottom}>
     <S.MapIconButton
       name="crosshair"
       type="button"
