@@ -26,4 +26,5 @@ const StyledIconButton = styled.button`
   border: 2px solid ${({ theme }) => theme.colors.gray100};
   border-radius: ${({ theme }) => theme.borderRadiuses.lg};
   padding: ${({ theme }) => theme.iconButtonPadding};
+  cursor: pointer;
 `;
