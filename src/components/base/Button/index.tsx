@@ -1,4 +1,4 @@
-import type { ReactNode, MouseEvent } from "react";
+import type { ReactNode, MouseEvent, CSSProperties } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
@@ -11,6 +11,7 @@ interface Props {
   secondary?: boolean;
   fullWidth?: boolean;
   block?: boolean;
+  style?: CSSProperties;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -21,6 +22,7 @@ const Button: React.FC<Props> = ({
   secondary = false,
   type = "button",
   size = "md",
+  style,
   onClick,
 }) => {
   return (
@@ -31,6 +33,7 @@ const Button: React.FC<Props> = ({
       fullWidth={fullWidth}
       secondary={secondary}
       onClick={onClick}
+      style={style}
     >
       {children}
     </StyledButton>

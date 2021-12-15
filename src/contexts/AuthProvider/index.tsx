@@ -5,35 +5,45 @@ import userAPI from "@service/userApi";
 import { AuthLoading } from "@components/domain";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
+import { actionTypes } from "./actionTypes";
 
+const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
   children: ReactNode;
 }
 
 const AuthProvider = ({ children }: Props) => {
   const [authProps, dispatch] = useReducer(reducer, initialData);
-  const [token, setToken] = useLocalToken();
+  const [token, _] = useLocalToken();
 
   const router = useRouter();
 
+  const logout = useCallback(() => {
+    localStorage.clear();
+    dispatch({ type: actionTypes.CLEAR_CURRENT_USER });
+    router.replace("/login");
+    setTimeout(() => {
+      dispatch({ type: actionTypes.LOADING_OFF });
+    }, LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS);
+  }, [router]);
+
   const getCurrentUser = useCallback(async () => {
-    dispatch({ type: "LOADING_ON" });
+    dispatch({ type: actionTypes.LOADING_ON });
     try {
       const data = await userAPI.getUserData();
-      dispatch({ type: "GET_CURRENT_USER", payload: data });
+      dispatch({ type: actionTypes.GET_CURRENT_USER, payload: data });
     } catch (error) {
-      localStorage.clear();
-      router.replace("/login");
+      logout();
     } finally {
-      dispatch({ type: "LOADING_OFF" });
+      dispatch({ type: actionTypes.LOADING_OFF });
     }
-  }, [router, setToken]);
+  }, [logout]);
 
   useEffect(() => {
     if (token) {
       getCurrentUser();
     } else {
-      dispatch({ type: "LOADING_OFF" });
+      dispatch({ type: actionTypes.LOADING_OFF });
     }
   }, []);
 
@@ -42,6 +52,7 @@ const AuthProvider = ({ children }: Props) => {
       value={{
         authProps,
         getCurrentUser,
+        logout,
       }}
     >
       <AuthLoading />

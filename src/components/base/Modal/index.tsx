@@ -16,6 +16,7 @@ interface Props {
 const Modal = ({
   children,
   width = 500,
+  maxWidth,
   height,
   visible = false,
   onClose = () => {},
@@ -32,7 +33,10 @@ const Modal = ({
     onClose();
   });
 
-  const containerStyle = useMemo(() => ({ width, height }), [width, height]);
+  const containerStyle = useMemo(
+    () => ({ width, maxWidth, height }),
+    [width, maxWidth, height]
+  );
 
   const el = useMemo(() => {
     if (typeof document !== "undefined") {
@@ -82,6 +86,7 @@ const ModalContainer = styled.div`
   background-color: white;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
+  border-radius: ${({ theme }) => theme.borderRadiuses.lg};
 `;
 
 export default Modal;
