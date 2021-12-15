@@ -5,13 +5,26 @@ import styled from "@emotion/styled";
 
 interface Props {
   children: ReactNode;
+  type?: "button" | "submit";
+  disabled?: boolean;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-const BottomFixedButton: React.FC<Props> = ({ children, onClick }) => {
+const BottomFixedButton: React.FC<Props> = ({
+  children,
+  type,
+  disabled,
+  onClick,
+}) => {
   return (
     <Background>
-      <Button fullWidth onClick={onClick} size="lg">
+      <Button
+        type={type}
+        disabled={disabled}
+        fullWidth
+        onClick={onClick}
+        size="lg"
+      >
         {children}
       </Button>
     </Background>
@@ -23,6 +36,7 @@ const Background = styled.div`
   bottom: 0;
   width: 100%;
   height: 120px;
+  z-index: 2000;
   background: ${({ theme }) =>
     `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, ${theme.colors.white} 55%)`};
   padding: ${({ theme }) => theme.gaps.base};

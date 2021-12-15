@@ -1,11 +1,10 @@
-import { Text } from "@components/base";
+import React, { useMemo } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import React, { useMemo } from "react";
 
-const weekday = ["일", "월", "화", "수", "목", "금", "토"] as const;
+import { Text } from "@components/base";
 
-type WeekdayUnion = typeof weekday[number];
+const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
 
 interface Props {
   date: Date;
@@ -13,35 +12,66 @@ interface Props {
   onClick: (date: Date) => void;
 }
 
-const Day = styled.div<{ selected: boolean }>`
-  ${({ selected }) =>
-    selected &&
-    css`
-      background-color: gray;
-      color: white;
-    `}
-`;
-
 const DateItem = React.memo(
   React.forwardRef<HTMLDivElement, Props>(
     ({ date, onClick, selected }, ref) => {
-      const dayOfWeek: WeekdayUnion = useMemo(
-        () => weekday[date.getDay()],
-        [date]
-      );
+      const dayOfWeekIndex = useMemo(() => date.getDay(), [date]);
 
       return (
-        <div
-          ref={ref}
-          style={{ padding: 20, textAlign: "center" }}
-          onClick={() => onClick(date)}
-        >
-          <Text>{dayOfWeek}</Text>
-          <Day selected={selected}>{date.getDate()}</Day>
-        </div>
+        <DateItemContainer ref={ref} onClick={() => onClick(date)}>
+          <DayOfTheWeek block index={dayOfWeekIndex}>
+            {weekdays[dayOfWeekIndex]}
+          </DayOfTheWeek>
+          <Day selected={selected}>
+            <span>{date.getDate()}</span>
+          </Day>
+        </DateItemContainer>
       );
     }
   )
 );
 
 export default DateItem;
+
+const DateItemContainer = styled.div`
+  margin-top: ${({ theme }) => theme.gaps.md};
+  margin-bottom: ${({ theme }) => theme.gaps.xs};
+  margin-right: 10px;
+  display: "flex";
+  flex-direction: column;
+  text-align: center;
+  cursor: pointer;
+`;
+
+const SUNDAY_INDEX = 0;
+const SATURDAY_INDEX = 6;
+
+const DayOfTheWeek = styled(Text)<{ index: number }>`
+  margin-bottom: 10px;
+  color: ${({ index, theme }) => {
+    if (index === SUNDAY_INDEX) {
+      return theme.colors.red.middle;
+    } else if (index === SATURDAY_INDEX) {
+      return theme.colors.blue.middle;
+    } else {
+      return theme.colors.gray700;
+    }
+  }};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+`;
+
+const Day = styled(Text)<{ selected: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  ${({ selected, theme }) =>
+    selected &&
+    css`
+      background-color: ${theme.colors.gray700};
+      color: ${theme.colors.white};
+    `}
+`;

@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
+import { Radio } from "@components/base";
 import type { SlotValueUnion, SlotKeyUnion } from "./types";
-import SlotItem from "./SlotItem";
 
 const slotItems: { value: SlotKeyUnion; text: SlotValueUnion }[] = [
   {
@@ -23,21 +23,26 @@ const slotItems: { value: SlotKeyUnion; text: SlotValueUnion }[] = [
 
 interface SlotPickerProps {
   selectedSlot: SlotKeyUnion;
+  className?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SlotPicker: React.FC<SlotPickerProps> = ({ selectedSlot, onChange }) => {
+const SlotPicker: React.FC<SlotPickerProps> = ({
+  selectedSlot,
+  className,
+  onChange,
+}) => {
   return (
-    <div onChange={onChange}>
+    <Radio.Group onChange={onChange} className={className}>
       {slotItems.map(({ text, value }) => (
-        <SlotItem
+        <Radio.Item
           key={value}
           text={text}
           value={value}
           checked={selectedSlot === value}
         />
       ))}
-    </div>
+    </Radio.Group>
   );
 };
 

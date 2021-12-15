@@ -4,13 +4,22 @@ import Icon, { FeatherIconNameType } from "../Icon";
 
 interface Props {
   name: FeatherIconNameType;
+  className?: string;
+  type?: "button" | "submit";
+  iconColor?: string;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-const IconButton = ({ name, onClick }: Props) => {
+const IconButton = ({
+  name,
+  type = "button",
+  iconColor,
+  className,
+  onClick,
+}: Props) => {
   return (
-    <StyledIconButton onClick={onClick}>
-      <Icon name={name} />
+    <StyledIconButton className={className} type={type} onClick={onClick}>
+      <Icon name={name} color={iconColor} />
     </StyledIconButton>
   );
 };

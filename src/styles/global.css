@@ -3,6 +3,6 @@
   src: url("//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css");
 }
 
-#__next {
+body {
   font-family: "Spoqa Han Sans Neo", "sans-serif";
 }

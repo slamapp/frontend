@@ -8,6 +8,6 @@ export { default as AuthLoading } from "./AuthLoading";
 export { default as Favorites } from "./Favorites";
 export { default as TimeTable } from "./TimeTable";
 export { default as ReservationModalContent } from "./ReservationModalContent";
-export { default as KakaoMap } from "./KakaoMap";
+export { default as Map } from "./KakaoMap";
 export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker";
 export { default as BottomFixedButton } from "./BottomFixedButton";

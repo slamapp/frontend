@@ -10,7 +10,7 @@ interface Props {
 }
 
 const CustomSheet = styled(Sheet)`
-  z-index: 1 !important;
+  z-index: 1000 !important;
   .react-modal-sheet-container {
     max-width: 640px;
     right: 0;

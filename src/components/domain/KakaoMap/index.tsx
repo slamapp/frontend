@@ -2,8 +2,11 @@ import React, { useEffect, useRef, CSSProperties } from "react";
 import type { ReactNode } from "react";
 import { DEFAULT_POSITION } from "@utils/geolocation";
 import { useMapContext } from "@contexts/hooks";
+import styled from "@emotion/styled";
 import { Coord } from "../../../types/map";
 import useKakaoMapEvent from "./useKakaoMapEvent";
+import ZoomButton from "./ZoomButton";
+import CurrentLocationButton from "./CurrentLocationButton";
 
 declare global {
   interface Window {
@@ -80,11 +83,26 @@ const KakaoMap = ({
 
   return (
     <>
-      <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
+      <MapContainer ref={mapRef} style={style}>
         {children}
-      </div>
+      </MapContainer>
     </>
   );
 };
 
-export default KakaoMap;
+KakaoMap.ZoomButton = ZoomButton;
+KakaoMap.CurrentLocationButton = CurrentLocationButton;
+
+const Map = {
+  KakaoMap,
+  ZoomButton,
+  CurrentLocationButton,
+};
+
+export default Map;
+
+const MapContainer = styled.div`
+  width: 100%;
+  flex: 1;
+  position: relative;
+`;

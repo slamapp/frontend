@@ -3,11 +3,16 @@ import RadioItem from "./RadioItem";
 
 interface Props {
   children: ReactNode;
+  className?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RadioGroup = ({ children, onChange }: Props) => {
-  return <div onChange={onChange}>{children}</div>;
+const RadioGroup = ({ children, onChange, className }: Props) => {
+  return (
+    <div onChange={onChange} className={className}>
+      {children}
+    </div>
+  );
 };
 
 export default {
