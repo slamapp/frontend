@@ -24,7 +24,7 @@ export const pageType = {
 } as const;
 
 export const navigationType = {
-  CHANGE_NAVIGATION: "CHANGE_NAVIGATION",
+  SET_NAVIGATION_TITLE: "SET_NAVIGATION_TITLE",
 } as const;
 
 export type PageType = typeof pageType;

@@ -178,10 +178,10 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "사용자 메뉴",
       };
     }
-    case navigationType.CHANGE_NAVIGATION: {
+    case navigationType.SET_NAVIGATION_TITLE: {
       return {
         ...prevState,
-        ...payload,
+        title: payload.title,
       };
     }
     case eventType.BIND: {

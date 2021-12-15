@@ -7,6 +7,7 @@ export interface ContextProps {
   navigationProps: DataProps;
   pageType: PageType;
   useMountPage: (getPageType: GetPageType) => void;
+  setNavigationTitle: (title: string) => void;
   setNavigationEvent: (events: Events) => void;
   setCustomButtonEvent: (title: string, handleClick: any) => void;
   clearNavigationEvent: () => void;
@@ -16,6 +17,7 @@ const initialContext = {
   navigationProps: initialData,
   pageType,
   useMountPage: () => {},
+  setNavigationTitle: () => {},
   setNavigationEvent: () => {},
   setCustomButtonEvent: () => {},
   clearNavigationEvent: () => {},

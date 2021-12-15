@@ -43,12 +43,17 @@ const NavigationProvider = ({ children }: Props) => {
     dispatch({ type: eventType.CLEAR });
   }, []);
 
+  const setNavigationTitle = useCallback((title: string) => {
+    dispatch({ type: navigationType.SET_NAVIGATION_TITLE, payload: title });
+  }, []);
+
   return (
     <Context.Provider
       value={{
         navigationProps,
         pageType,
         useMountPage,
+        setNavigationTitle,
         setNavigationEvent,
         setCustomButtonEvent,
         clearNavigationEvent,
