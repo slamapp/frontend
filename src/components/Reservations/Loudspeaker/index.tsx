@@ -6,9 +6,14 @@ interface Iprops {
 
 const Loudspeaker = ({ reserve }: Iprops) => {
   const [timer, setTimer] = useState(false);
+  const [disable, setDisable] = useState(false);
 
   const getTime = (startTime: any) => {
     const beforeOneHour = new Date(startTime).getTime() - new Date().getTime();
+    if (new Date(startTime).getTime() < new Date().getTime()) {
+      setDisable(true);
+    }
+
     return beforeOneHour - 3600000;
   };
 
@@ -25,7 +30,13 @@ const Loudspeaker = ({ reserve }: Iprops) => {
   }, []);
 
   return (
-    <div key={reserve.reservationId}>{timer && <button>확성기</button>}</div>
+    <div>
+      {timer && (
+        <button disabled={disable} onClick={() => setDisable(true)}>
+          확성기
+        </button>
+      )}
+    </div>
   );
 };
 export default Loudspeaker;

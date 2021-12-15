@@ -13,10 +13,10 @@ interface ReserveList {
   latitude: number;
   longitude: number;
   numberOfReservations: number;
-  startTime: string;
-  endTime: string;
-  createdAt: string;
-  updatedAt: string;
+  startTime: Date;
+  endTime: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 type ReserveLists = ReserveList[];
@@ -36,7 +36,7 @@ const UpcomingReservations = () => {
       longitude: 127,
       basketCount: 2,
       numberOfReservations: 6,
-      startTime: "2021-01-01T12:20:10",
+      startTime: "2021-12-16T05:10:10",
       endTime: "2021-01-01T12:20:10",
       createdAt: "2021-01-01T12:20:10",
       updatedAt: "2021-01-01T12:20:10",
@@ -69,7 +69,7 @@ const UpcomingReservations = () => {
           longitude,
         }) => (
           <BorderDiv key={reservationId}>
-            <Loudspeaker reserve={startTime} />
+            <Loudspeaker reserve={{ startTime }} />
             <p>{courtName}</p>
             <p>
               {startTime.substr(0, 4)}년{startTime.substr(5, 2)}월
