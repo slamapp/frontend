@@ -57,7 +57,7 @@ const Favorites: NextPage = () => {
     return (
       <Spacer>
         <div>즐겨찾는 농구장이 없으시네요?</div>
-        <Link href="/map">
+        <Link href="/courts">
           <button>내 주변 농구장 찾기</button>
         </Link>
       </Spacer>

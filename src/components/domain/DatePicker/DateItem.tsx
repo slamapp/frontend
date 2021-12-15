@@ -1,6 +1,7 @@
+import { Text } from "@components/base";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 
 const weekday = ["일", "월", "화", "수", "목", "금", "토"] as const;
 
@@ -35,7 +36,7 @@ const DateItem = React.memo(
           style={{ padding: 20, textAlign: "center" }}
           onClick={() => onClick(date)}
         >
-          <div>{dayOfWeek}</div>
+          <Text>{dayOfWeek}</Text>
           <Day selected={selected}>{date.getDate()}</Day>
         </div>
       );

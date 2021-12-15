@@ -17,7 +17,7 @@ const BottomNavigation = () => {
       isCurrentPage: currentPage === pageType.FAVORITES,
     },
     {
-      href: "/map",
+      href: "/courts",
       name: "compass",
       isCurrentPage: currentPage === pageType.MAP,
     },
