@@ -6,6 +6,7 @@ type Size = "sm" | "md" | "lg";
 
 interface Props {
   children: ReactNode;
+  className?: string;
   size?: Size;
   type?: "button" | "submit";
   secondary?: boolean;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const Button: React.FC<Props> = ({
+  className,
   children,
   fullWidth = false,
   block = false,
@@ -29,6 +31,7 @@ const Button: React.FC<Props> = ({
 }) => {
   return (
     <StyledButton
+      className={className}
       block={block}
       size={size}
       type={type}

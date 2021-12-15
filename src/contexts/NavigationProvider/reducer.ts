@@ -115,8 +115,8 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     case pageType.LOGIN: {
       return {
         ...prevState,
-        isTopNavigation: true,
-        isBottomNavigation: true,
+        isTopNavigation: false,
+        isBottomNavigation: false,
         currentPage: type,
         isBack: false,
         isNotifications: false,
