@@ -44,7 +44,10 @@ const theme = {
       },
     },
   },
-  iconSize: "24px",
+  iconSize: {
+    sm: "20px",
+    md: "24px",
+  },
   avatarSizes: {
     sm: "26px",
     md: "32px",

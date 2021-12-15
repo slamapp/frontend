@@ -1,9 +1,10 @@
 import Icons from "feather-icons";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 interface Props {
   name: FeatherIconNameType;
-  size?: number;
+  size?: "sm" | "md" | number;
   strokeWidth?: number;
   rotate?: number;
   color?: string;
@@ -13,19 +14,13 @@ interface Props {
 
 const Icon = ({
   name = "box",
-  size = 16,
+  size = "md",
   strokeWidth = 2,
   rotate = 0,
   color = "#222",
   fill = false,
   ...props
 }: Props) => {
-  const shapeStyle = {
-    width: size,
-    height: size,
-    transform: rotate ? `rotate(${rotate}deg)` : undefined,
-  };
-
   const iconStyle = {
     strokeWidth,
     stroke: color,
@@ -38,7 +33,7 @@ const Icon = ({
   const base64 = Buffer.from(svg, "utf8").toString("base64");
 
   return (
-    <IconWrapper {...props} style={shapeStyle}>
+    <IconWrapper {...props} size={size} rotate={rotate}>
       <img src={`data:image/svg+xml;base64,${base64}`} alt={name} />
     </IconWrapper>
   );
@@ -46,8 +41,17 @@ const Icon = ({
 
 export default Icon;
 
-const IconWrapper = styled.i`
+const IconWrapper = styled.i<Pick<Props, "size" | "rotate">>`
   display: inline-block;
+  ${({ size, theme }) => css`
+    width: ${typeof size === "string" ? theme.iconSize[size] : size};
+    height: ${typeof size === "string" ? theme.iconSize[size] : size};
+  `}
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export type FeatherIconNameType =
