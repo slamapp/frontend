@@ -78,7 +78,7 @@ const dummyBasketballCourts = [
   },
 ];
 
-const Map: NextPage = () => {
+const Courts: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.MAP);
   const { map } = useMapContext();
@@ -271,4 +271,4 @@ const Map: NextPage = () => {
   );
 };
 
-export default Map;
+export default Courts;
