@@ -128,6 +128,8 @@ const UserEditPage: NextPage = () => {
               name="nickname"
               onChange={handleChange}
               value={values.nickname}
+              isRequired
+              placeholder="15자 이내의 닉네임을 입력해주세요"
               block
             />
             <p>{errors.nickname}</p>
@@ -139,6 +141,7 @@ const UserEditPage: NextPage = () => {
               name="description"
               onChange={handleChange}
               value={values.description}
+              placeholder="ex) 저는 주로 파워포워드로 뛰고, 당산 주변에서 게임해요. 언제든 연락주세요."
               block
             />
             <p>{errors.description}</p>
