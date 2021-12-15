@@ -40,6 +40,7 @@ const DateItemContainer = styled.div`
   display: "flex";
   flex-direction: column;
   text-align: center;
+  cursor: pointer;
 `;
 
 const SUNDAY_INDEX = 0;
