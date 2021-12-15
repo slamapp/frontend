@@ -1,4 +1,5 @@
 import type { ChangeEvent, ReactNode } from "react";
+import styled from "@emotion/styled";
 import RadioItem from "./RadioItem";
 
 interface Props {
@@ -7,10 +8,14 @@ interface Props {
 }
 
 const RadioGroup = ({ children, onChange }: Props) => {
-  return <div onChange={onChange}>{children}</div>;
+  return <Container onChange={onChange}>{children}</Container>;
 };
 
 export default {
   Group: RadioGroup,
   Item: RadioItem,
 };
+
+const Container = styled.div`
+  display: block;
+`;

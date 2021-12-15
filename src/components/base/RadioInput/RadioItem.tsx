@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+import { Text } from "@components/base";
 
 interface RadioItemProps {
   value: string;
@@ -8,31 +10,44 @@ interface RadioItemProps {
 
 const RadioItem: React.FC<RadioItemProps> = ({ value, text, checked }) => {
   return (
-    <label style={{ marginRight: 10 }}>
+    <Label>
       <StyledRadio
         type="radio"
         value={value}
         checked={checked}
         onChange={() => {}}
       />
-      <span>{text}</span>
-    </label>
+      <StyledText size={12}>{text}</StyledText>
+    </Label>
   );
 };
+
+const Label = styled.label`
+  margin-right: ${({ theme }) => theme.gaps.xs};
+`;
+
+const StyledText = styled(Text)`
+  font-weight: bold;
+`;
 
 const StyledRadio = styled.input`
   display: none;
 
-  & + span {
-    background-color: white;
-    color: black;
-    border: 1px solid black;
-  }
+  ${({ theme }) => css`
+    & + span {
+      background-color: ${theme.colors.white};
+      color: ${theme.colors.gray700};
+      border-radius: ${theme.borderRadiuses.lg};
+      padding: ${theme.chipPadding};
+      display: inline-block;
+      margin-bottom: ${theme.gaps.xs};
+    }
 
-  &:checked + span {
-    background-color: black;
-    color: white;
-  }
+    &:checked + span {
+      background-color: ${theme.colors.gray900};
+      color: ${theme.colors.white};
+    }
+  `}
 `;
 
 export default RadioItem;

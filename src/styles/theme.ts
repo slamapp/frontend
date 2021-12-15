@@ -51,6 +51,7 @@ const theme = {
     lg: "50px",
   },
   iconButtonPadding: "13px",
+  chipPadding: "10px 16px",
   buttonPaddings: {
     sm: "6px 16px",
     md: "10px 20px",
