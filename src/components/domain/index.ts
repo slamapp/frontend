@@ -10,3 +10,4 @@ export { default as TimeTable } from "./TimeTable";
 export { default as ReservationModalContent } from "./ReservationModalContent";
 export { default as KakaoMap } from "./KakaoMap";
 export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker";
+export { default as BottomFixedButton } from "./BottomFixedButton";
