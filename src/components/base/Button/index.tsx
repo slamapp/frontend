@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, MouseEvent } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
@@ -7,24 +7,30 @@ type Size = "sm" | "md" | "lg";
 interface Props {
   children: ReactNode;
   size?: Size;
+  type: "button" | "submit";
   secondary?: boolean;
   fullWidth?: boolean;
   block?: boolean;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button: React.FC<Props> = ({
   children,
-  fullWidth,
-  block,
-  secondary,
+  fullWidth = false,
+  block = false,
+  secondary = false,
+  type = "button",
   size = "md",
+  onClick,
 }) => {
   return (
     <StyledButton
       block={block}
       size={size}
+      type={type}
       fullWidth={fullWidth}
       secondary={secondary}
+      onClick={onClick}
     >
       {children}
     </StyledButton>
@@ -41,11 +47,11 @@ const StyledButton = styled.button<Omit<Props, "children">>`
   ${({ theme, size, fullWidth, block }) => css`
     display: ${block ? "block" : "inline-block"};
     width: ${fullWidth && "100%"};
-    padding: ${theme.buttonPaddings[size!]};
+    padding: ${theme.buttonPaddings[size as Size]};
     background-color: ${theme.colors.gray900};
     color: ${theme.colors.white};
-    font-size: ${theme.fontSizes[fontSizeMap[size!] as Size]};
-    border-radius: ${theme.borderRadiuses[size!]};
+    font-size: ${theme.fontSizes[fontSizeMap[size as Size] as Size]};
+    border-radius: ${theme.borderRadiuses[size as Size]};
   `}
 
   ${({ theme, secondary }) =>
