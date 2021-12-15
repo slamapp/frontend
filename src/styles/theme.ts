@@ -66,7 +66,8 @@ const theme = {
     },
   },
   fontSizes: {
-    sm: "12px",
+    xs: "12px",
+    sm: "14px",
     base: "16px",
     md: "18px",
     lg: "22px",
