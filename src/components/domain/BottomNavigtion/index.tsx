@@ -26,17 +26,13 @@ const BottomNavigation = () => {
       name: "calendar",
       isCurrentPage: currentPage === pageType.RESERVATIONS,
     },
-    {
-      href: "/activity",
-      name: "users",
-      isCurrentPage: currentPage === pageType.ACTIVITY,
-    },
-    // 테스트 용
-    {
-      href: "/login",
-      name: "log-in",
-      isCurrentPage: currentPage === pageType.LOGIN,
-    },
+
+    // TODO: 2순위: 팔로우한 사용자들의 예약 알기 탭
+    // {
+    //   href: "/activity",
+    //   name: "users",
+    //   isCurrentPage: currentPage === pageType.ACTIVITY,
+    // },
   ] as const;
 
   return (
