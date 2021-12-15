@@ -9,7 +9,6 @@ export interface DataProps {
     profileImageUrl: string | null;
     skill: string | null;
     role: string | null;
-    position: string | null;
     description: string | null;
     nickname: string | null;
     followers: Follow[];
@@ -31,7 +30,6 @@ export const initialData = {
     profileImageUrl: null,
     skill: null,
     role: null,
-    position: null,
     description: null,
     nickname: null,
     followers: [],
