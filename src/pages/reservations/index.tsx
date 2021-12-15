@@ -41,16 +41,14 @@ const Reservations: NextPage = () => {
   ];
 
   return (
-    <>
-      <div>
-        <TabStyle>
-          {menuTab.map((section, index) => {
-            return section.tabTitle;
-          })}
-        </TabStyle>
-        <div>{menuTab[activeIndex].tabContent}</div>
-      </div>
-    </>
+    <div>
+      <TabStyle>
+        {menuTab.map((section, index) => {
+          return section.tabTitle;
+        })}
+      </TabStyle>
+      <div>{menuTab[activeIndex].tabContent}</div>
+    </div>
   );
 };
 
