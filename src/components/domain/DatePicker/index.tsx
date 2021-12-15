@@ -44,8 +44,10 @@ export default DatePicker;
 
 const StyledFlicking = styled(Flicking)`
   background-color: ${({ theme }) => theme.colors.white};
+
   .flicking-camera {
     display: flex;
     padding: 0 ${({ theme }) => theme.gaps.sm};
+    filter: ${({ theme }) => theme.filter.dropShadow};
   }
 `;

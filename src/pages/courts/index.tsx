@@ -9,10 +9,11 @@ import {
   DatePicker,
   SlotPicker,
   BasketballMarker,
-  KakaoMap,
+  Map,
   SlotKeyUnion,
 } from "@components/domain";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
+import styled from "@emotion/styled";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -180,15 +181,15 @@ const Courts: NextPage = () => {
     setSnap(snap);
   }, []);
 
-  const handleInitCenter = useCallback(() => {
+  const handleGetCurrentLocation = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
       setCenter([latitude, longitude]);
     });
   }, []);
 
   useEffect(() => {
-    handleInitCenter();
-  }, [handleInitCenter]);
+    handleGetCurrentLocation();
+  }, [handleGetCurrentLocation]);
 
   return (
     <>
@@ -200,22 +201,22 @@ const Courts: NextPage = () => {
         selectedDate={selectedDate}
         onClick={handleDateClick}
       />
-      <button type="button" onClick={handleInitCenter}>
-        현재 내 위치 받아오기
-      </button>
-      <button type="button" onClick={handleZoomIn}>
-        확대(줌 레벨 -1)
-      </button>
-      <button type="button" onClick={handleZoomOut}>
-        축소(줌 레벨 +1)
-      </button>
-      <SlotPicker selectedSlot={selectedSlot} onChange={handleChangeSlot} />
+
       {center ? (
-        <KakaoMap
+        <Map.KakaoMap
           level={level}
           center={center}
           onDragEnd={handleChangedMapBounds}
         >
+          <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
+          <Map.CurrentLocationButton
+            onGetCurrentLocation={handleGetCurrentLocation}
+          />
+          <TopFixedSlotPicker
+            selectedSlot={selectedSlot}
+            onChange={handleChangeSlot}
+          />
+
           {map &&
             dummyBasketballCourts.map((court, i) => (
               <BasketballMarker
@@ -225,7 +226,7 @@ const Courts: NextPage = () => {
                 onClick={handleMarkerClick}
               />
             ))}
-        </KakaoMap>
+        </Map.KakaoMap>
       ) : (
         <div>현재 위치를 받아오는 중입니다.</div>
       )}
@@ -272,3 +273,11 @@ const Courts: NextPage = () => {
 };
 
 export default Courts;
+
+const TopFixedSlotPicker = styled(SlotPicker)`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  filter: ${({ theme }) => theme.filter.dropShadow};
+`;

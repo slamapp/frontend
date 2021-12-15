@@ -88,6 +88,9 @@ const theme = {
     md: "rgb(0 0 0 / 25%) 0px 16px 0px 0px",
     lg: "rgb(0 0 0 / 20%) 0px 30px 0px 0px",
   },
+  filter: {
+    dropShadow: "drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.15))",
+  },
 } as const;
 
 export default theme;
