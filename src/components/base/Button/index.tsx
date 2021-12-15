@@ -7,7 +7,7 @@ type Size = "sm" | "md" | "lg";
 interface Props {
   children: ReactNode;
   size?: Size;
-  type: "button" | "submit";
+  type?: "button" | "submit";
   secondary?: boolean;
   fullWidth?: boolean;
   block?: boolean;
