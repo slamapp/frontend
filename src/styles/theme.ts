@@ -43,6 +43,14 @@ const theme = {
         middle: "#FF9900",
       },
     },
+    kakao: {
+      yellow: {
+        strong: "#F7E600",
+      },
+      brown: {
+        strong: "#3A1D1D",
+      },
+    },
   },
   iconSize: {
     sm: "20px",
