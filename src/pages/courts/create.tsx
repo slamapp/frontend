@@ -196,7 +196,7 @@ const CreateCourt: NextPage = () => {
       </CustomSheet>
 
       <form onSubmit={handleSubmit}>
-        <Spacer size={24} type="vertical">
+        <Spacer gap="md" type="vertical">
           <div>
             <Input
               label="농구장 이름"

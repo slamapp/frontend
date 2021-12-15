@@ -55,7 +55,7 @@ const Favorites: NextPage = () => {
 
   if (basketballCourts.length === 0) {
     return (
-      <Spacer>
+      <Spacer gap="base">
         <div>즐겨찾는 농구장이 없으시네요?</div>
         <Link href="/courts">
           <button>내 주변 농구장 찾기</button>
@@ -65,7 +65,7 @@ const Favorites: NextPage = () => {
   }
 
   return (
-    <Spacer>
+    <Spacer gap="base">
       {basketballCourts.map(
         ({ favoriteId, courtName, latitude, longtitude }) => (
           <BorderDiv key={favoriteId}>
