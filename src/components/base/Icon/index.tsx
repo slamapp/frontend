@@ -7,6 +7,7 @@ interface Props {
   strokeWidth?: number;
   rotate?: number;
   color?: string;
+  fill?: boolean;
   [prop: string]: any;
 }
 
@@ -16,6 +17,7 @@ const Icon = ({
   strokeWidth = 2,
   rotate = 0,
   color = "#222",
+  fill = false,
   ...props
 }: Props) => {
   const shapeStyle = {
@@ -25,10 +27,11 @@ const Icon = ({
   };
 
   const iconStyle = {
-    "stroke-width": strokeWidth,
+    strokeWidth,
     stroke: color,
     width: size,
     height: size,
+    fill: fill ? color : "transparent",
   };
   const icon = Icons.icons[name];
   const svg = icon ? icon.toSvg(iconStyle) : "";
@@ -47,7 +50,7 @@ const IconWrapper = styled.i`
   display: inline-block;
 `;
 
-type FeatherIconNameType =
+export type FeatherIconNameType =
   | "arrow-down-left"
   | "arrow-down-right"
   | "arrow-down"

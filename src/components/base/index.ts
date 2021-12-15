@@ -19,3 +19,5 @@ export { default as Upload } from "./Upload";
 export { default as ModalSheet } from "./ModalSheet";
 export { default as Button } from "./Button";
 export { default as Input } from "./Input";
+export { default as IconButton } from "./IconButton";
+export { default as IconToggle } from "./IconToggle";
