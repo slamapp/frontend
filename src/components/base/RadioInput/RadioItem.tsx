@@ -17,17 +17,15 @@ const RadioItem: React.FC<RadioItemProps> = ({ value, text, checked }) => {
         checked={checked}
         onChange={() => {}}
       />
-      <StyledText size={12}>{text}</StyledText>
+      <Text size="xs" strong>
+        {text}
+      </Text>
     </Label>
   );
 };
 
 const Label = styled.label`
   margin-right: ${({ theme }) => theme.gaps.xs};
-`;
-
-const StyledText = styled(Text)`
-  font-weight: bold;
 `;
 
 const StyledRadio = styled.input`
