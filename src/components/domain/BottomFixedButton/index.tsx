@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import type { MouseEvent, ReactNode } from "react";
 import { Button } from "@components/base";
 import styled from "@emotion/styled";
@@ -8,6 +8,8 @@ interface Props {
   type?: "button" | "submit";
   disabled?: boolean;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+  style?: CSSProperties;
 }
 
 const BottomFixedButton: React.FC<Props> = ({
@@ -15,6 +17,8 @@ const BottomFixedButton: React.FC<Props> = ({
   type,
   disabled,
   onClick,
+  style,
+  className,
 }) => {
   return (
     <Background>
@@ -24,6 +28,8 @@ const BottomFixedButton: React.FC<Props> = ({
         fullWidth
         onClick={onClick}
         size="lg"
+        className={className}
+        style={style}
       >
         {children}
       </Button>
