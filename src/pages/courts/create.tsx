@@ -199,7 +199,7 @@ const CreateCourt: NextPage = () => {
       </CustomSheet>
 
       <form onSubmit={handleSubmit}>
-        <Spacer size={24} type="vertical">
+        <Spacer gap="md" type="vertical">
           <div>
             <Input
               label="농구장 이름"
@@ -252,7 +252,9 @@ const CreateCourt: NextPage = () => {
             />
             <span>{errors.basketCount}</span>
           </div>
-          <Button type="submit">{isLoading ? "Loading..." : "제출하기"}</Button>
+          <Button type="submit" onClick={() => {}}>
+            {isLoading ? "Loading..." : "제출하기"}
+          </Button>
         </Spacer>
       </form>
     </div>

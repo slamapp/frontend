@@ -120,7 +120,7 @@ const UserEditPage: NextPage = () => {
         <button>기본 프로필 이미지로 변경하기</button>
       </Center>
       <form onSubmit={handleSubmit}>
-        <Spacer size={24} type="vertical">
+        <Spacer gap="md" type="vertical">
           <div>
             <Input
               label="닉네임"
