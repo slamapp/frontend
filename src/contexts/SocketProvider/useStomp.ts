@@ -9,42 +9,53 @@ type UseStomp = () => [
   isLoading: boolean
 ];
 
+const userId = 1;
+
 const useStomp: UseStomp = () => {
   const [token, _] = useLocalToken();
   const [compatClient, setCompatClient] = useState<CompatClient | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleConnected = useCallback(() => {
-    setIsConnected(true);
-  }, []);
-  const handleError = useCallback(() => {}, []);
-  const handleClose = useCallback(() => {
+  const handleError = useCallback((e) => {
+    console.log(e);
     setIsLoading(false);
   }, []);
 
+  console.log("isLoading", isLoading, "isConnected", isConnected);
+
   useEffect(() => {
     try {
-      const options = {};
-      const compatClient = socketApi.getCompatClient(options);
+      const compatClient = socketApi.getCompatClient();
       setCompatClient(compatClient);
     } catch (error) {
       console.error(error);
-    }
-
-    if (compatClient) {
-      compatClient.connect(
-        { token: `Bearer ${token}` },
-        handleConnected,
-        handleError,
-        handleClose
-      );
     }
 
     return () => {
       if (compatClient) compatClient.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (compatClient) {
+      compatClient.connect(
+        { token: `Bearer ${token}` },
+        () => {
+          setIsConnected(true);
+          setIsLoading(false);
+          compatClient.subscribe("/topic/teston", ({ body }) => {
+            console.log("/topic/teston:::::", body);
+          });
+
+          compatClient.subscribe(`/topic/${userId}`, ({ body }) => {
+            console.log(`/topic/${userId}`, body);
+          });
+        },
+        handleError
+      );
+    }
+  }, [compatClient]);
 
   return [compatClient, isConnected, isLoading];
 };

@@ -1,11 +1,15 @@
 import { createContext } from "react";
 
 export interface ContextProps {
-  compatClient: any;
+  sendTestOn: any;
+  sendChat: any;
+  sendObject: any;
 }
 
 const initialContext = {
-  compatClient: null,
+  sendTestOn: () => {},
+  sendChat: () => {},
+  sendObject: () => {},
 };
 
 export const Context = createContext<ContextProps>(initialContext);

@@ -1,15 +1,18 @@
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
+const endPoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string;
+const subfix = process.env.NEXT_PUBLIC_SERVICE_API_SUB_FIX as string;
+const socketUrl = `${endPoint + subfix}/ws`;
+
 const socketApi = {
-  getWebSocket: (options: SockJS.Options) => {
-    const endPoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT;
-    const socketUrl = `${endPoint}/ws`;
-    return new SockJS(socketUrl, undefined, options);
+  getWebSocket: () => {
+    const sockJs = new SockJS(socketUrl);
+    return sockJs;
   },
-  getCompatClient: (options: SockJS.Options) => {
-    const webSocket = socketApi.getWebSocket(options);
-    return Stomp.over(webSocket);
+  getCompatClient: () => {
+    const sockJs = socketApi.getWebSocket();
+    return Stomp.over(sockJs);
   },
 };
 

@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useLocalToken } from "@hooks/domain";
 import { ReactNode } from "react";
 import { Context } from "./context";
 import useStomp from "./useStomp";
@@ -9,11 +10,32 @@ interface Props {
 
 const SocketProvider = ({ children }: Props) => {
   const [compatClient, isConnected, isLoading] = useStomp();
+  const [token, _] = useLocalToken();
+
+  const sendAuth = (destination: string, body: { [x: string]: any }) => {
+    const bodyStringified = JSON.stringify(body);
+    if (compatClient && token)
+      compatClient.send(destination, { token }, bodyStringified);
+  };
+
+  const sendTestOn = (body: { [x: string]: any }) => {
+    sendAuth("/teston", body);
+  };
+
+  const sendChat = (body: { [x: string]: any }) => {
+    sendAuth("/chat", body);
+  };
+
+  const sendObject = (body: { [x: string]: any }) => {
+    sendAuth(`/object`, body);
+  };
 
   return (
     <Context.Provider
       value={{
-        compatClient,
+        sendTestOn,
+        sendChat,
+        sendObject,
       }}
     >
       {isLoading ? (
