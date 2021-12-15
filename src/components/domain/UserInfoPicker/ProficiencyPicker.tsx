@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import Radio from "@components/domain/RadioInput";
+import Radio from "@components/base/RadioInput";
 import type { ProficiencyKeyUnion, ProficiencyValueUnion } from "./types";
 
 const proficiencyItems: {
