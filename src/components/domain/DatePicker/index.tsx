@@ -1,15 +1,10 @@
+import React, { useMemo } from "react";
 import Flicking from "@egjs/react-flicking";
 import styled from "@emotion/styled";
-import React, { useMemo } from "react";
+
 import DateItem from "./DateItem";
 
 const DAY_RANGE = 14;
-
-const StyledFlicking = styled(Flicking)`
-  .flicking-camera {
-    display: flex;
-  }
-`;
 
 interface Props {
   onClick: (date: Date) => void;
@@ -44,4 +39,13 @@ const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
     </StyledFlicking>
   );
 };
+
 export default DatePicker;
+
+const StyledFlicking = styled(Flicking)`
+  background-color: ${({ theme }) => theme.colors.white};
+  .flicking-camera {
+    display: flex;
+    padding: 0 ${({ theme }) => theme.gaps.sm};
+  }
+`;
