@@ -2,6 +2,7 @@ import { type } from "os";
 import React from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
+import ShareButton from "@components/ShareButton";
 import Participants from "../Participants";
 import Loudspeaker from "../Loudspeaker";
 
@@ -9,11 +10,13 @@ interface ReserveList {
   reservationId: number;
   courtId: number;
   courtName: string;
-  startTime: Date;
-  endTime: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  latitude: number;
+  longitude: number;
   numberOfReservations: number;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 type ReserveLists = ReserveList[];
@@ -26,32 +29,28 @@ const BorderDiv = styled.div`
 const UpcomingReservations = () => {
   const DummyReserve = [
     {
-      reservationId: 1,
-      courtId: 1,
-      courtName: "용왕산 근린 공원 농구장",
-      numberOfReservations: 10,
-      startTime: "2021-12-14T13:35:10",
-      endTime: "2021-01-01T14:20:10",
-      createdAt: "2021-01-01T12:20:10",
-      updatedAt: "2021-01-01T12:20:10",
-    },
-    {
-      reservationId: 2,
-      courtId: 2,
-      courtName: "백두산 근린 공원 농구장",
-      numberOfReservations: 8,
-      startTime: "2021-12-01T01:09:10",
-      endTime: "2021-01-01T13:20:10",
-      createdAt: "2021-01-01T12:20:10",
-      updatedAt: "2021-01-01T12:20:10",
-    },
-    {
       reservationId: 3,
-      courtId: 3,
-      courtName: "북한산 근린 공원 농구장",
-      numberOfReservations: 3,
+      courtId: 1,
+      courtName: "영통구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 2,
+      numberOfReservations: 6,
       startTime: "2021-01-01T12:20:10",
-      endTime: "2021-01-01T13:50:10",
+      endTime: "2021-01-01T12:20:10",
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
+    },
+    {
+      reservationId: 5,
+      courtId: 7,
+      courtName: "관악구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 4,
+      numberOfReservations: 2,
+      startTime: "2021-01-01T12:20:10",
+      endTime: "2021-01-01T12:20:10",
       createdAt: "2021-01-01T12:20:10",
       updatedAt: "2021-01-01T12:20:10",
     },
@@ -59,18 +58,46 @@ const UpcomingReservations = () => {
 
   return (
     <>
-      {DummyReserve.map((res) => (
-        <BorderDiv key={res.reservationId}>
-          <Loudspeaker reserve={res} />
-          <p>{res.courtName}</p>
-          <p>{res.startTime}</p>
-          <p>{res.numberOfReservations} / 6 명</p>
-          <Link href="/">
-            <button>예약 보기</button>
-          </Link>
-          <Participants />
-        </BorderDiv>
-      ))}
+      {DummyReserve.map(
+        ({
+          reservationId,
+          startTime,
+          endTime,
+          courtName,
+          numberOfReservations,
+          latitude,
+          longitude,
+        }) => (
+          <BorderDiv key={reservationId}>
+            <Loudspeaker reserve={startTime} />
+            <p>{courtName}</p>
+            <p>
+              {startTime.substr(0, 4)}년{startTime.substr(5, 2)}월
+              {startTime.substr(8, 2)}일
+            </p>
+            <p>
+              {startTime.substr(11, 5)} - {endTime.substr(11, 5)}
+            </p>
+            <p>{numberOfReservations} / 6 명</p>
+            <Link href="/">
+              <button>예약 보기</button>
+            </Link>
+            <Participants />
+            <a
+              href={`https://map.kakao.com/?urlX=${latitude}&urlY=${longitude}&name=${courtName}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <button>카카오맵</button>
+            </a>
+            <button>즐겨찾기</button>
+            <ShareButton />
+            <Link href="/chat">
+              <button>채팅</button>
+            </Link>
+          </BorderDiv>
+        )
+      )}
     </>
   );
 };
