@@ -41,11 +41,20 @@ const StyledRadio = styled.input`
       padding: ${theme.chipPadding};
       display: inline-block;
       margin-bottom: ${theme.gaps.xs};
+      cursor: pointer;
+
+      &:hover {
+        background-color: ${theme.colors.gray300};
+      }
     }
 
     &:checked + span {
       background-color: ${theme.colors.gray900};
       color: ${theme.colors.white};
+
+      &:hover {
+        background-color: ${theme.colors.gray500};
+      }
     }
   `}
 `;
