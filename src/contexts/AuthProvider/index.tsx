@@ -7,6 +7,7 @@ import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { actionTypes } from "./actionTypes";
 
+const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
   children: ReactNode;
 }
@@ -21,6 +22,9 @@ const AuthProvider = ({ children }: Props) => {
     localStorage.clear();
     dispatch({ type: actionTypes.CLEAR_CURRENT_USER });
     router.replace("/login");
+    setTimeout(() => {
+      dispatch({ type: actionTypes.LOADING_OFF });
+    }, LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS);
   }, [router]);
 
   const getCurrentUser = useCallback(async () => {
