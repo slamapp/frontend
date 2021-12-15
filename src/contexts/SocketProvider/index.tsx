@@ -9,14 +9,8 @@ interface Props {
 }
 
 const SocketProvider = ({ children }: Props) => {
-  const [compatClient, isConnected, isLoading] = useStomp();
   const [token, _] = useLocalToken();
-
-  const sendAuth = (destination: string, body: { [x: string]: any }) => {
-    const bodyStringified = JSON.stringify(body);
-    if (compatClient && token)
-      compatClient.send(destination, { token }, bodyStringified);
-  };
+  const { isConnected, isLoading, sendAuth } = useStomp(token);
 
   const sendTestOn = (body: { [x: string]: any }) => {
     sendAuth("/teston", body);
