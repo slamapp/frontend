@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Button, IconButton, Spacer } from "@components/base";
-import FollowList from "../FollowList/index";
+import { Button, Icon, Spacer } from "@components/base";
+import FollowListItem from "../FollowListItem";
 
 interface PlayerList {
   followId: number;
@@ -12,6 +12,7 @@ interface PlayerList {
 }
 
 type PlayerLists = PlayerList[];
+// 리스트를 받으면 밖에서 렌더링을
 
 const Participants = () => {
   const [visible, setVisible] = useState(false);
@@ -53,35 +54,18 @@ const Participants = () => {
   return (
     <Spacer gap="lg" type="vertical">
       <div>
-        {!visible ? (
-          <IconButton
-            name="users"
-            type="button"
-            onClick={() => setVisible(!visible)}
-          />
-        ) : (
-          <IconButton
-            name="users"
-            type="button"
-            onClick={() => setVisible(!visible)}
-          />
-        )}
+        <Button secondary onClick={() => {}}>
+          <Icon name="users" size="sm" />6
+        </Button>
       </div>
       {visible && (
         <Spacer gap="xs" type="vertical">
           {users.map(({ userId, profileImage, nickname, isFollowed }) => (
-            <FollowLists key={userId}>
-              <FollowList src={profileImage}>{nickname}</FollowList>
-              <div>
-                {isFollowed ? (
-                  <Button onClick={() => toggleIsFollow(userId)}>팔로잉</Button>
-                ) : (
-                  <Button onClick={() => toggleIsFollow(userId)} secondary>
-                    팔로우
-                  </Button>
-                )}
-              </div>
-            </FollowLists>
+            <FollowList key={userId}>
+              <FollowListItem src={profileImage} isFollowed={isFollowed}>
+                {nickname}
+              </FollowListItem>
+            </FollowList>
           ))}
         </Spacer>
       )}
@@ -91,7 +75,7 @@ const Participants = () => {
 
 export default Participants;
 
-const FollowLists = styled.div`
+const FollowList = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

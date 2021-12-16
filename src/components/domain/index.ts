@@ -14,4 +14,4 @@ export { default as Logo } from "./Logo";
 export { default as CourtItem } from "./CourtItem";
 export { default as LinkAvatar } from "./LinkAvatar";
 export { default as Participants } from "./Participants";
-export { default as FollowList } from "./FollowList";
+export { default as FollowList } from "./FollowListItem";
