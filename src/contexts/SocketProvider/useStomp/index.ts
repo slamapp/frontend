@@ -58,7 +58,7 @@ const useStomp: UseStomp = (token: string) => {
   }, [compatClient]);
 
   const sendAuth: SendAuth = (destination, body) => {
-    console.log(destination, body);
+    console.log("SEND,Token", "destination:", destination, "body:", body);
 
     const bodyStringified = JSON.stringify(body);
     if (compatClient && token)

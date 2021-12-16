@@ -13,7 +13,9 @@ const getParsedCallback =
   ({ body }) => {
     const defaultParsed = {};
     try {
-      parsedCallback(JSON.parse(body));
+      const parsedBody = JSON.parse(body);
+      console.log("::SUBSCRIBE::", parsedBody);
+      parsedCallback(parsedBody);
     } catch (error) {
       console.error(error);
       parsedCallback(defaultParsed);
