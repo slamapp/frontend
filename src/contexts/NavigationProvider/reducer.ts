@@ -168,7 +168,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
       return {
         ...prevState,
         isTopNavigation: true,
-        isBottomNavigation: true,
+        isBottomNavigation: false,
         currentPage: type,
         isBack: true,
         isNotifications: false,
