@@ -6,26 +6,26 @@ import { NotificationList } from "@components/domain";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
-  const { sendTestOn, sendChat, sendObject } = useSocketContext();
+  const { sendObject, sendFollow, sendFollowCancel } = useSocketContext();
 
   useMountPage((page) => page.NOTIFICATIONS);
 
-  const handleClickTestOn = () => {
-    sendTestOn({ text: "testOn" });
-  };
-  const handleClickChat = () => {
-    sendChat({ userId: 2 });
-  };
   const handleClickObject = () => {
     sendObject({ userId: 1 });
+  };
+  const handleClickFollow = () => {
+    sendFollow({ receiverId: 1 });
+  };
+  const handleClickFollowCancel = () => {
+    sendFollowCancel({ receiverId: 1 });
   };
 
   return (
     <div>
       NotificationsPage
-      <button onClick={handleClickTestOn}>send to test</button>
-      <button onClick={handleClickChat}>send to chat</button>
       <button onClick={handleClickObject}>send to object</button>
+      <button onClick={handleClickFollow}>follow</button>
+      <button onClick={handleClickFollowCancel}>followCancel</button>
       <NotificationList />
     </div>
   );
