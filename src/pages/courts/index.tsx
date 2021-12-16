@@ -101,7 +101,7 @@ const Courts: NextPage = () => {
 
   const [selectedDate, setSelectedDate] = useState<Date>(today);
   const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
-    getSlotFromDate(today)
+    getSlotFromDate(new Date())
   );
 
   // TODO: API 명세 나올 경우 any 수정해주기
