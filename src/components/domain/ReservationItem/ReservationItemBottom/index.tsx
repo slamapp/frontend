@@ -53,7 +53,7 @@ const ReservationItemBottom = ({
           {/* // TODO: reservation count로 변경 */}
           <Text>{numberOfReservations}</Text>
         </ParticipantsToggle>
-        <Link href="/">
+        <Link href={`courts/${courtId}/${startTime.substring(0, 10)}`} passHref>
           <Button>예약 확인하기</Button>
         </Link>
       </Container>
