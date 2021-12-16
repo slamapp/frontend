@@ -1,9 +1,9 @@
-import CompletedReservations from "@components/Reservations/CompletedReservations";
-import UpcomingReservations from "@components/Reservations/UpcomingReservations";
+import ReservationItem from "@components/domain/ReservationItem";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigationContext } from "@contexts/hooks";
+import { Spacer } from "@components/base";
 
 const Reservations: NextPage = () => {
   const { useMountPage } = useNavigationContext();
@@ -15,6 +15,92 @@ const Reservations: NextPage = () => {
     setActiveIndex(index);
   };
 
+  const dummyUpcomingReservations = [
+    {
+      reservationId: 3,
+      courtId: 1,
+      courtName: "영통구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 2,
+      numberOfReservations: 6,
+      startTime: "2021-12-17T04:10:10",
+      endTime: "2021-01-01T12:20:10",
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
+    },
+    {
+      reservationId: 5,
+      courtId: 7,
+      courtName: "관악구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 4,
+      numberOfReservations: 2,
+      startTime: "2021-01-01T12:20:10",
+      endTime: "2021-01-01T12:20:10",
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
+    },
+
+    {
+      reservationId: 9,
+      courtId: 7,
+      courtName: "관악구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 4,
+      numberOfReservations: 2,
+      startTime: "2021-01-01T12:20:10",
+      endTime: "2021-01-01T12:20:10",
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
+    },
+  ];
+
+  const dummyCompletedReservations = [
+    {
+      reservationId: 3,
+      courtId: 1,
+      courtName: "영통구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 2,
+      numberOfReservations: 6,
+      startTime: "2021-12-16T05:10:10",
+      endTime: "2021-01-01T12:20:10",
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
+    },
+    {
+      reservationId: 5,
+      courtId: 7,
+      courtName: "관악구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 4,
+      numberOfReservations: 2,
+      startTime: "2021-01-01T12:20:10",
+      endTime: "2021-01-01T12:20:10",
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
+    },
+
+    {
+      reservationId: 9,
+      courtId: 7,
+      courtName: "관악구민운동장 농구장",
+      latitude: 27.1,
+      longitude: 127,
+      basketCount: 4,
+      numberOfReservations: 2,
+      startTime: "2021-01-01T12:20:10",
+      endTime: "2021-01-01T12:20:10",
+      createdAt: "2021-01-01T12:20:10",
+      updatedAt: "2021-01-01T12:20:10",
+    },
+  ];
+
   const menuTab = [
     {
       tabTitle: (
@@ -25,7 +111,13 @@ const Reservations: NextPage = () => {
           다가올 예약
         </li>
       ),
-      tabContent: <UpcomingReservations />,
+      tabContent: (
+        <Spacer gap="md" type="vertical">
+          {dummyUpcomingReservations.map((reservation) => (
+            <ReservationItem key={reservation.reservationId} {...reservation} />
+          ))}
+        </Spacer>
+      ),
     },
     {
       tabTitle: (
@@ -36,7 +128,13 @@ const Reservations: NextPage = () => {
           지난 예약
         </li>
       ),
-      tabContent: <CompletedReservations />,
+      tabContent: (
+        <Spacer gap="md" type="vertical">
+          {dummyCompletedReservations.map((reservation) => (
+            <ReservationItem key={reservation.reservationId} {...reservation} />
+          ))}
+        </Spacer>
+      ),
     },
   ];
 
