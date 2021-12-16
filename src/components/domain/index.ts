@@ -11,3 +11,4 @@ export { default as Map } from "./KakaoMap";
 export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker";
 export { default as BottomFixedButton } from "./BottomFixedButton";
 export { default as Logo } from "./Logo";
+export { default as NotificationList } from "./NotificationList";
