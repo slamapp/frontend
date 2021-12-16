@@ -2,7 +2,7 @@ import React from "react";
 import { Notification } from "@contexts/AuthProvider/types";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { Avatar, LinkStrong } from "@components/base";
+import { LinkStrong } from "@components/base";
 import { LinkAvatar } from "@components/domain";
 
 interface Props {
