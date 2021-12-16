@@ -111,7 +111,7 @@ const UserEditPage: NextPage = () => {
       <Center>
         <Upload>
           <Avatar
-            edit
+            isEdit
             src={profileImage ?? baseProfileImageUrl}
             shape="circle"
             __TYPE="Avatar"

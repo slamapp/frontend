@@ -15,7 +15,7 @@ export interface Props {
   alt?: string;
   mode?: "cover" | "fill" | "contain";
   __TYPE: "Avatar";
-  edit?: boolean;
+  isEdit?: boolean;
 }
 
 const Avatar = ({
@@ -29,7 +29,7 @@ const Avatar = ({
   alt,
   mode = "cover",
   __TYPE = "Avatar",
-  edit = false,
+  isEdit = false,
   ...props
 }: Props) => {
   const [loaded, setLoaded] = useState(false);
@@ -54,7 +54,7 @@ const Avatar = ({
         mode={mode}
         style={{ opacity: loaded ? 1 : 0 }}
       />
-      {edit ? <Filter>+</Filter> : null}
+      {isEdit ? <Filter>+</Filter> : null}
     </AvatarWrapper>
   );
 };
