@@ -1,6 +1,6 @@
 import { Reducer } from "react";
 import { actionTypes, ActionTypeUnion } from "./actionTypes";
-import { Follow } from "./types";
+import { Follow, mockNotifications, Notification } from "./types";
 
 export interface DataProps {
   currentUser: {
@@ -34,7 +34,7 @@ export const initialData = {
     nickname: null,
     followers: [],
     following: [],
-    notifications: [],
+    notifications: [...mockNotifications],
   },
   isLoading: true,
 };
@@ -51,7 +51,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
           ...prevState.currentUser,
           userId: payload.id,
           nickname: payload.nickname,
-          notifications: payload.notifications,
+          // notifications: payload.notifications,
           email: payload.email,
           positions: payload.positions,
           proficiency: payload.proficiency,
