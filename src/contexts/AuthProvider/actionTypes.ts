@@ -5,6 +5,7 @@ export const actionTypes = {
   LOADING_OFF: "LOADING_OFF",
   CREATE_FAVORITE: "CREATE_FAVORITE",
   DELETE_FAVORITE: "DELETE_FAVORITE",
+  PUSH_NOTIFICATION: "PUSH_NOTIFICATION",
 } as const;
 
 export type ActionType = typeof actionTypes;

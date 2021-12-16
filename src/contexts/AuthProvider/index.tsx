@@ -6,6 +6,7 @@ import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { actionTypes } from "./actionTypes";
 import AuthLoading from "./AuthLoading";
+import { Notification } from "./types";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
@@ -66,6 +67,12 @@ const AuthProvider = ({ children }: Props) => {
       },
     });
   }, []);
+  const pushNotification = (notification: Notification) => {
+    dispatch({
+      type: actionTypes.PUSH_NOTIFICATION,
+      payload: { notification },
+    });
+  };
 
   useEffect(() => {
     if (token) {
@@ -83,6 +90,7 @@ const AuthProvider = ({ children }: Props) => {
         logout,
         createFavorite,
         deleteFavorite,
+        pushNotification,
       }}
     >
       <AuthLoading />
