@@ -21,5 +21,6 @@ export { default as Button } from "./Button";
 export { default as Input } from "./Input";
 export { default as IconButton } from "./IconButton";
 export { default as IconToggle } from "./IconToggle";
+export { default as LinkStrong } from "./LinkStrong";
 // eslint-disable-next-line import/no-cycle
 export { default as Radio } from "./RadioInput";
