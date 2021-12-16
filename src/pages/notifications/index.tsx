@@ -3,6 +3,7 @@ import React from "react";
 import UtilRoute from "UtilRoute";
 import { useNavigationContext, useSocketContext } from "@contexts/hooks";
 import { NotificationList } from "@components/domain";
+import styled from "@emotion/styled";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
@@ -21,14 +22,23 @@ const NotificationsPage: NextPage = UtilRoute("private", () => {
   };
 
   return (
-    <div>
-      NotificationsPage
+    <PageConainer>
       <button onClick={handleClickObject}>send to object</button>
       <button onClick={handleClickFollow}>follow</button>
       <button onClick={handleClickFollowCancel}>followCancel</button>
       <NotificationList />
-    </div>
+      <IntersectionObserverContainer />
+    </PageConainer>
   );
 });
 
 export default NotificationsPage;
+
+const PageConainer = styled.div`
+  flex: 1;
+`;
+
+const IntersectionObserverContainer = styled.div`
+  height: 100px;
+  background: red;
+`;
