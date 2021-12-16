@@ -47,8 +47,6 @@ const SocketProvider = ({ children }: Props) => {
 
 export default SocketProvider;
 
-export { default as useSocketContext } from "./hook";
-
 const StyledTopSocketLoading = styled.div<{ isLoading: boolean }>`
   position: absolute;
   height: 4px;
