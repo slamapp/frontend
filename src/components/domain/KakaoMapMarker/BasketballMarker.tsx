@@ -12,17 +12,19 @@ const FIRE_COURT_NUMBER = 6;
 const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
   useEffect(() => {
     if (map) {
-      let imageSrc = "/assets/basketball-transparent.gif";
+      let imageSrc = "/assets/basketball/fire_off_400.gif";
       imageSrc =
         court.number === PAUSE_COURT_NUMBER
-          ? "/assets/basketball-pause.png"
+          ? "/assets/basketball/animation_off_400.png"
           : imageSrc;
       imageSrc =
         court.number >= FIRE_COURT_NUMBER
-          ? "/assets/basketball-fire.gif"
+          ? "/assets/basketball/fire_on_400.gif"
           : imageSrc;
-      const imageSize = new kakao.maps.Size(64, 69);
-      const imageOption = { offset: new kakao.maps.Point(27, 69) };
+      const imageSize = new kakao.maps.Size(80, 150);
+      const imageOption = {
+        offset: new kakao.maps.Point(27, 69),
+      };
 
       const markerImage = new kakao.maps.MarkerImage(
         imageSrc,
