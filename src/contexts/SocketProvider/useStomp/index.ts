@@ -38,7 +38,7 @@ const useStomp: UseStomp = (token: string) => {
   useEffect(() => {
     if (compatClient) {
       compatClient.connect(
-        { token: `Bearer ${token}` },
+        { Authorization: { token: `Bearer ${token}` } },
         () => {
           setIsConnected(true);
           setIsLoading(false);
