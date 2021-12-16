@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import styled from "@emotion/styled";
 
+import UtilRoute from "UtilRoute";
 import useForm, { Error } from "@hooks/useForm";
 import { useNavigationContext } from "@contexts/hooks";
 import { Avatar, Spacer, Upload, Button, Label, Input } from "@components/base";
@@ -23,7 +24,7 @@ interface Values {
   positions: PositionKeyUnion[];
 }
 
-const UserEditPage: NextPage = () => {
+const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_EDIT);
 
@@ -200,7 +201,7 @@ const UserEditPage: NextPage = () => {
       </form>
     </div>
   );
-};
+});
 
 export default UserEditPage;
 
