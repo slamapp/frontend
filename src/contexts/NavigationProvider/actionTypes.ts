@@ -25,6 +25,7 @@ export const pageType = {
 
 export const navigationType = {
   SET_NAVIGATION_TITLE: "SET_NAVIGATION_TITLE",
+  SET_IS_TOP_TRANSPARENT: "SET_IS_TOP_TRANSPARENT",
 } as const;
 
 export type PageType = typeof pageType;

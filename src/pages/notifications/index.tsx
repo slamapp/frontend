@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import React from "react";
 import UtilRoute from "UtilRoute";
 import { useNavigationContext, useSocketContext } from "@contexts/hooks";
-import { NotificationList } from "@components/domain";
 import styled from "@emotion/styled";
+import NotificationList from "@components/domain/NotificationList";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();

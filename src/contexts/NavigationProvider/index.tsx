@@ -1,7 +1,7 @@
 import { useCallback, useReducer, ReactNode, useEffect } from "react";
 import { pageType, eventType, navigationType } from "./actionTypes";
 import Context from "./context";
-import { reducer, initialData, DataProps } from "./reducer";
+import { reducer, initialData } from "./reducer";
 import { Events, GetPageType } from "./types";
 
 interface Props {
@@ -22,6 +22,18 @@ const NavigationProvider = ({ children }: Props) => {
       return () => setCurrentPage(pageType.NONE);
     }, []);
 
+  const setIsTopTransparent = (nextIsTopTransparent: boolean) =>
+    dispatch({
+      type: navigationType.SET_IS_TOP_TRANSPARENT,
+      payload: { nextIsTopTransparent },
+    });
+
+  const useDisableTopTransparent = () =>
+    useEffect(() => {
+      setIsTopTransparent(false);
+      return () => setIsTopTransparent(true);
+    }, []);
+
   const setNavigationEvent = useCallback(
     (events: Events = { back: null, customButton: null }) => {
       dispatch({ type: eventType.BIND, payload: events });
@@ -38,6 +50,15 @@ const NavigationProvider = ({ children }: Props) => {
     },
     []
   );
+
+  const useMountCustomButtonEvent = (
+    customButtonName: string,
+    handleClick: (...args: any[]) => void
+  ) =>
+    useEffect(() => {
+      setCustomButtonEvent(customButtonName, handleClick);
+      return clearNavigationEvent;
+    }, []);
 
   const clearNavigationEvent = useCallback(() => {
     dispatch({ type: eventType.CLEAR });
@@ -57,6 +78,9 @@ const NavigationProvider = ({ children }: Props) => {
         setNavigationEvent,
         setCustomButtonEvent,
         clearNavigationEvent,
+        setIsTopTransparent,
+        useDisableTopTransparent,
+        useMountCustomButtonEvent,
       }}
     >
       {children}

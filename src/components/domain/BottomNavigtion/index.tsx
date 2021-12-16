@@ -59,7 +59,6 @@ const Container = styled.nav`
   background: white;
   display: flex;
   align-items: center;
-  box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
   bottom: 0;
   left: 0;
   right: 0;

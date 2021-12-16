@@ -11,6 +11,12 @@ export interface ContextProps {
   setNavigationEvent: (events: Events) => void;
   setCustomButtonEvent: (title: string, handleClick: any) => void;
   clearNavigationEvent: () => void;
+  setIsTopTransparent: (nextIsTopTransparent: boolean) => void;
+  useDisableTopTransparent: () => void;
+  useMountCustomButtonEvent: (
+    customButtonName: string,
+    handleClick: (...args: any[]) => void
+  ) => void;
 }
 
 const initialContext = {
@@ -21,6 +27,9 @@ const initialContext = {
   setNavigationEvent: () => {},
   setCustomButtonEvent: () => {},
   clearNavigationEvent: () => {},
+  setIsTopTransparent: () => {},
+  useDisableTopTransparent: () => {},
+  useMountCustomButtonEvent: () => {},
 };
 
 const Context = createContext<ContextProps>(initialContext);

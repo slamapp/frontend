@@ -14,7 +14,7 @@ import {
 } from "@components/domain";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -85,8 +85,15 @@ const dummyBasketballCourts = [
 ];
 
 const Courts: NextPage = () => {
-  const { useMountPage } = useNavigationContext();
+  const router = useRouter();
+  const { useMountPage, useDisableTopTransparent, useMountCustomButtonEvent } =
+    useNavigationContext();
   useMountPage((page) => page.MAP);
+  useDisableTopTransparent();
+  useMountCustomButtonEvent("추가", () => {
+    router.push("/courts/create");
+  });
+
   const { map } = useMapContext();
 
   const today = useMemo(() => {

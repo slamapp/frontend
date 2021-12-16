@@ -88,7 +88,6 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
 export default TopNavigation;
 
 const Container = styled.nav<{ isTransparent: boolean }>`
-  padding-top: 2px;
   z-index: 1000;
   position: sticky;
   top: 0;
@@ -103,7 +102,6 @@ const Container = styled.nav<{ isTransparent: boolean }>`
     display: block;
     height: 56px;
     background: ${({ theme }) => "white"};
-    box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
     transition: opacity 200ms;
     opacity: ${({ isTransparent }) => (isTransparent ? 0 : 1)};
   }
@@ -154,4 +152,8 @@ const CursorIcon = styled(Icon)`
 const CustomButton = styled.div`
   padding: 12px;
   font-weight: 700;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
