@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import styled from "@emotion/styled";
 import type { ReactNode } from "react";
-import { Avatar, Button, Text } from "@components/base";
+import { Avatar, Button, Spacer, Text } from "@components/base";
 
 interface Props {
   children: ReactNode;
@@ -20,11 +20,18 @@ const FollowListItem: React.FC<Props> = ({
   isFollowed,
 }) => {
   return (
-    <List className={className} style={style}>
-      <Avatar shape="circle" size={36} src={src} />
-      <Text size="base" strong>
-        {children}
-      </Text>
+    <ListItem className={className} style={style}>
+      <Spacer
+        gap={10}
+        style={{
+          alignItems: "center",
+        }}
+      >
+        <Avatar shape="circle" size={36} src={src} />
+        <Text size="base" strong>
+          {children}
+        </Text>
+      </Spacer>
       <div>
         {isFollowed ? (
           // TODO: 컨텍스트 함수로 대체
@@ -36,15 +43,15 @@ const FollowListItem: React.FC<Props> = ({
           <Button onClick={() => {}}>팔로우</Button>
         )}
       </div>
-    </List>
+    </ListItem>
   );
 };
 
-const List = styled.div`
+const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
+  padding: 8px 0px;
 `;
 
 export default FollowListItem;

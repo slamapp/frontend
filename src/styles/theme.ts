@@ -2,7 +2,7 @@ const theme = {
   colors: {
     white: "#FFFFFF",
     black: "#000000",
-    active_gradient_color:
+    activeGradientColor:
       "linear-gradient(to right, #FFA5A5, #FFF4BD, #CCD1FF, #B2FFD6)",
     green: {
       strong: "#1AB74F",
