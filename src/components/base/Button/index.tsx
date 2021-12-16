@@ -67,8 +67,15 @@ const StyledButton = styled.button<Omit<Props, "children">>`
   ${({ theme, secondary }) =>
     secondary &&
     css`
-      background-color: ${theme.colors.white};
-      color: ${theme.colors.gray900};
+      & {
+        background-color: ${theme.colors.white};
+        color: ${theme.colors.gray900};
+        border: 1px solid ${theme.colors.gray200};
+      }
+
+      &:hover {
+        background-color: ${theme.colors.gray200};
+      }
     `}
   font-weight: bold;
   border: none;

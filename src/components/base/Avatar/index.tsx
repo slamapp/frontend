@@ -23,7 +23,7 @@ const Avatar = ({
   lazy,
   threshold,
   src,
-  size = 70,
+  size = 72,
   shape = "round",
   placeholder,
   alt,
@@ -54,7 +54,11 @@ const Avatar = ({
         mode={mode}
         style={{ opacity: loaded ? 1 : 0 }}
       />
-      {isEdit ? <Filter>+</Filter> : null}
+      {isEdit ? (
+        <Filter>
+          <span>+</span>
+        </Filter>
+      ) : null}
     </AvatarWrapper>
   );
 };
@@ -91,10 +95,17 @@ const Filter = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.3);
   font-size: 50px;
   text-align: center;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 Avatar.defaultProps = {

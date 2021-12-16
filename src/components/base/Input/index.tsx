@@ -1,18 +1,17 @@
 import { HTMLAttributes, useState, FocusEvent } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import Text from "../Text";
+import { Label, Text } from "@components/base";
 
 interface Props extends HTMLAttributes<HTMLInputElement> {
   label: string;
   type: string;
   name: string;
-  block?: boolean;
+  value?: string;
   isRequired?: boolean;
-  [x: string]: any;
 }
 
-const Input = ({ label, block, isRequired, type, ...props }: Props) => {
+const Input = ({ label, isRequired, type, ...props }: Props) => {
   const [isFocus, setFocus] = useState(false);
 
   const handleToggle = () => {
@@ -27,10 +26,7 @@ const Input = ({ label, block, isRequired, type, ...props }: Props) => {
   return (
     <div>
       <label>
-        <StyledText block={block} strong>
-          {label}
-          {isRequired ? <RequiredTag>*</RequiredTag> : null}
-        </StyledText>
+        <Label isRequired={isRequired}>{label}</Label>
         <Container
           className={isFocus ? "focus" : ""}
           style={type === "number" ? { display: "flex" } : {}}
@@ -59,7 +55,6 @@ const Container = styled.div`
     padding: ${theme.inputPadding};
     border-radius: ${theme.borderRadiuses.lg};
     border: 1px solid ${theme.colors.gray300};
-    margin-top: ${theme.gaps.xs};
 
     &.focus {
       border: 1px solid ${theme.colors.slam.orange.strong};
@@ -87,18 +82,5 @@ const InputContent = styled.input`
     &[type="number"]::-webkit-inner-spin-button {
       -webkit-appearance: none;
     }
-  `}
-`;
-
-const StyledText = styled(Text)`
-  ${({ theme }) => css`
-    color: ${theme.colors.gray900};
-  `}
-`;
-
-const RequiredTag = styled.span`
-  ${({ theme }) => css`
-    color: ${theme.colors.slam.orange.strong};
-    vertical-align: text-top;
   `}
 `;

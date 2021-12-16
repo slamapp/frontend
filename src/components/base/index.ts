@@ -18,9 +18,10 @@ export { default as Toggle } from "./Toggle";
 export { default as Upload } from "./Upload";
 export { default as ModalSheet } from "./ModalSheet";
 export { default as Button } from "./Button";
-export { default as Input } from "./Input";
 export { default as IconButton } from "./IconButton";
 export { default as IconToggle } from "./IconToggle";
 export { default as LinkStrong } from "./LinkStrong";
-// eslint-disable-next-line import/no-cycle
+export { default as Label } from "./Label";
+/* eslint-disable import/no-cycle */
+export { default as Input } from "./Input";
 export { default as Radio } from "./RadioInput";
