@@ -7,7 +7,7 @@ interface Props {
   className?: string;
   type?: "button" | "submit";
   iconColor?: string;
-  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const IconButton = ({
@@ -19,7 +19,7 @@ const IconButton = ({
 }: Props) => {
   return (
     <StyledIconButton className={className} type={type} onClick={onClick}>
-      <Icon name={name} color={iconColor} />
+      <Icon name={name} color={iconColor} size="sm" />
     </StyledIconButton>
   );
 };

@@ -1,7 +1,9 @@
-import React from "react";
+import { useCallback } from "react";
+
+import { IconButton } from "@components/base";
 
 const ShareButton = () => {
-  const onClick = () => {
+  const handleClick = useCallback(() => {
     if (typeof window === "undefined") {
       return alert("공유하기 실패");
     }
@@ -9,8 +11,9 @@ const ShareButton = () => {
     Kakao.Link.sendScrap({
       requestUrl: location.href,
     });
-  };
-  return <button onClick={onClick}>공유하기</button>;
+  }, []);
+
+  return <IconButton name="share-2" onClick={handleClick} />;
 };
 
 export default ShareButton;
