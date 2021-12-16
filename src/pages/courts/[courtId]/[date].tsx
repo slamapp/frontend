@@ -424,6 +424,9 @@ const reducer = (state: any, { type, payload }: any) => {
 };
 
 const Reservation: NextPage = () => {
+  const router = useRouter();
+  console.log(router.query);
+
   const {
     query: { courtId, date },
   } = useRouter();

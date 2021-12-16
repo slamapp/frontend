@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
 
 import { useResize } from "@hooks/.";
+import { useRouter } from "next/router";
 import { TimeBlockUnit, ActionTimeBlockUnit } from "./TimeBlockUnits";
 import TimeRangeSelector from "./TimeRangeSelector";
 import * as S from "./style";
+
+const timeSlotIndexMap: { [key in string]: number } = {
+  dawn: 0,
+  morning: 12,
+  afternoon: 24,
+  night: 36,
+};
 
 const TimeTable = ({
   timeTable,
@@ -15,6 +23,11 @@ const TimeTable = ({
   existedReservations,
   selectedReservationId,
 }: any) => {
+  const {
+    query: { timeSlot },
+  } = useRouter();
+
+  const [isInitialized, setIsInitialized] = useState(false);
   const [height, setHeight] = useState(0);
 
   const ref = useResize<HTMLDivElement>((rect) => {
@@ -24,8 +37,21 @@ const TimeTable = ({
   useEffect(() => {
     if (ref.current) {
       setHeight(ref.current.offsetWidth);
+      setIsInitialized(true);
     }
   }, [ref]);
+
+  useEffect(() => {
+    const el = document.querySelector("#scrolled-container");
+
+    if (el && isInitialized) {
+      el.scrollTo({
+        left: 0,
+        top: timeSlotIndexMap[timeSlot as string] * height,
+        behavior: "smooth",
+      });
+    }
+  }, [isInitialized]);
 
   return (
     <S.TimeTableContainer>
