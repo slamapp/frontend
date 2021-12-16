@@ -14,7 +14,7 @@ interface Props {
   block?: boolean;
   disabled?: boolean;
   style?: CSSProperties;
-  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button: React.FC<Props> = ({
@@ -55,8 +55,8 @@ const fontSizeMap: { [key in Size]: string } = {
 const StyledButton = styled.button<Omit<Props, "children">>`
   ${({ theme, size, fullWidth, block }) => css`
     display: ${block ? "block" : "inline-block"};
-    width: ${fullWidth && "100%"};
-    padding: ${theme.buttonPaddings[size as Size]};
+    width: ${fullWidth ? "100%" : theme.buttonSizes[size as Size]};
+    padding: 0 ${theme.buttonRightLeftPaddings[size as Size]};
     background-color: ${theme.colors.gray900};
     color: ${theme.colors.white};
     font-size: ${theme.fontSizes[fontSizeMap[size as Size] as Size]};

@@ -41,14 +41,14 @@ const Reservations: NextPage = () => {
   ];
 
   return (
-    <div>
+    <Container>
       <TabStyle>
-        {menuTab.map((section, index) => {
+        {menuTab.map((section) => {
           return section.tabTitle;
         })}
       </TabStyle>
       <div>{menuTab[activeIndex].tabContent}</div>
-    </div>
+    </Container>
   );
 };
 
@@ -56,6 +56,10 @@ const TabStyle = styled.div`
   .is-active {
     color: red;
   }
+`;
+
+const Container = styled.div`
+  margin: ${({ theme }) => theme.gaps.base};
 `;
 
 export default Reservations;

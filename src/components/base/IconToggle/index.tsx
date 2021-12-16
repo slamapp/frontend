@@ -11,7 +11,7 @@ interface Props {
 const IconToggle: React.FC<Props> = ({ name, checked, onChange }) => {
   return (
     <StyledIconToggleLabel>
-      <Icon name="star" fill={checked} />
+      <Icon name="star" fill={checked} size="sm" />
       <input type="checkbox" checked={checked} onChange={onChange} />
     </StyledIconToggleLabel>
   );

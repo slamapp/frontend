@@ -5,6 +5,8 @@ import Icon, { FeatherIconNameType } from "../Icon";
 interface Props {
   name: FeatherIconNameType;
   className?: string;
+  size: "sm" | "md" | "lg";
+  iconSize?: "sm" | "md" | "lg" | number;
   type?: "button" | "submit";
   iconColor?: string;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -16,17 +18,24 @@ const IconButton = ({
   iconColor,
   className,
   onClick,
+  size = "lg",
+  iconSize = "sm",
 }: Props) => {
   return (
-    <StyledIconButton className={className} type={type} onClick={onClick}>
-      <Icon name={name} color={iconColor} size="sm" />
+    <StyledIconButton
+      className={className}
+      type={type}
+      onClick={onClick}
+      size={size}
+    >
+      <Icon name={name} color={iconColor} size={iconSize} />
     </StyledIconButton>
   );
 };
 
 export default IconButton;
 
-const StyledIconButton = styled.button`
+const StyledIconButton = styled.button<Pick<Props, "size">>`
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -34,6 +43,7 @@ const StyledIconButton = styled.button`
   background-color: ${({ theme }) => theme.colors.white};
   border: 2px solid ${({ theme }) => theme.colors.gray100};
   border-radius: ${({ theme }) => theme.borderRadiuses.lg};
-  padding: ${({ theme }) => theme.iconButtonPadding};
+  width: ${({ theme, size }) => theme.buttonSizes[size]};
+  height: ${({ theme, size }) => theme.buttonSizes[size]};
   cursor: pointer;
 `;

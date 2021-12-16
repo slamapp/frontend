@@ -1,8 +1,8 @@
-import { type } from "os";
 import React from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import ShareButton from "@components/ShareButton";
+import { CourtItem } from "@components/domain";
+import { Button, Spacer } from "@components/base";
 import Participants from "../Participants";
 import Loudspeaker from "../Loudspeaker";
 
@@ -20,11 +20,6 @@ interface ReserveList {
 }
 
 type ReserveLists = ReserveList[];
-
-const BorderDiv = styled.div`
-  border: 1px solid;
-  margin-top: 30px;
-`;
 
 const UpcomingReservations = () => {
   const DummyReserve = [
@@ -57,10 +52,11 @@ const UpcomingReservations = () => {
   ];
 
   return (
-    <>
+    <Spacer gap="md" type="vertical">
       {DummyReserve.map(
         ({
           reservationId,
+          courtId,
           startTime,
           endTime,
           courtName,
@@ -68,38 +64,40 @@ const UpcomingReservations = () => {
           latitude,
           longitude,
         }) => (
-          <BorderDiv key={reservationId}>
+          <ReservationItem key={reservationId}>
             <Loudspeaker reserve={{ startTime }} />
-            <p>{courtName}</p>
-            <p>
-              {startTime.substr(0, 4)}년{startTime.substr(5, 2)}월
-              {startTime.substr(8, 2)}일
-            </p>
-            <p>
-              {startTime.substr(11, 5)} - {endTime.substr(11, 5)}
-            </p>
+            <Spacer gap={10} type="vertical">
+              <CourtItem.Header>{courtName}</CourtItem.Header>
+              <CourtItem.Datetime
+                endDatetime={endTime}
+                startDatetime={startTime}
+              />
+            </Spacer>
             <p>{numberOfReservations} / 6 명</p>
-            <Link href="/">
-              <button>예약 보기</button>
-            </Link>
-            <Participants />
-            <a
-              href={`https://map.kakao.com/?urlX=${latitude}&urlY=${longitude}&name=${courtName}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <button>카카오맵</button>
-            </a>
-            <button>즐겨찾기</button>
-            <ShareButton />
-            <Link href="/chat">
-              <button>채팅</button>
-            </Link>
-          </BorderDiv>
+            <Actions gap="xs">
+              <CourtItem.FavoritesToggle courtId={courtId} />
+              <CourtItem.ShareButton />
+              <CourtItem.ChatLink courtId={courtId} />
+              <CourtItem.KakaoMapLink
+                latitude={latitude}
+                longitude={longitude}
+                courtName={courtName}
+              />
+            </Actions>
+          </ReservationItem>
         )
       )}
-    </>
+    </Spacer>
   );
 };
 
 export default UpcomingReservations;
+
+const ReservationItem = styled.div`
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  padding: 20px;
+`;
+const Actions = styled(Spacer)`
+  margin-top: ${({ theme }) => theme.gaps.sm};
+`;

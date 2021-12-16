@@ -70,10 +70,10 @@ const Favorites: NextPage = () => {
       {basketballCourts.map(
         ({ favoriteId, courtName, courtId, latitude, longitude }) => (
           <FavoriteItem key={favoriteId}>
-            <CourtItem.Header
-              courtName={courtName}
-              address={"실제 주소로 대체해주세요"}
-            />
+            <Spacer gap="xs" type="vertical">
+              <CourtItem.Header>{courtName}</CourtItem.Header>
+              <CourtItem.Address>{"주소 넣기"}</CourtItem.Address>
+            </Spacer>
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
               <CourtItem.ShareButton />
