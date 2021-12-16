@@ -194,7 +194,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     case navigationType.SET_NAVIGATION_TITLE: {
       return {
         ...prevState,
-        title: payload.title,
+        title: payload,
       };
     }
     case eventType.BIND: {
