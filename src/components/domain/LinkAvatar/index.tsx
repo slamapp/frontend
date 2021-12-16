@@ -4,6 +4,19 @@ import React from "react";
 
 type Size = "large" | "middle" | "small";
 
+const getSize = (size: Size) => {
+  switch (size) {
+    case "large":
+      return 50;
+    case "middle":
+      return 32;
+    case "small":
+      return 26;
+    default:
+      return 32;
+  }
+};
+
 interface Props {
   userId: string | number;
   imageUrl: string;
@@ -19,20 +32,3 @@ const LinkAvatar = ({ userId, imageUrl, size = "middle" }: Props) => {
 };
 
 export default LinkAvatar;
-
-const getSize = (size: Size) => {
-  switch (size) {
-    case "large":
-      return 50;
-      break;
-    case "middle":
-      return 32;
-      break;
-    case "small":
-      return 26;
-      break;
-    default:
-      return 32;
-      break;
-  }
-};
