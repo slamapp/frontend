@@ -36,19 +36,19 @@ const Favorites: NextPage = () => {
   const basketballCourts = [
     {
       favoriteId: 1,
-      courtId: 1,
+      courtId: 3,
       courtName: "용왕산 근린 공원 농구장",
-      latitude: 523954.0,
-      longitude: 1084098.0,
+      latitude: 34.567234,
+      longitude: 12.493048,
       createdAt: "2021-01-01T12:20:10",
       updatedAt: "2021-01-01T12:20:10",
     },
     {
       favoriteId: 2,
-      courtId: 2,
-      courtName: "백두산 근린 공원 농구장",
-      latitude: 533396.88,
-      longitude: 1084098.0,
+      courtId: 4,
+      courtName: "한강공원 농구장",
+      latitude: 34.567234,
+      longitude: 12.493048,
       createdAt: "2021-01-01T12:20:10",
       updatedAt: "2021-01-01T12:20:10",
     },
@@ -72,9 +72,7 @@ const Favorites: NextPage = () => {
           <FavoriteItem key={favoriteId}>
             <CourtItem.Header
               courtName={courtName}
-              address={
-                "실제 주소로 대체실제 주소로 대체실제 주소로 대체실제 주소로 대체실제 주소로 대체실제 주소로 대체실제 주소로 대체대체실제 주소로 대체실제 주소로 대체대체실제 주소로 대체실제 주소로 대체대체실제 주소로 대체실제 주소로 대체대체실제 주소로 대체실제 주소로 대체대체실제 주소로 대체실제 주소로 대체대체실제 주소로 대체실제 주소로 대체"
-              }
+              address={"실제 주소로 대체해주세요"}
             />
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />

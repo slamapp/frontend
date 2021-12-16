@@ -1,6 +1,6 @@
 import { Reducer } from "react";
 import { actionTypes, ActionTypeUnion } from "./actionTypes";
-import { Follow, mockNotifications, Notification } from "./types";
+import { Follow, Favorite, mockNotifications, Notification } from "./types";
 
 export interface DataProps {
   currentUser: {
@@ -11,6 +11,7 @@ export interface DataProps {
     role: string | null;
     description: string | null;
     nickname: string | null;
+    favorites: Favorite[];
     followers: Follow[];
     following: Follow[];
     notifications: Notification[];
@@ -32,6 +33,26 @@ export const initialData = {
     role: null,
     description: null,
     nickname: null,
+    favorites: [
+      {
+        favoriteId: 1,
+        courtId: 3,
+        courtName: "용왕산 근린 공원 농구장",
+        latitude: 34.567234,
+        longitude: 12.493048,
+        createdAt: "2021-01-01T12:20:10",
+        updatedAt: "2021-01-01T12:20:10",
+      },
+      {
+        favoriteId: 2,
+        courtId: 4,
+        courtName: "한강공원 농구장",
+        latitude: 34.567234,
+        longitude: 12.493048,
+        createdAt: "2021-01-01T12:20:10",
+        updatedAt: "2021-01-01T12:20:10",
+      },
+    ],
     followers: [],
     following: [],
     notifications: [...mockNotifications],
@@ -83,6 +104,28 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
           ...prevState.currentUser,
         },
         isLoading: false,
+      };
+    }
+    case actionTypes.CREATE_FAVORITE: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          favorites: [payload.favorite, ...prevState.currentUser.favorites],
+        },
+      };
+    }
+    case actionTypes.DELETE_FAVORITE: {
+      const { deletedFavoriteId } = payload;
+
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          favorites: prevState.currentUser.favorites.filter(
+            ({ favoriteId }) => favoriteId !== deletedFavoriteId
+          ),
+        },
       };
     }
     default: {
