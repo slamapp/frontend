@@ -73,6 +73,19 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "즐겨찾는 농구장",
       };
     }
+    case pageType.NOTIFICATIONS: {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: false,
+        currentPage: type,
+        isBack: true,
+        isNotifications: false,
+        isProfile: false,
+        isMenu: false,
+        title: "알림",
+      };
+    }
     case pageType.MAP: {
       return {
         ...prevState,

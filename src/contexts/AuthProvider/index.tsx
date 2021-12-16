@@ -4,8 +4,9 @@ import { useReducer, ReactNode, useEffect, useCallback } from "react";
 import userAPI from "@service/userApi";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
-import { actionTypes } from "./actionTypes";
+import { authTypes } from "./actionTypes";
 import AuthLoading from "./AuthLoading";
+import { Notification } from "./types";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
@@ -20,29 +21,29 @@ const AuthProvider = ({ children }: Props) => {
 
   const logout = useCallback(() => {
     localStorage.clear();
-    dispatch({ type: actionTypes.CLEAR_CURRENT_USER });
+    dispatch({ type: authTypes.CLEAR_CURRENT_USER });
     router.replace("/login");
     setTimeout(() => {
-      dispatch({ type: actionTypes.LOADING_OFF });
+      dispatch({ type: authTypes.LOADING_OFF });
     }, LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS);
   }, [router]);
 
   const getCurrentUser = useCallback(async () => {
-    dispatch({ type: actionTypes.LOADING_ON });
+    dispatch({ type: authTypes.LOADING_ON });
     try {
       const data = await userAPI.getUserData();
-      dispatch({ type: actionTypes.GET_CURRENT_USER, payload: data });
+      dispatch({ type: authTypes.GET_CURRENT_USER, payload: data });
     } catch (error) {
       logout();
     } finally {
-      dispatch({ type: actionTypes.LOADING_OFF });
+      dispatch({ type: authTypes.LOADING_OFF });
     }
   }, [logout]);
 
   const createFavorite = useCallback((courtId: number) => {
     // TODO create api call하여 받아온 response로 대체
     dispatch({
-      type: actionTypes.CREATE_FAVORITE,
+      type: authTypes.CREATE_FAVORITE,
       payload: {
         favorite: {
           favoriteId: 5,
@@ -60,18 +61,24 @@ const AuthProvider = ({ children }: Props) => {
   const deleteFavorite = useCallback((favoriteId: number) => {
     // TODO: delete api call하여 받아온 response로 대체
     dispatch({
-      type: actionTypes.DELETE_FAVORITE,
+      type: authTypes.DELETE_FAVORITE,
       payload: {
         deletedFavoriteId: favoriteId,
       },
     });
   }, []);
+  const pushNotification = (notification: Notification) => {
+    dispatch({
+      type: authTypes.PUSH_NOTIFICATION,
+      payload: { notification },
+    });
+  };
 
   useEffect(() => {
     if (token) {
       getCurrentUser();
     } else {
-      dispatch({ type: actionTypes.LOADING_OFF });
+      dispatch({ type: authTypes.LOADING_OFF });
     }
   }, []);
 
@@ -83,6 +90,7 @@ const AuthProvider = ({ children }: Props) => {
         logout,
         createFavorite,
         deleteFavorite,
+        pushNotification,
       }}
     >
       <AuthLoading />

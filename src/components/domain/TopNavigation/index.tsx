@@ -1,9 +1,10 @@
 import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { Icon, Avatar, Badge } from "@components/base";
+import { Icon, Badge } from "@components/base";
 import { useRouter } from "next/router";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
+import LinkAvatar from "../LinkAvatar";
 
 interface Props {
   isTransparent: boolean;
@@ -49,31 +50,23 @@ const TopNavigation = forwardRef<HTMLElement, Props>(
           <IconGroup>
             {isNotifications && (
               <Badge count={0} maxCount={10}>
-                <Link href="/notifications">
-                  <a>
-                    <Icon name="bell" size={24} />
-                  </a>
+                <Link href="/notifications" passHref>
+                  <Icon name="bell" size={24} />
                 </Link>
               </Badge>
             )}
             {isProfile && (
-              <Link href={`/user/${userId || 1}`}>
-                <a>
-                  <Avatar
-                    size={32}
-                    src={
-                      profileImageUrl ||
-                      "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                    }
-                  />
-                </a>
-              </Link>
+              <LinkAvatar
+                userId={userId || 1}
+                imageUrl={
+                  profileImageUrl ||
+                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                }
+              />
             )}
             {isMenu && (
-              <Link href={`/user/menu`}>
-                <a>
-                  <Icon name="menu" size={24} />
-                </a>
+              <Link href={`/user/menu`} passHref>
+                <Icon name="menu" size={24} />
               </Link>
             )}
 

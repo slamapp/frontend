@@ -5,6 +5,7 @@ import AvatarGroup from "./AvatarGroup";
 import { AvatarShape } from "./types";
 
 export interface Props {
+  className?: string;
   lazy?: boolean;
   threshold?: number;
   src: string;
@@ -18,6 +19,7 @@ export interface Props {
 }
 
 const Avatar = ({
+  className,
   lazy,
   threshold,
   src,
@@ -39,7 +41,7 @@ const Avatar = ({
   }, [src]);
 
   return (
-    <AvatarWrapper shape={shape} {...props}>
+    <AvatarWrapper className={className} shape={shape} {...props}>
       <ImageComponent
         block
         lazy={lazy}
@@ -59,6 +61,7 @@ const Avatar = ({
 
 interface AvatarWrapperProps {
   shape: AvatarShape;
+  className?: string;
 }
 
 const ShapeToCssValue = {
@@ -74,6 +77,9 @@ const AvatarWrapper = styled.div<AvatarWrapperProps>`
   border-radius: ${({ shape }) => ShapeToCssValue[shape]};
   background-color: #eee;
   overflow: hidden;
+  :hover {
+    cursor: pointer;
+  }
 
   > img {
     transition: opacity 0.2s ease;

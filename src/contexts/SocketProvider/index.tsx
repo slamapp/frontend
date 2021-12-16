@@ -12,24 +12,24 @@ const SocketProvider = ({ children }: Props) => {
   const [token, _] = useLocalToken();
   const { isConnected, isLoading, sendAuth } = useStomp(token);
 
-  const sendTestOn = (body: { [x: string]: any }) => {
-    sendAuth("/teston", body);
-  };
-
-  const sendChat = (body: { [x: string]: any }) => {
-    sendAuth("/chat", body);
-  };
-
   const sendObject = (body: { [x: string]: any }) => {
     sendAuth(`/object`, body);
+  };
+
+  const sendFollow = (body: { receiverId: number }) => {
+    sendAuth(`/follow`, body);
+  };
+
+  const sendFollowCancel = (body: { receiverId: number }) => {
+    sendAuth(`/followcancel`, body);
   };
 
   return (
     <Context.Provider
       value={{
-        sendTestOn,
-        sendChat,
         sendObject,
+        sendFollow,
+        sendFollowCancel,
       }}
     >
       {isLoading ? (

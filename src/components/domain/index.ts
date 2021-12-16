@@ -13,3 +13,4 @@ export { default as BottomFixedButton } from "./BottomFixedButton";
 export { default as Logo } from "./Logo";
 export { default as NotificationList } from "./NotificationList";
 export { default as CourtItem } from "./CourtItem";
+export { default as LinkAvatar } from "./LinkAvatar";

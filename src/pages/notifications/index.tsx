@@ -3,32 +3,42 @@ import React from "react";
 import UtilRoute from "UtilRoute";
 import { useNavigationContext, useSocketContext } from "@contexts/hooks";
 import { NotificationList } from "@components/domain";
+import styled from "@emotion/styled";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
-  const { sendTestOn, sendChat, sendObject } = useSocketContext();
+  const { sendObject, sendFollow, sendFollowCancel } = useSocketContext();
 
   useMountPage((page) => page.NOTIFICATIONS);
 
-  const handleClickTestOn = () => {
-    sendTestOn({ text: "testOn" });
-  };
-  const handleClickChat = () => {
-    sendChat({ userId: 2 });
-  };
   const handleClickObject = () => {
     sendObject({ userId: 1 });
   };
+  const handleClickFollow = () => {
+    sendFollow({ receiverId: 1 });
+  };
+  const handleClickFollowCancel = () => {
+    sendFollowCancel({ receiverId: 1 });
+  };
 
   return (
-    <div>
-      NotificationsPage
-      <button onClick={handleClickTestOn}>send to test</button>
-      <button onClick={handleClickChat}>send to chat</button>
+    <PageConainer>
       <button onClick={handleClickObject}>send to object</button>
+      <button onClick={handleClickFollow}>follow</button>
+      <button onClick={handleClickFollowCancel}>followCancel</button>
       <NotificationList />
-    </div>
+      <IntersectionObserverContainer />
+    </PageConainer>
   );
 });
 
 export default NotificationsPage;
+
+const PageConainer = styled.div`
+  flex: 1;
+`;
+
+const IntersectionObserverContainer = styled.div`
+  height: 100px;
+  background: red;
+`;

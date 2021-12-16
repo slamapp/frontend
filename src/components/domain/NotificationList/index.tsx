@@ -1,4 +1,5 @@
 import { useAuthContext } from "@contexts/hooks";
+import styled from "@emotion/styled";
 import React from "react";
 import NotificationItem from "./NotificationItem";
 
@@ -7,15 +8,20 @@ const NotificationList = () => {
   const { notifications } = authProps.currentUser;
 
   return (
-    <div>
+    <NotificationListContainer>
       {notifications.map((notification) => (
         <NotificationItem
           key={notification.notificationId}
           notification={notification}
         />
       ))}
-    </div>
+    </NotificationListContainer>
   );
 };
 
 export default NotificationList;
+
+const NotificationListContainer = styled.div`
+  height: 100%;
+  background: orange;
+`;

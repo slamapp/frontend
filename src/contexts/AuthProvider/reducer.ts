@@ -1,5 +1,5 @@
 import { Reducer } from "react";
-import { actionTypes, ActionTypeUnion } from "./actionTypes";
+import { authTypes, ActionTypeUnion } from "./actionTypes";
 import { Follow, Favorite, mockNotifications, Notification } from "./types";
 
 export interface DataProps {
@@ -65,7 +65,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
   { type, payload }
 ) => {
   switch (type) {
-    case actionTypes.GET_CURRENT_USER: {
+    case authTypes.GET_CURRENT_USER: {
       return {
         ...prevState,
         currentUser: {
@@ -82,13 +82,13 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case actionTypes.CLEAR_CURRENT_USER: {
+    case authTypes.CLEAR_CURRENT_USER: {
       return {
         ...prevState,
         ...initialData,
       };
     }
-    case actionTypes.LOADING_ON: {
+    case authTypes.LOADING_ON: {
       return {
         ...prevState,
         currentUser: {
@@ -97,7 +97,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isLoading: true,
       };
     }
-    case actionTypes.LOADING_OFF: {
+    case authTypes.LOADING_OFF: {
       return {
         ...prevState,
         currentUser: {
@@ -106,7 +106,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isLoading: false,
       };
     }
-    case actionTypes.CREATE_FAVORITE: {
+    case authTypes.CREATE_FAVORITE: {
       return {
         ...prevState,
         currentUser: {
@@ -115,7 +115,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case actionTypes.DELETE_FAVORITE: {
+    case authTypes.DELETE_FAVORITE: {
       const { deletedFavoriteId } = payload;
 
       return {
