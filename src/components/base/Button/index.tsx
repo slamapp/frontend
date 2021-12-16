@@ -55,7 +55,8 @@ const fontSizeMap: { [key in Size]: string } = {
 const StyledButton = styled.button<Omit<Props, "children">>`
   ${({ theme, size, fullWidth, block }) => css`
     display: ${block ? "block" : "inline-block"};
-    width: ${fullWidth ? "100%" : theme.buttonSizes[size as Size]};
+    height: ${theme.buttonHeights[size!]};
+    width: ${fullWidth && "100%"};
     padding: 0 ${theme.buttonRightLeftPaddings[size as Size]};
     background-color: ${theme.colors.gray900};
     color: ${theme.colors.white};
