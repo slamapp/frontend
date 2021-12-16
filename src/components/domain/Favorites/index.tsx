@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 import Spacer from "@components/base/Spacer";
 import Link from "next/link";
-import styled from "@emotion/styled";
 import { NextPage } from "next";
-import ShareButton from "@components/ShareButton";
+import styled from "@emotion/styled";
+
 import { useNavigationContext } from "@contexts/hooks";
+import CourtItem from "../CourtItem";
 
 interface BasketballCourt {
   favoriteId: number;
   courtId: number;
   courtName: string;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,19 +36,19 @@ const Favorites: NextPage = () => {
   const basketballCourts = [
     {
       favoriteId: 1,
-      courtId: 1,
+      courtId: 3,
       courtName: "용왕산 근린 공원 농구장",
-      latitude: 523954.0,
-      longtitude: 1084098.0,
+      latitude: 34.567234,
+      longitude: 12.493048,
       createdAt: "2021-01-01T12:20:10",
       updatedAt: "2021-01-01T12:20:10",
     },
     {
       favoriteId: 2,
-      courtId: 2,
-      courtName: "백두산 근린 공원 농구장",
-      latitude: 533396.88,
-      longtitude: 1084098.0,
+      courtId: 4,
+      courtName: "한강공원 농구장",
+      latitude: 34.567234,
+      longitude: 12.493048,
       createdAt: "2021-01-01T12:20:10",
       updatedAt: "2021-01-01T12:20:10",
     },
@@ -65,36 +66,39 @@ const Favorites: NextPage = () => {
   }
 
   return (
-    <Spacer gap="base">
+    <Spacer gap="base" type="vertical">
       {basketballCourts.map(
-        ({ favoriteId, courtName, latitude, longtitude }) => (
-          <BorderDiv key={favoriteId}>
-            <p>{courtName}</p>
-            <button>즐겨찾기</button>
-            <Link href="/chat">
-              <button>채팅</button>
-            </Link>
-            <ShareButton />
-            <Link href="/reserve">
-              <button>예약하기</button>
-            </Link>
-            <a
-              href={`https://map.kakao.com/?urlX=${latitude}&urlY=${longtitude}&name=${courtName}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <button>카카오맵</button>
-            </a>
-          </BorderDiv>
+        ({ favoriteId, courtName, courtId, latitude, longitude }) => (
+          <FavoriteItem key={favoriteId}>
+            <Spacer gap="xs" type="vertical">
+              <CourtItem.Header>{courtName}</CourtItem.Header>
+              <CourtItem.Address>{"주소 넣기"}</CourtItem.Address>
+            </Spacer>
+            <Actions gap="xs">
+              <CourtItem.FavoritesToggle courtId={courtId} />
+              <CourtItem.ShareButton />
+              <CourtItem.ChatLink courtId={courtId} />
+              <CourtItem.KakaoMapLink
+                latitude={latitude}
+                longitude={longitude}
+                courtName={courtName}
+              />
+            </Actions>
+          </FavoriteItem>
         )
       )}
     </Spacer>
   );
 };
 
-const BorderDiv = styled.div`
-  border: 1px solid;
-  margin-top: 30px;
+const Actions = styled(Spacer)`
+  margin-top: 40px;
+`;
+
+const FavoriteItem = styled.div`
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: ${({ theme }) => theme.borderRadiuses.lg};
+  padding: 20px;
 `;
 
 export default Favorites;

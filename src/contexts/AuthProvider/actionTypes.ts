@@ -3,6 +3,8 @@ export const actionTypes = {
   CLEAR_CURRENT_USER: "CLEAR_CURRENT_USER",
   LOADING_ON: "LOADING_ON",
   LOADING_OFF: "LOADING_OFF",
+  CREATE_FAVORITE: "CREATE_FAVORITE",
+  DELETE_FAVORITE: "DELETE_FAVORITE",
 } as const;
 
 export type ActionType = typeof actionTypes;

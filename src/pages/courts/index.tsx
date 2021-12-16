@@ -1,19 +1,20 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { getCurrentLocation } from "@utils/geolocation";
-import { ModalSheet } from "@components/base";
+import { Button, ModalSheet, Spacer, Text } from "@components/base";
 import {
   DatePicker,
   SlotPicker,
   BasketballMarker,
   Map,
   SlotKeyUnion,
+  CourtItem,
 } from "@components/domain";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
+import Link from "next/link";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -55,27 +56,31 @@ const getSlotFromDate = (date: Date): SlotKeyUnion => {
 const dummyBasketballCourts = [
   {
     courtId: 6,
-    name: "한나 농구장",
-    position: [37.53526455544585, 126.90261795958715],
-    number: 6,
+    courtName: "한나 농구장",
+    latitude: 37.53526455544585,
+    longitude: 126.90261795958715,
+    courtReservation: 6,
   },
   {
     courtId: 3,
-    name: "헤이헤이 농구장",
-    position: [37.538227498425, 126.902404444577],
-    number: 3,
+    courtName: "헤이헤이 농구장",
+    latitude: 37.538227498425,
+    longitude: 126.902404444577,
+    courtReservation: 3,
   },
   {
     courtId: 0,
-    name: "플로라로라 농구장",
-    position: [37.5347279, 126.9033882],
-    number: 0,
+    courtName: "플로라로라 농구장",
+    latitude: 37.5347279,
+    longitude: 126.9033882,
+    courtReservation: 0,
   },
   {
     courtId: 10,
-    name: "젤리젤리 농구장",
-    position: [37.5347279, 126.9023882],
-    number: 10,
+    courtName: "젤리젤리 농구장",
+    latitude: 37.5347279,
+    longitude: 126.9023882,
+    courtReservation: 10,
   },
 ];
 
@@ -100,7 +105,7 @@ const Courts: NextPage = () => {
   );
 
   // TODO: API 명세 나올 경우 any 수정해주기
-  const [selectedCourt, setSelectedCourt] = useState<any>();
+  const [selectedCourt, setSelectedCourt] = useState<any>(null);
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [snap, setSnap] = useState<number>(1);
@@ -110,7 +115,7 @@ const Courts: NextPage = () => {
   }, []);
 
   // TODO: 노체 코드와 동일한 부분 중복 줄이기, hooks로 빼기
-  const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
+  const searchAddrFromCoords = (latitude: number, longitude: number) => {
     const geocoder = new kakao.maps.services.Geocoder();
 
     setIsAddressLoading(true);
@@ -173,7 +178,7 @@ const Courts: NextPage = () => {
 
   const handleMarkerClick = useCallback((court: any) => {
     setIsOpen(true);
-    searchAddrFromCoords(court.position);
+    searchAddrFromCoords(court.latitude, court.longitude);
     setSelectedCourt(court);
   }, []);
 
@@ -232,28 +237,35 @@ const Courts: NextPage = () => {
       )}
 
       <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
-        {isAddressLoading ? (
-          <div>로딩중...</div>
-        ) : (
-          <>
-            <div>{selectedCourt?.name}</div>
-            <div>{selectedCourt?.address}</div>
-            <div>{selectedCourt?.number}</div>
-            <button type="button">즐겨찾기</button>
-            <Link href={`/chatroom/court/${selectedCourt?.courtId}`} passHref>
-              <button type="button">채팅방</button>
-            </Link>
-            <button type="button">공유하기</button>
-            <Link href="/reserve" passHref>
-              <button type="button">참여하기</button>
-            </Link>
+        {selectedCourt && (
+          <ModalContentContainer>
+            <Spacer gap="xs" type="vertical">
+              <CourtItem.Header>{selectedCourt.courtName}</CourtItem.Header>
+              <CourtItem.Address>{selectedCourt.address}</CourtItem.Address>
+            </Spacer>
+            <ReservationCount block strong size="lg">
+              {selectedCourt.courtReservation} 명
+            </ReservationCount>
+            <Actions gap="xs">
+              <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
+              <CourtItem.ShareButton />
+              <CourtItem.ChatLink courtId={selectedCourt.courtId} />
+              <CourtItem.KakaoMapLink
+                latitude={selectedCourt.latitude}
+                longitude={selectedCourt.longitude}
+                courtName={selectedCourt.courtName}
+              />
+              <Button style={{ flex: 1 }} size="lg">
+                예약하기
+              </Button>
+            </Actions>
 
             {snap === 0 ? (
               <>
                 <div>농구장 사진</div>
                 <div
                   style={{
-                    width: "80%",
+                    width: "100%",
                     height: 200,
                     backgroundColor: "orange",
                   }}
@@ -265,7 +277,7 @@ const Courts: NextPage = () => {
                 <div>고무고무</div>
               </>
             ) : null}
-          </>
+          </ModalContentContainer>
         )}
       </ModalSheet>
     </>
@@ -280,4 +292,18 @@ const TopFixedSlotPicker = styled(SlotPicker)`
   right: 12px;
   z-index: 10;
   filter: ${({ theme }) => theme.filter.dropShadow};
+`;
+
+const Actions = styled(Spacer)`
+  margin-top: ${({ theme }) => theme.gaps.sm};
+`;
+
+const ModalContentContainer = styled.div`
+  margin: 0 20px;
+  margin-top: 10px;
+`;
+
+const ReservationCount = styled(Text)`
+  color: ${({ theme }) => theme.colors.gray800};
+  margin-top: ${({ theme }) => theme.gaps.md};
 `;

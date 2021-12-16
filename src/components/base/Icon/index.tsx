@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 
 interface Props {
   name: FeatherIconNameType;
-  size?: "sm" | "md" | number;
+  size?: "sm" | "md" | "lg" | number;
   strokeWidth?: number;
   rotate?: number;
   color?: string;

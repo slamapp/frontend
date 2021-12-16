@@ -14,11 +14,11 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
     if (map) {
       let imageSrc = "/assets/basketball/fire_off_400.gif";
       imageSrc =
-        court.number === PAUSE_COURT_NUMBER
+        court.courtReservation === PAUSE_COURT_NUMBER
           ? "/assets/basketball/animation_off_400.png"
           : imageSrc;
       imageSrc =
-        court.number >= FIRE_COURT_NUMBER
+        court.courtReservation >= FIRE_COURT_NUMBER
           ? "/assets/basketball/fire_on_400.gif"
           : imageSrc;
       const imageSize = new kakao.maps.Size(80, 150);
@@ -33,8 +33,8 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
       );
 
       const markerPosition = new kakao.maps.LatLng(
-        court.position[0],
-        court.position[1]
+        court.latitude,
+        court.longitude
       );
 
       const marker = new kakao.maps.Marker({

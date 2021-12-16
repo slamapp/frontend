@@ -39,6 +39,34 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, [logout]);
 
+  const createFavorite = useCallback((courtId: number) => {
+    // TODO create api call하여 받아온 response로 대체
+    dispatch({
+      type: actionTypes.CREATE_FAVORITE,
+      payload: {
+        favorite: {
+          favoriteId: 5,
+          courtId,
+          courtName: "새로 생성된 농구장",
+          latitude: 34.567234,
+          longitude: 12.493048,
+          createdAt: "2021-01-01T12:20:10",
+          updatedAt: "2021-01-01T12:20:10",
+        },
+      },
+    });
+  }, []);
+
+  const deleteFavorite = useCallback((favoriteId: number) => {
+    // TODO: delete api call하여 받아온 response로 대체
+    dispatch({
+      type: actionTypes.DELETE_FAVORITE,
+      payload: {
+        deletedFavoriteId: favoriteId,
+      },
+    });
+  }, []);
+
   useEffect(() => {
     if (token) {
       getCurrentUser();
@@ -53,6 +81,8 @@ const AuthProvider = ({ children }: Props) => {
         authProps,
         getCurrentUser,
         logout,
+        createFavorite,
+        deleteFavorite,
       }}
     >
       <AuthLoading />

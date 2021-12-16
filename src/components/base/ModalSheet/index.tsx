@@ -16,9 +16,6 @@ const CustomSheet = styled(Sheet)`
     right: 0;
     margin: auto;
   }
-  .react-modal-sheet-content {
-    text-align: center;
-  }
 `;
 
 const ModalSheet: React.FC<Props> = ({ isOpen, onClose, children, onSnap }) => {
@@ -26,7 +23,7 @@ const ModalSheet: React.FC<Props> = ({ isOpen, onClose, children, onSnap }) => {
     <CustomSheet
       isOpen={isOpen}
       onClose={onClose}
-      snapPoints={[600 + 56, 300 + 56]}
+      snapPoints={[600 + 56, 270 + 56]}
       initialSnap={1}
       onSnap={onSnap}
     >

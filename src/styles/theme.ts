@@ -55,6 +55,7 @@ const theme = {
   iconSize: {
     sm: "20px",
     md: "24px",
+    lg: "28px",
   },
   avatarSizes: {
     sm: "26px",
@@ -63,10 +64,15 @@ const theme = {
   },
   iconButtonPadding: "13px",
   chipPadding: "10px 16px",
-  buttonPaddings: {
-    sm: "6px 16px",
-    md: "10px 20px",
-    lg: "15px 20px",
+  buttonSizes: {
+    sm: "27px",
+    md: "38px",
+    lg: "50px",
+  },
+  buttonRightLeftPaddings: {
+    sm: "16px",
+    md: "20px",
+    lg: "20px",
   },
   fontSizes: {
     xs: "12px",

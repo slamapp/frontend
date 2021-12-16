@@ -12,6 +12,7 @@ interface Props {
   color?: string;
   mark?: boolean;
   code?: boolean;
+
   [x: string]: any;
 }
 
