@@ -56,7 +56,7 @@ const Container = styled.div`
     box-sizing: border-box;
     width: 100%;
     background-color: ${theme.colors.white};
-    padding: ${theme.buttonPaddings.lg};
+    padding: ${theme.inputPadding};
     border-radius: ${theme.borderRadiuses.lg};
     border: 1px solid ${theme.colors.gray300};
     margin-top: ${theme.gaps.xs};

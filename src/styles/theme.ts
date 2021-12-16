@@ -64,6 +64,7 @@ const theme = {
   },
   iconButtonPadding: "13px",
   chipPadding: "10px 16px",
+  inputPadding: "15px 20px",
   buttonHeights: {
     sm: "27px",
     md: "38px",
