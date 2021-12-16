@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import Link from "next/link";
 import { CourtItem } from "@components/domain";
 import { Button, Spacer } from "@components/base";
-import Participants from "../Participants";
+import Participants from "../../domain/Participants";
 import Loudspeaker from "../Loudspeaker";
 
 interface ReserveList {

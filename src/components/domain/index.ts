@@ -11,6 +11,7 @@ export { default as Map } from "./KakaoMap";
 export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker";
 export { default as BottomFixedButton } from "./BottomFixedButton";
 export { default as Logo } from "./Logo";
-export { default as NotificationList } from "./NotificationList";
 export { default as CourtItem } from "./CourtItem";
 export { default as LinkAvatar } from "./LinkAvatar";
+export { default as Participants } from "./Participants";
+export { default as FollowList } from "./FollowList";

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Avatar, Button, IconButton, Spacer, Text } from "@components/base";
+import { Button, IconButton, Spacer } from "@components/base";
+import FollowList from "../FollowList/index";
 
 interface PlayerList {
   followId: number;
@@ -8,15 +9,13 @@ interface PlayerList {
   nickname: string;
   isFollowed: boolean;
   profileImage: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 type PlayerLists = PlayerList[];
 
 const Participants = () => {
   const [visible, setVisible] = useState(false);
-  const [state, setState] = useState([
+  const [users, setUsers] = useState([
     {
       followId: 3,
       userId: 2,
@@ -45,41 +44,34 @@ const Participants = () => {
   ]);
 
   const toggleIsFollow = (userId: number) => {
-    const newState = state.map((_state) =>
-      _state.userId === userId
-        ? { ..._state, isFollowed: !_state.isFollowed }
-        : _state
+    const newState = users.map((user) =>
+      user.userId === userId ? { ...user, isFollowed: !user.isFollowed } : user
     );
-    setState(newState);
+    setUsers(newState);
   };
 
   return (
     <Spacer gap="lg" type="vertical">
       <div>
-        {visible ? (
+        {!visible ? (
           <IconButton
             name="users"
             type="button"
             onClick={() => setVisible(!visible)}
-          ></IconButton>
+          />
         ) : (
           <IconButton
             name="users"
             type="button"
             onClick={() => setVisible(!visible)}
-          ></IconButton>
+          />
         )}
       </div>
       {visible && (
         <Spacer gap="xs" type="vertical">
-          {state.map(({ userId, profileImage, nickname, isFollowed }) => (
-            <FollowLists className="follow-list" key={userId}>
-              <FollowList>
-                <Avatar shape="circle" size={36} src={profileImage} />
-                <Text size="base" strong>
-                  {nickname}
-                </Text>
-              </FollowList>
+          {users.map(({ userId, profileImage, nickname, isFollowed }) => (
+            <FollowLists key={userId}>
+              <FollowList src={profileImage}>{nickname}</FollowList>
               <div>
                 {isFollowed ? (
                   <Button onClick={() => toggleIsFollow(userId)}>팔로잉</Button>
@@ -103,11 +95,4 @@ const FollowLists = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const FollowList = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
 `;

@@ -2,9 +2,9 @@ import { type } from "os";
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { CourtItem } from "@components/domain";
 import { Spacer } from "@components/base";
-import Participants from "../Participants";
+import { CourtItem } from "@components/domain";
+import Participants from "../../domain/Participants";
 
 interface ReserveList {
   reservationId: number;
