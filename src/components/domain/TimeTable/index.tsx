@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { useResize } from "@hooks/.";
 import { Image, Spacer, Text } from "@components/base";
 import { useRouter } from "next/router";
-import { TimeBlockUnit, ActionTimeBlockUnit } from "./TimeBlockUnits";
+import { TimeBlockUnit, ActionTimeBlockUnit, Header } from "./TimeBlockUnits";
 import TimeRangeSelector from "./TimeRangeSelector";
 import * as S from "./style";
 
@@ -56,65 +56,72 @@ const TimeTable = ({
   }, [isInitialized]);
 
   return (
-    <S.TimeTableContainer>
-      <ActionTimeBlockUnit rowRef={ref} height={height} previous />
-      {timeTable.map((item: any, index: number) => (
-        <TimeBlockUnit
-          height={height}
-          key={index}
-          index={index}
-          reservationCount={item.peopleCount}
-          ballCount={item.ballCount}
-          hasReservation={item.hasReservation}
-          onClickStatusBlock={onClickStatusBlock}
-          selected={startIndex === index}
-          step={step}
-        />
-      ))}
-      {step === 2 && (
-        <TimeRangeSelector
-          unit={height}
-          startIndex={startIndex}
-          endIndex={endIndex}
-        />
-      )}
-      {existedReservations.map(
-        ({ reservationId, startIndex, endIndex }: any) => (
-          <>
-            {step === 2 && selectedReservationId === reservationId ? null : (
-              <S.ReservationMarker
-                key={reservationId}
-                width={height}
-                height={height * (endIndex - startIndex + 1)}
-                top={height * (startIndex + 1)}
-                left={height}
-                selected={reservationId === selectedReservationId}
-                onClick={() => onClickReservationMarker(reservationId)}
-              >
-                <Spacer
-                  gap="xxs"
-                  type="vertical"
-                  style={{
-                    alignItems: "center",
-                  }}
+    <div
+      style={{
+        position: "relative",
+      }}
+    >
+      <Header />
+      <S.TimeTableContainer>
+        <ActionTimeBlockUnit rowRef={ref} height={height} previous />
+        {timeTable.map((item: any, index: number) => (
+          <TimeBlockUnit
+            height={height}
+            key={index}
+            index={index}
+            reservationCount={item.peopleCount}
+            ballCount={item.ballCount}
+            hasReservation={item.hasReservation}
+            onClickStatusBlock={onClickStatusBlock}
+            selected={startIndex === index}
+            step={step}
+          />
+        ))}
+        {step === 2 && (
+          <TimeRangeSelector
+            unit={height}
+            startIndex={startIndex}
+            endIndex={endIndex}
+          />
+        )}
+        {existedReservations.map(
+          ({ reservationId, startIndex, endIndex }: any) => (
+            <>
+              {step === 2 && selectedReservationId === reservationId ? null : (
+                <S.ReservationMarker
+                  key={reservationId}
+                  width={height}
+                  height={height * (endIndex - startIndex + 1)}
+                  top={height * (startIndex + 1)}
+                  left={height}
+                  selected={reservationId === selectedReservationId}
+                  onClick={() => onClickReservationMarker(reservationId)}
                 >
-                  <ImageWrapper>
-                    <Image
-                      src="/assets/basketball/only_ball_500.gif"
-                      alt="basketball"
-                    />
-                  </ImageWrapper>
-                  <Label block strong>
-                    내 예약
-                  </Label>
-                </Spacer>
-              </S.ReservationMarker>
-            )}
-          </>
-        )
-      )}
-      <ActionTimeBlockUnit height={height} next />
-    </S.TimeTableContainer>
+                  <Spacer
+                    gap="xxs"
+                    type="vertical"
+                    style={{
+                      alignItems: "center",
+                    }}
+                  >
+                    <ImageWrapper>
+                      <Image
+                        src="/assets/basketball/only_ball_500.gif"
+                        alt="basketball"
+                      />
+                    </ImageWrapper>
+                    <Label block strong>
+                      내 예약
+                    </Label>
+                  </Spacer>
+                </S.ReservationMarker>
+              )}
+            </>
+          )
+        )}
+        <ActionTimeBlockUnit height={height} next />
+      </S.TimeTableContainer>
+    </div>
   );
 };
 

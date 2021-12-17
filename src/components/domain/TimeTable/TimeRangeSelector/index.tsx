@@ -14,6 +14,7 @@ const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
           width: unit * 4,
           position: "absolute",
           left: unit,
+          // TODO: wrapper 추가
           top: unit * (startIndex + 1) - 23,
         }}
       />

@@ -10,12 +10,19 @@ const OneSixthColumn = styled.div`
   flex-grow: 1;
   flex-basis: 0;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const FourSixthColumn = styled.div`
   flex-grow: 4;
   flex-basis: 0;
   height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const HourColumn = styled(OneSixthColumn)`
@@ -147,6 +154,17 @@ const ReservationMarker = styled.div<any>`
   box-sizing: border-box;
 `;
 
+const NavigationBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  border: 4px solid ${({ theme }) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.white};
+  width: calc(100% - 32px);
+  padding: 6px 0px;
+`;
+
 export {
   TimeTableContainer,
   OneSixthColumn,
@@ -159,4 +177,5 @@ export {
   VerticalDivider,
   Selector,
   ReservationMarker,
+  NavigationBlock,
 };
