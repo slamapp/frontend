@@ -146,6 +146,18 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
+    case authTypes.PUSH_NOTIFICATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          notifications: [
+            ...prevState.currentUser.notifications,
+            payload.notification,
+          ],
+        },
+      };
+    }
     default: {
       return { ...prevState };
     }
