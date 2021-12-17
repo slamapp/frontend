@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Spacer from "@components/base/Spacer";
 import Link from "next/link";
 import { NextPage } from "next";
+import UtilRoute from "UtilRoute";
 import styled from "@emotion/styled";
 import { Button, Icon, Image, Text } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
@@ -15,12 +16,10 @@ declare global {
   }
 }
 
-const Favorites: NextPage = () => {
-  const {
-    authProps: {
-      currentUser: { userId },
-    },
-  } = useAuthContext();
+const Favorites: NextPage = UtilRoute("private", () => {
+  const { authProps } = useAuthContext();
+  const { userId } = authProps.currentUser;
+
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.FAVORITES);
 
@@ -134,7 +133,7 @@ const Favorites: NextPage = () => {
       )}
     </Spacer>
   );
-};
+});
 
 const Actions = styled(Spacer)`
   margin-top: 40px;
