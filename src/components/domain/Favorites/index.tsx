@@ -5,6 +5,7 @@ import { NextPage } from "next";
 import styled from "@emotion/styled";
 import { Button, Icon, Image, Text } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
+import Paragraph from "@components/base/Skeleton/Paragraph";
 import favoriteAPI from "@service/favoriteApi";
 import CourtItem from "../CourtItem";
 
@@ -49,7 +50,31 @@ const Favorites: NextPage = () => {
   }, [userId]);
 
   if (isLoading) {
-    return <>Loading</>;
+    return (
+      <Spacer gap="base" type="vertical">
+        <FavoriteItem>
+          <Paragraph line={4} fontSize={20} lineHeight={2.0} lineBreak={1} />
+        </FavoriteItem>
+        <FavoriteItem>
+          <Paragraph
+            line={4}
+            fontSize={20}
+            lineHeight={2.0}
+            stepPercentage={10}
+            lineBreak={1}
+          />
+        </FavoriteItem>
+        <FavoriteItem>
+          <Paragraph
+            line={4}
+            fontSize={20}
+            lineHeight={2.0}
+            stepPercentage={10}
+            lineBreak={1}
+          />
+        </FavoriteItem>
+      </Spacer>
+    );
   }
 
   if (favorites.length === 0) {
