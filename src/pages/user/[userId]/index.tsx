@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Avatar, Button, Label, Spacer, Chip } from "@components/base";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
+import { ProfileFavoritesListItem } from "@components/domain";
 
 type IUserType = "other" | "me";
 type IProficiency = "BEGINNER" | "INTERMEDIATE" | "MASTER";
@@ -194,18 +195,16 @@ const User: NextPage = () => {
             {proficiencyToKorean(proficiency as IProficiency)}
           </Chip>
         </div>
-        {userType === "other" ? (
-          <div>
-            <Label>내가 즐겨찾는 농구장</Label>
-            {favoriteCourts.map(({ courtId, courtName }, index) => (
-              <Chip key={index} secondary>
-                <Link href={`/courts?courtId=${courtId}`} passHref>
-                  <a>{courtName}</a>
-                </Link>
-              </Chip>
-            ))}
-          </div>
-        ) : null}
+        <div>
+          <Label>
+            {userType === "me" ? "내가" : `${nickname}님이`} 즐겨찾는 농구장
+          </Label>
+          {favoriteCourts.map(({ courtId, courtName }) => (
+            <ProfileFavoritesListItem key={courtId} courtId={courtId}>
+              {courtName}
+            </ProfileFavoritesListItem>
+          ))}
+        </div>
       </AdditionalInfoContainer>
     </div>
   );
