@@ -10,17 +10,19 @@ const ReservationMarker = styled.div<any>`
   justify-content: center;
   align-items: center;
   position: absolute;
-  ${({ top, left, width, height, selected }) => css`
+  ${({ top, left, width, height, selected, theme }) => css`
     top: ${top}px;
     left: ${left}px;
     width: ${width}px;
     height: ${height}px;
-    border: ${selected && "8px solid orange"};
+    border: ${selected && `8px solid ${theme.colors.slam.orange.strong}`};
   `};
   background-color: black;
   color: white;
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.borderRadiuses.lg};
   box-sizing: border-box;
+  text-align: center;
+  filter: ${({ theme }) => theme.filter.dropShadow};
 `;
 
 export { TimeTableContainer, ReservationMarker };

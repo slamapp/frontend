@@ -89,12 +89,12 @@ const HoursHorizontalDivider = styled.div`
 `;
 
 const StatusColumn = styled(FourSixthColumn)<StatusProps>`
-  background-color: ${({ status }) => {
+  background-color: ${({ status, theme }) => {
     switch (status) {
       case "active":
-        return "orange";
+        return theme.colors.slam.orange.strong;
       case "lack":
-        return "gray";
+        return `rgba(254, 109, 4, 0.3)`;
       default:
         return "transparent";
     }
@@ -122,9 +122,9 @@ const Selector = styled.div<any>`
   color: white;
   background-color: black;
   border-radius: 16px;
-  border: 8px solid orange;
+  border: 8px solid ${({ theme }) => theme.colors.slam.orange.strong};
   box-sizing: border-box;
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: ${({ theme }) => theme.boxShadows.lg};
   width: ${({ hasReservation }) => hasReservation && "75%"};
   margin-left: auto;
 `;

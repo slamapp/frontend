@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
 
 import { useResize } from "@hooks/.";
+import { Image, Spacer, Text } from "@components/base";
 import { useRouter } from "next/router";
 import { TimeBlockUnit, ActionTimeBlockUnit } from "./TimeBlockUnits";
 import TimeRangeSelector from "./TimeRangeSelector";
@@ -44,7 +46,7 @@ const TimeTable = ({
   useEffect(() => {
     const el = document.querySelector("#scrolled-container");
 
-    if (el && isInitialized) {
+    if (timeSlot && el && isInitialized) {
       el.scrollTo({
         left: 0,
         top: timeSlotIndexMap[timeSlot as string] * height,
@@ -89,7 +91,23 @@ const TimeTable = ({
                 selected={reservationId === selectedReservationId}
                 onClick={() => onClickReservationMarker(reservationId)}
               >
-                <span>나의 예약</span>
+                <Spacer
+                  gap="xxs"
+                  type="vertical"
+                  style={{
+                    alignItems: "center",
+                  }}
+                >
+                  <ImageWrapper>
+                    <Image
+                      src="/assets/basketball/only_ball_500.gif"
+                      alt="basketball"
+                    />
+                  </ImageWrapper>
+                  <Label block strong>
+                    내 예약
+                  </Label>
+                </Spacer>
               </S.ReservationMarker>
             )}
           </>
@@ -101,3 +119,17 @@ const TimeTable = ({
 };
 
 export default TimeTable;
+
+const Label = styled(Text)`
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const ImageWrapper = styled.div`
+  width: 44px;
+  height: 44px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;

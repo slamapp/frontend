@@ -1,3 +1,4 @@
+import { Text } from "@components/base";
 import * as S from "./style";
 import { MAJOR_TIME_BLOCK_UNIT, ACTIVE_RESERVATION_COUNT } from "../constants";
 import { TimeBlockUnitProps, Status } from "../type";
@@ -57,7 +58,11 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
       </S.StatusColumn>
       <S.VerticalDivider />
       <S.BallColumn className="time-block__ball">
-        <span>{status !== "none" && (ballCount !== 0 ? ballCount : "😭")}</span>
+        {status !== "none" && (
+          <Text strong size={30}>
+            {ballCount !== 0 ? ballCount : "😭"}
+          </Text>
+        )}
       </S.BallColumn>
     </S.TimeBlockUnitWrapper>
   );

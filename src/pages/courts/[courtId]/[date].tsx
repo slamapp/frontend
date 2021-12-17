@@ -424,12 +424,10 @@ const reducer = (state: any, { type, payload }: any) => {
 };
 
 const Reservation: NextPage = () => {
-  const router = useRouter();
-  console.log(router.query);
-
   const {
     query: { courtId, date },
   } = useRouter();
+
   const [reservation, dispatch] = useReducer(reducer, initialState);
   const {
     startIndex,
