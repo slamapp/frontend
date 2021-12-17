@@ -4,12 +4,13 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "@emotion/styled";
-import { Avatar } from "@components/base";
-import { useAuthContext, useNavigationContext } from "@contexts/hooks";
+import { css } from "@emotion/react";
+import { Avatar, Button, Label, Spacer, Chip } from "@components/base";
+import { useNavigationContext, useAuthContext } from "@contexts/hooks";
 
 type IUserType = "other" | "me";
-type ISkill = "BEGINNER" | "INTERMEDIATE" | "MASTER";
-type IPosition = "PF" | "SF" | "SG" | "PG" | "C" | "UNDEFINED";
+type IProficiency = "BEGINNER" | "INTERMEDIATE" | "MASTER";
+type IPositions = "PF" | "SF" | "SG" | "PG" | "C" | "UNDEFINED";
 
 const User: NextPage = () => {
   const { useMountPage, setNavigationTitle } = useNavigationContext();
@@ -26,27 +27,29 @@ const User: NextPage = () => {
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
   // 더미 데이터
-  const myUserId = 1234; // TODO: AuthContext에서 userId 가져오기
+  const myUserId = 1; // TODO: AuthContext에서 userId 가져오기
   const userInfo = {
-    nickname: "slam",
+    userId: 1,
+    nickname: "슬램",
     followerCount: 500,
     followingCount: 300,
     profileImage:
       "https://user-images.githubusercontent.com/84858773/145361283-80b23317-3038-42e6-a784-f82015535514.png",
-    description: "내 이름은 슬램, 농구인이죠",
-    skill: "BEGINNER",
-    position: "PF",
+    description:
+      "저는 농구할 때 파워포워드를 주로 하고, 당산 주변에서 주로 게임해요. 언제든지 연락 주세요.",
+    proficiency: "BEGINNER",
+    positions: ["PF", "SG"],
     favoriteCourts: [
       {
-        courtId: 123,
+        courtId: 1,
         courtName: "용왕산 공원 농구장",
       },
       {
-        courtId: 124,
+        courtId: 2,
         courtName: "설악산 공원 농구장",
       },
       {
-        courtId: 125,
+        courtId: 3,
         courtName: "북한산 공원 농구장",
       },
     ],
@@ -64,10 +67,10 @@ const User: NextPage = () => {
     // TODO: path의 userId와 AuthContext의 userId 비교하기
     if (userId === myUserId) {
       setUserType("me");
-      setNavigationTitle("내 프로필");
+      setNavigationTitle(`${nickname}`);
     } else {
       // TODO: 유저 정보 조회 API 통신으로 해당 유저 정보 받아오기
-      setNavigationTitle(`${nickname}님의 프로필`);
+      setNavigationTitle(`${nickname}`);
     }
 
     // TODO: 내가 팔로우한 유저 목록 받아오기
@@ -82,13 +85,13 @@ const User: NextPage = () => {
     followingCount,
     profileImage,
     description,
-    skill,
-    position,
+    proficiency,
+    positions,
     favoriteCourts,
   } = userInfo;
 
-  const skillToKorean = (skill: ISkill) => {
-    switch (skill) {
+  const proficiencyToKorean = (proficiency: IProficiency) => {
+    switch (proficiency) {
       case "BEGINNER":
         return "뉴비";
       case "INTERMEDIATE":
@@ -100,18 +103,18 @@ const User: NextPage = () => {
     }
   };
 
-  const positionToKorean = (position: IPosition) => {
-    switch (position) {
+  const positionsToKorean = (positions: IPositions) => {
+    switch (positions) {
       case "PF":
-        return "파워 포워드(PF)";
+        return "파워포워드";
       case "SF":
-        return "스몰 포워드(SF)";
+        return "스몰포워드";
       case "SG":
-        return "슈팅 가드(SG)";
+        return "슈팅가드";
       case "PG":
-        return "포인트 가드(PG)";
+        return "포인트가드";
       case "C":
-        return "센터(C)";
+        return "센터";
       default:
         return "미정";
     }
@@ -134,78 +137,134 @@ const User: NextPage = () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
 
-      <Center>
-        <Avatar src={profileImage} shape="circle" />
-        <p>{nickname}</p>
-        <p>{description}</p>
-
-        <Table>
-          <thead>
-            <tr>
-              <th>팔로워</th>
-              <th>팔로잉</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{followerCount}</td>
-              <td>{followingCount}</td>
-            </tr>
-          </tbody>
-        </Table>
+      <MainInfoContainer>
+        <MainInfoArea>
+          <Avatar src={profileImage} shape="circle" />
+          <StatBar>
+            <div>
+              <dt>팔로잉</dt>
+              <dd>{followingCount}</dd>
+            </div>
+            <div>
+              <dt>팔로워</dt>
+              <dd>{followerCount}</dd>
+            </div>
+            <div>
+              <dt>평가 점수</dt>
+              <dd>?</dd>
+            </div>
+          </StatBar>
+        </MainInfoArea>
+        <Description>{description}</Description>
         {userType === "other" ? (
-          <div>
-            <button onClick={handleFollow}>
-              {isFollowing ? `언팔로우` : `팔로우`}
-            </button>
-            <button>
+          <ButtonContainer>
+            <Button fullWidth secondary>
               <Link href={`/chat/${userId}`} passHref>
                 <a>메시지</a>
               </Link>
-            </button>
-          </div>
+            </Button>
+            <Button fullWidth tertiary={isFollowing} onClick={handleFollow}>
+              {isFollowing ? `팔로잉` : `팔로우`}
+            </Button>
+          </ButtonContainer>
         ) : (
           <div>
-            <button>
-              <Link href={`/user/${userId}/edit`} passHref>
+            <Button fullWidth secondary>
+              <Link href={`/user/edit`} passHref>
                 <a>프로필 편집</a>
               </Link>
-            </button>
+            </Button>
           </div>
         )}
-      </Center>
-      <p>숙련도</p>
-      <Tag>{skillToKorean(skill as ISkill)}</Tag>
-      <p>포지션</p>
-      <Tag>{positionToKorean(position as IPosition)}</Tag>
-      {userType === "other" ? (
+      </MainInfoContainer>
+      <AdditionalInfoContainer gap="base" type="vertical">
         <div>
-          <p>즐겨찾기 농구장</p>
-          {favoriteCourts.map(({ courtId, courtName }, index) => (
-            <Tag key={index}>
-              <Link href={`/courts?courtId=${courtId}`} passHref>
-                <a>{courtName}</a>
-              </Link>
-            </Tag>
-          ))}
+          <Label>포지션</Label>
+          <Spacer gap="xs">
+            {positions.map((position, index) => (
+              <Chip key={index} secondary>
+                {positionsToKorean(position as IPositions)}
+              </Chip>
+            ))}
+          </Spacer>
         </div>
-      ) : null}
+        <div>
+          <Label>숙련도</Label>
+          <Chip secondary>
+            {proficiencyToKorean(proficiency as IProficiency)}
+          </Chip>
+        </div>
+        {userType === "other" ? (
+          <div>
+            <Label>내가 즐겨찾는 농구장</Label>
+            {favoriteCourts.map(({ courtId, courtName }, index) => (
+              <Chip key={index} secondary>
+                <Link href={`/courts?courtId=${courtId}`} passHref>
+                  <a>{courtName}</a>
+                </Link>
+              </Chip>
+            ))}
+          </div>
+        ) : null}
+      </AdditionalInfoContainer>
     </div>
   );
 };
 
 export default User;
 
-const Tag = styled.span`
-  background-color: lightgray;
-  margin-right: 10px;
+const MainInfoContainer = styled.div`
+  ${({ theme }) => css`
+    padding: ${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md};
+    background: ${theme.colors.white};
+  `}
 `;
 
-const Center = styled.div`
-  text-align: center;
+const AdditionalInfoContainer = styled(Spacer)`
+  ${({ theme }) => css`
+    padding: ${theme.gaps.md} ${theme.gaps.base};
+  `}
 `;
 
-const Table = styled.table`
-  text-align: center;
-  margin: 0 auto;
+const FlexContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const MainInfoArea = styled(FlexContainer)`
+  ${({ theme }) => css`
+    padding: 0 ${theme.gaps.xs};
+  `}
+`;
+
+const ButtonContainer = styled(FlexContainer)`
+  ${({ theme }) => css`
+    gap: 0 ${theme.gaps.xs};
+  `}
+`;
+
+const StatBar = styled.dl`
+  ${({ theme }) => css`
+    display: flex;
+    text-align: center;
+    margin: 0;
+    flex-grow: 1;
+    margin-left: ${theme.gaps.lg};
+    justify-content: space-evenly;
+
+    dd {
+      box-sizing: border-box;
+      margin: 0;
+      font-weight: bold;
+      padding: ${theme.gaps.xs} 0;
+    }
+  `}
+`;
+
+const Description = styled.div`
+  ${({ theme }) => css`
+    margin: ${theme.gaps.md} 0;
+    line-height: 1.4;
+  `}
 `;
