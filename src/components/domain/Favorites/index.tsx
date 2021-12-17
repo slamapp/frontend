@@ -86,7 +86,6 @@ const Favorites: NextPage = () => {
               <CourtItem.Header>{courtName}</CourtItem.Header>
               <CourtItem.Address>{"주소 넣기"}</CourtItem.Address>
             </Spacer>
-            {/* <Spacer gap="xs" type="vertical"> */}
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
               <CourtItem.ShareButton />
@@ -100,7 +99,6 @@ const Favorites: NextPage = () => {
             <Link href="/">
               <LinkButton size="md">예약하러 가기</LinkButton>
             </Link>
-            {/* </Spacer> */}
           </FavoriteItem>
         )
       )}
