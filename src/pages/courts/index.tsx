@@ -275,8 +275,10 @@ const Courts: NextPage = () => {
                       }/${selectedDate
                         .toISOString()
                         .substring(0, DATE_STRING_LENGTH)}`,
+                      // 숨겨서 보낼 정보
                       query: { timeSlot: selectedSlot },
                     },
+                    // 주소창에 출력될 url
                     `/courts/${selectedCourt?.courtId}/${selectedDate
                       .toISOString()
                       .substring(0, DATE_STRING_LENGTH)}`
