@@ -70,7 +70,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          userId: payload.id,
+          userId: payload.userId,
           nickname: payload.nickname,
           notifications: [...payload.notifications],
           email: payload.email,
