@@ -16,9 +16,14 @@ import {
 type IUserType = "other" | "me";
 
 const User: NextPage = () => {
-  const { useMountPage, setNavigationTitle, useDisableTopTransparent } =
-    useNavigationContext();
+  const {
+    navigationProps,
+    useMountPage,
+    setNavigationTitle,
+    useDisableTopTransparent,
+  } = useNavigationContext();
   const { authProps } = useAuthContext();
+
   const { userId: authContextUserId } = authProps.currentUser;
 
   useMountPage((page) => page.USER);
@@ -143,7 +148,9 @@ const User: NextPage = () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
 
-      <MainInfoContainer>
+      <MainInfoContainer
+        isBackgroundTransparent={navigationProps.isTopTransparent}
+      >
         <MainInfoArea>
           <Avatar src={profileImage} shape="circle" />
           <StatBar>
@@ -226,10 +233,12 @@ const User: NextPage = () => {
 
 export default User;
 
-const MainInfoContainer = styled.div`
-  ${({ theme }) => css`
+const MainInfoContainer = styled.div<{ isBackgroundTransparent: boolean }>`
+  ${({ theme, isBackgroundTransparent }) => css`
     padding: ${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md};
     background: ${theme.colors.white};
+    opacity: ${isBackgroundTransparent ? 0 : 1};
+    transition: opacity 200ms;
   `}
 `;
 
