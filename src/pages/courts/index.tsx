@@ -16,6 +16,7 @@ import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { courtApi } from "@service/.";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -168,13 +169,29 @@ const Courts: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const handleChangedMapBounds = useCallback((map: kakao.maps.Map) => {
+  const handleChangedMapBounds = useCallback(async (map: kakao.maps.Map) => {
     const bounds = map.getBounds();
-    // const swLatlng = bounds.getSouthWest();
-    // const neLatLng = bounds.getNorthEast();
+    const swLatlng = bounds.getSouthWest();
+    const neLatLng = bounds.getNorthEast();
+
+    const startLatitude = swLatlng.getLat();
+    const startLongitude = swLatlng.getLng();
+
+    const endLatitude = neLatLng.getLat();
+    const endLongitude = neLatLng.getLng();
 
     // TODO: map의 bounds를 전달하여 api 콜하기
-    console.log(bounds);
+
+    await courtApi.getCourtsByCoordsAndDate({
+      date: `${selectedDate.getFullYear()}-${
+        selectedDate.getMonth() + 1
+      }-${selectedDate.getDate()}`,
+      startLatitude,
+      startLongitude,
+      endLatitude,
+      endLongitude,
+      time: selectedSlot,
+    });
   }, []);
 
   const handleZoomIn = useCallback(() => {
@@ -206,6 +223,10 @@ const Courts: NextPage = () => {
   const handleGetCurrentLocation = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
       setCenter([latitude, longitude]);
+
+      if (map) {
+        const bound = map.getBounds();
+      }
     });
   }, []);
 
