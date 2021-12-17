@@ -3,7 +3,7 @@ import Spacer from "@components/base/Spacer";
 import Link from "next/link";
 import { NextPage } from "next";
 import styled from "@emotion/styled";
-
+import { Button, Icon, Image, Text } from "@components/base";
 import { useNavigationContext } from "@contexts/hooks";
 import CourtItem from "../CourtItem";
 
@@ -56,12 +56,24 @@ const Favorites: NextPage = () => {
 
   if (basketballCourts.length === 0) {
     return (
-      <Spacer gap="base">
-        <div>즐겨찾는 농구장이 없으시네요?</div>
+      <WrapperSpacer gap="base" type="vertical">
+        <Image
+          width={200}
+          height={200}
+          mode="contain"
+          src="assets/basketball/animation_off_400.png"
+        ></Image>
+        <Text size="md">즐겨찾는 농구장이 없으시네요? 🤔</Text>
+        <TextGray size="xs">
+          농구장을 즐겨찾기하시면 더 빠르게 예약하실 수 있어요
+        </TextGray>
         <Link href="/courts">
-          <button>내 주변 농구장 찾기</button>
+          <SearchButton fullWidth>
+            <SearchIcon name="compass" size="sm" color="white"></SearchIcon>내
+            주변 농구장 찾기
+          </SearchButton>
         </Link>
-      </Spacer>
+      </WrapperSpacer>
     );
   }
 
@@ -74,6 +86,7 @@ const Favorites: NextPage = () => {
               <CourtItem.Header>{courtName}</CourtItem.Header>
               <CourtItem.Address>{"주소 넣기"}</CourtItem.Address>
             </Spacer>
+            {/* <Spacer gap="xs" type="vertical"> */}
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
               <CourtItem.ShareButton />
@@ -84,6 +97,10 @@ const Favorites: NextPage = () => {
                 courtName={courtName}
               />
             </Actions>
+            <Link href="/">
+              <LinkButton size="md">예약하러 가기</LinkButton>
+            </Link>
+            {/* </Spacer> */}
           </FavoriteItem>
         )
       )}
@@ -101,4 +118,26 @@ const FavoriteItem = styled.div`
   padding: 20px;
 `;
 
+const TextGray = styled(Text)`
+  color: ${({ theme }) => theme.colors.gray500};
+`;
+
+const SearchButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SearchIcon = styled(Icon)`
+  margin-right: 5px;
+`;
+
+const WrapperSpacer = styled(Spacer)`
+  align-items: center;
+`;
+
+const LinkButton = styled(Button)`
+  width: 225px;
+  margin-top: 8px;
+`;
 export default Favorites;
