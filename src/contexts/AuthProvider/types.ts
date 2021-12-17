@@ -16,8 +16,8 @@ export interface DefaultNotification {
   notificationId: number;
   isRead: boolean;
   isClicked: boolean;
-  created: string;
-  updated: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 type FollowerInfo = {
