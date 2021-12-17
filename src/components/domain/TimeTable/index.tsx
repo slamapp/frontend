@@ -10,7 +10,7 @@ const timeSlotIndexMap: { [key in string]: number } = {
   dawn: 0,
   morning: 12,
   afternoon: 24,
-  night: 36,
+  night: 35,
 };
 
 const TimeTable = ({
