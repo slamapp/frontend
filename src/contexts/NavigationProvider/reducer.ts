@@ -178,6 +178,20 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "프로필 편집",
       };
     }
+    case pageType.ADMIN_NEWCOURTS: {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: true,
+        currentPage: type,
+        isBack: true,
+        isNotifications: false,
+        isProfile: false,
+        isNext: false,
+        isMenu: true,
+        title: "새 농구장 리스트",
+      };
+    }
     case pageType.USER_MENU: {
       return {
         ...prevState,
