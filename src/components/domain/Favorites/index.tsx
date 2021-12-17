@@ -4,7 +4,7 @@ import Link from "next/link";
 import { NextPage } from "next";
 import styled from "@emotion/styled";
 import { Button, Icon, Image, Text } from "@components/base";
-import { useNavigationContext } from "@contexts/hooks";
+import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import favoriteAPI from "@service/favoriteApi";
 import CourtItem from "../CourtItem";
 
@@ -15,6 +15,11 @@ declare global {
 }
 
 const Favorites: NextPage = () => {
+  const {
+    authProps: {
+      currentUser: { userId },
+    },
+  } = useAuthContext();
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.FAVORITES);
 
@@ -38,8 +43,10 @@ const Favorites: NextPage = () => {
   };
 
   useEffect(() => {
-    getPageFavorites();
-  }, []);
+    if (userId) {
+      getPageFavorites();
+    }
+  }, [userId]);
 
   if (isLoading) {
     return <>Loading</>;
