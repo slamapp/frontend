@@ -33,7 +33,7 @@ const getNotificationMarkUp = ({
       );
       break;
 
-    case "LOUD_SPEAKER":
+    case "LOUDSPEAKER":
       return <>{type}</>;
       break;
 

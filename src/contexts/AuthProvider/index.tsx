@@ -2,6 +2,8 @@ import { useLocalToken } from "@hooks/domain";
 import { useRouter } from "next/router";
 import { useReducer, ReactNode, useEffect, useCallback } from "react";
 import userAPI from "@service/userApi";
+import reservationAPI from "@service/reservationApi";
+import favoriteAPI from "@service/favoriteApi";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
@@ -40,7 +42,32 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, [logout]);
 
-  const createFavorite = useCallback((courtId: number) => {
+  const getMyReservations = useCallback(async () => {
+    try {
+      const data = await reservationAPI.getMyReservations();
+      dispatch({
+        type: authTypes.SET_MY_RESERVATIONS,
+        payload: { reservations: data },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const getMyFavorites = useCallback(async () => {
+    try {
+      const favorites = await favoriteAPI.getMyFavorites();
+
+      dispatch({
+        type: authTypes.GET_MY_FAVORITES,
+        payload: { favorites },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const createFavorite = useCallback(async (courtId: number) => {
     // TODO create api call하여 받아온 response로 대체
     dispatch({
       type: authTypes.CREATE_FAVORITE,
@@ -58,7 +85,7 @@ const AuthProvider = ({ children }: Props) => {
     });
   }, []);
 
-  const deleteFavorite = useCallback((favoriteId: number) => {
+  const deleteFavorite = useCallback(async (favoriteId: number) => {
     // TODO: delete api call하여 받아온 response로 대체
     dispatch({
       type: authTypes.DELETE_FAVORITE,
@@ -74,11 +101,22 @@ const AuthProvider = ({ children }: Props) => {
     });
   };
 
+  const authProviderInit = async () => {
+    // AuthProvider 마운트시 - 사용자정보(알림 포함) 받아오기
+    try {
+      await getCurrentUser().then(() => {
+        // 사용자정보(알림 포함) 받아오기 성공시 - 예약정보들, 즐겨찾기 정보 받아오기
+        getMyReservations();
+        getMyFavorites();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     if (token) {
-      getCurrentUser();
-    } else {
-      dispatch({ type: authTypes.LOADING_OFF });
+      authProviderInit();
     }
   }, []);
 

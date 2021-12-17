@@ -1,6 +1,6 @@
 import { Reducer } from "react";
 import { authTypes, ActionTypeUnion } from "./actionTypes";
-import { Follow, Favorite, mockNotifications, Notification } from "./types";
+import { Follow, Favorite, Notification, Reservation } from "./types";
 
 export interface DataProps {
   currentUser: {
@@ -15,6 +15,7 @@ export interface DataProps {
     followers: Follow[];
     following: Follow[];
     notifications: Notification[];
+    reservations: Reservation[];
   };
   isLoading: boolean;
 }
@@ -55,7 +56,8 @@ export const initialData = {
     ],
     followers: [],
     following: [],
-    notifications: [...mockNotifications],
+    notifications: [],
+    reservations: [],
   },
   isLoading: true,
 };
@@ -72,7 +74,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
           ...prevState.currentUser,
           userId: payload.id,
           nickname: payload.nickname,
-          // notifications: payload.notifications,
+          notifications: [...payload.notifications],
           email: payload.email,
           positions: payload.positions,
           proficiency: payload.proficiency,
@@ -106,6 +108,15 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isLoading: false,
       };
     }
+    case authTypes.GET_MY_FAVORITES: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          favorites: payload.favorites,
+        },
+      };
+    }
     case authTypes.CREATE_FAVORITE: {
       return {
         ...prevState,
@@ -117,7 +128,6 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     }
     case authTypes.DELETE_FAVORITE: {
       const { deletedFavoriteId } = payload;
-
       return {
         ...prevState,
         currentUser: {
@@ -125,6 +135,16 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
           favorites: prevState.currentUser.favorites.filter(
             ({ favoriteId }) => favoriteId !== deletedFavoriteId
           ),
+        },
+      };
+    }
+    case authTypes.SET_MY_RESERVATIONS: {
+      const { reservations } = payload;
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          reservations: [...reservations],
         },
       };
     }
