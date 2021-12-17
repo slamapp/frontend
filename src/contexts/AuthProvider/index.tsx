@@ -70,7 +70,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const createFavorite = useCallback(async (courtId: number) => {
     try {
-      const favorite = await favoriteAPI.createMyFavorite(`${courtId}`);
+      const favorite = await favoriteAPI.createMyFavorite(courtId);
       dispatch({
         type: authTypes.CREATE_FAVORITE,
         payload: { favorite },
@@ -83,9 +83,7 @@ const AuthProvider = ({ children }: Props) => {
   const deleteFavorite = useCallback(async (favoriteId: number) => {
     try {
       const { favoriteId: deletedFavoriteId } =
-        await favoriteAPI.createMyFavorite<{ favoriteId: number }>(
-          `${favoriteId}`
-        );
+        await favoriteAPI.createMyFavorite<{ favoriteId: number }>(favoriteId);
       dispatch({
         type: authTypes.DELETE_FAVORITE,
         payload: { deletedFavoriteId },

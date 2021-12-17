@@ -55,28 +55,28 @@ const getSlotFromDate = (date: Date): SlotKeyUnion => {
 
 const dummyBasketballCourts = [
   {
-    courtId: 6,
+    courtId: 1,
     courtName: "한나 농구장",
     latitude: 37.53526455544585,
     longitude: 126.90261795958715,
     courtReservation: 6,
   },
   {
-    courtId: 3,
+    courtId: 2,
     courtName: "헤이헤이 농구장",
     latitude: 37.538227498425,
     longitude: 126.902404444577,
     courtReservation: 3,
   },
   {
-    courtId: 0,
+    courtId: 3,
     courtName: "플로라로라 농구장",
     latitude: 37.5347279,
     longitude: 126.9033882,
     courtReservation: 0,
   },
   {
-    courtId: 10,
+    courtId: 4,
     courtName: "젤리젤리 농구장",
     latitude: 37.5347279,
     longitude: 126.9023882,

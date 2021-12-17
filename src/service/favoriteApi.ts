@@ -1,13 +1,12 @@
-import { AxiosResponse } from "axios";
 import { request, authRequest, authFileRequest } from "./fetcher";
 
 const favoriteAPI = {
   getMyFavorites: <R>() => authRequest.get<R, R>("/favorites"),
 
-  createMyFavorite: <R>(courtId: string) =>
+  createMyFavorite: <R>(courtId: number) =>
     authRequest.post<R, R>("/favorites", { courtId }),
 
-  deleteMyFavorite: <R>(favoriteId: string) =>
+  deleteMyFavorite: <R>(favoriteId: number) =>
     authRequest.delete<R, R>(`/favorites/${favoriteId}`),
 };
 
