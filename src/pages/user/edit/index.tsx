@@ -1,19 +1,20 @@
-import { useState, useCallback, ChangeEvent } from "react";
+import { useState, useCallback, ChangeEvent, MouseEvent } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import styled from "@emotion/styled";
+
+import UtilRoute from "UtilRoute";
 import useForm, { Error } from "@hooks/useForm";
-import { Avatar, Spacer, Upload } from "@components/base";
-import Input from "@components/base/Input";
 import { useNavigationContext } from "@contexts/hooks";
+import { Avatar, Spacer, Upload, Button, Label, Input } from "@components/base";
 import {
-  PositionKeyUnion,
-  ProficiencyKeyUnion,
-} from "@components/domain/UserInfoPicker/types";
-import {
+  BottomFixedButton,
   PositionsPicker,
   ProficiencyPicker,
-} from "@components/domain/UserInfoPicker";
+  ValidationNoticeBar,
+  PositionKeyUnion,
+  ProficiencyKeyUnion,
+} from "@components/domain";
 
 interface Values {
   nickname: string;
@@ -23,7 +24,7 @@ interface Values {
   positions: PositionKeyUnion[];
 }
 
-const UserEditPage: NextPage = () => {
+const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_EDIT);
 
@@ -46,6 +47,11 @@ const UserEditPage: NextPage = () => {
   const [selectedPositions, setSelectedPositions] =
     useState<PositionKeyUnion[]>(positions);
 
+  const lengthLimit = {
+    nickname: 15,
+    description: 25,
+  };
+
   const handleChangeProficiency = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setSelectedProficiency(e.target.value as ProficiencyKeyUnion);
@@ -67,6 +73,10 @@ const UserEditPage: NextPage = () => {
     [selectedPositions]
   );
 
+  const handleDeleteProfileImage = (e: MouseEvent<HTMLButtonElement>) => {
+    alert("프로필 이미지 삭제 API");
+  };
+
   const { values, errors, isLoading, handleChange, handleSubmit } =
     useForm<Values>({
       initialValues: {
@@ -84,11 +94,17 @@ const UserEditPage: NextPage = () => {
         };
         alert(JSON.stringify(valueWithPosition));
       },
-      validate: ({ nickname }) => {
+      validate: ({ nickname, description }) => {
         const errors: Error<Values> = {};
 
         if (!nickname) {
-          errors.nickname = "닉네임을 한 글자 이상 입력해주세요.";
+          errors.nickname = "닉네임은 비워둘 수 없습니다.";
+        }
+        if (nickname.length > lengthLimit.nickname) {
+          errors.nickname = "15자 이내로 입력해주세요.";
+        }
+        if (description.length > lengthLimit.description) {
+          errors.description = "25자 이내로 입력해주세요.";
         }
         if (!selectedProficiency) {
           errors.proficiency = "숙련도를 선택해주세요.";
@@ -108,19 +124,23 @@ const UserEditPage: NextPage = () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
 
-      <Center>
-        <Upload>
-          <Avatar
-            isEdit
-            src={profileImage ?? baseProfileImageUrl}
-            shape="circle"
-            __TYPE="Avatar"
-          />
-        </Upload>
-        <button>기본 프로필 이미지로 변경하기</button>
-      </Center>
       <form onSubmit={handleSubmit}>
-        <Spacer gap="md" type="vertical">
+        <Center>
+          <Spacer gap="xs" type="vertical">
+            <Upload style={{ textAlign: "center" }}>
+              <Avatar
+                isEdit
+                src={profileImage ?? baseProfileImageUrl}
+                shape="circle"
+                __TYPE="Avatar"
+              />
+            </Upload>
+            <Button onClick={handleDeleteProfileImage} type="button" secondary>
+              기본 프로필 이미지로 변경하기
+            </Button>
+          </Spacer>
+        </Center>
+        <Container gap="md" type="vertical">
           <div>
             <Input
               label="닉네임"
@@ -130,9 +150,13 @@ const UserEditPage: NextPage = () => {
               value={values.nickname}
               isRequired
               placeholder="15자 이내의 닉네임을 입력해주세요"
-              block
             />
-            <p>{errors.nickname}</p>
+            <ValidationNoticeBar
+              hasCount
+              value={values.nickname}
+              limit={lengthLimit.nickname}
+              errors={errors.nickname}
+            />
           </div>
           <div>
             <Input
@@ -142,32 +166,42 @@ const UserEditPage: NextPage = () => {
               onChange={handleChange}
               value={values.description}
               placeholder="ex) 저는 주로 파워포워드로 뛰고, 당산 주변에서 게임해요. 언제든 연락주세요."
-              block
             />
-            <p>{errors.description}</p>
+            <ValidationNoticeBar
+              hasCount
+              value={values.description}
+              limit={lengthLimit.description}
+              errors={errors.description}
+            />
           </div>
           <div>
-            <p>숙련도</p>
+            <Label isRequired>숙련도</Label>
             <ProficiencyPicker
               selectedValue={selectedProficiency}
               onChange={handleChangeProficiency}
             />
-            <span>{errors.proficiency}</span>
+            <ValidationNoticeBar
+              errors={errors.proficiency}
+            ></ValidationNoticeBar>
           </div>
           <div>
-            <p>포지션</p>
+            <Label isRequired>포지션</Label>
             <PositionsPicker
               selectedValue={selectedPositions}
               onChange={handleChangePositions}
             />
-            <span>{errors.positions}</span>
+            <ValidationNoticeBar
+              errors={errors.positions}
+            ></ValidationNoticeBar>
           </div>
-        </Spacer>
-        <button>프로필 편집 완료하기</button>
+        </Container>
+        <BottomFixedButton type="submit" onClick={() => {}}>
+          프로필 편집 완료하기
+        </BottomFixedButton>
       </form>
     </div>
   );
-};
+});
 
 export default UserEditPage;
 
@@ -176,4 +210,8 @@ const Center = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const Container = styled(Spacer)`
+  padding: ${({ theme }) => `30px ${theme.gaps.base} 120px`};
 `;

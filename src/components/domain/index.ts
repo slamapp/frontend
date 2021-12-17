@@ -19,5 +19,12 @@ export { default as LoudSpeaker } from "./ReservationItem/Loudspeaker";
 export { default as ReservationItem } from "./ReservationItem";
 export { default as NewCourtItem } from "./NewCourtItem";
 export type { NewCourt } from "./NewCourtItem/types";
+export { PositionsPicker, ProficiencyPicker } from "./UserInfoPicker";
+export type {
+  PositionKeyUnion,
+  ProficiencyKeyUnion,
+} from "./UserInfoPicker/types";
+export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
+
 // eslint-disable-next-line import/no-cycle
 export { default as NotificationList } from "./NotificationList";
