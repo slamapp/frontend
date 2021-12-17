@@ -585,7 +585,7 @@ const Reservation: NextPage = () => {
         {isOpen && step === 1 && selectedReservationId && modalContentData && (
           <ModalContent.ExistedReservation
             timeSlot={`${getTimeFromIndex(startIndex)} -${getTimeFromIndex(
-              endIndex
+              endIndex + 1
             )}
               `}
             reservationId={selectedReservationId}
@@ -597,7 +597,7 @@ const Reservation: NextPage = () => {
         {isOpen && step === 2 && modalContentData && (
           <ModalContent.SelectedRange
             timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
-              endIndex
+              endIndex + 1
             )}`}
             participantsPerBlock={modalContentData}
             hasBall={hasBall}
