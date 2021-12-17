@@ -86,6 +86,7 @@ const Favorites: NextPage = () => {
               <CourtItem.Header>{courtName}</CourtItem.Header>
               <CourtItem.Address>{"주소 넣기"}</CourtItem.Address>
             </Spacer>
+
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
               <CourtItem.ShareButton />
@@ -95,10 +96,12 @@ const Favorites: NextPage = () => {
                 longitude={longitude}
                 courtName={courtName}
               />
+              <Link href="/">
+                <Button size="lg" style={{ flex: 1 }}>
+                  예약하기
+                </Button>
+              </Link>
             </Actions>
-            <Link href="/">
-              <LinkButton size="md">예약하러 가기</LinkButton>
-            </Link>
           </FavoriteItem>
         )
       )}
@@ -132,10 +135,5 @@ const SearchIcon = styled(Icon)`
 
 const WrapperSpacer = styled(Spacer)`
   align-items: center;
-`;
-
-const LinkButton = styled(Button)`
-  width: 225px;
-  margin-top: 8px;
 `;
 export default Favorites;

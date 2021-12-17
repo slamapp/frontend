@@ -5,7 +5,7 @@ import Icon, { FeatherIconNameType } from "../Icon";
 interface Props {
   name: FeatherIconNameType;
   className?: string;
-  size: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
   iconSize?: "sm" | "md" | "lg" | number;
   type?: "button" | "submit";
   iconColor?: string;
@@ -35,7 +35,7 @@ const IconButton = ({
 
 export default IconButton;
 
-const StyledIconButton = styled.button<Pick<Props, "size">>`
+const StyledIconButton = styled.button<Required<Pick<Props, "size">>>`
   box-sizing: border-box;
   display: flex;
   justify-content: center;

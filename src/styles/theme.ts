@@ -68,7 +68,7 @@ const theme = {
   buttonHeights: {
     sm: "27px",
     md: "38px",
-    lg: "50px",
+    lg: "42px",
   },
   buttonRightLeftPaddings: {
     sm: "16px",
