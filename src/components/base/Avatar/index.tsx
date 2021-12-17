@@ -9,7 +9,7 @@ export interface Props {
   lazy?: boolean;
   threshold?: number;
   src: string;
-  size?: number;
+  size?: "sm" | "md" | "lg" | number;
   shape?: AvatarShape;
   placeholder?: string;
   alt?: string;
@@ -41,14 +41,14 @@ const Avatar = ({
   }, [src]);
 
   return (
-    <AvatarWrapper className={className} shape={shape} {...props}>
+    <AvatarWrapper className={className} shape={shape} size={size} {...props}>
       <ImageComponent
         block
         lazy={lazy}
         threshold={threshold}
-        width={size}
-        height={size}
         src={src}
+        width={typeof size === "number" ? size : undefined}
+        height={typeof size === "number" ? size : undefined}
         placeholder={placeholder}
         alt={alt}
         mode={mode}
@@ -65,6 +65,7 @@ const Avatar = ({
 
 interface AvatarWrapperProps {
   shape: AvatarShape;
+  size?: "sm" | "md" | "lg" | number;
   className?: string;
 }
 
@@ -87,6 +88,13 @@ const AvatarWrapper = styled.div<AvatarWrapperProps>`
 
   > img {
     transition: opacity 0.2s ease;
+    width: ${({ size, theme }) =>
+      typeof size === "string" && theme.avatarSizes[size]};
+    height: ${({ size, theme }) =>
+      typeof size === "string" && theme.avatarSizes[size]};
+  }
+
+  > img {
   }
 `;
 
