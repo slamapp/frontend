@@ -28,7 +28,7 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
   useEffect(() => {
     if (typeof window !== "undefined" && !window.Kakao.isInitialized()) {
-      window.Kakao.init("c6f32516ffb011a356a9f8ea036ca21f"); // TODO env 파일로 바꾸기
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
     }
   }, []);
 
