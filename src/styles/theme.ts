@@ -99,9 +99,9 @@ const theme = {
     xxl: "48px",
   },
   boxShadows: {
-    sm: "rgb(0 0 0 / 10%) 0px 12px 12px -12px",
-    md: "rgb(0 0 0 / 25%) 0px 16px 0px 0px",
-    lg: "rgb(0 0 0 / 20%) 0px 30px 0px 0px",
+    sm: "0px 12px 12px -12px rgb(0 0 0 / 10%)",
+    md: "0px 16px 0px 0px rgb(0 0 0 / 25%)",
+    lg: " 0px 0px 30px rgba(0, 0, 0, 0.2)",
   },
   filter: {
     dropShadow: "drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.15))",
