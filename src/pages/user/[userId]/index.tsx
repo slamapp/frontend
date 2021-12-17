@@ -7,11 +7,13 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Avatar, Button, Label, Spacer, Chip } from "@components/base";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
-import { ProfileFavoritesListItem } from "@components/domain";
+import {
+  ProfileFavoritesListItem,
+  ProficiencyKeyUnion,
+  PositionKeyUnion,
+} from "@components/domain";
 
 type IUserType = "other" | "me";
-type IProficiency = "BEGINNER" | "INTERMEDIATE" | "MASTER" | null;
-type IPositions = "PF" | "SF" | "SG" | "PG" | "C" | "TBD";
 
 const User: NextPage = () => {
   const { useMountPage, setNavigationTitle } = useNavigationContext();
@@ -92,7 +94,7 @@ const User: NextPage = () => {
   const positions = userInfo.positions ?? ["TBD"];
   const favoriteCourts = userInfo.favoriteCourts ?? [];
 
-  const proficiencyToKorean = (proficiency: IProficiency) => {
+  const proficiencyToKorean = (proficiency: ProficiencyKeyUnion) => {
     switch (proficiency) {
       case "BEGINNER":
         return "뉴비";
@@ -105,7 +107,7 @@ const User: NextPage = () => {
     }
   };
 
-  const positionsToKorean = (positions: IPositions) => {
+  const positionsToKorean = (positions: PositionKeyUnion) => {
     switch (positions) {
       case "PF":
         return "파워포워드";
@@ -190,7 +192,7 @@ const User: NextPage = () => {
           <Spacer gap="xs">
             {positions.map((position, index) => (
               <Chip key={index} secondary>
-                {positionsToKorean(position as IPositions)}
+                {positionsToKorean(position as PositionKeyUnion)}
               </Chip>
             ))}
           </Spacer>
@@ -198,7 +200,7 @@ const User: NextPage = () => {
         <div>
           <Label>숙련도</Label>
           <Chip secondary>
-            {proficiencyToKorean(proficiency as IProficiency)}
+            {proficiencyToKorean(proficiency as ProficiencyKeyUnion)}
           </Chip>
         </div>
         <div>
