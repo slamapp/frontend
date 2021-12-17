@@ -22,6 +22,7 @@ export { default as IconButton } from "./IconButton";
 export { default as IconToggle } from "./IconToggle";
 export { default as LinkStrong } from "./LinkStrong";
 export { default as Label } from "./Label";
+export { default as Chip } from "./Chip";
 /* eslint-disable import/no-cycle */
 export { default as Input } from "./Input";
 export { default as Radio } from "./RadioInput";
