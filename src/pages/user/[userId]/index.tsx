@@ -10,8 +10,8 @@ import { useNavigationContext, useAuthContext } from "@contexts/hooks";
 import { ProfileFavoritesListItem } from "@components/domain";
 
 type IUserType = "other" | "me";
-type IProficiency = "BEGINNER" | "INTERMEDIATE" | "MASTER";
-type IPositions = "PF" | "SF" | "SG" | "PG" | "C" | "UNDEFINED";
+type IProficiency = "BEGINNER" | "INTERMEDIATE" | "MASTER" | null;
+type IPositions = "PF" | "SF" | "SG" | "PG" | "C" | "TBD";
 
 const User: NextPage = () => {
   const { useMountPage, setNavigationTitle } = useNavigationContext();
@@ -38,8 +38,8 @@ const User: NextPage = () => {
       "https://user-images.githubusercontent.com/84858773/145361283-80b23317-3038-42e6-a784-f82015535514.png",
     description:
       "저는 농구할 때 파워포워드를 주로 하고, 당산 주변에서 주로 게임해요. 언제든지 연락 주세요.",
-    proficiency: "BEGINNER",
-    positions: ["PF", "SG"],
+    proficiency: null,
+    positions: null,
     favoriteCourts: [
       {
         courtId: 1,
@@ -87,9 +87,10 @@ const User: NextPage = () => {
     profileImage,
     description,
     proficiency,
-    positions,
-    favoriteCourts,
   } = userInfo;
+
+  const positions = userInfo.positions ?? ["TBD"];
+  const favoriteCourts = userInfo.favoriteCourts ?? [];
 
   const proficiencyToKorean = (proficiency: IProficiency) => {
     switch (proficiency) {
@@ -199,11 +200,15 @@ const User: NextPage = () => {
           <Label>
             {userType === "me" ? "내가" : `${nickname}님이`} 즐겨찾는 농구장
           </Label>
-          {favoriteCourts.map(({ courtId, courtName }) => (
-            <ProfileFavoritesListItem key={courtId} courtId={courtId}>
-              {courtName}
-            </ProfileFavoritesListItem>
-          ))}
+          {favoriteCourts.length < 1 ? (
+            <Chip secondary>정보 없음</Chip>
+          ) : (
+            favoriteCourts.map(({ courtId, courtName }) => (
+              <ProfileFavoritesListItem key={courtId} courtId={courtId}>
+                {courtName}
+              </ProfileFavoritesListItem>
+            ))
+          )}
         </div>
       </AdditionalInfoContainer>
     </div>
