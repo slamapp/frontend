@@ -56,15 +56,19 @@ const Favorites: NextPage = () => {
     return (
       <WrapperSpacer gap="base" type="vertical">
         <Image
-          width={200}
-          height={200}
-          mode="contain"
-          src="assets/basketball/animation_off_400.png"
+          width={70}
+          height={70}
+          src="assets/basketball/only_ball_500.gif"
+          alt="basketball"
         />
-        <Text size="md">즐겨찾는 농구장이 없으시네요? 🤔</Text>
-        <TextGray size="xs">
-          농구장을 즐겨찾기하시면 더 빠르게 예약하실 수 있어요
-        </TextGray>
+        <Spacer gap="xxs" type="vertical" style={{ textAlign: "center" }}>
+          <Text size="md" block strong>
+            즐겨찾는 농구장이 없으시네요? 🤔
+          </Text>
+          <TextGray size="xs">
+            즐겨찾기하면 더 빠르게 예약하실 수 있어요
+          </TextGray>
+        </Spacer>
         <Link href="/courts" passHref>
           <SearchButton fullWidth>
             <SearchIcon name="compass" size="sm" color="white"></SearchIcon>내
@@ -132,6 +136,8 @@ const SearchIcon = styled(Icon)`
 `;
 
 const WrapperSpacer = styled(Spacer)`
+  height: 80%;
   align-items: center;
+  justify-content: center;
 `;
 export default Favorites;

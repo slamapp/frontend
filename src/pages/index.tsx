@@ -9,20 +9,18 @@ const Home: NextPage = () => {
   useMountPage((page) => page.FAVORITES);
 
   return (
-    <div>
+    <PageContainer>
       <Head>
         <title>Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
-
-      <Container>
-        <Favorites />
-      </Container>
-    </div>
+      <Favorites />
+    </PageContainer>
   );
 };
 
 export default Home;
 
-const Container = styled.div`
+const PageContainer = styled.div`
+  flex: 1;
   margin: ${({ theme }) => theme.gaps.base};
 `;
