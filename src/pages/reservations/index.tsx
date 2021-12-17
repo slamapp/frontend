@@ -104,12 +104,12 @@ const Reservations: NextPage = () => {
   const menuTab = [
     {
       tabTitle: (
-        <li
+        <div
           className={activeIndex === 0 ? "is-active" : ""}
           onClick={() => tabClickHandler(0)}
         >
           다가올 예약
-        </li>
+        </div>
       ),
       tabContent: (
         <Spacer gap="md" type="vertical">
@@ -121,12 +121,12 @@ const Reservations: NextPage = () => {
     },
     {
       tabTitle: (
-        <li
+        <div
           className={activeIndex === 1 ? "is-active" : ""}
           onClick={() => tabClickHandler(1)}
         >
           지난 예약
-        </li>
+        </div>
       ),
       tabContent: (
         <Spacer gap="md" type="vertical">
@@ -151,8 +151,12 @@ const Reservations: NextPage = () => {
 };
 
 const TabStyle = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+
   .is-active {
-    color: red;
+    font-weight: bold;
   }
 `;
 
