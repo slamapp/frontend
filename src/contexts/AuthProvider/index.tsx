@@ -105,7 +105,7 @@ const AuthProvider = ({ children }: Props) => {
     try {
       await getCurrentUser().then(() => {
         // 사용자정보(알림 포함) 받아오기 성공시 - 예약정보들, 즐겨찾기 정보 받아오기
-        getMyReservations();
+        // TODO: getMyReservations();
         getMyFavorites();
       });
     } catch (error) {
