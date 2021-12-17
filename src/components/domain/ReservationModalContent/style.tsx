@@ -5,6 +5,8 @@ import { Text } from "@components/base";
 export const ModalContent = styled.section`
   display: flex;
   flex-direction: column;
+  margin: 0 20px;
+  margin-top: 15px;
   gap: ${({ theme }) => theme.gaps.sm};
 `;
 
@@ -16,6 +18,7 @@ export const ContentWrapper = styled.article`
 
 export const AvatarGroup = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 `;
 

@@ -61,7 +61,7 @@ const StyledTopSocketLoading = styled.div<{ isLoading: boolean }>`
   background-size: 200% 100%;
   animation: ${({ isLoading }) =>
     isLoading ? "gradient-animation 2s linear infinite" : "none"};
-  z-index: 9999;
+  z-index: 2500;
 
   @keyframes gradient-animation {
     0% {

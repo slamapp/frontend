@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import UtilRoute from "UtilRoute";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
-import { Button, Icon, Modal } from "@components/base";
+import { Button, Icon } from "@components/base";
+import { Modal } from "@components/domain";
 
 const Menu: NextPage = UtilRoute("private", () => {
   const { logout } = useAuthContext();
@@ -43,14 +44,9 @@ const Menu: NextPage = UtilRoute("private", () => {
           </MenuItem>
         ))}
       </MenuList>
-      <Modal
-        maxWidth="90vw"
-        backgroundColor="white"
-        visible={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
-        <ModalQuestion>정말 로그아웃 하시나요? 🤔</ModalQuestion>
-        <ModalBottomButtonContainer>
+      <Modal visible={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal.Header>정말 로그아웃 하시나요? 🤔</Modal.Header>
+        <Modal.BottomButtonContainer>
           <Button
             style={{ flex: 1 }}
             secondary
@@ -66,7 +62,7 @@ const Menu: NextPage = UtilRoute("private", () => {
           >
             로그아웃하기
           </Button>
-        </ModalBottomButtonContainer>
+        </Modal.BottomButtonContainer>
       </Modal>
     </div>
   );
@@ -95,17 +91,4 @@ const MenuItem = styled.div`
   &:active {
     background: ${({ theme }) => theme.colors.gray300};
   }
-`;
-
-const ModalQuestion = styled.div`
-  font-size: 16px;
-  padding: 40px 0;
-`;
-
-const ModalBottomButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
 `;

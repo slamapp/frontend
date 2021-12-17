@@ -4,10 +4,11 @@ import {
   ReservationModalContent as ModalContent,
 } from "@components/domain";
 import { getTimeFromIndex } from "@components/domain/TimeTable/utils";
+import { useNavigationContext } from "@contexts/hooks";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
-  ChangeEvent,
+  MouseEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -338,60 +339,9 @@ const reducer = (state: any, { type, payload }: any) => {
       }
     }
     case "SET_HAS_BALL": {
-      const {
-        mode,
-        startIndex,
-        endIndex,
-        originalTimeTable,
-        timeTable,
-        selectedReservationId,
-        existedReservations,
-      } = state;
       const { hasBall } = payload;
-
-      const nextTimeTable = [...timeTable];
-
-      if (mode === "create") {
-        for (let i = startIndex; i <= endIndex; i += 1) {
-          nextTimeTable[i] = {
-            ...timeTable[i],
-            ballCount: hasBall
-              ? originalTimeTable[i].ballCount + 1
-              : originalTimeTable[i].ballCount,
-          };
-        }
-      } else {
-        const selectedReservation = existedReservations.find(
-          ({ reservationId }: any) => reservationId === selectedReservationId
-        );
-        for (let i = startIndex; i <= endIndex; i += 1) {
-          //  예약 범위
-          if (
-            i >= selectedReservation.startIndex &&
-            i <= selectedReservation.endIndex
-          ) {
-            nextTimeTable[i] = {
-              ...timeTable[i],
-              ballCount:
-                hasBall === selectedReservation.hasBall
-                  ? originalTimeTable[i].ballCount
-                  : hasBall
-                  ? originalTimeTable[i].ballCount + 1
-                  : originalTimeTable[i].ballCount - 1,
-            };
-          } else {
-            nextTimeTable[i] = {
-              ...timeTable[i],
-              ballCount: hasBall
-                ? originalTimeTable[i].ballCount + 1
-                : originalTimeTable[i].ballCount,
-            };
-          }
-        }
-      }
       return {
         ...state,
-        timeTable: nextTimeTable,
         hasBall,
       };
     }
@@ -424,6 +374,10 @@ const reducer = (state: any, { type, payload }: any) => {
 };
 
 const Reservation: NextPage = () => {
+  const { useMountPage } = useNavigationContext();
+
+  useMountPage((page) => page.COURT_RESERVATIONS);
+
   const {
     query: { courtId, date },
   } = useRouter();
@@ -441,6 +395,8 @@ const Reservation: NextPage = () => {
     modalContentData,
     hasBall,
   } = reservation;
+
+  const [snap, setSnap] = useState(0);
 
   const reservationDateText = useMemo(() => {
     const day = new Date(date as string);
@@ -522,15 +478,12 @@ const Reservation: NextPage = () => {
     console.log(`delete /reservations/${reservationId}`);
   }, []);
 
-  const handleChangeHasBall = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      dispatch({
-        type: "SET_HAS_BALL",
-        payload: { hasBall: e.target.checked },
-      });
-    },
-    []
-  );
+  const handleChangeHasBall = useCallback((hasBall: boolean) => {
+    dispatch({
+      type: "SET_HAS_BALL",
+      payload: { hasBall },
+    });
+  }, []);
 
   const handleClickReservationMarker = useCallback(
     (selectedReservationId: number) => {
@@ -572,9 +525,17 @@ const Reservation: NextPage = () => {
         selectedReservationId={selectedReservationId}
         existedReservations={existedReservations}
       />
-      <ModalSheet isOpen={isOpen} onClose={onClose}>
+      <ModalSheet
+        isOpen={isOpen}
+        onClose={onClose}
+        onSnap={(snap: number) => {
+          setSnap(snap);
+        }}
+        onCloseStart={() => setSnap(-1)}
+      >
         {isOpen && step === 1 && startIndex && modalContentData && (
           <ModalContent.BlockStatus
+            snap={snap}
             startTime={getTimeFromIndex(startIndex)}
             endTime={getTimeFromIndex(startIndex + 1)}
             participants={modalContentData}
@@ -614,6 +575,8 @@ const Reservation: NextPage = () => {
           />
         )}
       </ModalSheet>
+
+      <div style={{ height: 320 }}></div>
     </div>
   );
 };

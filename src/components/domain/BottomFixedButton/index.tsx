@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react";
 import type { MouseEvent, ReactNode } from "react";
 import { Button } from "@components/base";
 import styled from "@emotion/styled";
+import ReactDOM from "react-dom";
 
 interface Props {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface Props {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   style?: CSSProperties;
+  bottom?: number;
 }
 
 const BottomFixedButton: React.FC<Props> = ({
@@ -19,9 +21,10 @@ const BottomFixedButton: React.FC<Props> = ({
   onClick,
   style,
   className,
+  bottom,
 }) => {
-  return (
-    <Background>
+  return ReactDOM.createPortal(
+    <Background bottom={bottom}>
       <Button
         type={type}
         disabled={disabled}
@@ -33,13 +36,15 @@ const BottomFixedButton: React.FC<Props> = ({
       >
         {children}
       </Button>
-    </Background>
+    </Background>,
+    document.querySelector("#scrolled-container")!
   );
 };
-const Background = styled.div`
+
+const Background = styled.div<Pick<Props, "bottom">>`
   box-sizing: border-box;
   position: fixed;
-  bottom: 0;
+  bottom: ${({ bottom }) => (bottom ? `${bottom}px` : 0)};
   width: 100%;
   height: 120px;
   z-index: 2000;

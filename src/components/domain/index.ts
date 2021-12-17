@@ -28,3 +28,5 @@ export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
 // eslint-disable-next-line import/no-cycle
 export { default as NotificationList } from "./NotificationList";
+
+export { default as Modal } from "./Modal";

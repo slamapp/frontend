@@ -1,4 +1,5 @@
 import React from "react";
+import BottomFixedButton from "../BottomFixedButton";
 import CommonModalContent from "./StepTwoCommonContent";
 
 interface Props {
@@ -22,12 +23,15 @@ const ExistedReservationContent = ({
         timeSlot={timeSlot}
         participantsPerBlock={participantsPerBlock}
       />
-      <button type="button" onClick={() => onDeleteReservation(reservationId)}>
+      <BottomFixedButton
+        type="button"
+        onClick={() => onDeleteReservation(reservationId)}
+      >
         예약 취소
-      </button>
-      <button type="button" onClick={onStartUpdate}>
+      </BottomFixedButton>
+      <BottomFixedButton type="button" onClick={onStartUpdate}>
         예약 수정
-      </button>
+      </BottomFixedButton>
     </>
   );
 };
