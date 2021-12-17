@@ -153,7 +153,12 @@ const User: NextPage = () => {
             </div>
             <div>
               <dt>평가 점수</dt>
-              <dd>?</dd>
+              <dd
+                onClick={() => alert("개발 예정")}
+                style={{ cursor: "pointer" }}
+              >
+                ?
+              </dd>
             </div>
           </StatBar>
         </MainInfoArea>
