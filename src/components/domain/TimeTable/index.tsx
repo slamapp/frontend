@@ -66,8 +66,8 @@ const TimeTable = ({
         <ActionTimeBlockUnit rowRef={ref} height={height} previous />
         {timeTable.map((item: any, index: number) => (
           <TimeBlockUnit
-            height={height}
             key={index}
+            height={height}
             index={index}
             reservationCount={item.peopleCount}
             ballCount={item.ballCount}

@@ -7,7 +7,7 @@ import {
 } from "@components/domain";
 import { getTimeFromIndex } from "@components/domain/TimeTable/utils";
 import { useNavigationContext } from "@contexts/hooks";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 
@@ -363,7 +363,17 @@ const reducer = (state: any, { type, payload }: any) => {
   }
 };
 
-const Reservation: NextPage = () => {
+export const getServerSideProps = ({ query }: any) => {
+  return {
+    props: {
+      query,
+    },
+  };
+};
+
+const Reservation: NextPage = ({ query }: any) => {
+  const { date, courtId } = query;
+
   const {
     useMountPage,
     clearNavigationEvent,
@@ -371,10 +381,6 @@ const Reservation: NextPage = () => {
     setNavigationTitle,
   } = useNavigationContext();
   useMountPage((page) => page.COURT_RESERVATIONS);
-
-  const {
-    query: { courtId, date },
-  } = useRouter();
 
   const [reservation, dispatch] = useReducer(reducer, initialState);
   const {
@@ -391,20 +397,6 @@ const Reservation: NextPage = () => {
   } = reservation;
 
   const [snap, setSnap] = useState(0);
-
-  const reservationDateText = useMemo(() => {
-    const day = new Date(date as string);
-    return (
-      <Text size="base">
-        {`${day.getFullYear()}년 ${day.getMonth() + 1}월 ${day.getDate()}일`}(
-        <DayOfTheWeek index={day.getDay()} size="base">
-          {weekdays[day.getDay()]}
-        </DayOfTheWeek>
-        )
-      </Text>
-    );
-  }, [date]);
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSetStartIndex = (startIndex: number) => {
@@ -499,6 +491,12 @@ const Reservation: NextPage = () => {
   );
 
   useEffect(() => {
+    console.log("sdfsf", date);
+
+    setNavigationTitle(<ReservationTitle date={date} />);
+  }, [date]);
+
+  useEffect(() => {
     if (step > 1) {
       setCustomButtonEvent("취소", handleDecreaseStep);
     } else {
@@ -507,7 +505,6 @@ const Reservation: NextPage = () => {
   }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
 
   useEffect(() => {
-    setNavigationTitle(reservationDateText);
     // TODO: getCourtReservations API CALL
     dispatch({
       type: "SET_TIMETABLE",
@@ -588,3 +585,17 @@ const Reservation: NextPage = () => {
 };
 
 export default Reservation;
+
+const ReservationTitle: React.FC<{ date: string }> = ({ date }) => {
+  const day = new Date(date as string);
+
+  return (
+    <Text size="base">
+      {`${day.getFullYear()}년 ${day.getMonth() + 1}월 ${day.getDate()}일`}(
+      <DayOfTheWeek index={day.getDay()} size="base">
+        {weekdays[day.getDay()]}
+      </DayOfTheWeek>
+      )
+    </Text>
+  );
+};
