@@ -83,7 +83,7 @@ const AuthProvider = ({ children }: Props) => {
   const deleteFavorite = useCallback(async (favoriteId: number) => {
     try {
       const { favoriteId: deletedFavoriteId } =
-        await favoriteAPI.createMyFavorite<{ favoriteId: number }>(favoriteId);
+        await favoriteAPI.deleteMyFavorite<{ favoriteId: number }>(favoriteId);
       dispatch({
         type: authTypes.DELETE_FAVORITE,
         payload: { deletedFavoriteId },

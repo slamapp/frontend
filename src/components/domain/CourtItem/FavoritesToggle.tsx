@@ -16,7 +16,7 @@ const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
     deleteFavorite,
   } = useAuthContext();
 
-  const isChecked = !!favorites.find((favorite) => favorite.courtId);
+  const isChecked = favorites.some((favorite) => favorite.courtId === courtId);
 
   const handleToggleFavorite = useCallback(() => {
     if (isChecked) {
