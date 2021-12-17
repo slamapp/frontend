@@ -7,7 +7,6 @@ export interface DataProps {
     userId: number | null;
     email: string | null;
     profileImageUrl: string | null;
-    skill: string | null;
     role: string | null;
     description: string | null;
     nickname: string | null;
@@ -30,7 +29,6 @@ export const initialData = {
     userId: null,
     email: null,
     profileImageUrl: null,
-    skill: null,
     role: null,
     description: null,
     nickname: null,

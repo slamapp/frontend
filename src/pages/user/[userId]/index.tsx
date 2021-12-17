@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { Avatar } from "@components/base";
-import { useNavigationContext } from "@contexts/hooks";
+import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 
 type IUserType = "other" | "me";
 type ISkill = "BEGINNER" | "INTERMEDIATE" | "MASTER";
@@ -13,10 +13,14 @@ type IPosition = "PF" | "SF" | "SG" | "PG" | "C" | "UNDEFINED";
 
 const User: NextPage = () => {
   const { useMountPage, setNavigationTitle } = useNavigationContext();
+  const { authProps } = useAuthContext();
+  const { userId: authContextUserId } = authProps.currentUser;
+
   useMountPage((page) => page.USER);
 
-  const { asPath } = useRouter();
-  const userId = Number(asPath.split("/")[2]);
+  const { query } = useRouter();
+  const { userId: stringUserId } = query;
+  const userId = Number(stringUserId);
 
   const [userType, setUserType] = useState<IUserType>("other");
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
