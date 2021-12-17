@@ -84,6 +84,8 @@ const dummyBasketballCourts = [
   },
 ];
 
+const DATE_STRING_LENGTH = 10;
+
 const Courts: NextPage = () => {
   const router = useRouter();
   const { useMountPage, useDisableTopTransparent, useMountCustomButtonEvent } =
@@ -262,7 +264,27 @@ const Courts: NextPage = () => {
                 longitude={selectedCourt.longitude}
                 courtName={selectedCourt.courtName}
               />
-              <Button style={{ flex: 1 }} size="lg">
+              <Button
+                style={{ flex: 1 }}
+                size="lg"
+                onClick={() => {
+                  router.push(
+                    {
+                      pathname: `/courts/${
+                        selectedCourt?.courtId
+                      }/${selectedDate
+                        .toISOString()
+                        .substring(0, DATE_STRING_LENGTH)}`,
+                      // 숨겨서 보낼 정보
+                      query: { timeSlot: selectedSlot },
+                    },
+                    // 주소창에 출력될 url
+                    `/courts/${selectedCourt?.courtId}/${selectedDate
+                      .toISOString()
+                      .substring(0, DATE_STRING_LENGTH)}`
+                  );
+                }}
+              >
                 예약하기
               </Button>
             </Actions>

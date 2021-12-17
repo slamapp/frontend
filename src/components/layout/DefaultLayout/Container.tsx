@@ -14,7 +14,7 @@ const Container = forwardRef<HTMLDivElement, { children: ReactNode }>(
     }, []);
 
     return (
-      <StyledContainer ref={ref} height={height}>
+      <StyledContainer ref={ref} height={height} id="scrolled-container">
         {children}
       </StyledContainer>
     );

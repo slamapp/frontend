@@ -40,6 +40,7 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
       ? css`
           & .time-block__hour {
             transform: translate(0, -50%);
+            font-size: 30px;
 
             span {
               font-size: 12px;
