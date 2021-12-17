@@ -36,6 +36,7 @@ const AuthProvider = ({ children }: Props) => {
       const data = await userAPI.getUserData();
       dispatch({ type: authTypes.GET_CURRENT_USER, payload: data });
     } catch (error) {
+      console.error(error);
       logout();
     } finally {
       dispatch({ type: authTypes.LOADING_OFF });
@@ -68,22 +69,30 @@ const AuthProvider = ({ children }: Props) => {
   }, []);
 
   const createFavorite = useCallback(async (courtId: number) => {
-    const favorite = await favoriteAPI.createMyFavorite(`${courtId}`);
-    dispatch({
-      type: authTypes.CREATE_FAVORITE,
-      payload: { favorite },
-    });
+    try {
+      const favorite = await favoriteAPI.createMyFavorite(`${courtId}`);
+      dispatch({
+        type: authTypes.CREATE_FAVORITE,
+        payload: { favorite },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const deleteFavorite = useCallback(async (favoriteId: number) => {
-    const { favoriteId: deletedFavoriteId } =
-      await favoriteAPI.createMyFavorite<{ favoriteId: number }>(
-        `${favoriteId}`
-      );
-    dispatch({
-      type: authTypes.DELETE_FAVORITE,
-      payload: { deletedFavoriteId },
-    });
+    try {
+      const { favoriteId: deletedFavoriteId } =
+        await favoriteAPI.createMyFavorite<{ favoriteId: number }>(
+          `${favoriteId}`
+        );
+      dispatch({
+        type: authTypes.DELETE_FAVORITE,
+        payload: { deletedFavoriteId },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const pushNotification = (notification: Notification) => {
@@ -109,6 +118,8 @@ const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     if (token) {
       authProviderInit();
+    } else {
+      dispatch({ type: authTypes.LOADING_OFF });
     }
   }, []);
 

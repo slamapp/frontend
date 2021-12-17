@@ -21,22 +21,16 @@ const useStomp: UseStomp = (token: string) => {
   }, []);
 
   useEffect(() => {
-    if (userId) {
-      try {
-        const newClient = socketApi.getCompatClient();
-        setCompatClient(newClient);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    const newClient = socketApi.getCompatClient();
+    setCompatClient(newClient);
 
     return () => {
       if (compatClient) compatClient.disconnect();
     };
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
-    if (compatClient) {
+    if (compatClient && userId) {
       compatClient.connect(
         { Authorization: { token: `Bearer ${token}` } },
         () => {
@@ -55,7 +49,7 @@ const useStomp: UseStomp = (token: string) => {
         handleError
       );
     }
-  }, [compatClient]);
+  }, [userId]);
 
   const sendAuth: SendAuth = (destination, body) => {
     console.log("SEND,Token", "destination:", destination, "body:", body);

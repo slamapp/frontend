@@ -28,9 +28,13 @@ const Favorites: NextPage = () => {
   }, []);
 
   const getPageFavorites = async () => {
-    const { favorites } = await favoriteAPI.getMyFavorites();
-    setFavorites(favorites);
-    setIsLoading(false);
+    try {
+      const { favorites } = await favoriteAPI.getMyFavorites();
+      setFavorites(favorites);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

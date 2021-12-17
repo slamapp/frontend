@@ -34,7 +34,7 @@ const LoadingContainer = styled.div<{ isShow: boolean }>`
   justify-content: center;
   align-items: center;
   position: absolute;
-  z-index: 9999;
+  z-index: 4000;
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.6);
