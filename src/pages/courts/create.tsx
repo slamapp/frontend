@@ -199,6 +199,7 @@ const CreateCourt: NextPage = () => {
             </BottomFixedButton>
           </Sheet.Content>
         </Sheet.Container>
+        <Sheet.Backdrop onViewportBoxUpdate={() => {}} />
       </CustomSheet>
 
       <form onSubmit={handleSubmit}>
