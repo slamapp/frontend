@@ -9,6 +9,7 @@ import {
 } from "./actionTypes";
 
 export interface DataProps {
+  isTopTransparent: boolean;
   isTopNavigation: boolean;
   isBottomNavigation: boolean;
   currentPage: PageTypeUnion;
@@ -25,6 +26,7 @@ export interface DataProps {
 }
 
 export const initialData = {
+  isTopTransparent: true,
   isTopNavigation: true,
   isBottomNavigation: true,
   currentPage: pageType.NONE,
@@ -204,6 +206,9 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isMenu: false,
         title: "사용자 메뉴",
       };
+    }
+    case navigationType.SET_IS_TOP_TRANSPARENT: {
+      return { ...prevState, isTopTransparent: payload.isTopTransparent };
     }
     case navigationType.SET_NAVIGATION_TITLE: {
       return {

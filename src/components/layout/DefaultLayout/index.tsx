@@ -9,17 +9,15 @@ interface Props {
 }
 
 const DefaultLayout = ({ children }: Props) => {
-  const { navigationProps } = useNavigationContext();
+  const { navigationProps, setIsTopTransparent } = useNavigationContext();
   const { isBottomNavigation, isTopNavigation } = navigationProps;
-
-  const [isTransparent, setIsTransparent] = useState(true);
 
   const topNavigationRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () =>
     topNavigationRef.current &&
-    setIsTransparent(topNavigationRef.current.offsetTop < 56);
+    setIsTopTransparent(topNavigationRef.current.offsetTop < 56);
 
   useEffect(() => {
     containerRef.current?.addEventListener("scroll", handleScroll);
@@ -29,9 +27,7 @@ const DefaultLayout = ({ children }: Props) => {
 
   return (
     <Container ref={containerRef}>
-      {isTopNavigation && (
-        <TopNavigation ref={topNavigationRef} isTransparent={isTransparent} />
-      )}
+      {isTopNavigation && <TopNavigation ref={topNavigationRef} />}
       <StyledMain>{children}</StyledMain>
       {isBottomNavigation && <BottomNavigation />}
     </Container>

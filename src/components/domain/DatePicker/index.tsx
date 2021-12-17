@@ -10,9 +10,15 @@ interface Props {
   onClick: (date: Date) => void;
   selectedDate: Date;
   startDate: Date;
+  isBackgroundTransparent: boolean;
 }
 
-const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
+const DatePicker: React.FC<Props> = ({
+  isBackgroundTransparent,
+  startDate,
+  onClick,
+  selectedDate,
+}) => {
   const twoWeekDates = useMemo(
     () => [
       ...Array.from({ length: DAY_RANGE }, (_, index) => {
@@ -27,7 +33,12 @@ const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
   );
 
   return (
-    <StyledFlicking moveType="freeScroll" bound={true} horizontal={true}>
+    <StyledFlicking
+      isBackgroundTransparent={isBackgroundTransparent}
+      moveType="freeScroll"
+      bound={true}
+      horizontal={true}
+    >
       {twoWeekDates.map((date, i) => (
         <DateItem
           key={i}
@@ -43,8 +54,11 @@ const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
 
 export default DatePicker;
 
-const StyledFlicking = styled(Flicking)`
+const StyledFlicking = styled(Flicking)<{ isBackgroundTransparent: boolean }>`
   background-color: ${({ theme }) => theme.colors.white};
+  opacity: ${({ isBackgroundTransparent }) =>
+    isBackgroundTransparent ? 0 : 1};
+  transition: opacity 200ms;
 
   .flicking-camera {
     display: flex;

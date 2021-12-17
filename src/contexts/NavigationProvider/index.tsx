@@ -22,17 +22,18 @@ const NavigationProvider = ({ children }: Props) => {
       return () => setCurrentPage(pageType.NONE);
     }, []);
 
-  const setIsTopTransparent = (nextIsTopTransparent: boolean) =>
+  const setIsTopTransparent = (isTopTransparent: boolean) =>
     dispatch({
       type: navigationType.SET_IS_TOP_TRANSPARENT,
-      payload: { nextIsTopTransparent },
+      payload: { isTopTransparent },
     });
 
-  const useDisableTopTransparent = () =>
+  const useDisableTopTransparent = () => {
     useEffect(() => {
       setIsTopTransparent(false);
       return () => setIsTopTransparent(true);
     }, []);
+  };
 
   const setNavigationEvent = useCallback(
     (events: Events = { back: null, customButton: null }) => {

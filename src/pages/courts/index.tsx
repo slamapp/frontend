@@ -88,8 +88,15 @@ const DATE_STRING_LENGTH = 10;
 
 const Courts: NextPage = () => {
   const router = useRouter();
-  const { useMountPage, useDisableTopTransparent, useMountCustomButtonEvent } =
-    useNavigationContext();
+  const {
+    navigationProps,
+    useMountPage,
+    useDisableTopTransparent,
+    useMountCustomButtonEvent,
+  } = useNavigationContext();
+
+  const { isTopTransparent } = navigationProps;
+
   useMountPage((page) => page.MAP);
   useDisableTopTransparent();
   useMountCustomButtonEvent("추가", () => {
@@ -211,6 +218,7 @@ const Courts: NextPage = () => {
         <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
       <DatePicker
+        isBackgroundTransparent={isTopTransparent}
         startDate={today}
         selectedDate={selectedDate}
         onClick={handleDateClick}

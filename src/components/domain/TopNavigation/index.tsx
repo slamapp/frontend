@@ -6,84 +6,79 @@ import { useRouter } from "next/router";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import LinkAvatar from "../LinkAvatar";
 
-interface Props {
-  isTransparent: boolean;
-}
+const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
+  const {
+    authProps: { currentUser },
+  } = useAuthContext();
+  const { userId, profileImageUrl } = currentUser;
 
-const TopNavigation = forwardRef<HTMLElement, Props>(
-  ({ isTransparent }, ref) => {
-    const {
-      authProps: { currentUser },
-    } = useAuthContext();
-    const { userId, profileImageUrl } = currentUser;
+  const {
+    navigationProps: {
+      isBack,
+      isNotifications,
+      isProfile,
+      title,
+      isMenu,
+      handleClickBack,
+      customButton,
+      isTopTransparent,
+    },
+  } = useNavigationContext();
 
-    const {
-      navigationProps: {
-        isBack,
-        isNotifications,
-        isProfile,
-        title,
-        isMenu,
-        handleClickBack,
-        customButton,
-      },
-    } = useNavigationContext();
+  const router = useRouter();
 
-    const router = useRouter();
+  const handleDefaultBack = () => {
+    router.back();
+  };
 
-    const handleDefaultBack = () => {
-      router.back();
-    };
-
-    return (
-      <Container isTransparent={isTransparent} ref={ref}>
-        <Wrapper>
-          <IconGroup>
-            {isBack && (
-              <CursorIcon
-                name="chevron-left"
-                size={24}
-                onClick={handleClickBack || handleDefaultBack}
-              />
-            )}
-          </IconGroup>
-          <IconGroup>
-            {isNotifications && (
-              <Badge count={0} maxCount={10}>
-                <Link href="/notifications" passHref>
-                  <Icon name="bell" size={24} />
-                </Link>
-              </Badge>
-            )}
-            {isProfile && (
-              <LinkAvatar
-                userId={userId || 1}
-                imageUrl={
-                  profileImageUrl ||
-                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                }
-              />
-            )}
-            {isMenu && (
-              <Link href={`/user/menu`} passHref>
-                <Icon name="menu" size={24} />
+  return (
+    <Container isTransparent={isTopTransparent} ref={ref}>
+      <Wrapper>
+        <IconGroup>
+          {isBack && (
+            <CursorIcon
+              name="chevron-left"
+              size={24}
+              onClick={handleClickBack || handleDefaultBack}
+            />
+          )}
+        </IconGroup>
+        <IconGroup>
+          {isNotifications && (
+            <Badge count={0} maxCount={10}>
+              <Link href="/notifications" passHref>
+                <Icon name="bell" size={24} />
               </Link>
-            )}
+            </Badge>
+          )}
+          {isProfile && (
+            <LinkAvatar
+              userId={userId || 1}
+              imageUrl={
+                profileImageUrl ||
+                "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+              }
+            />
+          )}
+          {isMenu && (
+            <Link href={`/user/menu`} passHref>
+              <Icon name="menu" size={24} />
+            </Link>
+          )}
 
-            {customButton && (
-              <CustomButton onClick={customButton.handleClick}>
-                {customButton.title}
-              </CustomButton>
-            )}
-          </IconGroup>
-        </Wrapper>
-        <TitleWrapper>
-          <Title>{title}</Title>
-        </TitleWrapper>
-      </Container>
-    );
-  }
-);
+          {customButton && (
+            <CustomButton onClick={customButton.handleClick}>
+              {customButton.title}
+            </CustomButton>
+          )}
+        </IconGroup>
+      </Wrapper>
+      <TitleWrapper>
+        <Title>{title}</Title>
+      </TitleWrapper>
+    </Container>
+  );
+});
 
 export default TopNavigation;
 
@@ -101,7 +96,7 @@ const Container = styled.nav<{ isTransparent: boolean }>`
     bottom: 0;
     display: block;
     height: 56px;
-    background: ${({ theme }) => "white"};
+    background: ${({ theme }) => theme.colors.white};
     transition: opacity 200ms;
     opacity: ${({ isTransparent }) => (isTransparent ? 0 : 1)};
   }

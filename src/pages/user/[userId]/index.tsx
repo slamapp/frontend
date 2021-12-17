@@ -16,11 +16,13 @@ import {
 type IUserType = "other" | "me";
 
 const User: NextPage = () => {
-  const { useMountPage, setNavigationTitle } = useNavigationContext();
+  const { useMountPage, setNavigationTitle, useDisableTopTransparent } =
+    useNavigationContext();
   const { authProps } = useAuthContext();
   const { userId: authContextUserId } = authProps.currentUser;
 
   useMountPage((page) => page.USER);
+  useDisableTopTransparent();
 
   const { query } = useRouter();
   const { userId: stringUserId } = query;
