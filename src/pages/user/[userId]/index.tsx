@@ -238,9 +238,8 @@ export default User;
 const MainInfoContainer = styled.div<{ isBackgroundTransparent: boolean }>`
   ${({ theme, isBackgroundTransparent }) => css`
     padding: ${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md};
-    background: ${theme.colors.white};
-    opacity: ${isBackgroundTransparent ? 0 : 1};
-    transition: opacity 200ms;
+    background: rgba(255, 255, 255, ${isBackgroundTransparent ? 0 : 1});
+    transition: background 200ms;
   `}
 `;
 
