@@ -10,6 +10,7 @@ interface Props {
   size?: Size;
   type?: "button" | "submit";
   secondary?: boolean;
+  tertiary?: boolean;
   fullWidth?: boolean;
   block?: boolean;
   disabled?: boolean;
@@ -24,6 +25,7 @@ const Button: React.FC<Props> = ({
   block = false,
   disabled = false,
   secondary = false,
+  tertiary = false,
   type = "button",
   size = "md",
   style,
@@ -37,6 +39,7 @@ const Button: React.FC<Props> = ({
       type={type}
       fullWidth={fullWidth}
       secondary={secondary}
+      tertiary={tertiary}
       onClick={onClick}
       style={style}
       disabled={disabled}
@@ -75,6 +78,20 @@ const StyledButton = styled.button<Omit<Props, "children">>`
 
       &:hover {
         background-color: ${theme.colors.gray200};
+      }
+    `}
+
+    ${({ theme, tertiary }) =>
+    tertiary &&
+    css`
+      & {
+        background-color: ${theme.colors.gray200};
+        color: ${theme.colors.gray900};
+        border: 1px solid ${theme.colors.gray300};
+      }
+
+      &:hover {
+        background-color: ${theme.colors.gray400};
       }
     `}
   font-weight: bold;
