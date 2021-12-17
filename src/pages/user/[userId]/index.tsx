@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+
+import UtilRoute from "UtilRoute";
 import { Avatar, Button, Label, Spacer, Chip } from "@components/base";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
 import {
@@ -15,7 +17,7 @@ import {
 
 type IUserType = "other" | "me";
 
-const User: NextPage = () => {
+const User: NextPage = UtilRoute("private", () => {
   const {
     navigationProps,
     useMountPage,
@@ -229,7 +231,7 @@ const User: NextPage = () => {
       </AdditionalInfoContainer>
     </div>
   );
-};
+});
 
 export default User;
 
