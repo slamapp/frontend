@@ -48,6 +48,7 @@ const UpcomingReservations = ({
           latitude={latitude}
           longitude={longitude}
           courtName={courtName}
+          type="findRoad"
         />
       </Actions>
       <ReservationItemBottom
@@ -74,11 +75,6 @@ const Actions = styled(Spacer)`
 `;
 
 const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Container = styled.div`
   display: flex;
   justify-content: space-between;
 `;

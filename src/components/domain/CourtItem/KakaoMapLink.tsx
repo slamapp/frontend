@@ -1,19 +1,27 @@
-import { IconButton } from "@components/base";
 import React from "react";
+import { IconButton } from "@components/base";
 
+type KakaoMapButtonType = "information" | "findRoad";
 interface Props {
   latitude: number;
   longitude: number;
   courtName: string;
+  type?: KakaoMapButtonType;
 }
 
-const KakaoMapButton = ({ latitude, longitude, courtName }: Props) => {
+const KakaoMapButton = ({
+  latitude,
+  longitude,
+  courtName,
+  type = "information",
+}: Props) => {
+  const getHref = (type: KakaoMapButtonType) =>
+    type === "information"
+      ? `https://map.kakao.com/link/map/${courtName},${latitude},${longitude}`
+      : `https://map.kakao.com/link/to/${courtName},${latitude},${longitude}`;
+
   return (
-    <a
-      href={`https://map.kakao.com/?urlX=${latitude}&urlY=${longitude}&name=${courtName}`}
-      target="_blank"
-      rel="noreferrer"
-    >
+    <a href={getHref(type)} target="_blank" rel="noreferrer">
       <IconButton name="map" />
     </a>
   );
