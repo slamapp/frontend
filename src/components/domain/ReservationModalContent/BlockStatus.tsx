@@ -20,9 +20,9 @@ const BlockStatusContent = ({
     <S.ModalContent>
       <S.ContentWrapper>
         <Text>선택한 시간</Text>
-        <Text>
+        <S.TimeSlotText>
           {startTime} - {endTime}
-        </Text>
+        </S.TimeSlotText>
       </S.ContentWrapper>
       <S.ContentWrapper>
         <Text>함께하는 사람들</Text>
