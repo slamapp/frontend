@@ -114,6 +114,8 @@ const Courts: NextPage = () => {
     return date;
   }, []);
 
+  const [courts, setCourts] = useState<any>();
+
   const [level, setLevel] = useState<number>(3);
   const [center, setCenter] = useState<Coord>();
 
@@ -169,30 +171,33 @@ const Courts: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const handleChangedMapBounds = useCallback(async (map: kakao.maps.Map) => {
-    const bounds = map.getBounds();
-    const swLatlng = bounds.getSouthWest();
-    const neLatLng = bounds.getNorthEast();
+  const handleChangedMapBounds = useCallback(
+    async (map: kakao.maps.Map) => {
+      const bounds = map.getBounds();
+      const swLatlng = bounds.getSouthWest();
+      const neLatLng = bounds.getNorthEast();
 
-    const startLatitude = swLatlng.getLat();
-    const startLongitude = swLatlng.getLng();
+      const startLatitude = swLatlng.getLat();
+      const startLongitude = swLatlng.getLng();
 
-    const endLatitude = neLatLng.getLat();
-    const endLongitude = neLatLng.getLng();
+      const endLatitude = neLatLng.getLat();
+      const endLongitude = neLatLng.getLng();
 
-    // TODO: map의 bounds를 전달하여 api 콜하기
+      const { courts } = await courtApi.getCourtsByCoordsAndDate({
+        date: `${selectedDate.getFullYear()}-${
+          selectedDate.getMonth() + 1
+        }-${selectedDate.getDate()}`,
+        startLatitude,
+        startLongitude,
+        endLatitude,
+        endLongitude,
+        time: selectedSlot,
+      });
 
-    await courtApi.getCourtsByCoordsAndDate({
-      date: `${selectedDate.getFullYear()}-${
-        selectedDate.getMonth() + 1
-      }-${selectedDate.getDate()}`,
-      startLatitude,
-      startLongitude,
-      endLatitude,
-      endLongitude,
-      time: selectedSlot,
-    });
-  }, []);
+      setCourts(courts);
+    },
+    [selectedDate, selectedSlot]
+  );
 
   const handleZoomIn = useCallback(() => {
     setLevel((level) => level - 1);
@@ -220,19 +225,28 @@ const Courts: NextPage = () => {
     setSnap(snap);
   }, []);
 
-  const handleGetCurrentLocation = useCallback(() => {
-    getCurrentLocation(([latitude, longitude]) => {
+  const handleGetCurrentLocation = useCallback(async () => {
+    getCurrentLocation(async ([latitude, longitude]) => {
       setCenter([latitude, longitude]);
-
-      if (map) {
-        const bound = map.getBounds();
-      }
     });
-  }, []);
+  }, [handleChangedMapBounds, map]);
 
   useEffect(() => {
+    const fetchCourts = async () => {
+      if (map) {
+        await handleChangedMapBounds(map);
+      }
+    };
+
     handleGetCurrentLocation();
-  }, [handleGetCurrentLocation]);
+    fetchCourts();
+  }, [handleGetCurrentLocation, map, handleChangedMapBounds]);
+
+  useEffect(() => {
+    if (map) {
+      handleChangedMapBounds(map);
+    }
+  }, [map, handleChangedMapBounds, selectedDate, selectedSlot]);
 
   return (
     <>
@@ -262,9 +276,10 @@ const Courts: NextPage = () => {
           />
 
           {map &&
-            dummyBasketballCourts.map((court, i) => (
+            courts &&
+            courts.map((court: any) => (
               <BasketballMarker
-                key={i}
+                key={court.courtId}
                 map={map}
                 court={court}
                 onClick={handleMarkerClick}

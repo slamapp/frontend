@@ -18,7 +18,7 @@ import {
   getTimeFromIndex,
   getDatetimeString,
 } from "@utils/timeTable";
-import { reservationApi, courtApi } from "@service/.";
+import { courtApi, reservationApi } from "@service/.";
 
 interface IReservation {
   reservationId: number | string;

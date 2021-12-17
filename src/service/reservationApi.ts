@@ -11,7 +11,7 @@ interface IReservation {
   hasBall: boolean;
 }
 
-const reservationAPI = {
+const reservationApi = {
   getMyReservations: <R>() => authRequest.get<R, R>("/reservations/upcoming"),
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
   getMyExpiredReservations: <R>(lastId: number | undefined) =>
@@ -34,4 +34,4 @@ const reservationAPI = {
     authRequest.delete(`/reservations/${reservationId}`),
 };
 
-export default reservationAPI;
+export default reservationApi;
