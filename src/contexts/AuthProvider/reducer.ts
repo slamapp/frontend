@@ -120,7 +120,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          favorites: [payload.favorite, ...prevState.currentUser.favorites],
+          favorites: [...prevState.currentUser.favorites, payload.favorite],
         },
       };
     }

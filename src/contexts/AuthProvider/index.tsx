@@ -56,7 +56,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const getMyFavorites = useCallback(async () => {
     try {
-      const favorites = await favoriteAPI.getMyFavorites();
+      const { favorites } = await favoriteAPI.getMyFavorites();
 
       dispatch({
         type: authTypes.GET_MY_FAVORITES,
@@ -68,32 +68,24 @@ const AuthProvider = ({ children }: Props) => {
   }, []);
 
   const createFavorite = useCallback(async (courtId: number) => {
-    // TODO create api call하여 받아온 response로 대체
+    const favorite = await favoriteAPI.createMyFavorite(`${courtId}`);
     dispatch({
       type: authTypes.CREATE_FAVORITE,
-      payload: {
-        favorite: {
-          favoriteId: 5,
-          courtId,
-          courtName: "새로 생성된 농구장",
-          latitude: 34.567234,
-          longitude: 12.493048,
-          createdAt: "2021-01-01T12:20:10",
-          updatedAt: "2021-01-01T12:20:10",
-        },
-      },
+      payload: { favorite },
     });
   }, []);
 
   const deleteFavorite = useCallback(async (favoriteId: number) => {
-    // TODO: delete api call하여 받아온 response로 대체
+    const { favoriteId: deletedFavoriteId } =
+      await favoriteAPI.createMyFavorite<{ favoriteId: number }>(
+        `${favoriteId}`
+      );
     dispatch({
       type: authTypes.DELETE_FAVORITE,
-      payload: {
-        deletedFavoriteId: favoriteId,
-      },
+      payload: { deletedFavoriteId },
     });
   }, []);
+
   const pushNotification = (notification: Notification) => {
     dispatch({
       type: authTypes.PUSH_NOTIFICATION,

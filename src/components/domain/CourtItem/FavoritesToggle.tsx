@@ -16,26 +16,27 @@ const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
     deleteFavorite,
   } = useAuthContext();
 
-  const { index, checked } = useMemo(() => {
-    const index = favorites.findIndex(
-      (favorite) => favorite.courtId === courtId
-    );
-    return {
-      index,
-      checked: index !== -1,
-    };
-  }, [favorites, courtId]);
+  const isChecked = !!favorites.find((favorite) => favorite.courtId);
 
   const handleToggleFavorite = useCallback(() => {
-    if (checked) {
-      deleteFavorite(favorites[index].favoriteId);
+    if (isChecked) {
+      const deletingFavorite = favorites.find(
+        (favorite) => favorite.courtId === courtId
+      );
+      if (deletingFavorite) {
+        deleteFavorite(deletingFavorite.favoriteId);
+      }
     } else {
       createFavorite(courtId);
     }
-  }, [checked, courtId, index, favorites, deleteFavorite, createFavorite]);
+  }, [isChecked, courtId, createFavorite, deleteFavorite, favorites]);
 
   return (
-    <IconToggle name="star" checked={checked} onChange={handleToggleFavorite} />
+    <IconToggle
+      name="star"
+      checked={isChecked}
+      onChange={handleToggleFavorite}
+    />
   );
 };
 
