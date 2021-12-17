@@ -1,5 +1,6 @@
-import { Avatar, Text } from "@components/base";
 import styled from "@emotion/styled";
+
+import { Avatar, Text } from "@components/base";
 import * as S from "./style";
 
 interface Props {

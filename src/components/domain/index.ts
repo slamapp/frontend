@@ -30,3 +30,4 @@ export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem"
 export { default as NotificationList } from "./NotificationList";
 
 export { default as Modal } from "./Modal";
+export { DayOfTheWeek } from "./CourtItem/style";

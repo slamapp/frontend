@@ -1,4 +1,10 @@
-import { useCallback, useReducer, ReactNode, useEffect } from "react";
+import {
+  useCallback,
+  useReducer,
+  ReactNode,
+  useEffect,
+  ReactChild,
+} from "react";
 import { pageType, eventType, navigationType } from "./actionTypes";
 import Context from "./context";
 import { reducer, initialData } from "./reducer";
@@ -65,7 +71,7 @@ const NavigationProvider = ({ children }: Props) => {
     dispatch({ type: eventType.CLEAR });
   }, []);
 
-  const setNavigationTitle = useCallback((title: string) => {
+  const setNavigationTitle = useCallback((title: ReactChild) => {
     dispatch({ type: navigationType.SET_NAVIGATION_TITLE, payload: title });
   }, []);
 

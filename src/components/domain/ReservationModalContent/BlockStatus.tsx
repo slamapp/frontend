@@ -30,6 +30,7 @@ const BlockStatusContent = ({
         </S.ContentWrapper>
         <S.ContentWrapper>
           <Text>함께하는 사람들</Text>
+          {participants.length === 0 && <Text>아직 참여자가 없습니다.</Text>}
           <S.AvatarGroup>
             {participants.map(({ userId, avatarImgSrc }: any) => (
               <Avatar

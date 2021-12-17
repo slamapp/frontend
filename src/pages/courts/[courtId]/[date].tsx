@@ -1,21 +1,17 @@
-import { ModalSheet } from "@components/base";
+import { ModalSheet, Text } from "@components/base";
+
 import {
   TimeTable,
   ReservationModalContent as ModalContent,
+  DayOfTheWeek,
 } from "@components/domain";
 import { getTimeFromIndex } from "@components/domain/TimeTable/utils";
 import { useNavigationContext } from "@contexts/hooks";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 
+const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
 const TIME_TABLE_ROWS = 24 * 2;
 const MAX_RESERVATION_TIME_BLOCK_UNIT = 6;
 const MINUTES_PER_TIME_BLOCK = 30;
@@ -233,7 +229,6 @@ const reducer = (state: any, { type, payload }: any) => {
         mode,
         originalTimeTable,
         startIndex,
-        hasBall,
         existedReservations,
         selectedReservationId,
       } = state;
@@ -252,14 +247,12 @@ const reducer = (state: any, { type, payload }: any) => {
         let requestDisabled = false;
 
         for (let i = startIndex; i <= endIndex; i += 1) {
-          const { users, peopleCount, ballCount, hasReservation } =
-            timeTable[i];
+          const { users, peopleCount, hasReservation } = timeTable[i];
 
           timeTable[i] = {
             ...timeTable[i],
             users: hasReservation ? users : [...users, { userId: "me" }],
             peopleCount: hasReservation ? peopleCount : peopleCount + 1,
-            ballCount: hasBall ? ballCount + 1 : ballCount,
           };
 
           modalContentData.push({ index: i, users: timeTable[i].users });
@@ -288,21 +281,19 @@ const reducer = (state: any, { type, payload }: any) => {
 
         if (selectedReservation.endIndex - endIndex > 0) {
           for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
-            const { users, peopleCount, ballCount } = timeTable[i];
+            const { users, peopleCount } = timeTable[i];
             timeTable[i] = {
               ...timeTable[i],
               users: users.filter(
                 ({ userId }: any) => userId !== selectedReservation.userId
               ),
               peopleCount: peopleCount - 1,
-              ballCount: hasBall ? ballCount - 1 : ballCount,
             };
           }
         }
 
         for (let i = startIndex; i <= endIndex; i += 1) {
-          const { users, peopleCount, ballCount, hasReservation } =
-            timeTable[i];
+          const { users, peopleCount, hasReservation } = timeTable[i];
 
           if (
             !(
@@ -314,7 +305,6 @@ const reducer = (state: any, { type, payload }: any) => {
               ...timeTable[i],
               users: [...users, { userId: "me" }],
               peopleCount: peopleCount + 1,
-              ballCount: hasBall ? ballCount + 1 : ballCount,
             };
           }
 
@@ -374,8 +364,12 @@ const reducer = (state: any, { type, payload }: any) => {
 };
 
 const Reservation: NextPage = () => {
-  const { useMountPage } = useNavigationContext();
-
+  const {
+    useMountPage,
+    clearNavigationEvent,
+    setCustomButtonEvent,
+    setNavigationTitle,
+  } = useNavigationContext();
   useMountPage((page) => page.COURT_RESERVATIONS);
 
   const {
@@ -400,7 +394,15 @@ const Reservation: NextPage = () => {
 
   const reservationDateText = useMemo(() => {
     const day = new Date(date as string);
-    return `${day.getFullYear()}년 ${day.getMonth()}월 ${day.getDate()}일`;
+    return (
+      <Text size="base">
+        {`${day.getFullYear()}년 ${day.getMonth() + 1}월 ${day.getDate()}일`}(
+        <DayOfTheWeek index={day.getDay()} size="base">
+          {weekdays[day.getDay()]}
+        </DayOfTheWeek>
+        )
+      </Text>
+    );
   }, [date]);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -497,6 +499,15 @@ const Reservation: NextPage = () => {
   );
 
   useEffect(() => {
+    if (step > 1) {
+      setCustomButtonEvent("취소", handleDecreaseStep);
+    } else {
+      clearNavigationEvent();
+    }
+  }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
+
+  useEffect(() => {
+    setNavigationTitle(reservationDateText);
     // TODO: getCourtReservations API CALL
     dispatch({
       type: "SET_TIMETABLE",
@@ -506,11 +517,6 @@ const Reservation: NextPage = () => {
 
   return (
     <div>
-      {step > 1 && (
-        <button type="button" onClick={handleDecreaseStep}>
-          뒤로 가기
-        </button>
-      )}
       <TimeTable
         timeTable={timeTable || []}
         onClickStatusBlock={
@@ -545,7 +551,7 @@ const Reservation: NextPage = () => {
         )}
         {isOpen && step === 1 && selectedReservationId && modalContentData && (
           <ModalContent.ExistedReservation
-            timeSlot={`${getTimeFromIndex(startIndex)} -${getTimeFromIndex(
+            timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
               endIndex + 1
             )}
               `}
@@ -564,7 +570,7 @@ const Reservation: NextPage = () => {
             hasBall={hasBall}
             requestDisabled={requestDisabled}
             onChangeHasBall={handleChangeHasBall}
-            onCreateReservation={
+            onSubmit={
               mode === "create"
                 ? handleCreateReservation
                 : handleUpdateReservation
