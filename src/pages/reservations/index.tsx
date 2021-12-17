@@ -31,7 +31,7 @@ const Reservations: NextPage = () => {
     },
     {
       reservationId: 5,
-      courtId: 7,
+      courtId: 2,
       courtName: "관악구민운동장 농구장",
       latitude: 37.5347279,
       longitude: 126.9023882,
@@ -45,7 +45,7 @@ const Reservations: NextPage = () => {
 
     {
       reservationId: 9,
-      courtId: 7,
+      courtId: 3,
       courtName: "관악구민운동장 농구장",
       latitude: 37.5347279,
       longitude: 126.9023882,
@@ -61,7 +61,7 @@ const Reservations: NextPage = () => {
   const dummyCompletedReservations = [
     {
       reservationId: 3,
-      courtId: 1,
+      courtId: 4,
       courtName: "영통구민운동장 농구장",
       latitude: 37.5347279,
       longitude: 126.9023882,
@@ -74,7 +74,7 @@ const Reservations: NextPage = () => {
     },
     {
       reservationId: 5,
-      courtId: 7,
+      courtId: 5,
       courtName: "관악구민운동장 농구장",
       latitude: 37.5347279,
       longitude: 126.9023882,
@@ -88,7 +88,7 @@ const Reservations: NextPage = () => {
 
     {
       reservationId: 9,
-      courtId: 7,
+      courtId: 6,
       courtName: "관악구민운동장 농구장",
       latitude: 37.5347279,
       longitude: 126.9023882,
