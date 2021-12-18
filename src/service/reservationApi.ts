@@ -7,7 +7,14 @@ import { request, authRequest, authFileRequest } from "./fetcher";
 const reservationAPI = {
   getMyReservations: <R>() => authRequest.get<R, R>("/reservations/upcoming"),
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
-  getMyExpiredReservations: () => authRequest.get("/reservations/expired"),
+  getMyExpiredReservations: <R>(lastId: number | undefined) =>
+    lastId
+      ? authRequest.get<R, R>("/reservations/expired", {
+          params: {
+            lastId,
+          },
+        })
+      : authRequest.get<R, R>("/reservations/expired"),
   getMyReservationParticipants: <R>({ courtId, startTime, endTime }: any) =>
     authRequest.get<R, R>(`/reservations/${courtId}/${startTime}/${endTime}`),
 };
