@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Spacer from "@components/base/Spacer";
 import Link from "next/link";
 import { NextPage } from "next";
 import UtilRoute from "UtilRoute";
 import styled from "@emotion/styled";
-import { Button, Icon, Image, Text } from "@components/base";
+import { Button, Spacer } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import Paragraph from "@components/base/Skeleton/Paragraph";
 import favoriteAPI from "@service/favoriteApi";
 import CourtItem from "../CourtItem";
+import NoItemMessage from "../NoItemMessage";
 
 declare global {
   interface Window {
@@ -66,28 +66,11 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
   if (favorites.length === 0) {
     return (
-      <WrapperSpacer gap="base" type="vertical">
-        <Image
-          width={70}
-          height={70}
-          src="assets/basketball/only_ball_500.gif"
-          alt="basketball"
-        />
-        <Spacer gap="xxs" type="vertical" style={{ textAlign: "center" }}>
-          <Text size="md" block strong>
-            즐겨찾는 농구장이 없으시네요? 🤔
-          </Text>
-          <TextGray size="xs">
-            즐겨찾기하면 더 빠르게 예약하실 수 있어요
-          </TextGray>
-        </Spacer>
-        <Link href="/courts" passHref>
-          <SearchButton fullWidth>
-            <SearchIcon name="compass" size="sm" color="white"></SearchIcon>내
-            주변 농구장 찾기
-          </SearchButton>
-        </Link>
-      </WrapperSpacer>
+      <NoItemMessage
+        title={"즐겨찾는 농구장이 없으시네요? 🤔"}
+        description={"즐겨찾기하면 더 빠르게 예약하실 수 있어요"}
+        buttonTitle={"내 주변 농구장 찾기"}
+      />
     );
   }
 
@@ -133,23 +116,4 @@ const FavoriteItem = styled.div`
   padding: 20px;
 `;
 
-const TextGray = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray500};
-`;
-
-const SearchButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SearchIcon = styled(Icon)`
-  margin-right: 5px;
-`;
-
-const WrapperSpacer = styled(Spacer)`
-  height: 80%;
-  align-items: center;
-  justify-content: center;
-`;
 export default Favorites;

@@ -27,6 +27,7 @@ export type {
   ProficiencyValueUnion,
 } from "./UserInfoPicker/types";
 export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
+export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
 // eslint-disable-next-line import/no-cycle
 export { default as NotificationList } from "./NotificationList";

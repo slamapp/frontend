@@ -5,7 +5,8 @@ import styled from "@emotion/styled";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { reservationApi } from "@service/.";
 import ReservationItem from "@components/domain/ReservationItem";
-import { Spacer } from "@components/base";
+import { Spacer, Text } from "@components/base";
+import { NoItemMessage } from "@components/domain";
 
 const Reservations: NextPage = () => {
   const { authProps, getMyReservations } = useAuthContext();
@@ -37,29 +38,33 @@ const Reservations: NextPage = () => {
   const menuTab = [
     {
       tabTitle: (
-        <div
-          className={activeIndex === 0 ? "is-active" : ""}
-          onClick={() => tabClickHandler(0)}
-        >
+        <Text strong={activeIndex === 0} onClick={() => tabClickHandler(0)}>
           다가올 예약
-        </div>
+        </Text>
       ),
-      tabContent: (
-        <Spacer gap="md" type="vertical">
-          {upcomingReservations.map((reservation) => (
-            <ReservationItem key={reservation.reservationId} {...reservation} />
-          ))}
-        </Spacer>
-      ),
+      tabContent:
+        upcomingReservations.length === 0 ? (
+          <NoItemMessage
+            title="다가올 예약이 없으시네요?"
+            description="농구장에서 예약을 하시면 한눈에 예약정보를 확인할 수 있어요"
+            buttonTitle="농구장 탐색에서 예약하기"
+          />
+        ) : (
+          <Spacer gap="md" type="vertical">
+            {upcomingReservations.map((reservation) => (
+              <ReservationItem
+                key={reservation.reservationId}
+                {...reservation}
+              />
+            ))}
+          </Spacer>
+        ),
     },
     {
       tabTitle: (
-        <div
-          className={activeIndex === 1 ? "is-active" : ""}
-          onClick={expiredHandleClick}
-        >
+        <Text strong={activeIndex === 1} onClick={expiredHandleClick}>
           지난 예약
-        </div>
+        </Text>
       ),
       tabContent: (
         <Spacer gap="md" type="vertical">
@@ -76,29 +81,32 @@ const Reservations: NextPage = () => {
   ];
 
   return (
-    <Container>
+    <PageContainer>
       <TabStyle>
         {menuTab.map((section) => {
           return section.tabTitle;
         })}
       </TabStyle>
-      <div>{menuTab[activeIndex].tabContent}</div>
-    </Container>
+      <TabContentsWrapper>{menuTab[activeIndex].tabContent}</TabContentsWrapper>
+    </PageContainer>
   );
 };
 
 const TabStyle = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
-
-  .is-active {
-    font-weight: bold;
-  }
+  height: 52px;
 `;
 
-const Container = styled.div`
-  margin: ${({ theme }) => theme.gaps.base};
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 ${({ theme }) => theme.gaps.base};
+`;
+
+const TabContentsWrapper = styled.div`
+  flex: 1;
 `;
 
 export default Reservations;
