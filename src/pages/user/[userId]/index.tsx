@@ -70,14 +70,28 @@ const User: NextPage = UtilRoute("private", () => {
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   );
+  const [isServerError, setIsServerError] = useState(false);
 
   const getMyProfile = useCallback(async () => {
-    const data = await userApi.getMyProfile<ResponseUserProfile>();
-    setPageUserInfo(data);
+    try {
+      const data = await userApi.getMyProfile<ResponseUserProfile>();
+      setPageUserInfo(data);
+    } catch (error) {
+      setIsServerError(true);
+      console.error(error);
+    }
   }, []);
+
   const getOtherProfile = useCallback(async () => {
-    const data = await userApi.getUserProfile<ResponseUserProfile>(queryUserId);
-    setPageUserInfo(data);
+    try {
+      const data = await userApi.getUserProfile<ResponseUserProfile>(
+        queryUserId
+      );
+      setPageUserInfo(data);
+    } catch (error) {
+      setIsServerError(true);
+      console.error(error);
+    }
   }, [queryUserId]);
 
   useEffect(() => {
@@ -91,6 +105,10 @@ const User: NextPage = UtilRoute("private", () => {
       getOtherProfile();
     }
   }, [userId, getMyProfile, getOtherProfile, queryUserId]);
+
+  if (isServerError) {
+    return <>네트워크에 문제가 있습니다. 나중에 다시 접속해주세요</>;
+  }
 
   if (pageUserInfo === null) {
     return <>Loading</>;
