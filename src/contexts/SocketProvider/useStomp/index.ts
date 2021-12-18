@@ -28,10 +28,11 @@ const useStomp: UseStomp = (token: string) => {
         () => {
           setIsConnected(true);
           setIsLoading(false);
-          subscribe(newClient, `/topic/${userId}`, (body) => {
-            console.log(body);
-          });
           subscribe(newClient, `/user/${userId}/notification`, (body) => {
+            console.log(body);
+            pushNotification(body as Notification);
+          });
+          subscribe(newClient, `/user/${`courtId`}/chat`, (body) => {
             console.log(body);
             pushNotification(body as Notification);
           });

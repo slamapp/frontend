@@ -5,8 +5,8 @@ import {
   PositionValueUnion,
 } from "@components/domain";
 
-export const getKoreanProficiency = (proficiency: ProficiencyKeyUnion) => {
-  switch (proficiency) {
+const getKoreanProficiency = (englishProficiency: ProficiencyKeyUnion) => {
+  switch (englishProficiency) {
     case "BEGINNER":
       return "뉴비";
     case "INTERMEDIATE":
@@ -14,9 +14,21 @@ export const getKoreanProficiency = (proficiency: ProficiencyKeyUnion) => {
     case "MASTER":
       return "고수";
     default:
-      return "정보 없음";
+      return "선택한 숙련도가 없습니다";
   }
 };
+
+type TransLatedProficiency = {
+  english: ProficiencyKeyUnion;
+  korean: ProficiencyValueUnion;
+};
+
+export const getTranslatedProficiency = (
+  englishProficiency: ProficiencyKeyUnion
+): TransLatedProficiency => ({
+  english: englishProficiency,
+  korean: getKoreanProficiency(englishProficiency),
+});
 
 const getKoreanPosition = (englishPosition: PositionKeyUnion) => {
   switch (englishPosition) {
@@ -43,7 +55,7 @@ type TransLatedPosition = {
 export const getTranslatedPositions = (
   englishPositions: PositionKeyUnion[]
 ): TransLatedPosition[] =>
-  englishPositions.map((englishPosition) => {
-    const koreanPosition = getKoreanPosition(englishPosition);
-    return { english: englishPosition, korean: koreanPosition };
-  });
+  englishPositions.map((english) => ({
+    english,
+    korean: getKoreanPosition(english),
+  }));

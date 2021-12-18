@@ -15,20 +15,32 @@ import {
   Chip,
   LinkStrong,
 } from "@components/base";
-import { useNavigationContext, useAuthContext } from "@contexts/hooks";
-import { PositionKeyUnion } from "@components/domain";
-import { getTranslatedPositions } from "@utils/userInfo";
+import {
+  useNavigationContext,
+  useAuthContext,
+  useSocketContext,
+} from "@contexts/hooks";
+import {
+  PositionKeyUnion,
+  ProficiencyKeyUnion,
+  ProfileFavoritesListItem,
+} from "@components/domain";
+import {
+  getTranslatedPositions,
+  getTranslatedProficiency,
+} from "@utils/userInfo";
 
 type ResponseUserProfile = {
   createdAt: string;
   updatedAt: string;
   userId: number;
   nickname: string;
+  isFollowing: boolean;
   followerCount: number;
   followingCount: number;
   profileImage: string;
   description: string;
-  proficiency: string;
+  proficiency: ProficiencyKeyUnion;
   positions: PositionKeyUnion[];
   favoriteCourts: [
     {
@@ -49,10 +61,10 @@ const User: NextPage = UtilRoute("private", () => {
     setNavigationTitle,
     useDisableTopTransparent,
   } = useNavigationContext();
-
+  const { sendFollow, sendFollowCancel } = useSocketContext();
   const { authProps } = useAuthContext();
 
-  const { userId } = authProps.currentUser;
+  const { userId, favorites } = authProps.currentUser;
 
   useMountPage((page) => page.USER);
   useDisableTopTransparent();
@@ -62,7 +74,6 @@ const User: NextPage = UtilRoute("private", () => {
   const queryUserId = Number(stringQueryUserId);
 
   const [isMe, setIsMe] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   );
@@ -86,6 +97,19 @@ const User: NextPage = UtilRoute("private", () => {
       console.error(error);
     }
   }, [queryUserId]);
+
+  const handleClickFollow = (prevIsFollowing: boolean) => {
+    if (pageUserInfo) {
+      if (prevIsFollowing) {
+        sendFollowCancel({ receiverId: pageUserInfo.userId });
+      } else {
+        sendFollow({ receiverId: pageUserInfo.userId });
+      }
+      setPageUserInfo((prevState) =>
+        prevState ? { ...prevState, isFollowing: !prevIsFollowing } : null
+      );
+    }
+  };
 
   useEffect(() => {
     setNavigationTitle(`${pageUserInfo?.nickname}`);
@@ -111,7 +135,11 @@ const User: NextPage = UtilRoute("private", () => {
     followerCount,
     description,
     positions,
+    proficiency,
+    isFollowing,
   } = pageUserInfo;
+
+  console.log(pageUserInfo);
 
   return (
     <div>
@@ -157,7 +185,12 @@ const User: NextPage = UtilRoute("private", () => {
                 <a>메시지</a>
               </Link>
             </Button>
-            <Button fullWidth tertiary={isFollowing}>
+
+            <Button
+              fullWidth
+              tertiary={isFollowing}
+              onClick={() => handleClickFollow(isFollowing)}
+            >
               {isFollowing ? `팔로잉` : `팔로우`}
             </Button>
           </ButtonContainer>
@@ -171,38 +204,39 @@ const User: NextPage = UtilRoute("private", () => {
           </div>
         )}
       </MainInfoContainer>
+
       <AdditionalInfoSpacer gap="base" type="vertical">
         <div>
           <Label>포지션</Label>
           <Spacer gap="xs">
-            {getTranslatedPositions(positions).map(({ english, korean }) => {
-              console.log(english, korean);
-
-              return (
+            {positions.length ? (
+              getTranslatedPositions(positions).map(({ english, korean }) => (
                 <Chip key={english} secondary>
                   {korean}
                 </Chip>
-              );
-            })}
+              ))
+            ) : (
+              <Chip key={"no_position"} secondary>
+                선택한 포지션이 없습니다
+              </Chip>
+            )}
           </Spacer>
         </div>
         <div>
           <Label>숙련도</Label>
-          <Chip secondary>
-            {/* {proficiencyToKorean(proficiency as ProficiencyKeyUnion)} */}
-          </Chip>
+          <Chip secondary>{getTranslatedProficiency(proficiency).korean}</Chip>
         </div>
         <div>
           <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
-          {/* {favoriteCourts.length < 1 ? (
-            <Chip secondary>정보 없음</Chip>
-          ) : (
-            favoriteCourts.map(({ courtId, courtName }) => (
+          {favorites.length ? (
+            favorites.map(({ courtId, courtName }) => (
               <ProfileFavoritesListItem key={courtId} courtId={courtId}>
                 {courtName}
               </ProfileFavoritesListItem>
             ))
-          )} */}
+          ) : (
+            <Chip secondary>정보 없음</Chip>
+          )}
         </div>
       </AdditionalInfoSpacer>
     </div>
