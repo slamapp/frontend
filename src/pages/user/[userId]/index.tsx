@@ -16,11 +16,7 @@ import {
   LinkStrong,
 } from "@components/base";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
-import {
-  ProfileFavoritesListItem,
-  ProficiencyKeyUnion,
-  PositionKeyUnion,
-} from "@components/domain";
+import { PositionKeyUnion } from "@components/domain";
 import { getTranslatedPositions } from "@utils/userInfo";
 
 type ResponseUserProfile = {
@@ -56,7 +52,7 @@ const User: NextPage = UtilRoute("private", () => {
 
   const { authProps } = useAuthContext();
 
-  const { userId, nickname: myNickname } = authProps.currentUser;
+  const { userId } = authProps.currentUser;
 
   useMountPage((page) => page.USER);
   useDisableTopTransparent();
@@ -70,14 +66,12 @@ const User: NextPage = UtilRoute("private", () => {
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   );
-  const [isServerError, setIsServerError] = useState(false);
 
   const getMyProfile = useCallback(async () => {
     try {
       const data = await userApi.getMyProfile<ResponseUserProfile>();
       setPageUserInfo(data);
     } catch (error) {
-      setIsServerError(true);
       console.error(error);
     }
   }, []);
@@ -89,7 +83,6 @@ const User: NextPage = UtilRoute("private", () => {
       );
       setPageUserInfo(data);
     } catch (error) {
-      setIsServerError(true);
       console.error(error);
     }
   }, [queryUserId]);
@@ -105,10 +98,6 @@ const User: NextPage = UtilRoute("private", () => {
       getOtherProfile();
     }
   }, [userId, getMyProfile, getOtherProfile, queryUserId]);
-
-  if (isServerError) {
-    return <>네트워크에 문제가 있습니다. 나중에 다시 접속해주세요</>;
-  }
 
   if (pageUserInfo === null) {
     return <>Loading</>;
