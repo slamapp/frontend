@@ -28,6 +28,10 @@ export const getDatetimeString = (dateString: string, index: number) => {
 
   date.setHours(date.getHours() + TIME_OFFSET);
 
+  if (index === TIME_TABLE_ROWS - 1) {
+    date.setDate(date.getDate() + 1);
+  }
+
   const datetimeString = date.toISOString();
 
   return datetimeString.slice(0, datetimeString.length - 1);
