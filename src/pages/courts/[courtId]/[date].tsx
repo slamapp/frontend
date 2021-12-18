@@ -456,7 +456,7 @@ const Reservation: NextPage = () => {
       const data = {
         courtId: Number(courtId),
         startTime: getDatetimeString(date as string, startIndex),
-        endTime: getDatetimeString(date as string, endIndex + 1),
+        endTime: getDatetimeString(date as string, endIndex),
         hasBall,
       };
 
@@ -475,7 +475,7 @@ const Reservation: NextPage = () => {
       const data = {
         courtId: Number(courtId),
         startTime: getDatetimeString(date as string, startIndex),
-        endTime: getDatetimeString(date as string, endIndex + 1),
+        endTime: getDatetimeString(date as string, endIndex),
         hasBall,
       };
 
