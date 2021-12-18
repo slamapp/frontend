@@ -30,8 +30,8 @@ const reservationApi = {
     reservationId: number | string,
     data: Omit<IReservation, "courtId">
   ) => authRequest.patch(`/reservations/${reservationId}`, data),
-  deleteReservation: (reservationId: number | string) =>
-    authRequest.delete(`/reservations/${reservationId}`),
+  deleteReservation: <R>(reservationId: number | string) =>
+    authRequest.delete<R, R>(`/reservations/${reservationId}`),
 };
 
 export default reservationApi;

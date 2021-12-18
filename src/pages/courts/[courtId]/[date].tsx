@@ -390,6 +390,9 @@ const Reservation: NextPage = () => {
     authProps: {
       currentUser: { userId },
     },
+    createReservation,
+    updateReservation,
+    deleteReservation,
   } = useAuthContext();
 
   const {
@@ -460,10 +463,9 @@ const Reservation: NextPage = () => {
         hasBall,
       };
 
-      const createdReservation = await reservationApi.createReservation(data);
-      console.log(createdReservation);
+      await createReservation(data);
     },
-    [courtId, date, endIndex, startIndex]
+    [courtId, date, endIndex, startIndex, createReservation]
   );
 
   const handleUpdateReservation = useCallback(
@@ -479,23 +481,21 @@ const Reservation: NextPage = () => {
         hasBall,
       };
 
-      const updatedReservation = await reservationApi.updateReservation(
-        selectedReservationId,
-        data
-      );
-
-      console.log(updatedReservation);
+      await updateReservation(selectedReservationId, data);
     },
-    [courtId, date, endIndex, startIndex, selectedReservationId]
+    [
+      courtId,
+      date,
+      endIndex,
+      startIndex,
+      selectedReservationId,
+      updateReservation,
+    ]
   );
 
   const handleDeleteReservation = useCallback(async () => {
-    const deletedReservationId = await reservationApi.deleteReservation(
-      selectedReservationId
-    );
-
-    console.log(deletedReservationId);
-  }, [selectedReservationId]);
+    await deleteReservation(selectedReservationId);
+  }, [selectedReservationId, deleteReservation]);
 
   const handleChangeHasBall = useCallback((hasBall: boolean) => {
     dispatch({

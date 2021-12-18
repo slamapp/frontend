@@ -12,6 +12,9 @@ export interface ContextProps {
   pushNotification: (notification: Notification) => void;
   getMyFavorites: () => void;
   getMyReservations: () => void;
+  createReservation: (data: any) => void;
+  updateReservation: (reservationId: any, data: any) => void;
+  deleteReservation: (reservationId: any) => void;
 }
 
 export const initialContext = {
@@ -24,6 +27,9 @@ export const initialContext = {
   pushNotification: () => {},
   getMyFavorites: () => {},
   getMyReservations: () => {},
+  createReservation: () => {},
+  updateReservation: () => {},
+  deleteReservation: () => {},
 };
 
 const Context = createContext<ContextProps>(initialContext);

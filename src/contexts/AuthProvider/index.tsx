@@ -1,9 +1,8 @@
-import { useLocalToken } from "@hooks/domain";
 import { useRouter } from "next/router";
 import { useReducer, ReactNode, useEffect, useCallback } from "react";
-import userAPI from "@service/userApi";
-import reservationAPI from "@service/reservationApi";
-import favoriteAPI from "@service/favoriteApi";
+
+import { useLocalToken } from "@hooks/domain";
+import { reservationApi, favoriteApi, userApi } from "@service/.";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
@@ -37,7 +36,7 @@ const AuthProvider = ({ children }: Props) => {
   const getCurrentUser = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
     try {
-      const data = await userAPI.getUserData();
+      const data = await userApi.getUserData();
       setCurrentUser(data);
     } catch (error) {
       console.error(error);
@@ -49,7 +48,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const getMyReservations = useCallback(async () => {
     try {
-      const { reservations } = await reservationAPI.getMyReservations<{
+      const { reservations } = await reservationApi.getMyReservations<{
         reservations: any[];
       }>();
       dispatch({
@@ -61,9 +60,49 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, []);
 
+  const createReservation = useCallback(async (data: any) => {
+    const createdReservation = await reservationApi.createReservation(data);
+
+    dispatch({
+      type: authTypes.CREATE_RESERVATION,
+      payload: {
+        createdReservation,
+      },
+    });
+  }, []);
+
+  const updateReservation = useCallback(
+    async (reservationId: any, data: any) => {
+      const updatedReservation = await reservationApi.updateReservation(
+        reservationId,
+        data
+      );
+
+      dispatch({
+        type: authTypes.UPDATE_RESERVATION,
+        payload: {
+          updatedReservation,
+        },
+      });
+    },
+    []
+  );
+
+  const deleteReservation = useCallback(async (reservationId: any) => {
+    const { reservationId: deletedReservationId } =
+      await reservationApi.deleteReservation(reservationId);
+
+    dispatch({
+      type: authTypes.DELETE_RESERVATION,
+      payload: {
+        deletedReservationId,
+      },
+    });
+  }, []);
+
   const getMyFavorites = useCallback(async () => {
     try {
-      const { favorites } = await favoriteAPI.getMyFavorites();
+      const { favorites } = await favoriteApi.getMyFavorites();
 
       dispatch({
         type: authTypes.GET_MY_FAVORITES,
@@ -76,7 +115,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const createFavorite = useCallback(async (courtId: number) => {
     try {
-      const favorite = await favoriteAPI.createMyFavorite(courtId);
+      const favorite = await favoriteApi.createMyFavorite(courtId);
       dispatch({
         type: authTypes.CREATE_FAVORITE,
         payload: { favorite },
@@ -89,7 +128,7 @@ const AuthProvider = ({ children }: Props) => {
   const deleteFavorite = useCallback(async (favoriteId: number) => {
     try {
       const { favoriteId: deletedFavoriteId } =
-        await favoriteAPI.deleteMyFavorite<{ favoriteId: number }>(favoriteId);
+        await favoriteApi.deleteMyFavorite<{ favoriteId: number }>(favoriteId);
       dispatch({
         type: authTypes.DELETE_FAVORITE,
         payload: { deletedFavoriteId },
@@ -140,6 +179,9 @@ const AuthProvider = ({ children }: Props) => {
         pushNotification,
         getMyFavorites,
         getMyReservations,
+        createReservation,
+        updateReservation,
+        deleteReservation,
       }}
     >
       <AuthLoading />
