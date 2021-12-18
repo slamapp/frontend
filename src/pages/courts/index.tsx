@@ -207,13 +207,13 @@ const Courts: NextPage = () => {
 
     handleGetCurrentLocation();
     fetchCourts();
-  }, [handleGetCurrentLocation, map, handleChangedMapBounds]);
+  }, [handleGetCurrentLocation, map]);
 
   useEffect(() => {
     if (map) {
       handleChangedMapBounds(map);
     }
-  }, [map, handleChangedMapBounds, selectedDate, selectedSlot]);
+  }, [map, handleChangedMapBounds]);
 
   const dateString = useMemo(
     () =>
