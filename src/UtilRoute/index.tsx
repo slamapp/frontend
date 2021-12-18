@@ -59,7 +59,7 @@ const UtilRouteHOCWrapper = ({
           break;
       }
     }
-  }, [localToken, option, router]);
+  }, [localToken]);
 
   return <Fragment>{isShowChildren && children}</Fragment>;
 };
