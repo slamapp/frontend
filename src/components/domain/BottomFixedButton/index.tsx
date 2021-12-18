@@ -24,21 +24,25 @@ const BottomFixedButton: React.FC<Props> = ({
   className,
   bottom,
 }) => {
-  return ReactDOM.createPortal(
-    <Background bottom={bottom}>
-      <Button
-        type={type}
-        disabled={disabled}
-        fullWidth
-        onClick={onClick}
-        size="lg"
-        className={className}
-        style={style}
-      >
-        {children}
-      </Button>
-    </Background>,
-    document.querySelector("#scrolled-container")!
+  return typeof document !== "undefined" ? (
+    ReactDOM.createPortal(
+      <Background bottom={bottom}>
+        <Button
+          type={type}
+          disabled={disabled}
+          fullWidth
+          onClick={onClick}
+          size="lg"
+          className={className}
+          style={style}
+        >
+          {children}
+        </Button>
+      </Background>,
+      document.querySelector("#scrolled-container")!
+    )
+  ) : (
+    <></>
   );
 };
 
@@ -47,11 +51,15 @@ export const BottomFixedContainer: React.FC = ({
   children,
   className,
 }: any) =>
-  ReactDOM.createPortal(
-    <Background custom className={className}>
-      {children}
-    </Background>,
-    document.querySelector("#scrolled-container")!
+  typeof document !== "undefined" ? (
+    ReactDOM.createPortal(
+      <Background custom className={className}>
+        {children}
+      </Background>,
+      document.querySelector("#scrolled-container")!
+    )
+  ) : (
+    <></>
   );
 
 const Background = styled.div<Pick<Props, "bottom"> & { custom?: boolean }>`
