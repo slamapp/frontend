@@ -190,7 +190,6 @@ const Courts: NextPage = () => {
   }, []);
 
   const handleDateClick = useCallback((selectedDate: Date) => {
-    console.log(selectedDate);
     setSelectedDate(selectedDate);
   }, []);
 
