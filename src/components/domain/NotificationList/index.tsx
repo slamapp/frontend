@@ -11,7 +11,7 @@ const NotificationList = () => {
     <NotificationListContainer>
       {notifications.map((notification) => (
         <NotificationItem
-          key={notification.notificationId}
+          key={notification.createdAt}
           notification={notification}
         />
       ))}

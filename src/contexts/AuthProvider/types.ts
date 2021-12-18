@@ -4,7 +4,7 @@ export type Follow = {
   followingId: number;
 };
 
-type NotificationType = "FOLLOW" | "LOUDSPEAKER";
+type NotificationType = "FOLLOWING" | "LOUDSPEAKER";
 
 export interface Notification extends DefaultNotification {
   followerInfo: FollowerInfo | null;
@@ -13,7 +13,6 @@ export interface Notification extends DefaultNotification {
 
 export interface DefaultNotification {
   type: NotificationType;
-  notificationId: number;
   isRead: boolean;
   isClicked: boolean;
   createdAt: string;
