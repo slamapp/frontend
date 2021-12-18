@@ -7,8 +7,11 @@ interface Props extends HTMLAttributes<HTMLInputElement> {
   label: string;
   type: string;
   name: string;
-  value?: string;
+  value?: string | number;
   isRequired?: boolean;
+  min?: number;
+  max?: number;
+  required?: boolean;
 }
 
 const Input = ({ label, isRequired, type, ...props }: Props) => {

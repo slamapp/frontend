@@ -247,8 +247,8 @@ const CreateCourt: NextPage = () => {
               label="골대 개수"
               type="number"
               name="basketCount"
-              min="1"
-              max="99"
+              min={1}
+              max={99}
               onChange={handleChange}
               value={values.basketCount}
               required

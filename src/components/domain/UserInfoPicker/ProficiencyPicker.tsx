@@ -32,7 +32,7 @@ const ProficiencyPicker: React.FC<Props> = ({ selectedValue, onChange }) => {
         <Radio.Item
           key={value}
           text={text}
-          value={value}
+          value={value as string}
           checked={selectedValue === (value as ProficiencyKeyUnion)}
         />
       ))}
