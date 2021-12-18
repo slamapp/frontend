@@ -55,22 +55,10 @@ const Favorites: NextPage = UtilRoute("private", () => {
           <Paragraph line={4} fontSize={20} lineHeight={2.0} lineBreak={1} />
         </FavoriteItem>
         <FavoriteItem>
-          <Paragraph
-            line={4}
-            fontSize={20}
-            lineHeight={2.0}
-            stepPercentage={10}
-            lineBreak={1}
-          />
+          <Paragraph line={4} fontSize={20} lineHeight={2.0} lineBreak={1} />
         </FavoriteItem>
         <FavoriteItem>
-          <Paragraph
-            line={4}
-            fontSize={20}
-            lineHeight={2.0}
-            stepPercentage={10}
-            lineBreak={1}
-          />
+          <Paragraph line={4} fontSize={20} lineHeight={2.0} lineBreak={1} />
         </FavoriteItem>
       </Spacer>
     );
