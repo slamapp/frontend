@@ -22,7 +22,9 @@ export type { NewCourt } from "./NewCourtItem/types";
 export { PositionsPicker, ProficiencyPicker } from "./UserInfoPicker";
 export type {
   PositionKeyUnion,
+  PositionValueUnion,
   ProficiencyKeyUnion,
+  ProficiencyValueUnion,
 } from "./UserInfoPicker/types";
 export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";

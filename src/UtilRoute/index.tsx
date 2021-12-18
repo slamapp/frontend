@@ -30,7 +30,6 @@ const UtilRouteHOCWrapper = ({
   option: RouteOptionUnion;
   children: ReactNode;
 }) => {
-  const [isShowChildren, setIsShowChildren] = useState(false);
   const [localToken] = useLocalToken();
   const router = useRouter();
 
@@ -41,7 +40,6 @@ const UtilRouteHOCWrapper = ({
       switch (option) {
         case routeOption.private:
           if (localToken) {
-            setIsShowChildren(true);
             router.replace({ pathname: `${pathname}`, query: router.query });
           } else {
             router.replace("/login");
@@ -51,7 +49,6 @@ const UtilRouteHOCWrapper = ({
           if (localToken) {
             router.replace("/");
           } else {
-            setIsShowChildren(true);
             router.replace({ pathname: `${pathname}`, query: router.query });
           }
           break;
@@ -61,5 +58,5 @@ const UtilRouteHOCWrapper = ({
     }
   }, [localToken]);
 
-  return <Fragment>{isShowChildren && children}</Fragment>;
+  return <Fragment>{children}</Fragment>;
 };
