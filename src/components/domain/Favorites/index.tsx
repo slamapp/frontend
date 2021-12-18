@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Spacer from "@components/base/Spacer";
 import Link from "next/link";
 import { NextPage } from "next";
+import UtilRoute from "UtilRoute";
 import styled from "@emotion/styled";
 import { Button, Icon, Image, Text } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
+import Paragraph from "@components/base/Skeleton/Paragraph";
 import favoriteAPI from "@service/favoriteApi";
 import CourtItem from "../CourtItem";
 
@@ -14,12 +16,10 @@ declare global {
   }
 }
 
-const Favorites: NextPage = () => {
-  const {
-    authProps: {
-      currentUser: { userId },
-    },
-  } = useAuthContext();
+const Favorites: NextPage = UtilRoute("private", () => {
+  const { authProps } = useAuthContext();
+  const { userId } = authProps.currentUser;
+
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.FAVORITES);
 
@@ -28,7 +28,7 @@ const Favorites: NextPage = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined" && !window.Kakao.isInitialized()) {
-      window.Kakao.init("c6f32516ffb011a356a9f8ea036ca21f"); // TODO env 파일로 바꾸기
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
     }
   }, []);
 
@@ -49,7 +49,19 @@ const Favorites: NextPage = () => {
   }, [userId]);
 
   if (isLoading) {
-    return <>Loading</>;
+    return (
+      <Spacer gap="base" type="vertical">
+        <FavoriteItem>
+          <Paragraph line={4} fontSize={20} lineHeight={2.0} lineBreak={1} />
+        </FavoriteItem>
+        <FavoriteItem>
+          <Paragraph line={4} fontSize={20} lineHeight={2.0} lineBreak={1} />
+        </FavoriteItem>
+        <FavoriteItem>
+          <Paragraph line={4} fontSize={20} lineHeight={2.0} lineBreak={1} />
+        </FavoriteItem>
+      </Spacer>
+    );
   }
 
   if (favorites.length === 0) {
@@ -109,7 +121,7 @@ const Favorites: NextPage = () => {
       )}
     </Spacer>
   );
-};
+});
 
 const Actions = styled(Spacer)`
   margin-top: 40px;
