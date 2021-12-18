@@ -55,39 +55,6 @@ const getSlotFromDate = (date: Date): SlotKeyUnion => {
   return slot;
 };
 
-const dummyBasketballCourts = [
-  {
-    courtId: 1,
-    courtName: "한나 농구장",
-    latitude: 37.53526455544585,
-    longitude: 126.90261795958715,
-    courtReservation: 6,
-  },
-  {
-    courtId: 2,
-    courtName: "헤이헤이 농구장",
-    latitude: 37.538227498425,
-    longitude: 126.902404444577,
-    courtReservation: 3,
-  },
-  {
-    courtId: 3,
-    courtName: "플로라로라 농구장",
-    latitude: 37.5347279,
-    longitude: 126.9033882,
-    courtReservation: 0,
-  },
-  {
-    courtId: 4,
-    courtName: "젤리젤리 농구장",
-    latitude: 37.5347279,
-    longitude: 126.9023882,
-    courtReservation: 10,
-  },
-];
-
-const DATE_STRING_LENGTH = 10;
-
 const Courts: NextPage = () => {
   const router = useRouter();
   const {
@@ -229,7 +196,7 @@ const Courts: NextPage = () => {
     getCurrentLocation(async ([latitude, longitude]) => {
       setCenter([latitude, longitude]);
     });
-  }, [handleChangedMapBounds, map]);
+  }, []);
 
   useEffect(() => {
     const fetchCourts = async () => {
@@ -238,12 +205,14 @@ const Courts: NextPage = () => {
       }
     };
 
+    console.log("initialize");
     handleGetCurrentLocation();
     fetchCourts();
   }, [handleGetCurrentLocation, map, handleChangedMapBounds]);
 
   useEffect(() => {
     if (map) {
+      console.log("change date and slot");
       handleChangedMapBounds(map);
     }
   }, [map, handleChangedMapBounds, selectedDate, selectedSlot]);
