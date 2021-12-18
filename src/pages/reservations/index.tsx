@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "@emotion/styled";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import reservationAPI from "@service/reservationApi";
@@ -7,10 +7,13 @@ import ReservationItem from "@components/domain/ReservationItem";
 import { Spacer } from "@components/base";
 
 const Reservations: NextPage = () => {
-  const { authProps } = useAuthContext();
+  const { authProps, getMyReservations } = useAuthContext();
   const { reservations: upcomingReservations } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.RESERVATIONS);
+  useEffect(() => {
+    getMyReservations();
+  }, []);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [expiredReservations, setExpiredReservations] = useState<any[]>();
@@ -26,7 +29,6 @@ const Reservations: NextPage = () => {
       currentLastId
     );
 
-    console.log(contents, lastId);
     setExpiredReservations(contents);
     setCurrentLastId(lastId);
   }, [currentLastId]);

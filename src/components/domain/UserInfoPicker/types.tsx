@@ -18,5 +18,7 @@ export type PositionValueUnion = Position[keyof Position];
 export type PositionKeyUnion = keyof Position | null;
 
 type Proficiency = typeof proficiencies;
-export type ProficiencyValueUnion = Proficiency[keyof Proficiency];
+export type ProficiencyValueUnion =
+  | Proficiency[keyof Proficiency]
+  | "선택한 숙련도가 없습니다";
 export type ProficiencyKeyUnion = keyof Proficiency | null;
