@@ -34,7 +34,11 @@ const DatePicker: React.FC<Props> = ({
 
   return (
     <StyledFlicking
-      style={{ opacity: isBackgroundTransparent ? 0 : 1 }}
+      style={{
+        backgroundColor: isBackgroundTransparent
+          ? "rgba(255,255,255,0)"
+          : "rgba(255,255,255,1)",
+      }}
       moveType="freeScroll"
       bound={true}
       horizontal={true}
@@ -55,8 +59,7 @@ const DatePicker: React.FC<Props> = ({
 export default DatePicker;
 
 const StyledFlicking = styled(Flicking)`
-  background-color: ${({ theme }) => theme.colors.white};
-  transition: opacity 200ms;
+  transition: background-color 200ms;
 
   .flicking-camera {
     display: flex;

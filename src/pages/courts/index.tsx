@@ -296,12 +296,11 @@ const Courts: NextPage = () => {
                 }/${selectedDate.getFullYear()}-${
                   selectedDate.getMonth() + 1
                 }-${selectedDate.getDate()}`}
+                passHref
               >
-                <a>
-                  <Button style={{ flex: 1 }} size="lg">
-                    예약하기
-                  </Button>
-                </a>
+                <Button style={{ flex: 1 }} size="lg">
+                  예약하기
+                </Button>
               </Link>
             </Actions>
 

@@ -52,14 +52,16 @@ const TimeTable = ({
   useEffect(() => {
     const el = document.querySelector("#scrolled-container");
 
-    console.log(el);
-
     if (timeSlot && el && isInitialized) {
-      el.scrollTo({
-        left: 0,
-        top: timeSlotIndexMap[timeSlot as string] * height,
-        behavior: "smooth",
-      });
+      setTimeout(
+        () =>
+          el.scrollTo({
+            left: 0,
+            top: timeSlotIndexMap[timeSlot as string] * height,
+            behavior: "smooth",
+          }),
+        200
+      );
     }
   }, [isInitialized]);
 
