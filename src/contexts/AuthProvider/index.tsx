@@ -136,6 +136,8 @@ const AuthProvider = ({ children }: Props) => {
         createFavorite,
         deleteFavorite,
         pushNotification,
+        getMyFavorites,
+        getMyReservations,
       }}
     >
       <AuthLoading />

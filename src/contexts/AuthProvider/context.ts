@@ -10,6 +10,8 @@ export interface ContextProps {
   createFavorite: (courtId: number) => void;
   deleteFavorite: (favoriteId: number) => void;
   pushNotification: (notification: Notification) => void;
+  getMyFavorites: () => void;
+  getMyReservations: () => void;
 }
 
 export const initialContext = {
@@ -20,6 +22,8 @@ export const initialContext = {
   createFavorite: () => {},
   deleteFavorite: () => {},
   pushNotification: () => {},
+  getMyFavorites: () => {},
+  getMyReservations: () => {},
 };
 
 const Context = createContext<ContextProps>(initialContext);
