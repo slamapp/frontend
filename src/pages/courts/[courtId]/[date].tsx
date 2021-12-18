@@ -363,16 +363,10 @@ const reducer = (state: any, { type, payload }: any) => {
   }
 };
 
-export const getServerSideProps = ({ query }: any) => {
-  return {
-    props: {
-      query,
-    },
-  };
-};
-
-const Reservation: NextPage = ({ query }: any) => {
-  const { date, courtId } = query;
+const Reservation: NextPage = () => {
+  const {
+    query: { date, courtId },
+  } = useRouter();
 
   const {
     useMountPage,
@@ -428,45 +422,55 @@ const Reservation: NextPage = ({ query }: any) => {
     dispatch({ type: "START_UPDATE" });
   }, []);
 
-  const handleCreateReservation = useCallback(() => {
-    if (!date || !courtId) {
-      return;
-    }
+  const handleCreateReservation = useCallback(
+    (hasBall: boolean) => {
+      if (!date || !courtId) {
+        return;
+      }
 
-    const data = {
-      courtId,
-      userId: "me",
-      startDate: new Date(
-        `${date} ${getTimeFromIndex(startIndex)}`
-      ).toISOString(),
-      endDate: new Date(`${date} ${getTimeFromIndex(endIndex)}`).toISOString(),
-      hasBall,
-    };
+      const data = {
+        courtId,
+        userId: "me",
+        startDate: new Date(
+          `${date} ${getTimeFromIndex(startIndex)}`
+        ).toISOString(),
+        endDate: new Date(
+          `${date} ${getTimeFromIndex(endIndex)}`
+        ).toISOString(),
+        hasBall,
+      };
 
-    console.log("create", data);
-    // TODO: crateReservation API CALL
-    // alert(JSON.stringify(data));
-  }, [courtId, date, endIndex, hasBall, startIndex]);
+      console.log("create", data);
+      // TODO: crateReservation API CALL
+      // alert(JSON.stringify(data));
+    },
+    [courtId, date, endIndex, hasBall, startIndex]
+  );
 
-  const handleUpdateReservation = useCallback(() => {
-    if (!date || !courtId) {
-      return;
-    }
+  const handleUpdateReservation = useCallback(
+    (hasBall: boolean) => {
+      if (!date || !courtId) {
+        return;
+      }
 
-    const data = {
-      courtId,
-      userId: "me",
-      startDate: new Date(
-        `${date} ${getTimeFromIndex(startIndex)}`
-      ).toISOString(),
-      endDate: new Date(`${date} ${getTimeFromIndex(endIndex)}`).toISOString(),
-      hasBall,
-    };
+      const data = {
+        courtId,
+        userId: "me",
+        startDate: new Date(
+          `${date} ${getTimeFromIndex(startIndex)}`
+        ).toISOString(),
+        endDate: new Date(
+          `${date} ${getTimeFromIndex(endIndex)}`
+        ).toISOString(),
+        hasBall,
+      };
 
-    console.log("update", data);
-    // TODO: crateReservation API CALL
-    // alert(JSON.stringify(data));
-  }, [courtId, date, endIndex, hasBall, startIndex]);
+      console.log("update", data);
+      // TODO: crateReservation API CALL
+      // alert(JSON.stringify(data));
+    },
+    [courtId, date, endIndex, hasBall, startIndex]
+  );
 
   const handleDeleteReservation = useCallback((reservationId: number) => {
     console.log(`delete /reservations/${reservationId}`);
@@ -491,10 +495,8 @@ const Reservation: NextPage = ({ query }: any) => {
   );
 
   useEffect(() => {
-    console.log("sdfsf", date);
-
-    setNavigationTitle(<ReservationTitle date={date} />);
-  }, [date]);
+    setNavigationTitle(<ReservationTitle date={date as string} />);
+  }, [date, setNavigationTitle]);
 
   useEffect(() => {
     if (step > 1) {

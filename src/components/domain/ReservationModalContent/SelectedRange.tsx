@@ -12,7 +12,7 @@ interface Props {
   requestDisabled: boolean;
   participantsPerBlock: any[];
   onChangeHasBall: (hasBall: boolean) => void;
-  onSubmit: () => void;
+  onSubmit: (hasBall: boolean) => void;
 }
 
 const SelectedRangeContent = ({
@@ -33,7 +33,7 @@ const SelectedRangeContent = ({
     (hasBall: boolean) => {
       setIsModalOpen(false);
       onChangeHasBall(hasBall);
-      onSubmit();
+      onSubmit(hasBall);
     },
     [onChangeHasBall, onSubmit]
   );
