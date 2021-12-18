@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { useResize } from "@hooks/.";
 import { Image, Spacer, Text } from "@components/base";
 import { useRouter } from "next/router";
+import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
 import { TimeBlockUnit, ActionTimeBlockUnit, Header } from "./TimeBlockUnits";
 import TimeRangeSelector from "./TimeRangeSelector";
 import * as S from "./style";
@@ -36,15 +37,22 @@ const TimeTable = ({
     setHeight(rect.width);
   });
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (ref.current) {
       setHeight(ref.current.offsetWidth);
-      setIsInitialized(true);
     }
   }, [ref]);
 
   useEffect(() => {
+    if (height !== 0) {
+      setIsInitialized(true);
+    }
+  }, [height]);
+
+  useEffect(() => {
     const el = document.querySelector("#scrolled-container");
+
+    console.log(el);
 
     if (timeSlot && el && isInitialized) {
       el.scrollTo({
@@ -58,6 +66,7 @@ const TimeTable = ({
   return (
     <div
       style={{
+        width: "100%",
         position: "relative",
       }}
     >

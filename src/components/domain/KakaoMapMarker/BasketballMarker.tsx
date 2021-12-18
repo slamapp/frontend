@@ -59,7 +59,6 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
     }
 
     return () => {
-      console.log("unmounted");
       kakao.maps.event.removeListener(marker, "click", handleClick);
       marker.setMap(null);
     };

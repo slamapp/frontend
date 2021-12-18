@@ -382,17 +382,15 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
 };
 
 const Reservation: NextPage = () => {
+  const router = useRouter();
   const {
-    query: { date, courtId },
-  } = useRouter();
+    query: { courtId, date },
+  } = router;
 
   const {
     authProps: {
       currentUser: { userId },
     },
-    createReservation,
-    updateReservation,
-    deleteReservation,
   } = useAuthContext();
 
   const {
@@ -451,7 +449,7 @@ const Reservation: NextPage = () => {
   }, []);
 
   const handleCreateReservation = useCallback(
-    (hasBall: boolean) => {
+    async (hasBall: boolean) => {
       if (!date || !courtId) {
         return;
       }
@@ -463,13 +461,19 @@ const Reservation: NextPage = () => {
         hasBall,
       };
 
-      createReservation(data);
+      try {
+        await reservationApi.createReservation(data);
+      } catch (error) {
+        console.error(error);
+      }
+
+      router.push("/reservations");
     },
-    [courtId, date, endIndex, startIndex, createReservation]
+    [courtId, date, endIndex, startIndex, router]
   );
 
   const handleUpdateReservation = useCallback(
-    (hasBall: boolean) => {
+    async (hasBall: boolean) => {
       if (!date || !courtId) {
         return;
       }
@@ -481,21 +485,26 @@ const Reservation: NextPage = () => {
         hasBall,
       };
 
-      updateReservation(selectedReservationId, data);
+      try {
+        await reservationApi.updateReservation(selectedReservationId, data);
+      } catch (error) {
+        console.error(error);
+      }
+
+      router.push("/reservations");
     },
-    [
-      courtId,
-      date,
-      endIndex,
-      startIndex,
-      selectedReservationId,
-      updateReservation,
-    ]
+    [courtId, date, endIndex, startIndex, selectedReservationId, router]
   );
 
-  const handleDeleteReservation = useCallback(() => {
-    deleteReservation(selectedReservationId);
-  }, [selectedReservationId, deleteReservation]);
+  const handleDeleteReservation = useCallback(async () => {
+    try {
+      await reservationApi.deleteReservation(selectedReservationId);
+    } catch (error) {
+      console.error(error);
+    }
+
+    router.push("/reservations");
+  }, [selectedReservationId, router]);
 
   const handleChangeHasBall = useCallback((hasBall: boolean) => {
     dispatch({

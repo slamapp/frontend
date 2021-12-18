@@ -205,14 +205,12 @@ const Courts: NextPage = () => {
       }
     };
 
-    console.log("initialize");
     handleGetCurrentLocation();
     fetchCourts();
   }, [handleGetCurrentLocation, map, handleChangedMapBounds]);
 
   useEffect(() => {
     if (map) {
-      console.log("change date and slot");
       handleChangedMapBounds(map);
     }
   }, [map, handleChangedMapBounds, selectedDate, selectedSlot]);
@@ -265,10 +263,6 @@ const Courts: NextPage = () => {
         </Map.KakaoMap>
       ) : (
         <div>현재 위치를 받아오는 중입니다.</div>
-      )}
-      {console.log(
-        "야호",
-        `/courts/${selectedCourt?.courtId}/${dateString}/${selectedSlot}`
       )}
 
       <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
