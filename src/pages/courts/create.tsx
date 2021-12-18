@@ -4,6 +4,7 @@ import Head from "next/head";
 import Sheet from "react-modal-sheet";
 import styled from "@emotion/styled";
 
+import UtilRoute from "UtilRoute";
 import { Input, Spacer, Text, Button, Label, Icon } from "@components/base";
 import {
   Map,
@@ -37,7 +38,7 @@ interface Geocoder extends kakao.maps.services.Geocoder {
   ) => void;
 }
 
-const CreateCourt: NextPage = () => {
+const CreateCourt: NextPage = UtilRoute("private", () => {
   const { map } = useMapContext();
 
   const { useMountPage } = useNavigationContext();
@@ -295,7 +296,7 @@ const CreateCourt: NextPage = () => {
       </form>
     </div>
   );
-};
+});
 
 export default CreateCourt;
 
