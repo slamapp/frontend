@@ -8,13 +8,14 @@ interface Props extends HTMLAttributes<HTMLInputElement> {
   type: string;
   name: string;
   value?: string | number;
+  visibleError?: boolean;
   isRequired?: boolean;
   min?: number;
   max?: number;
   required?: boolean;
 }
 
-const Input = ({ label, isRequired, type, ...props }: Props) => {
+const Input = ({ label, isRequired, type, visibleError, ...props }: Props) => {
   const [isFocus, setFocus] = useState(false);
 
   const handleToggle = () => {
@@ -31,7 +32,7 @@ const Input = ({ label, isRequired, type, ...props }: Props) => {
       <label>
         <Label isRequired={isRequired}>{label}</Label>
         <Container
-          className={isFocus ? "focus" : ""}
+          className={isFocus ? "focus" : visibleError ? "error" : ""}
           style={type === "number" ? { display: "flex" } : {}}
         >
           <InputContent
@@ -61,6 +62,10 @@ const Container = styled.div`
 
     &.focus {
       border: 1px solid ${theme.colors.slam.orange.strong};
+    }
+
+    &.error {
+      border: 1px solid ${theme.colors.red.strong};
     }
   `}
 `;
