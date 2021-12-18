@@ -100,6 +100,8 @@ const AuthProvider = ({ children }: Props) => {
   }, []);
 
   const pushNotification = (notification: Notification) => {
+    console.log(notification);
+
     dispatch({
       type: authTypes.PUSH_NOTIFICATION,
       payload: { notification },

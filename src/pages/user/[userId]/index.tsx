@@ -15,7 +15,11 @@ import {
   Chip,
   LinkStrong,
 } from "@components/base";
-import { useNavigationContext, useAuthContext } from "@contexts/hooks";
+import {
+  useNavigationContext,
+  useAuthContext,
+  useSocketContext,
+} from "@contexts/hooks";
 import { PositionKeyUnion } from "@components/domain";
 import { getTranslatedPositions } from "@utils/userInfo";
 
@@ -24,6 +28,7 @@ type ResponseUserProfile = {
   updatedAt: string;
   userId: number;
   nickname: string;
+  isFollowing: boolean;
   followerCount: number;
   followingCount: number;
   profileImage: string;
@@ -49,7 +54,7 @@ const User: NextPage = UtilRoute("private", () => {
     setNavigationTitle,
     useDisableTopTransparent,
   } = useNavigationContext();
-
+  const { sendFollow, sendFollowCancel } = useSocketContext();
   const { authProps } = useAuthContext();
 
   const { userId } = authProps.currentUser;
@@ -62,7 +67,6 @@ const User: NextPage = UtilRoute("private", () => {
   const queryUserId = Number(stringQueryUserId);
 
   const [isMe, setIsMe] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   );
@@ -86,6 +90,19 @@ const User: NextPage = UtilRoute("private", () => {
       console.error(error);
     }
   }, [queryUserId]);
+
+  const handleClickFollow = (prevIsFollowing: boolean) => {
+    if (pageUserInfo) {
+      if (prevIsFollowing) {
+        sendFollowCancel({ receiverId: pageUserInfo.userId });
+      } else {
+        sendFollow({ receiverId: pageUserInfo.userId });
+      }
+      setPageUserInfo((prevState) =>
+        prevState ? { ...prevState, isFollowing: !prevIsFollowing } : null
+      );
+    }
+  };
 
   useEffect(() => {
     setNavigationTitle(`${pageUserInfo?.nickname}`);
@@ -111,6 +128,7 @@ const User: NextPage = UtilRoute("private", () => {
     followerCount,
     description,
     positions,
+    isFollowing,
   } = pageUserInfo;
 
   return (
@@ -157,7 +175,12 @@ const User: NextPage = UtilRoute("private", () => {
                 <a>메시지</a>
               </Link>
             </Button>
-            <Button fullWidth tertiary={isFollowing}>
+
+            <Button
+              fullWidth
+              tertiary={isFollowing}
+              onClick={() => handleClickFollow(isFollowing)}
+            >
               {isFollowing ? `팔로잉` : `팔로우`}
             </Button>
           </ButtonContainer>
