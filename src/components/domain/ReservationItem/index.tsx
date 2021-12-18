@@ -54,6 +54,7 @@ const UpcomingReservations = ({
       <ReservationItemBottom
         courtId={courtId}
         startTime={startTime}
+        endTime={endTime}
         numberOfReservations={numberOfReservations}
       />
     </ReservationItem>

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 
 import { Button, Icon, Text } from "@components/base";
+import reservationAPI from "@service/reservationApi";
 import FollowListItem from "../../FollowListItem";
 
+/*
 const dummyParticipants = [
   {
     followId: 3,
@@ -32,25 +34,34 @@ const dummyParticipants = [
     updatedAt: "2021-01-01T12:20:10",
   },
 ];
+*/
 
 const ReservationItemBottom = ({
   courtId,
   startTime,
+  endTime,
   numberOfReservations,
 }: any) => {
   const [visible, setVisible] = useState(false);
+  const [participants, setParticipants] = useState<any>();
+
+  const handleClick = useCallback(async () => {
+    setVisible((prev) => !prev);
+    const { participants } = await reservationAPI.getMyReservationParticipants({
+      courtId,
+      startTime,
+      endTime,
+    });
+
+    console.log(participants);
+    setParticipants(participants);
+  }, [courtId, startTime, endTime]);
 
   return (
     <>
       <Container>
-        <ParticipantsToggle
-          secondary
-          onClick={() => {
-            setVisible(!visible);
-          }}
-        >
+        <ParticipantsToggle secondary onClick={handleClick}>
           <Icon name="users" size="sm" />
-          {/* // TODO: reservation count로 변경 */}
           <Text>{numberOfReservations}</Text>
         </ParticipantsToggle>
         <Link href={`courts/${courtId}/${startTime.substring(0, 10)}`} passHref>
@@ -59,8 +70,8 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          {dummyParticipants.map(
-            ({ userId, nickname, profileImage, isFollowed }) => (
+          {participants.map(
+            ({ userId, nickname, profileImage, isFollowed }: any) => (
               <FollowListItem
                 key={userId}
                 src={profileImage}
