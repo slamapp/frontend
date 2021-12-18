@@ -26,13 +26,13 @@ const NewCourtItem = ({ data, state, style }: Props) => {
         <p>{data.name}</p>
         {state === "READY" ? (
           <div>
-            <button onClick={handleDeny}>거절</button>
-            <button onClick={handleAccept}>승인</button>
+            <button onClick={handleDeny}>거절하기</button>
+            <button onClick={handleAccept}>승인하기</button>
           </div>
         ) : data.status === "ACCEPT" ? (
-          <StatusBar className="accept">승인</StatusBar>
+          <StatusBar className="accept">승인됨</StatusBar>
         ) : (
-          <StatusBar className="deny">거절</StatusBar>
+          <StatusBar className="deny">거절됨</StatusBar>
         )}
       </Container>
     </Link>
