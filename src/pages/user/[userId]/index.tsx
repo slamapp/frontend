@@ -93,6 +93,7 @@ const User: NextPage = UtilRoute("private", () => {
 
   useEffect(() => {
     if (queryUserId === userId) {
+      setIsMe(true);
       getMyProfile();
     } else {
       getOtherProfile();
