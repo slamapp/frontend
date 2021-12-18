@@ -37,27 +37,29 @@ const UtilRouteHOCWrapper = ({
   useEffect(() => {
     const { pathname } = router;
 
-    switch (option) {
-      case routeOption.private:
-        if (localToken) {
-          setIsShowChildren(true);
-          router.replace(`${pathname}`);
-        } else {
-          router.replace("/login");
-        }
-        break;
-      case routeOption.prevented:
-        if (localToken) {
-          router.replace("/");
-        } else {
-          setIsShowChildren(true);
-          router.replace(`${pathname}`);
-        }
-        break;
-      default:
-        break;
+    if (router.isReady) {
+      switch (option) {
+        case routeOption.private:
+          if (localToken) {
+            setIsShowChildren(true);
+            router.replace({ pathname: `${pathname}`, query: router.query });
+          } else {
+            router.replace("/login");
+          }
+          break;
+        case routeOption.prevented:
+          if (localToken) {
+            router.replace("/");
+          } else {
+            setIsShowChildren(true);
+            router.replace({ pathname: `${pathname}`, query: router.query });
+          }
+          break;
+        default:
+          break;
+      }
     }
-  }, []);
+  }, [localToken, option, router]);
 
   return <Fragment>{isShowChildren && children}</Fragment>;
 };
