@@ -49,10 +49,12 @@ const AuthProvider = ({ children }: Props) => {
 
   const getMyReservations = useCallback(async () => {
     try {
-      const data = await reservationAPI.getMyReservations();
+      const { reservations } = await reservationAPI.getMyReservations<{
+        reservations: any[];
+      }>();
       dispatch({
         type: authTypes.SET_MY_RESERVATIONS,
-        payload: { reservations: data },
+        payload: { reservations },
       });
     } catch (error) {
       console.error(error);

@@ -1,7 +1,7 @@
 import { request, authRequest, authFileRequest } from "./fetcher";
 
 const reservationAPI = {
-  getMyReservations: () => authRequest.get("/reservations/upcoming"),
+  getMyReservations: <R>() => authRequest.get<R, R>("/reservations/upcoming"),
 };
 
 export default reservationAPI;
