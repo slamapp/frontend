@@ -15,6 +15,7 @@ import {
 import { useForm, Error } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
+import { courtApi } from "@service/.";
 import { Coord } from "../../types/map";
 
 interface Values {
@@ -123,7 +124,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
         basketCount: 1,
         courtName: "",
       },
-      onSubmit: (values) => {
+      onSubmit: async (values) => {
         if (position) {
           const [longitude, latitude] = position;
           const valuesWithPosition = {
@@ -131,7 +132,10 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             latitude,
             ...values,
           };
-          alert(JSON.stringify(valuesWithPosition));
+
+          const newCourt = await courtApi.createNewCourt(valuesWithPosition);
+
+          alert(newCourt);
         }
       },
       validate: ({ basketCount, courtName }) => {
