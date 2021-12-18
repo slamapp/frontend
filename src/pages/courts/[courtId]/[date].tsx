@@ -538,7 +538,7 @@ const Reservation: NextPage = () => {
         }}
         onCloseStart={() => setSnap(-1)}
       >
-        {isOpen && step === 1 && startIndex && modalContentData && (
+        {isOpen && step === 1 && startIndex !== null && modalContentData && (
           <ModalContent.BlockStatus
             snap={snap}
             startTime={getTimeFromIndex(startIndex)}
@@ -548,18 +548,21 @@ const Reservation: NextPage = () => {
             availableReservation={!timeTable[startIndex].hasReservation}
           />
         )}
-        {isOpen && step === 1 && selectedReservationId && modalContentData && (
-          <ModalContent.ExistedReservation
-            timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
-              endIndex + 1
-            )}
+        {isOpen &&
+          step === 1 &&
+          selectedReservationId !== null &&
+          modalContentData && (
+            <ModalContent.ExistedReservation
+              timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
+                endIndex + 1
+              )}
               `}
-            reservationId={selectedReservationId}
-            participantsPerBlock={modalContentData}
-            onDeleteReservation={handleDeleteReservation}
-            onStartUpdate={handleStartUpdate}
-          />
-        )}
+              reservationId={selectedReservationId}
+              participantsPerBlock={modalContentData}
+              onDeleteReservation={handleDeleteReservation}
+              onStartUpdate={handleStartUpdate}
+            />
+          )}
         {isOpen && step === 2 && modalContentData && (
           <ModalContent.SelectedRange
             timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
