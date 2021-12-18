@@ -22,7 +22,7 @@ interface Props {
   style?: CSSProperties;
   children: ReactNode;
   onClick?: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
-  onDragEnd?: (_: kakao.maps.Map) => void;
+  onDragEnd?: any;
 }
 
 const KakaoMap = ({

@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState, Reducer } from "react";
 
 import { ModalSheet, Text } from "@components/base";
 import {
@@ -8,7 +8,7 @@ import {
   ReservationModalContent as ModalContent,
   DayOfTheWeek,
 } from "@components/domain";
-import { useNavigationContext } from "@contexts/hooks";
+import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 
 import {
   weekdays,
@@ -18,8 +18,18 @@ import {
   getTimeFromIndex,
   getDatetimeString,
 } from "@utils/timeTable";
+import { courtApi, reservationApi } from "@service/.";
 
-const data = {
+interface IReservation {
+  reservationId: number | string;
+  userId: number | string;
+  courtId: number;
+  startTime: string;
+  endTime: string;
+  hasBall: boolean;
+}
+
+const data: { reservations: IReservation[] } = {
   reservations: [
     {
       reservationId: 10,
@@ -79,7 +89,7 @@ const data = {
     },
     {
       reservationId: 29,
-      userId: "me",
+      userId: 1,
       courtId: 7,
       startTime: "2021-01-01T14:00:00",
       endTime: "2021-01-01T15:00:00",
@@ -87,7 +97,7 @@ const data = {
     },
     {
       reservationId: 290,
-      userId: "me",
+      userId: 9,
       courtId: 7,
       startTime: "2021-01-01T19:00:00",
       endTime: "2021-01-01T21:00:00",
@@ -142,6 +152,20 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   );
 };
 
+interface DataProps {
+  step: number;
+  mode: "create" | "number";
+  startIndex: number;
+  endIndex: number;
+  timeTable: any[];
+  originalTimeTable: any[];
+  modalContentData: any[];
+  hasBall: boolean;
+  existedReservations: any[];
+  selectedReservationId: number;
+  requestDisabled: boolean;
+}
+
 const initialState = {
   step: 1,
   mode: "create",
@@ -156,13 +180,13 @@ const initialState = {
   requestDisabled: false,
 };
 
-const reducer = (state: any, { type, payload }: any) => {
+const reducer: Reducer<any, any> = (state, { type, payload }) => {
   switch (type) {
     case "SET_TIMETABLE": {
-      const { reservations } = payload;
+      const { reservations, userId } = payload;
 
       const { timeTable, existedReservations } =
-        getTimeTableInfoFromReservations(reservations, "me");
+        getTimeTableInfoFromReservations(reservations, userId);
 
       return {
         ...state,
@@ -358,9 +382,16 @@ const reducer = (state: any, { type, payload }: any) => {
 };
 
 const Reservation: NextPage = () => {
+  const router = useRouter();
   const {
-    query: { date, courtId },
-  } = useRouter();
+    query: { courtId, date },
+  } = router;
+
+  const {
+    authProps: {
+      currentUser: { userId },
+    },
+  } = useAuthContext();
 
   const {
     useMountPage,
@@ -368,6 +399,7 @@ const Reservation: NextPage = () => {
     setCustomButtonEvent,
     setNavigationTitle,
   } = useNavigationContext();
+
   useMountPage((page) => page.COURT_RESERVATIONS);
 
   const [reservation, dispatch] = useReducer(reducer, initialState);
@@ -417,50 +449,62 @@ const Reservation: NextPage = () => {
   }, []);
 
   const handleCreateReservation = useCallback(
-    (hasBall: boolean) => {
+    async (hasBall: boolean) => {
       if (!date || !courtId) {
         return;
       }
 
       const data = {
-        courtId,
-        userId: "me",
-        startDate: getDatetimeString(date as string, startIndex),
-        endDate: getDatetimeString(date as string, endIndex + 1),
+        courtId: Number(courtId),
+        startTime: getDatetimeString(date as string, startIndex),
+        endTime: getDatetimeString(date as string, endIndex),
         hasBall,
       };
 
-      console.log("create", data);
-      // TODO: crateReservation API CALL
-      // alert(JSON.stringify(data));
+      try {
+        await reservationApi.createReservation(data);
+      } catch (error) {
+        console.error(error);
+      }
+
+      router.push("/reservations");
     },
-    [courtId, date, endIndex, startIndex]
+    [courtId, date, endIndex, startIndex, router]
   );
 
   const handleUpdateReservation = useCallback(
-    (hasBall: boolean) => {
+    async (hasBall: boolean) => {
       if (!date || !courtId) {
         return;
       }
 
       const data = {
-        courtId,
-        userId: "me",
-        startDate: getDatetimeString(date as string, startIndex),
-        endDate: getDatetimeString(date as string, endIndex + 1),
+        courtId: Number(courtId),
+        startTime: getDatetimeString(date as string, startIndex),
+        endTime: getDatetimeString(date as string, endIndex),
         hasBall,
       };
 
-      console.log("update", data);
-      // TODO: crateReservation API CALL
-      // alert(JSON.stringify(data));
+      try {
+        await reservationApi.updateReservation(selectedReservationId, data);
+      } catch (error) {
+        console.error(error);
+      }
+
+      router.push("/reservations");
     },
-    [courtId, date, endIndex, startIndex]
+    [courtId, date, endIndex, startIndex, selectedReservationId, router]
   );
 
-  const handleDeleteReservation = useCallback((reservationId: number) => {
-    console.log(`delete /reservations/${reservationId}`);
-  }, []);
+  const handleDeleteReservation = useCallback(async () => {
+    try {
+      await reservationApi.deleteReservation(selectedReservationId);
+    } catch (error) {
+      console.error(error);
+    }
+
+    router.push("/reservations");
+  }, [selectedReservationId, router]);
 
   const handleChangeHasBall = useCallback((hasBall: boolean) => {
     dispatch({
@@ -493,12 +537,17 @@ const Reservation: NextPage = () => {
   }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
 
   useEffect(() => {
-    // TODO: getCourtReservations API CALL
-    dispatch({
-      type: "SET_TIMETABLE",
-      payload: { reservations: data.reservations },
-    });
-  }, []);
+    const initReservations = async () => {
+      const { reservations } = await courtApi.getAllCourtReservationsByDate(
+        courtId as string,
+        date as string
+      );
+
+      dispatch({ type: "SET_TIMETABLE", payload: { reservations, userId } });
+    };
+
+    initReservations();
+  }, [courtId, date, userId]);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 interface Props {
   map: kakao.maps.Map;
@@ -10,6 +10,19 @@ const PAUSE_COURT_NUMBER = 0;
 const FIRE_COURT_NUMBER = 6;
 
 const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
+  const marker = useMemo(
+    () =>
+      new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(0, 0),
+        clickable: true,
+      }),
+    []
+  );
+
+  const handleClick = useCallback(() => {
+    onClick(court);
+  }, [court, onClick]);
+
   useEffect(() => {
     if (map) {
       let imageSrc = "/assets/basketball/fire_off_400.gif";
@@ -37,20 +50,19 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
         court.longitude
       );
 
-      const marker = new kakao.maps.Marker({
-        position: markerPosition,
-        image: markerImage,
-        clickable: true,
-      });
-
+      marker.setImage(markerImage);
+      marker.setPosition(markerPosition);
       marker.setMap(map);
 
       // TODO: remove Event Listner를 위한 wrapping 또는 정보 저장 필요
-      kakao.maps.event.addListener(marker, "click", () => {
-        onClick(court);
-      });
+      kakao.maps.event.addListener(marker, "click", handleClick);
     }
-  }, [map, court, onClick]);
+
+    return () => {
+      kakao.maps.event.removeListener(marker, "click", handleClick);
+      marker.setMap(null);
+    };
+  }, [map, court, handleClick, marker]);
 
   // TODO: 일단 반환 해놓은 더미 없애기
   return <div></div>;

@@ -1,8 +1,9 @@
 import { NextPage } from "next";
 import React, { useState, useCallback, useEffect } from "react";
 import styled from "@emotion/styled";
+
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
-import reservationAPI from "@service/reservationApi";
+import { reservationApi } from "@service/.";
 import ReservationItem from "@components/domain/ReservationItem";
 import { Spacer } from "@components/base";
 
@@ -25,7 +26,7 @@ const Reservations: NextPage = () => {
 
   const expiredHandleClick = useCallback(async () => {
     setActiveIndex(1);
-    const { contents, lastId } = await reservationAPI.getMyExpiredReservations(
+    const { contents, lastId } = await reservationApi.getMyExpiredReservations(
       currentLastId
     );
 

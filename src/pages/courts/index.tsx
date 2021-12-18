@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import styled from "@emotion/styled";
 
 import { getCurrentLocation } from "@utils/geolocation";
 import { Button, ModalSheet, Spacer, Text } from "@components/base";
@@ -13,9 +15,8 @@ import {
   CourtItem,
 } from "@components/domain";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
-import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import { courtApi } from "@service/.";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -54,39 +55,6 @@ const getSlotFromDate = (date: Date): SlotKeyUnion => {
   return slot;
 };
 
-const dummyBasketballCourts = [
-  {
-    courtId: 1,
-    courtName: "한나 농구장",
-    latitude: 37.53526455544585,
-    longitude: 126.90261795958715,
-    courtReservation: 6,
-  },
-  {
-    courtId: 2,
-    courtName: "헤이헤이 농구장",
-    latitude: 37.538227498425,
-    longitude: 126.902404444577,
-    courtReservation: 3,
-  },
-  {
-    courtId: 3,
-    courtName: "플로라로라 농구장",
-    latitude: 37.5347279,
-    longitude: 126.9033882,
-    courtReservation: 0,
-  },
-  {
-    courtId: 4,
-    courtName: "젤리젤리 농구장",
-    latitude: 37.5347279,
-    longitude: 126.9023882,
-    courtReservation: 10,
-  },
-];
-
-const DATE_STRING_LENGTH = 10;
-
 const Courts: NextPage = () => {
   const router = useRouter();
   const {
@@ -112,6 +80,8 @@ const Courts: NextPage = () => {
 
     return date;
   }, []);
+
+  const [courts, setCourts] = useState<any>();
 
   const [level, setLevel] = useState<number>(3);
   const [center, setCenter] = useState<Coord>();
@@ -168,14 +138,33 @@ const Courts: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const handleChangedMapBounds = useCallback((map: kakao.maps.Map) => {
-    const bounds = map.getBounds();
-    // const swLatlng = bounds.getSouthWest();
-    // const neLatLng = bounds.getNorthEast();
+  const handleChangedMapBounds = useCallback(
+    async (map: kakao.maps.Map) => {
+      const bounds = map.getBounds();
+      const swLatlng = bounds.getSouthWest();
+      const neLatLng = bounds.getNorthEast();
 
-    // TODO: map의 bounds를 전달하여 api 콜하기
-    console.log(bounds);
-  }, []);
+      const startLatitude = swLatlng.getLat();
+      const startLongitude = swLatlng.getLng();
+
+      const endLatitude = neLatLng.getLat();
+      const endLongitude = neLatLng.getLng();
+
+      const { courts } = await courtApi.getCourtsByCoordsAndDate({
+        date: `${selectedDate.getFullYear()}-${
+          selectedDate.getMonth() + 1
+        }-${selectedDate.getDate()}`,
+        startLatitude,
+        startLongitude,
+        endLatitude,
+        endLongitude,
+        time: selectedSlot,
+      });
+
+      setCourts(courts);
+    },
+    [selectedDate, selectedSlot]
+  );
 
   const handleZoomIn = useCallback(() => {
     setLevel((level) => level - 1);
@@ -203,15 +192,36 @@ const Courts: NextPage = () => {
     setSnap(snap);
   }, []);
 
-  const handleGetCurrentLocation = useCallback(() => {
-    getCurrentLocation(([latitude, longitude]) => {
+  const handleGetCurrentLocation = useCallback(async () => {
+    getCurrentLocation(async ([latitude, longitude]) => {
       setCenter([latitude, longitude]);
     });
   }, []);
 
   useEffect(() => {
+    const fetchCourts = async () => {
+      if (map) {
+        await handleChangedMapBounds(map);
+      }
+    };
+
     handleGetCurrentLocation();
-  }, [handleGetCurrentLocation]);
+    fetchCourts();
+  }, [handleGetCurrentLocation, map]);
+
+  useEffect(() => {
+    if (map) {
+      handleChangedMapBounds(map);
+    }
+  }, [map, handleChangedMapBounds]);
+
+  const dateString = useMemo(
+    () =>
+      `${selectedDate.getFullYear()}-${
+        selectedDate.getMonth() + 1
+      }-${selectedDate.getDate()}`,
+    [selectedDate]
+  );
 
   return (
     <>
@@ -241,9 +251,10 @@ const Courts: NextPage = () => {
           />
 
           {map &&
-            dummyBasketballCourts.map((court, i) => (
+            courts &&
+            courts.map((court: any) => (
               <BasketballMarker
-                key={i}
+                key={court.courtId}
                 map={map}
                 court={court}
                 onClick={handleMarkerClick}
@@ -273,43 +284,21 @@ const Courts: NextPage = () => {
                 longitude={selectedCourt.longitude}
                 courtName={selectedCourt.courtName}
               />
-
               <Link
-                href={`/courts/${
-                  selectedCourt?.courtId
-                }/${selectedDate.getFullYear()}-${
-                  selectedDate.getMonth() + 1
-                }-${selectedDate.getDate()}/${selectedSlot}`}
+                href={{
+                  pathname: `/courts/[courtId]/[date]`,
+                  query: {
+                    timeSlot: selectedSlot,
+                  },
+                }}
                 as={`/courts/${
-                  selectedCourt?.courtId
+                  selectedCourt.courtId
                 }/${selectedDate.getFullYear()}-${
                   selectedDate.getMonth() + 1
                 }-${selectedDate.getDate()}`}
                 passHref
               >
-                <Button
-                  style={{ flex: 1 }}
-                  size="lg"
-                  // onClick={() => {
-                  //   router.push(
-                  //     {
-                  //       pathname: `/courts/${
-                  //         selectedCourt?.courtId
-                  //       }/${selectedDate
-                  //         .toISOString()
-                  //         .substring(0, DATE_STRING_LENGTH)}`,
-                  //       // 숨겨서 보낼 정보
-                  //       query: { timeSlot: selectedSlot },
-                  //     },
-                  //     // 주소창에 출력될 url
-                  //     `/courts/${
-                  //       selectedCourt?.courtId
-                  //     }/${selectedDate.getFullYear()}-${
-                  //       selectedDate.getMonth() + 1
-                  //     }-${selectedDate.getDate()}`
-                  //   );
-                  // }}
-                >
+                <Button style={{ flex: 1 }} size="lg">
                   예약하기
                 </Button>
               </Link>

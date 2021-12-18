@@ -26,6 +26,10 @@ const GeneralMarker = ({ map, position }: Props): JSX.Element => {
 
       // TODO: remove Event Listner를 위한 wrapping 또는 정보 저장 필요
     }
+
+    return () => {
+      marker.setMap(null);
+    };
   }, [map, position, marker]);
 
   // TODO: 일단 반환 해놓은 더미 없애기

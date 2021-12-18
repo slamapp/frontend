@@ -158,6 +158,45 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
+    case authTypes.CREATE_RESERVATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          // 최신순? 현재시간에서 가장 가까운
+          reservations: [
+            payload.createdReservation,
+            ...prevState.currentUser.reservations,
+          ],
+        },
+      };
+    }
+    case authTypes.UPDATE_RESERVATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          reservations: prevState.currentUser.reservations.map((reservation) =>
+            reservation.reservationId ===
+            payload.updatedReservation.reservationId
+              ? payload.updatedReservation
+              : reservation
+          ),
+        },
+      };
+    }
+    case authTypes.DELETE_RESERVATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          reservations: prevState.currentUser.reservations.filter(
+            ({ reservationId }) =>
+              reservationId !== payload.deletedReservationId
+          ),
+        },
+      };
+    }
     default: {
       return { ...prevState };
     }
