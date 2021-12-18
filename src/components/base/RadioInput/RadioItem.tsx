@@ -30,12 +30,19 @@ const StyledRadio = styled.input`
   display: none;
 
   ${({ theme }) => css`
+    + span {
+      transition: all 200ms;
+    }
+    &:hover + span {
+      background-color: ${theme.colors.gray100};
+    }
+
     &:checked + span {
       background-color: ${theme.colors.gray900};
       color: ${theme.colors.white};
 
       &:hover {
-        background-color: ${theme.colors.gray500};
+        background-color: ${theme.colors.gray700};
       }
     }
   `}
