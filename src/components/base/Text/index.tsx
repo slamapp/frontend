@@ -2,6 +2,7 @@ import { FC, ReactNode } from "react";
 import styled from "@emotion/styled";
 
 interface Props {
+  className?: string;
   children: ReactNode;
   block?: boolean;
   paragraph?: boolean;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const Text: FC<Props> = ({
+  className,
   children,
   block,
   paragraph,
@@ -51,7 +53,7 @@ const Text: FC<Props> = ({
   }
 
   return (
-    <StyledText style={{ ...rest.style }} {...rest}>
+    <StyledText className={className} style={{ ...rest.style }} {...rest}>
       {children}
     </StyledText>
   );

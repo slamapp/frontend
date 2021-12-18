@@ -67,10 +67,16 @@ const Day = styled(Text)<{ selected: boolean }>`
   height: 40px;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   border-radius: ${({ theme }) => theme.borderRadiuses.md};
-  ${({ selected, theme }) =>
-    selected &&
-    css`
-      background-color: ${theme.colors.gray700};
-      color: ${theme.colors.white};
-    `}
+  background: ${({ theme, selected }) =>
+    selected ? theme.colors.gray900 : "none"};
+  color: ${({ theme, selected }) =>
+    selected ? theme.colors.white : theme.colors.gray900};
+
+  transition: all 200ms;
+
+  :hover {
+    background: ${({ theme, selected }) =>
+      selected ? theme.colors.gray900 : theme.colors.gray700};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;

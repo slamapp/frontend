@@ -61,11 +61,24 @@ const StyledButton = styled.button<Omit<Props, "children">>`
     height: ${theme.buttonHeights[size!]};
     width: ${fullWidth && "100%"};
     padding: 0 ${theme.buttonRightLeftPaddings[size as Size]};
-    background-color: ${theme.colors.gray900};
-    color: ${theme.colors.white};
+
     font-size: ${theme.fontSizes[fontSizeMap[size as Size] as Size]};
     border-radius: ${theme.borderRadiuses[size as Size]};
+    transition: all 200ms;
   `}
+
+  ${({ theme }) =>
+    css`
+      & {
+        background-color: ${theme.colors.gray900};
+        color: ${theme.colors.white};
+        border: 1px solid ${theme.colors.gray200};
+      }
+
+      &:hover {
+        background-color: ${theme.colors.gray700};
+      }
+    `}
 
   ${({ theme, secondary }) =>
     secondary &&
