@@ -21,33 +21,27 @@ const useStomp: UseStomp = (token: string) => {
   }, []);
 
   useEffect(() => {
-    const newClient = socketApi.getCompatClient();
-    setCompatClient(newClient);
-
-    return () => {
-      if (compatClient) compatClient.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (compatClient && userId) {
-      compatClient.connect(
+    if (userId) {
+      const newClient = socketApi.getCompatClient();
+      newClient.connect(
         { Authorization: { token: `Bearer ${token}` } },
         () => {
           setIsConnected(true);
           setIsLoading(false);
-
-          subscribe(compatClient, `/topic/${userId}`, (body) => {
+          subscribe(newClient, `/topic/${userId}`, (body) => {
             console.log(body);
           });
-          subscribe(compatClient, `/user/${userId}/notification`, (body) => {
+          subscribe(newClient, `/user/${userId}/notification`, (body) => {
             console.log(body);
-
             pushNotification(body as Notification);
           });
         },
         handleError
       );
+
+      setCompatClient(newClient);
+
+      return () => newClient.disconnect();
     }
   }, [userId]);
 
