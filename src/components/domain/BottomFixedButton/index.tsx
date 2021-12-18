@@ -26,7 +26,7 @@ const BottomFixedButton: React.FC<Props> = ({
 }) => {
   return typeof document !== "undefined" ? (
     ReactDOM.createPortal(
-      <Background bottom={bottom}>
+      <Background bottom={bottom} style={style}>
         <Button
           type={type}
           disabled={disabled}
@@ -34,7 +34,6 @@ const BottomFixedButton: React.FC<Props> = ({
           onClick={onClick}
           size="lg"
           className={className}
-          style={style}
         >
           {children}
         </Button>
