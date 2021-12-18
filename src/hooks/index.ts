@@ -18,3 +18,4 @@ export { default as useSessionStorage } from "./useSessionStorage";
 export { default as useTimeout } from "./useTimeout";
 export { default as useTimeoutFn } from "./useTimeoutFn";
 export { default as useToggle } from "./useToggle";
+export { default as useInfiniteScroll } from "./useInfiniteScroll";
