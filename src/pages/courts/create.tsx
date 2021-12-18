@@ -5,7 +5,12 @@ import Sheet from "react-modal-sheet";
 import styled from "@emotion/styled";
 
 import { Input, Spacer, Text, Button, Label, Icon } from "@components/base";
-import { Map, GeneralMarker, BottomFixedButton } from "@components/domain";
+import {
+  Map,
+  GeneralMarker,
+  BottomFixedButton,
+  ValidationNoticeBar,
+} from "@components/domain";
 import { useForm, Error } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
@@ -45,6 +50,7 @@ const CreateCourt: NextPage = () => {
   const [position, setPosition] = useState<Coord>();
   const [savedPosition, setSavedPosition] = useState<Coord>();
   const [address, setAddress] = useState<string>();
+  const [validatedBasketCount, setValidatedBasketCount] = useState(1);
 
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
     const geocoder = new kakao.maps.services.Geocoder();
@@ -133,7 +139,7 @@ const CreateCourt: NextPage = () => {
         if (!courtName) {
           errors.courtName = "농구장 이름을 입력해주세요.";
         }
-        if (!basketCount) {
+        if (basketCount < 1) {
           errors.basketCount = "골대 개수를 입력해주세요.";
         }
         if (!savedPosition) {
@@ -143,6 +149,16 @@ const CreateCourt: NextPage = () => {
         return errors;
       },
     });
+
+  useEffect(() => {
+    if (values.basketCount > 99) {
+      setValidatedBasketCount(
+        Number(values.basketCount.toString().slice(0, 2))
+      );
+    } else {
+      setValidatedBasketCount(values.basketCount);
+    }
+  }, [values.basketCount]);
 
   return (
     <div>
@@ -205,7 +221,7 @@ const CreateCourt: NextPage = () => {
 
       <form onSubmit={handleSubmit}>
         <MainContainer>
-          <Spacer gap="lg" type="vertical">
+          <Spacer gap="base" type="vertical">
             <div>
               <Input
                 label="농구장 이름"
@@ -215,8 +231,9 @@ const CreateCourt: NextPage = () => {
                 value={values.courtName}
                 placeholder="ex) 슬램대학교 상경대 앞 농구장"
                 isRequired
+                visibleError={!!errors.courtName}
               />
-              <span>{errors.courtName}</span>
+              <ValidationNoticeBar errors={errors.courtName} />
             </div>
             <div>
               <Label isRequired>위치</Label>
@@ -244,7 +261,7 @@ const CreateCourt: NextPage = () => {
                     </div>
                   </div>
                 ) : (
-                  <PreviewBanner>
+                  <PreviewBanner className={errors.longitude ? "error" : ""}>
                     <Button
                       size="sm"
                       type="button"
@@ -253,10 +270,10 @@ const CreateCourt: NextPage = () => {
                     >
                       지도에서 위치 찾기
                     </Button>
-                    {errors.longitude}
                   </PreviewBanner>
                 )}
               </PreviewContainer>
+              <ValidationNoticeBar errors={errors.longitude} />
             </div>
             <div>
               <Input
@@ -265,9 +282,10 @@ const CreateCourt: NextPage = () => {
                 name="basketCount"
                 onChange={handleChange}
                 isRequired
-                value={values.basketCount}
+                value={validatedBasketCount}
+                visibleError={!!errors.basketCount}
               />
-              <span>{errors.basketCount}</span>
+              <ValidationNoticeBar errors={errors.basketCount} />
             </div>
           </Spacer>
         </MainContainer>
@@ -310,6 +328,10 @@ const PreviewBanner = styled.div`
     right: 0;
     background: rgba(255, 255, 255, 0.4);
     box-shadow: inset 0 0 20px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  &.error::before {
+    border: 1px solid ${({ theme }) => theme.colors.red.strong};
   }
 `;
 
