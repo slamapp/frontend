@@ -451,7 +451,7 @@ const Reservation: NextPage = () => {
   }, []);
 
   const handleCreateReservation = useCallback(
-    async (hasBall: boolean) => {
+    (hasBall: boolean) => {
       if (!date || !courtId) {
         return;
       }
@@ -463,13 +463,13 @@ const Reservation: NextPage = () => {
         hasBall,
       };
 
-      await createReservation(data);
+      createReservation(data);
     },
     [courtId, date, endIndex, startIndex, createReservation]
   );
 
   const handleUpdateReservation = useCallback(
-    async (hasBall: boolean) => {
+    (hasBall: boolean) => {
       if (!date || !courtId) {
         return;
       }
@@ -481,7 +481,7 @@ const Reservation: NextPage = () => {
         hasBall,
       };
 
-      await updateReservation(selectedReservationId, data);
+      updateReservation(selectedReservationId, data);
     },
     [
       courtId,
@@ -493,8 +493,8 @@ const Reservation: NextPage = () => {
     ]
   );
 
-  const handleDeleteReservation = useCallback(async () => {
-    await deleteReservation(selectedReservationId);
+  const handleDeleteReservation = useCallback(() => {
+    deleteReservation(selectedReservationId);
   }, [selectedReservationId, deleteReservation]);
 
   const handleChangeHasBall = useCallback((hasBall: boolean) => {

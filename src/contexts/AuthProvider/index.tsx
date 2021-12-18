@@ -61,43 +61,61 @@ const AuthProvider = ({ children }: Props) => {
   }, []);
 
   const createReservation = useCallback(async (data: any) => {
-    const createdReservation = await reservationApi.createReservation(data);
+    try {
+      const createdReservation = await reservationApi.createReservation(data);
 
-    dispatch({
-      type: authTypes.CREATE_RESERVATION,
-      payload: {
-        createdReservation,
-      },
-    });
+      dispatch({
+        type: authTypes.CREATE_RESERVATION,
+        payload: {
+          createdReservation,
+        },
+      });
+
+      router.push("/reservations");
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const updateReservation = useCallback(
     async (reservationId: any, data: any) => {
-      const updatedReservation = await reservationApi.updateReservation(
-        reservationId,
-        data
-      );
+      try {
+        const updatedReservation = await reservationApi.updateReservation(
+          reservationId,
+          data
+        );
 
-      dispatch({
-        type: authTypes.UPDATE_RESERVATION,
-        payload: {
-          updatedReservation,
-        },
-      });
+        dispatch({
+          type: authTypes.UPDATE_RESERVATION,
+          payload: {
+            updatedReservation,
+          },
+        });
+
+        router.push("/reservations");
+      } catch (error) {
+        console.error(error);
+      }
     },
     []
   );
 
   const deleteReservation = useCallback(async (reservationId: any) => {
-    const { reservationId: deletedReservationId } =
-      await reservationApi.deleteReservation(reservationId);
+    try {
+      const { reservationId: deletedReservationId } =
+        await reservationApi.deleteReservation(reservationId);
 
-    dispatch({
-      type: authTypes.DELETE_RESERVATION,
-      payload: {
-        deletedReservationId,
-      },
-    });
+      dispatch({
+        type: authTypes.DELETE_RESERVATION,
+        payload: {
+          deletedReservationId,
+        },
+      });
+
+      router.push("/reservations");
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const getMyFavorites = useCallback(async () => {
