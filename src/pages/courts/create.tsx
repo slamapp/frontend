@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, MouseEvent } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Sheet from "react-modal-sheet";
@@ -295,7 +295,10 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             </div>
           </Spacer>
         </MainContainer>
-        <BottomFixedButton type="submit" onClick={() => {}}>
+        <BottomFixedButton
+          type="submit"
+          onClick={(e: MouseEvent<HTMLButtonElement>) => handleSubmit(e)}
+        >
           {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
         </BottomFixedButton>
       </form>
