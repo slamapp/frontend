@@ -292,7 +292,7 @@ const PreviewContainer = styled.div`
 const PreviewBanner = styled.div`
   width: 100%;
   height: 150px;
-  background-image: url("https://user-images.githubusercontent.com/84858773/144864259-1d91a4b2-937c-441d-bb96-22758ab90294.png");
+  background-image: url("/assets/preview_map.png");
   background-size: cover;
   background-position: center;
   display: flex;
