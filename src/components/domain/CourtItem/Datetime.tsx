@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 
 import { Spacer, Text } from "@components/base";
+import { weekdays } from "@utils/timeTable";
 import * as S from "./style";
-
-const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
 
 interface Props {
   startDatetime: string;
