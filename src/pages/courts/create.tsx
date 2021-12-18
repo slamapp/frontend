@@ -4,8 +4,14 @@ import Head from "next/head";
 import Sheet from "react-modal-sheet";
 import styled from "@emotion/styled";
 
-import { Input, Spacer, Text, Button } from "@components/base";
-import { Map, GeneralMarker, BottomFixedButton } from "@components/domain";
+import UtilRoute from "UtilRoute";
+import { Input, Spacer, Text, Button, Label, Icon } from "@components/base";
+import {
+  Map,
+  GeneralMarker,
+  BottomFixedButton,
+  ValidationNoticeBar,
+} from "@components/domain";
 import { useForm, Error } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
@@ -32,7 +38,7 @@ interface Geocoder extends kakao.maps.services.Geocoder {
   ) => void;
 }
 
-const CreateCourt: NextPage = () => {
+const CreateCourt: NextPage = UtilRoute("private", () => {
   const { map } = useMapContext();
 
   const { useMountPage } = useNavigationContext();
@@ -45,6 +51,7 @@ const CreateCourt: NextPage = () => {
   const [position, setPosition] = useState<Coord>();
   const [savedPosition, setSavedPosition] = useState<Coord>();
   const [address, setAddress] = useState<string>();
+  const [validatedBasketCount, setValidatedBasketCount] = useState(1);
 
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
     const geocoder = new kakao.maps.services.Geocoder();
@@ -133,7 +140,7 @@ const CreateCourt: NextPage = () => {
         if (!courtName) {
           errors.courtName = "농구장 이름을 입력해주세요.";
         }
-        if (!basketCount) {
+        if (basketCount < 1) {
           errors.basketCount = "골대 개수를 입력해주세요.";
         }
         if (!savedPosition) {
@@ -143,6 +150,16 @@ const CreateCourt: NextPage = () => {
         return errors;
       },
     });
+
+  useEffect(() => {
+    if (values.basketCount > 99) {
+      setValidatedBasketCount(
+        Number(values.basketCount.toString().slice(0, 2))
+      );
+    } else {
+      setValidatedBasketCount(values.basketCount);
+    }
+  }, [values.basketCount]);
 
   return (
     <div>
@@ -164,9 +181,10 @@ const CreateCourt: NextPage = () => {
               flexDirection: "column",
             }}
           >
-            <p style={{ textAlign: "center" }}>
-              {address ?? <span>위치를 지정해주세요.</span>}
-            </p>
+            <MapGuide size="md" strong>
+              <DecoIcon name="map-pin" color="#FE6D04" />
+              {address ?? `지도에서 위치를 선택해주세요`}
+            </MapGuide>
             {!center && <Text>현재 위치를 받아오는 중입니다.</Text>}
             {center && isOpen ? (
               <Map.KakaoMap
@@ -194,77 +212,98 @@ const CreateCourt: NextPage = () => {
               type="button"
               disabled={!center}
               onClick={savedLocation}
+              style={{ zIndex: 10000000 }}
             >
               농구장 위치 저장하기
             </BottomFixedButton>
           </Sheet.Content>
         </Sheet.Container>
+        <Sheet.Backdrop onViewportBoxUpdate={() => {}} />
       </CustomSheet>
 
       <form onSubmit={handleSubmit}>
-        <Spacer gap="md" type="vertical">
-          <div>
-            <Input
-              label="농구장 이름"
-              type="text"
-              name="courtName"
-              onChange={handleChange}
-              value={values.courtName}
-            />
-            <span>{errors.courtName}</span>
-          </div>
-          <div>
-            <Text>위치</Text>
-            <PreviewContainer>
-              {savedPosition && !isOpen ? (
-                <div>
-                  <p>{address}</p>
-                  <button type="button" onClick={() => setOpen(true)}>
-                    위치 수정하기
-                  </button>
-                  <Map.KakaoMap
-                    level={level}
-                    center={savedPosition}
-                    draggable={false}
-                    zoomable={false}
-                    style={{ width: "100%", height: "200px" }}
-                  >
-                    <GeneralMarker map={map!} position={savedPosition} />
-                  </Map.KakaoMap>
-                </div>
-              ) : (
-                <PreviewBanner>
-                  <button type="button" onClick={() => setOpen(true)}>
-                    농구장 등록하기
-                  </button>
-                  {errors.longitude}
-                </PreviewBanner>
-              )}
-            </PreviewContainer>
-          </div>
-          <div>
-            <Input
-              label="골대 개수"
-              type="number"
-              name="basketCount"
-              min={1}
-              max={99}
-              onChange={handleChange}
-              value={values.basketCount}
-              required
-            />
-            <span>{errors.basketCount}</span>
-          </div>
-          <Button type="submit" onClick={() => {}}>
-            {isLoading ? "Loading..." : "제출하기"}
-          </Button>
-        </Spacer>
+        <MainContainer>
+          <Spacer gap="base" type="vertical">
+            <div>
+              <Input
+                label="농구장 이름"
+                type="text"
+                name="courtName"
+                onChange={handleChange}
+                value={values.courtName}
+                placeholder="ex) 슬램대학교 상경대 앞 농구장"
+                isRequired
+                visibleError={!!errors.courtName}
+              />
+              <ValidationNoticeBar errors={errors.courtName} />
+            </div>
+            <div>
+              <Label isRequired>위치</Label>
+              <PreviewContainer>
+                {savedPosition && !isOpen ? (
+                  <div>
+                    <AddressGuide>
+                      <DecoIcon name="map-pin" color="#FE6D04" size="sm" />
+                      {address}
+                    </AddressGuide>
+                    <div style={{ position: "relative" }}>
+                      <Map.KakaoMap
+                        level={level}
+                        center={savedPosition}
+                        draggable={false}
+                        zoomable={false}
+                        style={{
+                          width: "100%",
+                          height: "150px",
+                        }}
+                      >
+                        <GeneralMarker map={map!} position={savedPosition} />
+                      </Map.KakaoMap>
+                      <MoveToMap onClick={() => setOpen(true)} />
+                    </div>
+                  </div>
+                ) : (
+                  <PreviewBanner className={errors.longitude ? "error" : ""}>
+                    <Button
+                      size="sm"
+                      type="button"
+                      onClick={() => setOpen(true)}
+                      style={{ zIndex: 1 }}
+                    >
+                      지도에서 위치 찾기
+                    </Button>
+                  </PreviewBanner>
+                )}
+              </PreviewContainer>
+              <ValidationNoticeBar errors={errors.longitude} />
+            </div>
+            <div>
+              <Input
+                label="골대 개수"
+                type="number"
+                name="basketCount"
+                onChange={handleChange}
+                isRequired
+                value={validatedBasketCount}
+                visibleError={!!errors.basketCount}
+              />
+              <ValidationNoticeBar errors={errors.basketCount} />
+            </div>
+          </Spacer>
+        </MainContainer>
+        <BottomFixedButton type="submit" onClick={() => {}}>
+          {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
+        </BottomFixedButton>
       </form>
     </div>
   );
-};
+});
 
 export default CreateCourt;
+
+const MainContainer = styled.div`
+  padding: ${({ theme }) => `30px ${theme.gaps.base}`};
+`;
 
 const PreviewContainer = styled.div`
   width: 100%;
@@ -272,21 +311,57 @@ const PreviewContainer = styled.div`
 
 const PreviewBanner = styled.div`
   width: 100%;
-  height: 100px;
-  background-image: url("https://user-images.githubusercontent.com/84858773/144864259-1d91a4b2-937c-441d-bb96-22758ab90294.png");
+  height: 150px;
+  background-image: url("/assets/preview_map.png");
   background-size: cover;
   background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  filter: contrast(70%);
-`;
+  position: relative;
 
-const MapContainer = styled.div`
-  height: 70%;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 0 20px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  &.error::before {
+    border: 1px solid ${({ theme }) => theme.colors.red.strong};
+  }
 `;
 
 const CustomSheet = styled(Sheet)`
   max-width: 640px;
   margin: auto;
+`;
+
+const MapGuide = styled(Text)`
+  margin: ${({ theme }) => theme.gaps.md};
+  margin-top: 0;
+`;
+
+const DecoIcon = styled(Icon)`
+  vertical-align: text-bottom;
+  margin-right: ${({ theme }) => theme.gaps.xxs};
+`;
+
+const AddressGuide = styled.p`
+  margin: 12px 0;
+`;
+
+const MoveToMap = styled.a`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  cursor: pointer;
 `;
