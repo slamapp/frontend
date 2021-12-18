@@ -30,18 +30,22 @@ const AuthProvider = ({ children }: Props) => {
     }, LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS);
   }, [router]);
 
+  const setCurrentUser = useCallback((data) => {
+    dispatch({ type: authTypes.SET_CURRENT_USER, payload: data });
+  }, []);
+
   const getCurrentUser = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
     try {
       const data = await userAPI.getUserData();
-      dispatch({ type: authTypes.GET_CURRENT_USER, payload: data });
+      setCurrentUser(data);
     } catch (error) {
       console.error(error);
       logout();
     } finally {
       dispatch({ type: authTypes.LOADING_OFF });
     }
-  }, [logout]);
+  }, [logout, setCurrentUser]);
 
   const getMyReservations = useCallback(async () => {
     try {
@@ -125,6 +129,7 @@ const AuthProvider = ({ children }: Props) => {
     <Context.Provider
       value={{
         authProps,
+        setCurrentUser,
         getCurrentUser,
         logout,
         createFavorite,

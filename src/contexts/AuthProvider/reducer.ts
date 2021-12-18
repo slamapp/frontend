@@ -65,7 +65,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
   { type, payload }
 ) => {
   switch (type) {
-    case authTypes.GET_CURRENT_USER: {
+    case authTypes.SET_CURRENT_USER: {
       return {
         ...prevState,
         currentUser: {

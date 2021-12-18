@@ -4,6 +4,7 @@ import { Notification } from "./types";
 
 export interface ContextProps {
   authProps: DataProps;
+  setCurrentUser: (data: any) => void;
   getCurrentUser: any;
   logout: () => void;
   createFavorite: (courtId: number) => void;
@@ -13,6 +14,7 @@ export interface ContextProps {
 
 export const initialContext = {
   authProps: initialData,
+  setCurrentUser: () => {},
   getCurrentUser: () => {},
   logout: () => {},
   createFavorite: () => {},
