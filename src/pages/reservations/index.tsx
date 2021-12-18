@@ -1,18 +1,15 @@
 import ReservationItem from "@components/domain/ReservationItem";
 import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { Spacer } from "@components/base";
 
 const Reservations: NextPage = () => {
-  const { authProps, getMyReservations } = useAuthContext();
+  const { authProps } = useAuthContext();
   const { reservations: upcomingReservations } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.RESERVATIONS);
-  useEffect(() => {
-    getMyReservations();
-  }, []);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
