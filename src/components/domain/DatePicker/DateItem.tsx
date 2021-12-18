@@ -3,8 +3,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 import { Text } from "@components/base";
-
-const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
+import { weekdays } from "@utils/timeTable";
 
 interface Props {
   date: Date;

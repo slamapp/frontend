@@ -1,20 +1,23 @@
-import { ModalSheet, Text } from "@components/base";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useReducer, useState } from "react";
 
+import { ModalSheet, Text } from "@components/base";
 import {
   TimeTable,
   ReservationModalContent as ModalContent,
   DayOfTheWeek,
 } from "@components/domain";
-import { getTimeFromIndex } from "@components/domain/TimeTable/utils";
 import { useNavigationContext } from "@contexts/hooks";
-import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 
-const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
-const TIME_TABLE_ROWS = 24 * 2;
-const MAX_RESERVATION_TIME_BLOCK_UNIT = 6;
-const MINUTES_PER_TIME_BLOCK = 30;
+import {
+  weekdays,
+  TIME_TABLE_ROWS,
+  MAX_RESERVATION_TIME_BLOCK_UNIT,
+  getIndexFromDate,
+  getTimeFromIndex,
+  getDatetimeString,
+} from "@utils/timeTable";
 
 const data = {
   reservations: [
@@ -93,15 +96,6 @@ const data = {
   ],
 };
 
-const getIndexFromDate = (dateString: string) => {
-  const date = new Date(dateString);
-
-  const hour = date.getHours();
-  const minute = date.getMinutes();
-
-  return hour * 2 + (minute === MINUTES_PER_TIME_BLOCK ? 1 : 0);
-};
-
 const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   const timeTable = Array.from({ length: TIME_TABLE_ROWS }, () => ({
     peopleCount: 0,
@@ -115,7 +109,7 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
       const { existedReservations, timeTable } = acc;
       const startRow = getIndexFromDate(reservation.startTime);
       // TODO: 왜 -1 해야 되더라
-      const endRow = getIndexFromDate(reservation.endTime) - 1;
+      const endRow = getIndexFromDate(reservation.endTime);
       const hasReservation = reservation.userId === userId;
 
       if (hasReservation) {
@@ -431,12 +425,8 @@ const Reservation: NextPage = () => {
       const data = {
         courtId,
         userId: "me",
-        startDate: new Date(
-          `${date} ${getTimeFromIndex(startIndex)}`
-        ).toISOString(),
-        endDate: new Date(
-          `${date} ${getTimeFromIndex(endIndex)}`
-        ).toISOString(),
+        startDate: getDatetimeString(date as string, startIndex),
+        endDate: getDatetimeString(date as string, endIndex + 1),
         hasBall,
       };
 
@@ -444,7 +434,7 @@ const Reservation: NextPage = () => {
       // TODO: crateReservation API CALL
       // alert(JSON.stringify(data));
     },
-    [courtId, date, endIndex, hasBall, startIndex]
+    [courtId, date, endIndex, startIndex]
   );
 
   const handleUpdateReservation = useCallback(
@@ -456,12 +446,8 @@ const Reservation: NextPage = () => {
       const data = {
         courtId,
         userId: "me",
-        startDate: new Date(
-          `${date} ${getTimeFromIndex(startIndex)}`
-        ).toISOString(),
-        endDate: new Date(
-          `${date} ${getTimeFromIndex(endIndex)}`
-        ).toISOString(),
+        startDate: getDatetimeString(date as string, startIndex),
+        endDate: getDatetimeString(date as string, endIndex + 1),
         hasBall,
       };
 
@@ -469,7 +455,7 @@ const Reservation: NextPage = () => {
       // TODO: crateReservation API CALL
       // alert(JSON.stringify(data));
     },
-    [courtId, date, endIndex, hasBall, startIndex]
+    [courtId, date, endIndex, startIndex]
   );
 
   const handleDeleteReservation = useCallback((reservationId: number) => {
@@ -538,7 +524,7 @@ const Reservation: NextPage = () => {
         }}
         onCloseStart={() => setSnap(-1)}
       >
-        {isOpen && step === 1 && startIndex && modalContentData && (
+        {isOpen && step === 1 && startIndex !== null && modalContentData && (
           <ModalContent.BlockStatus
             snap={snap}
             startTime={getTimeFromIndex(startIndex)}
@@ -548,18 +534,21 @@ const Reservation: NextPage = () => {
             availableReservation={!timeTable[startIndex].hasReservation}
           />
         )}
-        {isOpen && step === 1 && selectedReservationId && modalContentData && (
-          <ModalContent.ExistedReservation
-            timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
-              endIndex + 1
-            )}
+        {isOpen &&
+          step === 1 &&
+          selectedReservationId !== null &&
+          modalContentData && (
+            <ModalContent.ExistedReservation
+              timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
+                endIndex + 1
+              )}
               `}
-            reservationId={selectedReservationId}
-            participantsPerBlock={modalContentData}
-            onDeleteReservation={handleDeleteReservation}
-            onStartUpdate={handleStartUpdate}
-          />
-        )}
+              reservationId={selectedReservationId}
+              participantsPerBlock={modalContentData}
+              onDeleteReservation={handleDeleteReservation}
+              onStartUpdate={handleStartUpdate}
+            />
+          )}
         {isOpen && step === 2 && modalContentData && (
           <ModalContent.SelectedRange
             timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
