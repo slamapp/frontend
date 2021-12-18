@@ -7,6 +7,7 @@ interface Props {
   onClose: () => void;
   isOpen: boolean;
   onSnap?: (snap: number) => void;
+  onCloseStart?: () => void;
 }
 
 const CustomSheet = styled(Sheet)`
@@ -18,7 +19,13 @@ const CustomSheet = styled(Sheet)`
   }
 `;
 
-const ModalSheet: React.FC<Props> = ({ isOpen, onClose, children, onSnap }) => {
+const ModalSheet: React.FC<Props> = ({
+  isOpen,
+  onClose,
+  children,
+  onSnap,
+  onCloseStart,
+}) => {
   return (
     <CustomSheet
       isOpen={isOpen}
@@ -26,6 +33,7 @@ const ModalSheet: React.FC<Props> = ({ isOpen, onClose, children, onSnap }) => {
       snapPoints={[600 + 56, 270 + 56]}
       initialSnap={1}
       onSnap={onSnap}
+      onCloseStart={onCloseStart}
     >
       <Sheet.Container onViewportBoxUpdate={() => {}}>
         <Sheet.Header onViewportBoxUpdate={() => {}} />

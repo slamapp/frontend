@@ -101,6 +101,19 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "농구장 탐색",
       };
     }
+    case pageType.COURT_RESERVATIONS: {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: false,
+        currentPage: type,
+        isBack: true,
+        isNotifications: false,
+        isProfile: false,
+        isMenu: false,
+        title: "년월일 넣기",
+      };
+    }
     case pageType.RESERVATIONS: {
       return {
         ...prevState,

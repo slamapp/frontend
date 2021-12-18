@@ -1,5 +1,6 @@
-import { Avatar, Text } from "@components/base";
 import styled from "@emotion/styled";
+
+import { Avatar, Text } from "@components/base";
 import * as S from "./style";
 
 interface Props {
@@ -23,7 +24,7 @@ const StepTwoModalCommonContent = ({
     <S.ModalContent>
       <S.ContentWrapper>
         <Text>선택한 시간</Text>
-        <Text>{timeSlot}</Text>
+        <S.TimeSlotText>{timeSlot}</S.TimeSlotText>
       </S.ContentWrapper>
       <S.ContentWrapper>
         <Text>함께하는 사람</Text>
@@ -32,7 +33,12 @@ const StepTwoModalCommonContent = ({
             <span>{getTimeFromIndex(index)}</span>
             <S.AvatarGroup>
               {users.map(({ userId, avatarImgSrc }: any) => (
-                <Avatar key={userId} src={avatarImgSrc} shape="circle" />
+                <Avatar
+                  key={userId}
+                  src={avatarImgSrc}
+                  shape="circle"
+                  size="md"
+                />
               ))}
             </S.AvatarGroup>
           </ParticipantWithTimeWrapper>

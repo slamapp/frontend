@@ -21,8 +21,17 @@ const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
     ) : (
       <S.OneSixthColumn ref={rowRef} />
     )}
-    <S.FourSixthColumn className="time-block__action">
-      <div>{previous ? "이전으로 가기" : "다음으로 가기"}</div>
+    <S.FourSixthColumn
+      className="time-block__action"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <S.NavigationBlock>
+        {previous ? "전 날 예약 보기" : "다음 날 예약보기"}
+      </S.NavigationBlock>
     </S.FourSixthColumn>
     <S.VerticalDivider />
     <S.OneSixthColumn className="time-block__action" />

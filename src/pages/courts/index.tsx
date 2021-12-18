@@ -15,6 +15,7 @@ import {
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -189,6 +190,7 @@ const Courts: NextPage = () => {
   }, []);
 
   const handleDateClick = useCallback((selectedDate: Date) => {
+    console.log(selectedDate);
     setSelectedDate(selectedDate);
   }, []);
 
@@ -272,29 +274,46 @@ const Courts: NextPage = () => {
                 longitude={selectedCourt.longitude}
                 courtName={selectedCourt.courtName}
               />
-              <Button
-                style={{ flex: 1 }}
-                size="lg"
-                onClick={() => {
-                  router.push(
-                    {
-                      pathname: `/courts/${
-                        selectedCourt?.courtId
-                      }/${selectedDate
-                        .toISOString()
-                        .substring(0, DATE_STRING_LENGTH)}`,
-                      // 숨겨서 보낼 정보
-                      query: { timeSlot: selectedSlot },
-                    },
-                    // 주소창에 출력될 url
-                    `/courts/${selectedCourt?.courtId}/${selectedDate
-                      .toISOString()
-                      .substring(0, DATE_STRING_LENGTH)}`
-                  );
-                }}
+
+              <Link
+                href={`/courts/${
+                  selectedCourt?.courtId
+                }/${selectedDate.getFullYear()}-${
+                  selectedDate.getMonth() + 1
+                }-${selectedDate.getDate()}/${selectedSlot}`}
+                as={`/courts/${
+                  selectedCourt?.courtId
+                }/${selectedDate.getFullYear()}-${
+                  selectedDate.getMonth() + 1
+                }-${selectedDate.getDate()}`}
+                passHref
               >
-                예약하기
-              </Button>
+                <Button
+                  style={{ flex: 1 }}
+                  size="lg"
+                  // onClick={() => {
+                  //   router.push(
+                  //     {
+                  //       pathname: `/courts/${
+                  //         selectedCourt?.courtId
+                  //       }/${selectedDate
+                  //         .toISOString()
+                  //         .substring(0, DATE_STRING_LENGTH)}`,
+                  //       // 숨겨서 보낼 정보
+                  //       query: { timeSlot: selectedSlot },
+                  //     },
+                  //     // 주소창에 출력될 url
+                  //     `/courts/${
+                  //       selectedCourt?.courtId
+                  //     }/${selectedDate.getFullYear()}-${
+                  //       selectedDate.getMonth() + 1
+                  //     }-${selectedDate.getDate()}`
+                  //   );
+                  // }}
+                >
+                  예약하기
+                </Button>
+              </Link>
             </Actions>
 
             {snap === 0 ? (

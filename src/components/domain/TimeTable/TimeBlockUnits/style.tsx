@@ -10,12 +10,19 @@ const OneSixthColumn = styled.div`
   flex-grow: 1;
   flex-basis: 0;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const FourSixthColumn = styled.div`
   flex-grow: 4;
   flex-basis: 0;
   height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const HourColumn = styled(OneSixthColumn)`
@@ -89,12 +96,12 @@ const HoursHorizontalDivider = styled.div`
 `;
 
 const StatusColumn = styled(FourSixthColumn)<StatusProps>`
-  background-color: ${({ status }) => {
+  background-color: ${({ status, theme }) => {
     switch (status) {
       case "active":
-        return "orange";
+        return theme.colors.slam.orange.strong;
       case "lack":
-        return "gray";
+        return `rgba(254, 109, 4, 0.3)`;
       default:
         return "transparent";
     }
@@ -122,9 +129,9 @@ const Selector = styled.div<any>`
   color: white;
   background-color: black;
   border-radius: 16px;
-  border: 8px solid orange;
+  border: 8px solid ${({ theme }) => theme.colors.slam.orange.strong};
   box-sizing: border-box;
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: ${({ theme }) => theme.boxShadows.lg};
   width: ${({ hasReservation }) => hasReservation && "75%"};
   margin-left: auto;
 `;
@@ -147,6 +154,17 @@ const ReservationMarker = styled.div<any>`
   box-sizing: border-box;
 `;
 
+const NavigationBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  border: 4px solid ${({ theme }) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.white};
+  width: calc(100% - 32px);
+  padding: 6px 0px;
+`;
+
 export {
   TimeTableContainer,
   OneSixthColumn,
@@ -159,4 +177,5 @@ export {
   VerticalDivider,
   Selector,
   ReservationMarker,
+  NavigationBlock,
 };

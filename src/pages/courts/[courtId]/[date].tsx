@@ -1,20 +1,17 @@
-import { ModalSheet } from "@components/base";
+import { ModalSheet, Text } from "@components/base";
+
 import {
   TimeTable,
   ReservationModalContent as ModalContent,
+  DayOfTheWeek,
 } from "@components/domain";
 import { getTimeFromIndex } from "@components/domain/TimeTable/utils";
-import { NextPage } from "next";
+import { useNavigationContext } from "@contexts/hooks";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 
+const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
 const TIME_TABLE_ROWS = 24 * 2;
 const MAX_RESERVATION_TIME_BLOCK_UNIT = 6;
 const MINUTES_PER_TIME_BLOCK = 30;
@@ -232,7 +229,6 @@ const reducer = (state: any, { type, payload }: any) => {
         mode,
         originalTimeTable,
         startIndex,
-        hasBall,
         existedReservations,
         selectedReservationId,
       } = state;
@@ -251,14 +247,12 @@ const reducer = (state: any, { type, payload }: any) => {
         let requestDisabled = false;
 
         for (let i = startIndex; i <= endIndex; i += 1) {
-          const { users, peopleCount, ballCount, hasReservation } =
-            timeTable[i];
+          const { users, peopleCount, hasReservation } = timeTable[i];
 
           timeTable[i] = {
             ...timeTable[i],
             users: hasReservation ? users : [...users, { userId: "me" }],
             peopleCount: hasReservation ? peopleCount : peopleCount + 1,
-            ballCount: hasBall ? ballCount + 1 : ballCount,
           };
 
           modalContentData.push({ index: i, users: timeTable[i].users });
@@ -287,21 +281,19 @@ const reducer = (state: any, { type, payload }: any) => {
 
         if (selectedReservation.endIndex - endIndex > 0) {
           for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
-            const { users, peopleCount, ballCount } = timeTable[i];
+            const { users, peopleCount } = timeTable[i];
             timeTable[i] = {
               ...timeTable[i],
               users: users.filter(
                 ({ userId }: any) => userId !== selectedReservation.userId
               ),
               peopleCount: peopleCount - 1,
-              ballCount: hasBall ? ballCount - 1 : ballCount,
             };
           }
         }
 
         for (let i = startIndex; i <= endIndex; i += 1) {
-          const { users, peopleCount, ballCount, hasReservation } =
-            timeTable[i];
+          const { users, peopleCount, hasReservation } = timeTable[i];
 
           if (
             !(
@@ -313,7 +305,6 @@ const reducer = (state: any, { type, payload }: any) => {
               ...timeTable[i],
               users: [...users, { userId: "me" }],
               peopleCount: peopleCount + 1,
-              ballCount: hasBall ? ballCount + 1 : ballCount,
             };
           }
 
@@ -338,60 +329,9 @@ const reducer = (state: any, { type, payload }: any) => {
       }
     }
     case "SET_HAS_BALL": {
-      const {
-        mode,
-        startIndex,
-        endIndex,
-        originalTimeTable,
-        timeTable,
-        selectedReservationId,
-        existedReservations,
-      } = state;
       const { hasBall } = payload;
-
-      const nextTimeTable = [...timeTable];
-
-      if (mode === "create") {
-        for (let i = startIndex; i <= endIndex; i += 1) {
-          nextTimeTable[i] = {
-            ...timeTable[i],
-            ballCount: hasBall
-              ? originalTimeTable[i].ballCount + 1
-              : originalTimeTable[i].ballCount,
-          };
-        }
-      } else {
-        const selectedReservation = existedReservations.find(
-          ({ reservationId }: any) => reservationId === selectedReservationId
-        );
-        for (let i = startIndex; i <= endIndex; i += 1) {
-          //  예약 범위
-          if (
-            i >= selectedReservation.startIndex &&
-            i <= selectedReservation.endIndex
-          ) {
-            nextTimeTable[i] = {
-              ...timeTable[i],
-              ballCount:
-                hasBall === selectedReservation.hasBall
-                  ? originalTimeTable[i].ballCount
-                  : hasBall
-                  ? originalTimeTable[i].ballCount + 1
-                  : originalTimeTable[i].ballCount - 1,
-            };
-          } else {
-            nextTimeTable[i] = {
-              ...timeTable[i],
-              ballCount: hasBall
-                ? originalTimeTable[i].ballCount + 1
-                : originalTimeTable[i].ballCount,
-            };
-          }
-        }
-      }
       return {
         ...state,
-        timeTable: nextTimeTable,
         hasBall,
       };
     }
@@ -424,12 +364,18 @@ const reducer = (state: any, { type, payload }: any) => {
 };
 
 const Reservation: NextPage = () => {
-  const router = useRouter();
-  console.log(router.query);
+  const {
+    query: { date, courtId },
+  } = useRouter();
 
   const {
-    query: { courtId, date },
-  } = useRouter();
+    useMountPage,
+    clearNavigationEvent,
+    setCustomButtonEvent,
+    setNavigationTitle,
+  } = useNavigationContext();
+  useMountPage((page) => page.COURT_RESERVATIONS);
+
   const [reservation, dispatch] = useReducer(reducer, initialState);
   const {
     startIndex,
@@ -444,11 +390,7 @@ const Reservation: NextPage = () => {
     hasBall,
   } = reservation;
 
-  const reservationDateText = useMemo(() => {
-    const day = new Date(date as string);
-    return `${day.getFullYear()}년 ${day.getMonth()}월 ${day.getDate()}일`;
-  }, [date]);
-
+  const [snap, setSnap] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSetStartIndex = (startIndex: number) => {
@@ -480,59 +422,66 @@ const Reservation: NextPage = () => {
     dispatch({ type: "START_UPDATE" });
   }, []);
 
-  const handleCreateReservation = useCallback(() => {
-    if (!date || !courtId) {
-      return;
-    }
+  const handleCreateReservation = useCallback(
+    (hasBall: boolean) => {
+      if (!date || !courtId) {
+        return;
+      }
 
-    const data = {
-      courtId,
-      userId: "me",
-      startDate: new Date(
-        `${date} ${getTimeFromIndex(startIndex)}`
-      ).toISOString(),
-      endDate: new Date(`${date} ${getTimeFromIndex(endIndex)}`).toISOString(),
-      hasBall,
-    };
+      const data = {
+        courtId,
+        userId: "me",
+        startDate: new Date(
+          `${date} ${getTimeFromIndex(startIndex)}`
+        ).toISOString(),
+        endDate: new Date(
+          `${date} ${getTimeFromIndex(endIndex)}`
+        ).toISOString(),
+        hasBall,
+      };
 
-    console.log("create", data);
-    // TODO: crateReservation API CALL
-    // alert(JSON.stringify(data));
-  }, [courtId, date, endIndex, hasBall, startIndex]);
+      console.log("create", data);
+      // TODO: crateReservation API CALL
+      // alert(JSON.stringify(data));
+    },
+    [courtId, date, endIndex, hasBall, startIndex]
+  );
 
-  const handleUpdateReservation = useCallback(() => {
-    if (!date || !courtId) {
-      return;
-    }
+  const handleUpdateReservation = useCallback(
+    (hasBall: boolean) => {
+      if (!date || !courtId) {
+        return;
+      }
 
-    const data = {
-      courtId,
-      userId: "me",
-      startDate: new Date(
-        `${date} ${getTimeFromIndex(startIndex)}`
-      ).toISOString(),
-      endDate: new Date(`${date} ${getTimeFromIndex(endIndex)}`).toISOString(),
-      hasBall,
-    };
+      const data = {
+        courtId,
+        userId: "me",
+        startDate: new Date(
+          `${date} ${getTimeFromIndex(startIndex)}`
+        ).toISOString(),
+        endDate: new Date(
+          `${date} ${getTimeFromIndex(endIndex)}`
+        ).toISOString(),
+        hasBall,
+      };
 
-    console.log("update", data);
-    // TODO: crateReservation API CALL
-    // alert(JSON.stringify(data));
-  }, [courtId, date, endIndex, hasBall, startIndex]);
+      console.log("update", data);
+      // TODO: crateReservation API CALL
+      // alert(JSON.stringify(data));
+    },
+    [courtId, date, endIndex, hasBall, startIndex]
+  );
 
   const handleDeleteReservation = useCallback((reservationId: number) => {
     console.log(`delete /reservations/${reservationId}`);
   }, []);
 
-  const handleChangeHasBall = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      dispatch({
-        type: "SET_HAS_BALL",
-        payload: { hasBall: e.target.checked },
-      });
-    },
-    []
-  );
+  const handleChangeHasBall = useCallback((hasBall: boolean) => {
+    dispatch({
+      type: "SET_HAS_BALL",
+      payload: { hasBall },
+    });
+  }, []);
 
   const handleClickReservationMarker = useCallback(
     (selectedReservationId: number) => {
@@ -546,6 +495,18 @@ const Reservation: NextPage = () => {
   );
 
   useEffect(() => {
+    setNavigationTitle(<ReservationTitle date={date as string} />);
+  }, [date, setNavigationTitle]);
+
+  useEffect(() => {
+    if (step > 1) {
+      setCustomButtonEvent("취소", handleDecreaseStep);
+    } else {
+      clearNavigationEvent();
+    }
+  }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
+
+  useEffect(() => {
     // TODO: getCourtReservations API CALL
     dispatch({
       type: "SET_TIMETABLE",
@@ -555,11 +516,6 @@ const Reservation: NextPage = () => {
 
   return (
     <div>
-      {step > 1 && (
-        <button type="button" onClick={handleDecreaseStep}>
-          뒤로 가기
-        </button>
-      )}
       <TimeTable
         timeTable={timeTable || []}
         onClickStatusBlock={
@@ -574,9 +530,17 @@ const Reservation: NextPage = () => {
         selectedReservationId={selectedReservationId}
         existedReservations={existedReservations}
       />
-      <ModalSheet isOpen={isOpen} onClose={onClose}>
+      <ModalSheet
+        isOpen={isOpen}
+        onClose={onClose}
+        onSnap={(snap: number) => {
+          setSnap(snap);
+        }}
+        onCloseStart={() => setSnap(-1)}
+      >
         {isOpen && step === 1 && startIndex && modalContentData && (
           <ModalContent.BlockStatus
+            snap={snap}
             startTime={getTimeFromIndex(startIndex)}
             endTime={getTimeFromIndex(startIndex + 1)}
             participants={modalContentData}
@@ -586,8 +550,8 @@ const Reservation: NextPage = () => {
         )}
         {isOpen && step === 1 && selectedReservationId && modalContentData && (
           <ModalContent.ExistedReservation
-            timeSlot={`${getTimeFromIndex(startIndex)} -${getTimeFromIndex(
-              endIndex
+            timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
+              endIndex + 1
             )}
               `}
             reservationId={selectedReservationId}
@@ -599,13 +563,13 @@ const Reservation: NextPage = () => {
         {isOpen && step === 2 && modalContentData && (
           <ModalContent.SelectedRange
             timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
-              endIndex
+              endIndex + 1
             )}`}
             participantsPerBlock={modalContentData}
             hasBall={hasBall}
             requestDisabled={requestDisabled}
             onChangeHasBall={handleChangeHasBall}
-            onCreateReservation={
+            onSubmit={
               mode === "create"
                 ? handleCreateReservation
                 : handleUpdateReservation
@@ -616,8 +580,24 @@ const Reservation: NextPage = () => {
           />
         )}
       </ModalSheet>
+
+      <div style={{ height: 320 }}></div>
     </div>
   );
 };
 
 export default Reservation;
+
+const ReservationTitle: React.FC<{ date: string }> = ({ date }) => {
+  const day = new Date(date as string);
+
+  return (
+    <Text size="base">
+      {`${day.getFullYear()}년 ${day.getMonth() + 1}월 ${day.getDate()}일`}(
+      <DayOfTheWeek index={day.getDay()} size="base">
+        {weekdays[day.getDay()]}
+      </DayOfTheWeek>
+      )
+    </Text>
+  );
+};
