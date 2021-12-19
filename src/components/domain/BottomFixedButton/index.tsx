@@ -1,9 +1,11 @@
 import React, { CSSProperties } from "react";
-import type { MouseEvent, ReactNode } from "react";
-import { Button } from "@components/base";
+import type { ReactNode } from "react";
+import { Button, IconButton } from "@components/base";
 import styled from "@emotion/styled";
 import ReactDOM from "react-dom";
 import { css } from "@emotion/react";
+import Link from "next/link";
+import { FeatherIconNameType } from "@components/base/Icon";
 
 interface Props {
   children: ReactNode;
@@ -13,6 +15,12 @@ interface Props {
   className?: string;
   style?: CSSProperties;
   bottom?: number;
+  iconButton?: {
+    icon: FeatherIconNameType;
+    href?: string;
+    onClick?: () => void;
+  };
+  custom?: boolean;
 }
 
 const BottomFixedButton: React.FC<Props> = ({
@@ -23,17 +31,26 @@ const BottomFixedButton: React.FC<Props> = ({
   style,
   className,
   bottom,
+  iconButton,
+  custom = false,
 }) => {
   return typeof document !== "undefined" ? (
     ReactDOM.createPortal(
-      <Background bottom={bottom} style={style}>
+      <Background bottom={bottom} custom={custom}>
+        {iconButton && iconButton.href ? (
+          <Link href={iconButton.href} passHref>
+            <IconButton name={iconButton.icon} />
+          </Link>
+        ) : (
+          iconButton && <IconButton name={iconButton.icon} />
+        )}
         <Button
           type={type}
           disabled={disabled}
-          fullWidth
           onClick={onClick}
           size="lg"
           className={className}
+          style={style}
         >
           {children}
         </Button>
@@ -52,7 +69,7 @@ export const BottomFixedContainer: React.FC = ({
 }: any) =>
   typeof document !== "undefined" ? (
     ReactDOM.createPortal(
-      <Background custom className={className}>
+      <Background custom={custom} className={className}>
         {children}
       </Background>,
       document.querySelector("#scrolled-container")!
@@ -62,6 +79,9 @@ export const BottomFixedContainer: React.FC = ({
   );
 
 const Background = styled.div<Pick<Props, "bottom"> & { custom?: boolean }>`
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
   box-sizing: border-box;
   position: fixed;
   bottom: ${({ bottom }) => (bottom ? `${bottom}px` : 0)};
@@ -74,14 +94,13 @@ const Background = styled.div<Pick<Props, "bottom"> & { custom?: boolean }>`
   max-width: 640px;
 
   button {
-    position: absolute;
     bottom: ${({ theme }) => theme.gaps.base};
   }
   ${({ custom }) =>
     !custom &&
     css`
       button {
-        width: calc(100% - 40px); // 100% - theme.gaps.base * 2
+        width: 100%;
       }
     `}
 `;
