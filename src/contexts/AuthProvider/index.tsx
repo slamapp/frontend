@@ -46,16 +46,15 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, [logout, setCurrentUser]);
 
-  const updateUserProfile = useCallback(
+  const updateMyProfile = useCallback(
     async (editedUserProfile: EditableUserProfile) => {
       dispatch({ type: authTypes.LOADING_ON });
       try {
-        const userProfile =
-          await userApi.updateUserProfile<EditableUserProfile>(
-            editedUserProfile
-          );
+        const userProfile = await userApi.updateMyProfile<EditableUserProfile>(
+          editedUserProfile
+        );
         dispatch({
-          type: authTypes.UPDATE_USER_PROFILE,
+          type: authTypes.UPDATE_MY_PROFILE,
           payload: { userProfile },
         });
         router.replace(`/user/${authProps.currentUser.userId}`);
@@ -161,7 +160,7 @@ const AuthProvider = ({ children }: Props) => {
         pushNotification,
         getMyFavorites,
         getMyReservations,
-        updateUserProfile,
+        updateMyProfile,
       }}
     >
       <AuthLoading />

@@ -7,7 +7,7 @@ export interface ContextProps {
   setCurrentUser: (data: any) => void;
   getCurrentUser: any;
   logout: () => void;
-  updateUserProfile: (editedUserProfile: EditableUserProfile) => void;
+  updateMyProfile: (editedUserProfile: EditableUserProfile) => void;
   createFavorite: (courtId: number) => void;
   deleteFavorite: (favoriteId: number) => void;
   pushNotification: (notification: Notification) => void;

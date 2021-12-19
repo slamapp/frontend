@@ -26,7 +26,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_EDIT);
 
-  const { updateUserProfile } = useAuthContext();
+  const { updateMyProfile } = useAuthContext();
 
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
@@ -101,7 +101,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
         description={description}
         proficiency={proficiency}
         positions={positions}
-        onSubmit={updateUserProfile}
+        onSubmit={updateMyProfile}
         handleDeleteProfileImage={handleDeleteProfileImage}
         lengthLimit={lengthLimit}
         selectedProficiency={selectedProficiency}

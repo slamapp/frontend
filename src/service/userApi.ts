@@ -6,8 +6,10 @@ const userAPI = {
   getMyProfile: <R>() => authRequest.get<R, R>("/users/myprofile"),
   getUserProfile: <R>(userId: number) =>
     authRequest.get<R, R>(`/users/${userId}`),
-  updateUserProfile: <R>(data: EditableUserProfile) =>
+  updateMyProfile: <R>(data: EditableUserProfile) =>
     authRequest.put<R, R>("/users/myprofile", data),
+  deleteMyProfileImage: <R>() =>
+    authRequest.put<R, R>("/users/myprofile/image"),
 };
 
 export default userAPI;
