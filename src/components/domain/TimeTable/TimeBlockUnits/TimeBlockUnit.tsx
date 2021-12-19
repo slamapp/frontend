@@ -64,7 +64,7 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
       <S.VerticalDivider />
       <S.BallColumn className="time-block__ball">
         {status !== "none" && (
-          <Text strong size={30}>
+          <Text strong size={30} style={{ color: "inherit" }}>
             {ballCount !== 0 ? ballCount : "😭"}
           </Text>
         )}

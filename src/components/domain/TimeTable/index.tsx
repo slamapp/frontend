@@ -98,7 +98,9 @@ const TimeTable = ({
             onClickStatusBlock={onClickStatusBlock}
             selected={startIndex === index}
             step={step}
-            disabled={isToday && currentTimeIndex && index < currentTimeIndex}
+            disabled={
+              isToday && currentTimeIndex && index < currentTimeIndex + 1
+            }
           />
         ))}
         {step === 2 && (
