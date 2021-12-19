@@ -6,9 +6,15 @@ interface RadioItemProps {
   value: string;
   text: string;
   checked: boolean;
+  disabled?: boolean;
 }
 
-const RadioItem: React.FC<RadioItemProps> = ({ value, text, checked }) => {
+const RadioItem: React.FC<RadioItemProps> = ({
+  value,
+  text,
+  checked,
+  disabled,
+}) => {
   return (
     <StyledLabel>
       <StyledRadio
@@ -16,6 +22,7 @@ const RadioItem: React.FC<RadioItemProps> = ({ value, text, checked }) => {
         value={value}
         checked={checked}
         onChange={() => {}}
+        disabled={disabled}
       />
       <Chip clickable>{text}</Chip>
     </StyledLabel>
@@ -44,6 +51,10 @@ const StyledRadio = styled.input`
       &:hover {
         background-color: ${theme.colors.gray700};
       }
+    }
+
+    &:disabled {
+      background-color: aqua;
     }
   `}
 `;
