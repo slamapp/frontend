@@ -7,14 +7,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import userApi from "@service/userApi";
 import UtilRoute from "UtilRoute";
-import {
-  Avatar,
-  Button,
-  Label,
-  Spacer,
-  Chip,
-  LinkStrong,
-} from "@components/base";
+import { Avatar, Button, Label, Spacer, Chip, Text } from "@components/base";
 import {
   useNavigationContext,
   useAuthContext,
@@ -155,16 +148,24 @@ const User: NextPage = UtilRoute("private", () => {
           <Avatar src={profileImage} shape="circle" />
           <StatBar>
             <div>
-              <dt>팔로잉</dt>
-              <dd>
-                <LinkStrong href={`user/${userId}/following`}>
-                  {followingCount}
-                </LinkStrong>{" "}
-              </dd>
+              <Link href={`/user/${userId}/following`}>
+                <a>
+                  <dt>팔로잉</dt>
+                  <dd>
+                    <Text strong>{followingCount}</Text>
+                  </dd>
+                </a>
+              </Link>
             </div>
             <div>
-              <dt>팔로워</dt>
-              <dd>{followerCount}</dd>
+              <Link href={`/user/${userId}/follower`}>
+                <a>
+                  <dt>팔로워</dt>
+                  <dd>
+                    <Text strong>{followerCount}</Text>
+                  </dd>
+                </a>
+              </Link>
             </div>
             <div>
               <dt>평가 점수</dt>
