@@ -7,7 +7,7 @@ import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
 import AuthLoading from "./AuthLoading";
-import { Notification } from "./types";
+import { Notification, EditableUserProfile } from "./types";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
@@ -45,6 +45,46 @@ const AuthProvider = ({ children }: Props) => {
       dispatch({ type: authTypes.LOADING_OFF });
     }
   }, [logout, setCurrentUser]);
+
+  const updateMyProfile = useCallback(
+    async (editedUserProfile: EditableUserProfile) => {
+      dispatch({ type: authTypes.LOADING_ON });
+      try {
+        const userProfile = await userApi.updateMyProfile<EditableUserProfile>(
+          editedUserProfile
+        );
+        dispatch({
+          type: authTypes.UPDATE_MY_PROFILE,
+          payload: { userProfile },
+        });
+        router.replace(`/user/${authProps.currentUser.userId}`);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch({ type: authTypes.LOADING_OFF });
+      }
+    },
+    [authProps.currentUser.userId, router]
+  );
+
+  const deleteMyProfileImage = useCallback(async () => {
+    dispatch({ type: authTypes.LOADING_ON });
+    try {
+      const deletedMyProfileImage = await userApi.deleteMyProfileImage<{
+        profileImage: string | null;
+      }>();
+      dispatch({
+        type: authTypes.DELETE_MY_PROFILE_IMAGE,
+        payload: { deletedMyProfileImage },
+      });
+      alert("기본 이미지로 변경하시겠어요?"); // TODO: 모달 띄워서 물어보기
+      router.replace(`/user/${authProps.currentUser.userId}`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch({ type: authTypes.LOADING_OFF });
+    }
+  }, [authProps.currentUser.userId, router]);
 
   const getMyReservations = useCallback(async () => {
     try {
@@ -139,6 +179,8 @@ const AuthProvider = ({ children }: Props) => {
         pushNotification,
         getMyFavorites,
         getMyReservations,
+        updateMyProfile,
+        deleteMyProfileImage,
       }}
     >
       <AuthLoading />

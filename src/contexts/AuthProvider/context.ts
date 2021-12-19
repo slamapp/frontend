@@ -1,12 +1,14 @@
 import { createContext } from "react";
-import { DataProps, initialData } from "./reducer";
-import { Notification } from "./types";
+import { DataProps } from "./reducer";
+import { Notification, EditableUserProfile } from "./types";
 
 export interface ContextProps {
   authProps: DataProps;
   setCurrentUser: (data: any) => void;
   getCurrentUser: any;
   logout: () => void;
+  updateMyProfile: (editedUserProfile: EditableUserProfile) => void;
+  deleteMyProfileImage: () => void;
   createFavorite: (courtId: number) => void;
   deleteFavorite: (favoriteId: number) => void;
   pushNotification: (notification: Notification) => void;
@@ -14,18 +16,6 @@ export interface ContextProps {
   getMyReservations: () => void;
 }
 
-export const initialContext = {
-  authProps: initialData,
-  setCurrentUser: () => {},
-  getCurrentUser: () => {},
-  logout: () => {},
-  createFavorite: () => {},
-  deleteFavorite: () => {},
-  pushNotification: () => {},
-  getMyFavorites: () => {},
-  getMyReservations: () => {},
-};
-
-const Context = createContext<ContextProps>(initialContext);
+const Context = createContext<ContextProps>({} as ContextProps);
 
 export default Context;
