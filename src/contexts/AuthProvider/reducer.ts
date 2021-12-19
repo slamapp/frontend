@@ -111,11 +111,22 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
+          nickname: payload.nickname,
+          positions: payload.positions,
+          proficiency: payload.proficiency,
+          description: payload.description,
+        },
+      };
+    }
+    case authTypes.DELETE_MY_PROFILE_IMAGE: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
           profileImageUrl: payload.profileImage,
         },
       };
     }
-
     case authTypes.GET_MY_FAVORITES: {
       return {
         ...prevState,

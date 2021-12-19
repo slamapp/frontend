@@ -67,6 +67,25 @@ const AuthProvider = ({ children }: Props) => {
     [authProps.currentUser.userId, router]
   );
 
+  const deleteMyProfileImage = useCallback(async () => {
+    dispatch({ type: authTypes.LOADING_ON });
+    try {
+      const deletedMyProfileImage = await userApi.deleteMyProfileImage<{
+        profileImage: string | null;
+      }>();
+      dispatch({
+        type: authTypes.DELETE_MY_PROFILE_IMAGE,
+        payload: { deletedMyProfileImage },
+      });
+      alert("기본 이미지로 변경하시겠어요?"); // TODO: 모달 띄워서 물어보기
+      router.replace(`/user/${authProps.currentUser.userId}`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch({ type: authTypes.LOADING_OFF });
+    }
+  }, [authProps.currentUser.userId, router]);
+
   const getMyReservations = useCallback(async () => {
     try {
       const { reservations } = await reservationApi.getMyReservations<{
@@ -161,6 +180,7 @@ const AuthProvider = ({ children }: Props) => {
         getMyFavorites,
         getMyReservations,
         updateMyProfile,
+        deleteMyProfileImage,
       }}
     >
       <AuthLoading />

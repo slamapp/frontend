@@ -9,7 +9,7 @@ const userAPI = {
   updateMyProfile: <R>(data: EditableUserProfile) =>
     authRequest.put<R, R>("/users/myprofile", data),
   deleteMyProfileImage: <R>() =>
-    authRequest.put<R, R>("/users/myprofile/image"),
+    authRequest.delete<R, R>("/users/myprofile/image"),
 };
 
 export default userAPI;

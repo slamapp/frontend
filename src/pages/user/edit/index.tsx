@@ -26,7 +26,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_EDIT);
 
-  const { updateMyProfile } = useAuthContext();
+  const { updateMyProfile, deleteMyProfileImage } = useAuthContext();
 
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
@@ -73,8 +73,8 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
     [selectedPositions]
   );
 
-  const handleDeleteProfileImage = (e: MouseEvent<HTMLButtonElement>) => {
-    alert("프로필 이미지 삭제 API");
+  const handleDeleteProfileImage = () => {
+    deleteMyProfileImage();
   };
 
   useEffect(() => {
