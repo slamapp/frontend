@@ -10,7 +10,7 @@ const courtApi = {
     startLongitude,
     endLongitude,
   }: any) =>
-    authRequest.get<R, R>(`/courts`, {
+    request.get<R, R>(`/courts`, {
       params: {
         date,
         latitude: `${startLatitude},${endLatitude}`,

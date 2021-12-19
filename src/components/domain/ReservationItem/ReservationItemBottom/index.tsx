@@ -70,17 +70,18 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          {participants.map(
-            ({ userId, nickname, profileImage, isFollowed }: any) => (
-              <FollowListItem
-                key={userId}
-                src={profileImage}
-                isFollowed={isFollowed}
-              >
-                {nickname}
-              </FollowListItem>
-            )
-          )}
+          {participants &&
+            participants.map(
+              ({ userId, nickname, profileImage, isFollowed }: any) => (
+                <FollowListItem
+                  key={userId}
+                  src={profileImage}
+                  isFollowed={isFollowed}
+                >
+                  {nickname}
+                </FollowListItem>
+              )
+            )}
         </ParticipantList>
       )}
     </>
