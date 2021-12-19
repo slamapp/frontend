@@ -181,11 +181,13 @@ const User: NextPage = UtilRoute("private", () => {
         <Description>{description}</Description>
         {!isMe ? (
           <ButtonContainer>
-            <Button fullWidth secondary>
-              <Link href={`/chat/${userId}`} passHref>
-                <a>메시지</a>
-              </Link>
-            </Button>
+            <Link href={`/chat/${userId}`} passHref>
+              <a>
+                <Button fullWidth secondary>
+                  메시지
+                </Button>
+              </a>
+            </Link>
 
             <Button
               fullWidth
@@ -197,11 +199,13 @@ const User: NextPage = UtilRoute("private", () => {
           </ButtonContainer>
         ) : (
           <div>
-            <Button fullWidth secondary>
-              <Link href={`/user/edit`} passHref>
-                <a>프로필 편집</a>
-              </Link>
-            </Button>
+            <Link href={`/user/edit`} passHref>
+              <a>
+                <Button fullWidth secondary>
+                  프로필 편집
+                </Button>
+              </a>
+            </Link>
           </div>
         )}
       </MainInfoContainer>
