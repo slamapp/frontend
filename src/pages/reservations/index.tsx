@@ -28,9 +28,11 @@ const Reservations: NextPage = () => {
   const expiredHandleClick = useCallback(async () => {
     setActiveIndex(1);
     const { contents, lastId } = await reservationApi.getMyExpiredReservations(
+      true,
       currentLastId
     );
 
+    console.log(contents, lastId);
     setExpiredReservations(contents);
     setCurrentLastId(lastId);
   }, [currentLastId]);
