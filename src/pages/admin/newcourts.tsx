@@ -53,18 +53,30 @@ const NewCourtsPage: NextPage = () => {
     <div>
       <Tab>
         <Tab.Item title="처리 대기" index="ready">
-          <Spacer gap="base" type="vertical">
-            {readyData.map((court) => (
-              <NewCourtItem key={court.newCourtId} data={court} state="READY" />
-            ))}
-          </Spacer>
+          <Container>
+            <Spacer gap="base" type="vertical">
+              {readyData.map((court) => (
+                <NewCourtItem
+                  key={court.newCourtId}
+                  data={court}
+                  state="READY"
+                />
+              ))}
+            </Spacer>
+          </Container>
         </Tab.Item>
         <Tab.Item title="처리 완료" index="done">
-          <Spacer gap="base" type="vertical">
-            {doneData.map((court) => (
-              <NewCourtItem key={court.newCourtId} data={court} state="DONE" />
-            ))}
-          </Spacer>
+          <Container>
+            <Spacer gap="base" type="vertical">
+              {doneData.map((court) => (
+                <NewCourtItem
+                  key={court.newCourtId}
+                  data={court}
+                  state="DONE"
+                />
+              ))}
+            </Spacer>
+          </Container>
         </Tab.Item>
       </Tab>
     </div>
@@ -72,3 +84,10 @@ const NewCourtsPage: NextPage = () => {
 };
 
 export default NewCourtsPage;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: ${({ theme }) => theme.gaps.base};
+`;
