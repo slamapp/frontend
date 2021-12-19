@@ -30,6 +30,7 @@ export type {
 export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
+export { default as LeadToLoginModal } from "./LeadToLoginModal";
 // eslint-disable-next-line import/no-cycle
 export { default as NotificationList } from "./NotificationList";
 
