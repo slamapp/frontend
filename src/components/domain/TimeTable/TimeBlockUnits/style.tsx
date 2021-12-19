@@ -37,9 +37,9 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
   display: flex;
   height: ${({ height }) => `${height}px`};
 
-  ${({ isEven, hasBlackTopBorder, hasBlackBottomBorder }) => {
-    const black = "black";
-    const transparentBlack = "rgb(0 0 0 / 0.2)";
+  ${({ isEven, hasBlackTopBorder, hasBlackBottomBorder, theme }) => {
+    const black = theme.colors.gray900;
+    const transparentBlack = "rgb(135 135 135 / 0.2)";
     const topBorderColor = hasBlackTopBorder ? black : transparentBlack;
     const bottomBorderColor = hasBlackBottomBorder ? black : transparentBlack;
 
@@ -69,19 +69,31 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
         `;
   }}
 
-  ${({ previous }) =>
+  ${({ previous, theme }) =>
     previous &&
     css`
       & .time-block__action {
-        box-shadow: 0 -4px 0 black inset;
+        box-shadow: 0 -4px 0 ${theme.colors.gray900} inset;
       }
     `}
 
-    ${({ next }) =>
+    ${({ next, theme }) =>
     next &&
     css`
       & .time-block__action {
-        box-shadow: 0 4px 0 black inset;
+        box-shadow: 0 4px 0 ${theme.colors.gray900} inset;
+      }
+    `}
+  
+  ${({ disabled, theme }) =>
+    disabled &&
+    css`
+      background-color: ${theme.colors.gray400};
+      color: ${theme.colors.gray500};
+      pointer-events: none;
+
+      & .time-block__status {
+        filter: grayscale(100%);
       }
     `}
 `;
@@ -91,7 +103,7 @@ const HoursHorizontalDivider = styled.div`
   height: 2px;
   width: 20%;
   top: -1px;
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
   opacity: 0.08;
 `;
 
@@ -117,7 +129,7 @@ const BallColumn = styled(OneSixthColumn)`
 const VerticalDivider = styled.div`
   width: 8px;
   height: 100%;
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
 `;
 
 const Selector = styled.div<any>`
@@ -127,7 +139,7 @@ const Selector = styled.div<any>`
   width: 100%;
   height: 100%;
   color: white;
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
   border-radius: 16px;
   border: 8px solid ${({ theme }) => theme.colors.slam.orange.strong};
   box-sizing: border-box;
@@ -148,7 +160,7 @@ const ReservationMarker = styled.div<any>`
     height: ${height}px;
     border: ${selected && "8px solid orange"};
   `};
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
   color: white;
   border-radius: 16px;
   box-sizing: border-box;

@@ -17,8 +17,8 @@ const ReservationMarker = styled.div<any>`
     height: ${height}px;
     border: ${selected && `8px solid ${theme.colors.slam.orange.strong}`};
   `};
-  background-color: black;
-  color: white;
+  background-color: ${({ theme }) => theme.colors.gray900};
+  color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadiuses.lg};
   box-sizing: border-box;
   text-align: center;

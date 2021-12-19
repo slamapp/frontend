@@ -11,6 +11,7 @@ import {
   SlotPicker,
   BasketballMarker,
   Map,
+  slotItems,
   SlotKeyUnion,
   CourtItem,
 } from "@components/domain";
@@ -74,7 +75,7 @@ const Courts: NextPage = () => {
 
   const { map } = useMapContext();
 
-  const today = useMemo(() => {
+  const currentDate = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
 
@@ -86,7 +87,7 @@ const Courts: NextPage = () => {
   const [level, setLevel] = useState<number>(3);
   const [center, setCenter] = useState<Coord>();
 
-  const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
   const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
     getSlotFromDate(new Date())
   );
@@ -178,9 +179,26 @@ const Courts: NextPage = () => {
     setSelectedSlot(e.target.value);
   }, []);
 
-  const handleDateClick = useCallback((selectedDate: Date) => {
-    setSelectedDate(selectedDate);
-  }, []);
+  const handleDateClick = useCallback(
+    (selectedDate: Date) => {
+      if (selectedDate.getTime() === currentDate.getTime()) {
+        const currentSlot = getSlotFromDate(new Date());
+        const selectedSlotIndex = slotItems.findIndex(
+          ({ value }) => value === selectedSlot
+        );
+        const currentSlotIndex = slotItems.findIndex(
+          ({ value }) => value === currentSlot
+        );
+
+        if (selectedSlotIndex < currentSlotIndex) {
+          setSelectedSlot(currentSlot);
+        }
+      }
+
+      setSelectedDate(selectedDate);
+    },
+    [currentDate, selectedSlot]
+  );
 
   const handleMarkerClick = useCallback((court: any) => {
     setIsOpen(true);
@@ -215,14 +233,6 @@ const Courts: NextPage = () => {
     }
   }, [map, handleChangedMapBounds]);
 
-  const dateString = useMemo(
-    () =>
-      `${selectedDate.getFullYear()}-${
-        selectedDate.getMonth() + 1
-      }-${selectedDate.getDate()}`,
-    [selectedDate]
-  );
-
   return (
     <>
       <Head>
@@ -230,7 +240,7 @@ const Courts: NextPage = () => {
       </Head>
       <DatePicker
         isBackgroundTransparent={isTopTransparent}
-        startDate={today}
+        startDate={currentDate}
         selectedDate={selectedDate}
         onClick={handleDateClick}
       />
@@ -246,6 +256,11 @@ const Courts: NextPage = () => {
             onGetCurrentLocation={handleGetCurrentLocation}
           />
           <TopFixedSlotPicker
+            currentDateTimeSlot={
+              selectedDate.getTime() === currentDate.getTime()
+                ? getSlotFromDate(new Date())
+                : null
+            }
             selectedSlot={selectedSlot}
             onChange={handleChangeSlot}
           />

@@ -27,7 +27,7 @@ const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
               top: unit * (startIndex + 1) - 3,
               height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
               width: 8,
-              backgroundColor: "black",
+              backgroundColor: "#262625",
             }}
           ></div>
           <div
@@ -37,7 +37,7 @@ const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
               top: unit * (startIndex + 1) - 3,
               height: unit * (endIndex + 2) - unit * (startIndex + 1) + 6,
               width: 8,
-              backgroundColor: "black",
+              backgroundColor: "#262625",
             }}
           ></div>
           <S.EndRangeSelector

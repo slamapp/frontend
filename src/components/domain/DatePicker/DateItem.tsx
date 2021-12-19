@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 import { Text } from "@components/base";

@@ -15,13 +15,23 @@ export const getTimeFromIndex = (index: number) => {
   return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
 };
 
-export const getIndexFromDate = (dateString: string) => {
+export const getIndexFromDateString = (dateString: string | Date) => {
   const date = new Date(dateString);
   const hours = date.getHours();
   const minutes = date.getMinutes();
 
   return hours * 2 + (minutes === MINUTES_PER_TIME_BLOCK ? 1 : 0);
 };
+
+export const getIndexFromDate = (date: Date) => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  return hours * 2 + (minutes >= MINUTES_PER_TIME_BLOCK ? 1 : 0);
+};
+
+export const getDateStringFromDate = (date: Date) =>
+  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 export const getDatetimeString = (dateString: string, index: number) => {
   const date = new Date(`${dateString} ${getTimeFromIndex(index)}`);
