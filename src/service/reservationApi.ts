@@ -18,14 +18,13 @@ const reservationApi = {
     lastId
       ? authRequest.get<R, R>("/reservations/expired", {
           params: {
+            isFirst,
             lastId,
+            size: 2,
           },
         })
       : authRequest.get<R, R>("/reservations/expired", {
-          params: {
-            isFirst,
-            size: 10,
-          },
+          params: { isFirst, lastId: "0", size: 2 },
         }),
   getMyReservationParticipants: <R>({ courtId, startTime, endTime }: any) =>
     authRequest.get<R, R>(`/reservations/${courtId}/${startTime}/${endTime}`),

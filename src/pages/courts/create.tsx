@@ -130,7 +130,10 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
           const valuesWithPosition = {
             longitude,
             latitude,
-            ...values,
+            name: values.name,
+            basketCount: values.basketCount,
+            texture: values.texture,
+            image: values.image,
           };
 
           const newCourt = await courtApi.createNewCourt(valuesWithPosition);
@@ -295,10 +298,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             </div>
           </Spacer>
         </MainContainer>
-        <BottomFixedButton
-          type="submit"
-          onClick={(e: MouseEvent<HTMLButtonElement>) => handleSubmit(e)}
-        >
+        <BottomFixedButton type="submit" onClick={handleSubmit}>
           {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
         </BottomFixedButton>
       </form>
