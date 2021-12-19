@@ -1,12 +1,13 @@
 import { createContext } from "react";
 import { DataProps } from "./reducer";
-import { Notification } from "./types";
+import { Notification, EditableUserProfile } from "./types";
 
 export interface ContextProps {
   authProps: DataProps;
   setCurrentUser: (data: any) => void;
   getCurrentUser: any;
   logout: () => void;
+  updateUserProfile: (editedUserProfile: EditableUserProfile) => void;
   createFavorite: (courtId: number) => void;
   deleteFavorite: (favoriteId: number) => void;
   pushNotification: (notification: Notification) => void;

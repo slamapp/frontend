@@ -106,6 +106,18 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isLoading: false,
       };
     }
+    case authTypes.UPDATE_USER_PROFILE: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          nickname: payload.nickname,
+          positions: payload.positions,
+          proficiency: payload.proficiency,
+          description: payload.description,
+        },
+      };
+    }
     case authTypes.GET_MY_FAVORITES: {
       return {
         ...prevState,

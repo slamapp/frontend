@@ -7,7 +7,7 @@ import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
 import AuthLoading from "./AuthLoading";
-import { Notification } from "./types";
+import { Notification, EditableUserProfile } from "./types";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
@@ -45,6 +45,28 @@ const AuthProvider = ({ children }: Props) => {
       dispatch({ type: authTypes.LOADING_OFF });
     }
   }, [logout, setCurrentUser]);
+
+  const updateUserProfile = useCallback(
+    async (editedUserProfile: EditableUserProfile) => {
+      dispatch({ type: authTypes.LOADING_ON });
+      try {
+        const userProfile =
+          await userApi.updateUserProfile<EditableUserProfile>(
+            editedUserProfile
+          );
+        dispatch({
+          type: authTypes.UPDATE_USER_PROFILE,
+          payload: { userProfile },
+        });
+        router.replace(`/user/${authProps.currentUser.userId}`);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch({ type: authTypes.LOADING_OFF });
+      }
+    },
+    [authProps.currentUser.userId, router]
+  );
 
   const getMyReservations = useCallback(async () => {
     try {
@@ -139,6 +161,7 @@ const AuthProvider = ({ children }: Props) => {
         pushNotification,
         getMyFavorites,
         getMyReservations,
+        updateUserProfile,
       }}
     >
       <AuthLoading />
