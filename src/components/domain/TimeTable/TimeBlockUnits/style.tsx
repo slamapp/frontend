@@ -84,6 +84,14 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
         box-shadow: 0 4px 0 black inset;
       }
     `}
+  
+  ${({ disabled, theme }) =>
+    disabled &&
+    css`
+      background-color: ${theme.colors.gray400};
+      color: ${theme.colors.gray500};
+      pointer-events: none;
+    `}
 `;
 
 const HoursHorizontalDivider = styled.div`

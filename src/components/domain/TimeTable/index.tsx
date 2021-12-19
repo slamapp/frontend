@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 
 import { useResize } from "@hooks/.";
 import { Image, Spacer, Text } from "@components/base";
 import { useRouter } from "next/router";
 import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
+import { getIndexFromDate } from "@utils/timeTable";
 import { TimeBlockUnit, ActionTimeBlockUnit, Header } from "./TimeBlockUnits";
 import TimeRangeSelector from "./TimeRangeSelector";
 import * as S from "./style";
@@ -17,6 +18,7 @@ const timeSlotIndexMap: { [key in string]: number } = {
 };
 
 const TimeTable = ({
+  isToday,
   timeTable,
   onClickStatusBlock,
   onClickReservationMarker,
@@ -26,6 +28,11 @@ const TimeTable = ({
   existedReservations,
   selectedReservationId,
 }: any) => {
+  const currentTimeIndex = useMemo(
+    () => (isToday ? getIndexFromDate(new Date()) : null),
+    [isToday]
+  );
+
   const {
     query: { timeSlot },
   } = useRouter();
@@ -74,7 +81,12 @@ const TimeTable = ({
     >
       <Header />
       <S.TimeTableContainer>
-        <ActionTimeBlockUnit rowRef={ref} height={height} previous />
+        <ActionTimeBlockUnit
+          rowRef={ref}
+          height={height}
+          previous
+          disabled={isToday}
+        />
         {timeTable.map((item: any, index: number) => (
           <TimeBlockUnit
             key={index}
@@ -86,6 +98,7 @@ const TimeTable = ({
             onClickStatusBlock={onClickStatusBlock}
             selected={startIndex === index}
             step={step}
+            disabled={isToday && currentTimeIndex && index < currentTimeIndex}
           />
         ))}
         {step === 2 && (

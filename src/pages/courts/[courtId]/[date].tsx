@@ -14,9 +14,10 @@ import {
   weekdays,
   TIME_TABLE_ROWS,
   MAX_RESERVATION_TIME_BLOCK_UNIT,
-  getIndexFromDate,
+  getIndexFromDateString,
   getTimeFromIndex,
   getDatetimeString,
+  getDateStringFromDate,
 } from "@utils/timeTable";
 import { courtApi, reservationApi } from "@service/.";
 
@@ -117,9 +118,9 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   return reservations.reduce(
     (acc: any, reservation: any) => {
       const { existedReservations, timeTable } = acc;
-      const startRow = getIndexFromDate(reservation.startTime);
+      const startRow = getIndexFromDateString(reservation.startTime);
       // TODO: 왜 -1 해야 되더라
-      const endRow = getIndexFromDate(reservation.endTime);
+      const endRow = getIndexFromDateString(reservation.endTime);
       const hasReservation = reservation.userId === userId;
 
       if (hasReservation) {
@@ -552,6 +553,7 @@ const Reservation: NextPage = () => {
   return (
     <div>
       <TimeTable
+        isToday={date === getDateStringFromDate(new Date())}
         timeTable={timeTable || []}
         onClickStatusBlock={
           step === 1 ? handleSetStartIndex : handleSetEndIndex

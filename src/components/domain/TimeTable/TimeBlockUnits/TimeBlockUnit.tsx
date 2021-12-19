@@ -24,6 +24,7 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
   hasReservation,
   onClickStatusBlock,
   step,
+  disabled,
 }) => {
   const isEven = index % 2 === 0;
   const hasBlackTopBorder = index % MAJOR_TIME_BLOCK_UNIT === 0;
@@ -42,6 +43,7 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
       isEven={isEven}
       hasBlackTopBorder={hasBlackTopBorder}
       hasBlackBottomBorder={hasBlackBottomBorder}
+      disabled={disabled}
     >
       <S.HourColumn className="time-block__hour">
         {isEven ? <Hour hour={index / 2} /> : <S.HoursHorizontalDivider />}

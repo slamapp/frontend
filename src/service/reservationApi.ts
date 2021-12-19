@@ -1,9 +1,5 @@
 import { request, authRequest, authFileRequest } from "./fetcher";
 
-// request: 토큰이 필요없는 익명사용자도 보낼 수 있는 요청
-// authRequest: 토큰이 필요한 사용자가 보낼수잇는요청
-// authFileRequest: 토큰이 필요한 파일 요청
-
 interface IReservation {
   courtId: number;
   startTime: string;
