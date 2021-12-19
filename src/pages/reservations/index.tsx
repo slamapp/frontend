@@ -50,7 +50,7 @@ const Reservations: NextPage = () => {
           <NoItemMessage
             title="다가올 예약이 없으시네요?"
             description="농구장에서 예약을 하시면 한눈에 예약정보를 확인할 수 있어요"
-            buttonTitle="농구장 탐색에서 예약하기"
+            buttonTitle="예약할 농구장 찾기"
           />
         ) : (
           <Spacer gap="md" type="vertical">
