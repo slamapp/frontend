@@ -8,7 +8,11 @@ interface UseFormArgs<T> {
   validate: (values: T) => Error<T>;
 }
 
-const useForm = <T>({ initialValues, onSubmit, validate }: UseFormArgs<T>) => {
+const useForm = <T, H extends HTMLElement = HTMLFormElement>({
+  initialValues,
+  onSubmit,
+  validate,
+}: UseFormArgs<T>) => {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Error<T>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +22,7 @@ const useForm = <T>({ initialValues, onSubmit, validate }: UseFormArgs<T>) => {
     setValues({ ...values, [name]: value });
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<H>) => {
     setIsLoading(true);
     e.preventDefault();
     const newErrors = validate ? validate(values) : {};
