@@ -197,7 +197,7 @@ const Courts: NextPage = () => {
 
       setSelectedDate(selectedDate);
     },
-    [currentDate]
+    [currentDate, selectedSlot]
   );
 
   const handleMarkerClick = useCallback((court: any) => {

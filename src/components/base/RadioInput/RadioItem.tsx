@@ -40,23 +40,26 @@ const StyledRadio = styled.input`
     + span {
       transition: all 200ms;
     }
-    &:hover + span {
-      background-color: ${theme.colors.gray100};
-    }
 
-    &:checked + span {
-      background-color: ${theme.colors.gray900};
-      color: ${theme.colors.white};
+    &:enabled {
+      &:hover + span {
+        background-color: ${theme.colors.gray100};
+      }
 
-      &:hover {
-        background-color: ${theme.colors.gray700};
+      &:checked + span {
+        background-color: ${theme.colors.gray900};
+        color: ${theme.colors.white};
+
+        &:hover {
+          background-color: ${theme.colors.gray700};
+        }
       }
     }
-
-    &:disabled {
-      background-color: aqua;
-    }
   `}
+
+  &:disabled + span {
+    pointer-events: none;
+  }
 `;
 
 export default RadioItem;
