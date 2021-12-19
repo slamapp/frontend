@@ -22,7 +22,7 @@ const Avatar = ({
   className,
   lazy,
   threshold,
-  src,
+  src = "assets/default_profile.svg",
   size = 72,
   shape = "round",
   placeholder,
