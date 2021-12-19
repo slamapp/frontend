@@ -27,7 +27,7 @@ const NoItemMessage = ({ title, description, buttonTitle, style }: Props) => {
       </Spacer>
       <Link href="/courts" passHref>
         <SearchButton fullWidth>
-          <SearchIcon name="compass" size="sm" color="white" />
+          <SearchIcon name="map" size="sm" color="white" />
           {buttonTitle}
         </SearchButton>
       </Link>
