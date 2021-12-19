@@ -30,6 +30,10 @@ const UtilRouteHOCWrapper = ({
   option: RouteOptionUnion;
   children: ReactNode;
 }) => {
+  // TODO: Version2에서 private / prevented RedirectPath Props로 받아오도록 변경하기
+  const privateRedirectPath = "/courts";
+  const preventedRedirectPath = "/";
+
   const [localToken] = useLocalToken();
   const router = useRouter();
 
@@ -42,12 +46,12 @@ const UtilRouteHOCWrapper = ({
           if (localToken) {
             router.replace({ pathname: `${pathname}`, query: router.query });
           } else {
-            router.replace("/login");
+            router.replace(privateRedirectPath);
           }
           break;
         case routeOption.prevented:
           if (localToken) {
-            router.replace("/");
+            router.replace(preventedRedirectPath);
           } else {
             router.replace({ pathname: `${pathname}`, query: router.query });
           }

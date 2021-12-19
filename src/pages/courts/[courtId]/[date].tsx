@@ -14,9 +14,10 @@ import {
   weekdays,
   TIME_TABLE_ROWS,
   MAX_RESERVATION_TIME_BLOCK_UNIT,
-  getIndexFromDate,
+  getIndexFromDateString,
   getTimeFromIndex,
   getDatetimeString,
+  getDateStringFromDate,
 } from "@utils/timeTable";
 import { courtApi, reservationApi } from "@service/.";
 
@@ -117,9 +118,9 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   return reservations.reduce(
     (acc: any, reservation: any) => {
       const { existedReservations, timeTable } = acc;
-      const startRow = getIndexFromDate(reservation.startTime);
+      const startRow = getIndexFromDateString(reservation.startTime);
       // TODO: 왜 -1 해야 되더라
-      const endRow = getIndexFromDate(reservation.endTime);
+      const endRow = getIndexFromDateString(reservation.endTime);
       const hasReservation = reservation.userId === userId;
 
       if (hasReservation) {
@@ -525,6 +526,14 @@ const Reservation: NextPage = () => {
   );
 
   useEffect(() => {
+    if (new Date(date as string).getTime() < new Date().getTime()) {
+      // TODO: 과거 예약 정보 링크로 들어올 시 모달로 안내 후 사용자를 /courts로 이동
+      // alert("과거의 예약 정보는 확인할 수 없습니다.");
+      router.replace("/courts");
+    }
+  });
+
+  useEffect(() => {
     setNavigationTitle(<ReservationTitle date={date as string} />);
   }, [date, setNavigationTitle]);
 
@@ -552,6 +561,7 @@ const Reservation: NextPage = () => {
   return (
     <div>
       <TimeTable
+        isToday={date === getDateStringFromDate(new Date())}
         timeTable={timeTable || []}
         onClickStatusBlock={
           step === 1 ? handleSetStartIndex : handleSetEndIndex

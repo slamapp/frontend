@@ -1,3 +1,7 @@
+import { PositionKeyUnion, ProficiencyKeyUnion } from "@components/domain";
+
+export type Role = "USER" | "ADMIN";
+
 export type Follow = {
   followId: number;
   followerId: number;
@@ -60,4 +64,11 @@ export type Reservation = {
   endTime: string;
   createdAt: string;
   updatedAt: string;
+};
+
+export type EditableUserProfile = {
+  nickname: string;
+  description: string;
+  proficiency: ProficiencyKeyUnion;
+  positions: PositionKeyUnion[];
 };

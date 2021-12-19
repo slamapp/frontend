@@ -58,8 +58,7 @@ const Tab = ({ children, active = false, ...props }: Props) => {
 };
 
 const TabItemContainer = styled.div`
-  border-bottom: 2px solid #ddd;
-  background-color: #eee;
+  display: flex;
 `;
 
 const childrenToArray = (children: ReactNode, types: "Tab.Item") => {

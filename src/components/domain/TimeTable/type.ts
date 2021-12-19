@@ -7,6 +7,7 @@ interface TimeBlockUnitWrapperProps {
   isEven?: boolean;
   hasBlackTopBorder?: boolean;
   hasBlackBottomBorder?: boolean;
+  disabled?: boolean;
 }
 
 interface TimeBlockUnitProps extends Pick<TimeBlockUnitWrapperProps, "height"> {
@@ -17,11 +18,13 @@ interface TimeBlockUnitProps extends Pick<TimeBlockUnitWrapperProps, "height"> {
   step: number;
   hasReservation: boolean;
   onClickStatusBlock: (index: number) => void;
+  disabled?: boolean;
 }
 
 interface ActionTimeBlockUnitProps
   extends Pick<TimeBlockUnitWrapperProps, "height" | "previous" | "next"> {
   rowRef?: RefObject<HTMLDivElement>;
+  disabled?: boolean;
 }
 
 interface HourProps {

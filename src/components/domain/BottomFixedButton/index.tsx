@@ -9,7 +9,7 @@ interface Props {
   children: ReactNode;
   type?: "button" | "submit";
   disabled?: boolean;
-  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick: (e: any) => void;
   className?: string;
   style?: CSSProperties;
   bottom?: number;

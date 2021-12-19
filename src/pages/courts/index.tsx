@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import styled from "@emotion/styled";
+import { useLocalToken } from "@hooks/domain";
 
 import { getCurrentLocation } from "@utils/geolocation";
 import { Button, ModalSheet, Spacer, Text } from "@components/base";
@@ -11,8 +12,10 @@ import {
   SlotPicker,
   BasketballMarker,
   Map,
+  slotItems,
   SlotKeyUnion,
   CourtItem,
+  LeadToLoginModal,
 } from "@components/domain";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
@@ -65,16 +68,14 @@ const Courts: NextPage = () => {
   } = useNavigationContext();
 
   const { isTopTransparent } = navigationProps;
+  const [localToken] = useLocalToken();
 
   useMountPage((page) => page.MAP);
   useDisableTopTransparent();
-  useMountCustomButtonEvent("추가", () => {
-    router.push("/courts/create");
-  });
 
   const { map } = useMapContext();
 
-  const today = useMemo(() => {
+  const currentDate = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
 
@@ -86,7 +87,7 @@ const Courts: NextPage = () => {
   const [level, setLevel] = useState<number>(3);
   const [center, setCenter] = useState<Coord>();
 
-  const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
   const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
     getSlotFromDate(new Date())
   );
@@ -94,7 +95,19 @@ const Courts: NextPage = () => {
   // TODO: API 명세 나올 경우 any 수정해주기
   const [selectedCourt, setSelectedCourt] = useState<any>(null);
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] =
+    useState<boolean>(false);
+
+  useMountCustomButtonEvent("추가", () => {
+    if (localToken) {
+      router.push("/courts/create");
+    } else {
+      setIsOpenLeadToLoginModal(true);
+    }
+  });
+
   const [snap, setSnap] = useState<number>(1);
 
   const onClose = useCallback(() => {
@@ -178,9 +191,26 @@ const Courts: NextPage = () => {
     setSelectedSlot(e.target.value);
   }, []);
 
-  const handleDateClick = useCallback((selectedDate: Date) => {
-    setSelectedDate(selectedDate);
-  }, []);
+  const handleDateClick = useCallback(
+    (selectedDate: Date) => {
+      if (selectedDate.getTime() === currentDate.getTime()) {
+        const currentSlot = getSlotFromDate(new Date());
+        const selectedSlotIndex = slotItems.findIndex(
+          ({ value }) => value === selectedSlot
+        );
+        const currentSlotIndex = slotItems.findIndex(
+          ({ value }) => value === currentSlot
+        );
+
+        if (selectedSlotIndex < currentSlotIndex) {
+          setSelectedSlot(currentSlot);
+        }
+      }
+
+      setSelectedDate(selectedDate);
+    },
+    [currentDate, selectedSlot]
+  );
 
   const handleMarkerClick = useCallback((court: any) => {
     setIsOpen(true);
@@ -215,14 +245,6 @@ const Courts: NextPage = () => {
     }
   }, [map, handleChangedMapBounds]);
 
-  const dateString = useMemo(
-    () =>
-      `${selectedDate.getFullYear()}-${
-        selectedDate.getMonth() + 1
-      }-${selectedDate.getDate()}`,
-    [selectedDate]
-  );
-
   return (
     <>
       <Head>
@@ -230,7 +252,7 @@ const Courts: NextPage = () => {
       </Head>
       <DatePicker
         isBackgroundTransparent={isTopTransparent}
-        startDate={today}
+        startDate={currentDate}
         selectedDate={selectedDate}
         onClick={handleDateClick}
       />
@@ -246,6 +268,11 @@ const Courts: NextPage = () => {
             onGetCurrentLocation={handleGetCurrentLocation}
           />
           <TopFixedSlotPicker
+            currentDateTimeSlot={
+              selectedDate.getTime() === currentDate.getTime()
+                ? getSlotFromDate(new Date())
+                : null
+            }
             selectedSlot={selectedSlot}
             onChange={handleChangeSlot}
           />
@@ -284,24 +311,33 @@ const Courts: NextPage = () => {
                 longitude={selectedCourt.longitude}
                 courtName={selectedCourt.courtName}
               />
-              <Link
-                href={{
-                  pathname: `/courts/[courtId]/[date]`,
-                  query: {
-                    timeSlot: selectedSlot,
-                  },
-                }}
-                as={`/courts/${
-                  selectedCourt.courtId
-                }/${selectedDate.getFullYear()}-${
-                  selectedDate.getMonth() + 1
-                }-${selectedDate.getDate()}`}
-                passHref
-              >
-                <Button style={{ flex: 1 }} size="lg">
-                  예약하기
-                </Button>
-              </Link>
+
+              {localToken ? (
+                <Link
+                  href={{
+                    pathname: `/courts/[courtId]/[date]`,
+                    query: {
+                      timeSlot: selectedSlot,
+                    },
+                  }}
+                  as={`/courts/${
+                    selectedCourt.courtId
+                  }/${selectedDate.getFullYear()}-${
+                    selectedDate.getMonth() + 1
+                  }-${selectedDate.getDate()}`}
+                  passHref
+                >
+                  <Button style={{ flex: 1 }} size="lg">
+                    예약하기
+                  </Button>
+                </Link>
+              ) : (
+                <Link href={"/login"} passHref>
+                  <Button style={{ flex: 1 }} size="lg">
+                    로그인하고 예약하기
+                  </Button>
+                </Link>
+              )}
             </Actions>
 
             {snap === 0 ? (
@@ -324,6 +360,23 @@ const Courts: NextPage = () => {
           </ModalContentContainer>
         )}
       </ModalSheet>
+
+      <LeadToLoginModal
+        headerContent={"로그인하면 새 농구장을 추가할 수 있습니다"}
+        isOpen={isOpenLeadToLoginModal}
+        cancel={{
+          content: "닫기",
+          handle: () => {
+            setIsOpenLeadToLoginModal(false);
+          },
+        }}
+        confirm={{
+          content: "로그인하러 가기",
+          handle: () => {
+            router.push("/login");
+          },
+        }}
+      />
     </>
   );
 };

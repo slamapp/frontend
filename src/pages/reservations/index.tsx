@@ -18,7 +18,7 @@ const Reservations: NextPage = () => {
   }, []);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [expiredReservations, setExpiredReservations] = useState<any[]>();
+  const [expiredReservations, setExpiredReservations] = useState<any[]>([]);
   const [currentLastId, setCurrentLastId] = useState();
 
   const tabClickHandler = (index: number) => {
@@ -27,12 +27,15 @@ const Reservations: NextPage = () => {
 
   const expiredHandleClick = useCallback(async () => {
     setActiveIndex(1);
-    const { contents, lastId } = await reservationApi.getMyExpiredReservations(
-      currentLastId
-    );
-
-    setExpiredReservations(contents);
-    setCurrentLastId(lastId);
+    if (currentLastId !== null) {
+      const { contents, lastId } =
+        await reservationApi.getMyExpiredReservations(
+          !currentLastId,
+          currentLastId
+        );
+      setExpiredReservations((prev) => [...prev, ...contents]);
+      setCurrentLastId(lastId);
+    }
   }, [currentLastId]);
 
   const menuTab = [

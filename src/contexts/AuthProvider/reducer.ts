@@ -1,13 +1,13 @@
 import { Reducer } from "react";
 import { authTypes, ActionTypeUnion } from "./actionTypes";
-import { Follow, Favorite, Notification, Reservation } from "./types";
+import { Follow, Favorite, Notification, Reservation, Role } from "./types";
 
 export interface DataProps {
   currentUser: {
     userId: number | null;
     email: string | null;
     profileImageUrl: string | null;
-    role: string | null;
+    role: Role | null;
     description: string | null;
     nickname: string | null;
     favorites: Favorite[];
@@ -104,6 +104,27 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
           ...prevState.currentUser,
         },
         isLoading: false,
+      };
+    }
+    case authTypes.UPDATE_MY_PROFILE: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          nickname: payload.nickname,
+          positions: payload.positions,
+          proficiency: payload.proficiency,
+          description: payload.description,
+        },
+      };
+    }
+    case authTypes.DELETE_MY_PROFILE_IMAGE: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          profileImageUrl: payload.profileImage,
+        },
       };
     }
     case authTypes.GET_MY_FAVORITES: {

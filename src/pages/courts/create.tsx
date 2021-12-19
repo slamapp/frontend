@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, MouseEvent } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Sheet from "react-modal-sheet";
@@ -24,7 +24,7 @@ interface Values {
   image: string | null;
   texture: string | null;
   basketCount: number;
-  courtName: string;
+  name: string;
 }
 
 interface Geocoder extends kakao.maps.services.Geocoder {
@@ -122,7 +122,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
         image: null,
         texture: null,
         basketCount: 1,
-        courtName: "",
+        name: "",
       },
       onSubmit: async (values) => {
         if (position) {
@@ -130,7 +130,10 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
           const valuesWithPosition = {
             longitude,
             latitude,
-            ...values,
+            name: values.name,
+            basketCount: values.basketCount,
+            texture: values.texture,
+            image: values.image,
           };
 
           const newCourt = await courtApi.createNewCourt(valuesWithPosition);
@@ -138,11 +141,11 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
           alert(newCourt);
         }
       },
-      validate: ({ basketCount, courtName }) => {
+      validate: ({ basketCount, name }) => {
         const errors: Error<Values> = {};
 
-        if (!courtName) {
-          errors.courtName = "농구장 이름을 입력해주세요.";
+        if (!name) {
+          errors.name = "농구장 이름을 입력해주세요.";
         }
         if (basketCount < 1) {
           errors.basketCount = "골대 개수를 입력해주세요.";
@@ -232,14 +235,14 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
               <Input
                 label="농구장 이름"
                 type="text"
-                name="courtName"
+                name="name"
                 onChange={handleChange}
-                value={values.courtName}
+                value={values.name}
                 placeholder="ex) 슬램대학교 상경대 앞 농구장"
                 isRequired
-                visibleError={!!errors.courtName}
+                visibleError={!!errors.name}
               />
-              <ValidationNoticeBar errors={errors.courtName} />
+              <ValidationNoticeBar errors={errors.name} />
             </div>
             <div>
               <Label isRequired>위치</Label>
@@ -295,7 +298,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             </div>
           </Spacer>
         </MainContainer>
-        <BottomFixedButton type="submit" onClick={() => {}}>
+        <BottomFixedButton type="submit" onClick={handleSubmit}>
           {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
         </BottomFixedButton>
       </form>

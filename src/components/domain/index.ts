@@ -3,6 +3,7 @@ export { default as BottomNavigation } from "./BottomNavigtion";
 export { default as KakaoLogin } from "./KakaoLogin";
 export { default as DatePicker } from "./DatePicker";
 export { default as SlotPicker } from "./SlotPicker";
+export { slotItems } from "./SlotPicker";
 export type { SlotKeyUnion } from "./SlotPicker/types";
 export { default as Favorites } from "./Favorites";
 export { default as TimeTable } from "./TimeTable";
@@ -29,6 +30,7 @@ export type {
 export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
+export { default as LeadToLoginModal } from "./LeadToLoginModal";
 // eslint-disable-next-line import/no-cycle
 export { default as NotificationList } from "./NotificationList";
 

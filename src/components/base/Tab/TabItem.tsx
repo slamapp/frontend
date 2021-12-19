@@ -21,12 +21,12 @@ interface TabItemWrapperProps {
 }
 
 const TabItemWrapper = styled.div<TabItemWrapperProps>`
+  flex-grow: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 140px;
-  height: 60px;
-  background-color: ${({ active }) => (active ? "#ddf" : "#eee")};
+  height: 40px;
   cursor: pointer;
 `;
 
