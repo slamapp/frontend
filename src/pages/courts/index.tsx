@@ -151,7 +151,7 @@ const Courts: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const handleChangedMapBounds = useCallback(
+  const fetchCourtsByBoundsAndDatetime = useCallback(
     async (map: kakao.maps.Map) => {
       const bounds = map.getBounds();
       const swLatlng = bounds.getSouthWest();
@@ -212,11 +212,17 @@ const Courts: NextPage = () => {
     [currentDate, selectedSlot]
   );
 
-  const handleMarkerClick = useCallback((court: any) => {
-    setIsOpen(true);
-    searchAddrFromCoords(court.latitude, court.longitude);
-    setSelectedCourt(court);
-  }, []);
+  const handleMarkerClick = useCallback(
+    (court: any) => {
+      setIsOpen(true);
+      searchAddrFromCoords(court.latitude, court.longitude);
+      setSelectedCourt(court);
+      router.push(`/courts?courtId=${court.courtId}`, undefined, {
+        shallow: true,
+      });
+    },
+    [router]
+  );
 
   const handleChangeSnap = useCallback((snap: number) => {
     setSnap(snap);
@@ -229,21 +235,37 @@ const Courts: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    const fetchCourts = async () => {
-      if (map) {
-        await handleChangedMapBounds(map);
+    const restoreCourts = async (courtId: number) => {
+      try {
+        const court: any = await courtApi.getCourtDetail(courtId);
+
+        const { latitude, longitude } = court;
+
+        if (court) {
+          setCenter([latitude, longitude]);
+          setIsOpen(true);
+          searchAddrFromCoords(latitude, longitude);
+          setSelectedCourt(court);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
 
-    handleGetCurrentLocation();
-    fetchCourts();
-  }, [handleGetCurrentLocation, map]);
+    const { courtId } = router.query;
+
+    if (courtId) {
+      restoreCourts(+courtId);
+    } else {
+      handleGetCurrentLocation();
+    }
+  }, [map]);
 
   useEffect(() => {
-    if (map) {
-      handleChangedMapBounds(map);
+    if (map && map?.getLevel() <= 4) {
+      fetchCourtsByBoundsAndDatetime(map);
     }
-  }, [map, handleChangedMapBounds]);
+  }, [map, fetchCourtsByBoundsAndDatetime, level, center]);
 
   return (
     <>
@@ -261,7 +283,7 @@ const Courts: NextPage = () => {
         <Map.KakaoMap
           level={level}
           center={center}
-          onDragEnd={handleChangedMapBounds}
+          onDragEnd={fetchCourtsByBoundsAndDatetime}
         >
           <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
           <Map.CurrentLocationButton
@@ -276,7 +298,6 @@ const Courts: NextPage = () => {
             selectedSlot={selectedSlot}
             onChange={handleChangeSlot}
           />
-
           {map &&
             courts &&
             courts.map((court: any) => (
