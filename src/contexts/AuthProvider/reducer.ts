@@ -1,13 +1,13 @@
 import { Reducer } from "react";
 import { authTypes, ActionTypeUnion } from "./actionTypes";
-import { Follow, Favorite, Notification, Reservation } from "./types";
+import { Follow, Favorite, Notification, Reservation, Role } from "./types";
 
 export interface DataProps {
   currentUser: {
     userId: number | null;
     email: string | null;
     profileImageUrl: string | null;
-    role: string | null;
+    role: Role | null;
     description: string | null;
     nickname: string | null;
     favorites: Favorite[];

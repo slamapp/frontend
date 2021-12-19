@@ -1,5 +1,7 @@
 import { PositionKeyUnion, ProficiencyKeyUnion } from "@components/domain";
 
+export type Role = "USER" | "ADMIN";
+
 export type Follow = {
   followId: number;
   followerId: number;
