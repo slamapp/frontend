@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import UtilRoute from "UtilRoute";
 import { useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { BottomFixedButton, Logo } from "@components/domain";
 import styled from "@emotion/styled";
-import { Header, Spacer } from "@components/base";
+import { Spacer } from "@components/base";
 
 const Login: NextPage = UtilRoute("prevented", () => {
   const router = useRouter();
@@ -32,7 +31,12 @@ const Login: NextPage = UtilRoute("prevented", () => {
         <DescriptionText>같이 농구할 사람이 없다고?</DescriptionText>
       </Spacer>
 
-      <KaKaoLoginButton onClick={handleClickLogin}>
+      <KaKaoLoginButton
+        onClick={handleClickLogin}
+        iconButton={{ icon: "map", href: "/courts" }}
+        custom
+        style={{ flex: 1 }}
+      >
         카카오 로그인
       </KaKaoLoginButton>
     </PageContainer>
@@ -56,4 +60,7 @@ const DescriptionText = styled.span`
 const KaKaoLoginButton = styled(BottomFixedButton)`
   background-color: ${({ theme }) => theme.colors.kakao.yellow.strong};
   color: ${({ theme }) => theme.colors.kakao.brown.strong};
+  :hover {
+    background-color: ${({ theme }) => theme.colors.kakao.yellow.middle};
+  }
 `;
