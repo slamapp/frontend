@@ -1,11 +1,17 @@
-import { useState, useCallback, ChangeEvent, MouseEvent } from "react";
+import {
+  useState,
+  useCallback,
+  ChangeEvent,
+  FormEvent,
+  MouseEvent,
+} from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import styled from "@emotion/styled";
 
 import UtilRoute from "UtilRoute";
 import useForm, { Error } from "@hooks/useForm";
-import { useNavigationContext } from "@contexts/hooks";
+import { useNavigationContext, useAuthContext } from "@contexts/hooks";
 import { Avatar, Spacer, Upload, Button, Label, Input } from "@components/base";
 import {
   BottomFixedButton,
@@ -27,6 +33,8 @@ interface Values {
 const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_EDIT);
+
+  const { updateUserProfile } = useAuthContext();
 
   // 더미 데이터
   const userInfo: Values = {
@@ -77,45 +85,53 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
     alert("프로필 이미지 삭제 API");
   };
 
-  const { values, errors, isLoading, handleChange, handleSubmit } =
-    useForm<Values>({
-      initialValues: {
-        nickname,
-        profileImage,
-        description,
-        proficiency,
-        positions,
-      },
-      onSubmit: (values) => {
-        const valueWithPosition = {
-          ...values,
-          proficiency: selectedProficiency,
-          positions: selectedPositions,
-        };
-        alert(JSON.stringify(valueWithPosition));
-      },
-      validate: ({ nickname, description }) => {
-        const errors: Error<Values> = {};
+  const { values, errors, isLoading, handleChange, handleSubmit } = useForm<
+    Values,
+    HTMLButtonElement
+  >({
+    initialValues: {
+      nickname,
+      profileImage,
+      description,
+      proficiency,
+      positions,
+    },
+    onSubmit: (values) => {
+      const filledUserProfile = {
+        ...values,
+        description: values.description ?? "",
+        proficiency: selectedProficiency,
+        positions: selectedPositions,
+      };
 
-        if (!nickname) {
-          errors.nickname = "닉네임은 비워둘 수 없습니다.";
-        }
-        if (nickname.length > lengthLimit.nickname) {
-          errors.nickname = "15자 이내로 입력해주세요.";
-        }
-        if (description.length > lengthLimit.description) {
-          errors.description = "25자 이내로 입력해주세요.";
-        }
-        if (!selectedProficiency) {
-          errors.proficiency = "숙련도를 선택해주세요.";
-        }
-        if (!selectedPositions) {
-          errors.positions = "포지션 2개 혹은 미정을 선택해주세요.";
-        }
+      try {
+        updateUserProfile(filledUserProfile);
+      } catch {
+        console.error("프로필 수정에 실패했습니다.");
+      }
+    },
+    validate: ({ nickname, description }) => {
+      const errors: Error<Values> = {};
 
-        return errors;
-      },
-    });
+      if (!nickname) {
+        errors.nickname = "닉네임은 비워둘 수 없습니다.";
+      }
+      if (nickname.length > lengthLimit.nickname) {
+        errors.nickname = "15자 이내로 입력해주세요.";
+      }
+      if (description.length > lengthLimit.description) {
+        errors.description = "25자 이내로 입력해주세요.";
+      }
+      if (!selectedProficiency) {
+        errors.proficiency = "숙련도를 선택해주세요.";
+      }
+      if (!selectedPositions) {
+        errors.positions = "포지션 2개 혹은 미정을 선택해주세요.";
+      }
+
+      return errors;
+    },
+  });
 
   return (
     <div>
@@ -124,7 +140,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         <Center>
           <Spacer gap="xs" type="vertical">
             <Upload style={{ textAlign: "center" }}>
@@ -195,7 +211,12 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
             ></ValidationNoticeBar>
           </div>
         </Container>
-        <BottomFixedButton type="submit" onClick={() => {}}>
+        <BottomFixedButton
+          type="submit"
+          onClick={(e: FormEvent<HTMLButtonElement>) => {
+            handleSubmit(e);
+          }}
+        >
           프로필 편집 완료하기
         </BottomFixedButton>
       </form>
