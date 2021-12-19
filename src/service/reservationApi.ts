@@ -14,8 +14,11 @@ interface IReservation {
 const reservationApi = {
   getMyReservations: <R>() => authRequest.get<R, R>("/reservations/upcoming"),
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
-  getMyExpiredReservations: <R>(isFirst: boolean, lastId: number | undefined) =>
-    lastId
+  getMyExpiredReservations: <R>(
+    isFirst: boolean,
+    lastId: number | undefined | null
+  ) => {
+    return lastId
       ? authRequest.get<R, R>("/reservations/expired", {
           params: {
             isFirst,
@@ -25,7 +28,8 @@ const reservationApi = {
         })
       : authRequest.get<R, R>("/reservations/expired", {
           params: { isFirst, lastId: "0", size: 2 },
-        }),
+        });
+  },
   getMyReservationParticipants: <R>({ courtId, startTime, endTime }: any) =>
     authRequest.get<R, R>(`/reservations/${courtId}/${startTime}/${endTime}`),
   createReservation: (data: IReservation) =>

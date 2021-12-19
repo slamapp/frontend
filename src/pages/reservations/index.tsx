@@ -27,13 +27,15 @@ const Reservations: NextPage = () => {
 
   const expiredHandleClick = useCallback(async () => {
     setActiveIndex(1);
-    const { contents, lastId } = await reservationApi.getMyExpiredReservations(
-      !currentLastId,
-      currentLastId
-    );
-
-    setExpiredReservations((prev) => [...prev, ...contents]);
-    setCurrentLastId(lastId);
+    if (currentLastId !== null) {
+      const { contents, lastId } =
+        await reservationApi.getMyExpiredReservations(
+          !currentLastId,
+          currentLastId
+        );
+      setExpiredReservations((prev) => [...prev, ...contents]);
+      setCurrentLastId(lastId);
+    }
   }, [currentLastId]);
 
   const menuTab = [
