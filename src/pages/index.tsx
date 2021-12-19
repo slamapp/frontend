@@ -1,23 +1,26 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Button from "@components/Button";
-import { useNavigationContext } from "@contexts/NavigationProvider";
-import Link from "next/link";
+import { useNavigationContext } from "@contexts/hooks";
+import { Favorites } from "@components/domain";
+import styled from "@emotion/styled";
 
 const Home: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.FAVORITES);
 
   return (
-    <div>
+    <PageContainer>
       <Head>
-        <title>즐겨찾기 | Slam - 우리 주변 농구장을 빠르게</title>
+        <title>Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
-      <h1>홈 페이지</h1>
-      <Link href="/court/create">새 농구장 추가</Link>
-      <Button>Click Me!</Button>
-    </div>
+      <Favorites />
+    </PageContainer>
   );
 };
 
 export default Home;
+
+const PageContainer = styled.div`
+  flex: 1;
+  margin: 0 ${({ theme }) => theme.gaps.base};
+`;

@@ -1,22 +1,63 @@
 import { Reducer } from "react";
-import { actionTypes } from "./actionTypes";
-import { ReducerAction, DataProps } from "./types";
+import { authTypes, ActionTypeUnion } from "./actionTypes";
+import { Follow, Favorite, Notification, Reservation } from "./types";
+
+export interface DataProps {
+  currentUser: {
+    userId: number | null;
+    email: string | null;
+    profileImageUrl: string | null;
+    role: string | null;
+    description: string | null;
+    nickname: string | null;
+    favorites: Favorite[];
+    followers: Follow[];
+    following: Follow[];
+    notifications: Notification[];
+    reservations: Reservation[];
+  };
+  isLoading: boolean;
+}
+
+export type ReducerAction = {
+  type: ActionTypeUnion;
+  payload?: any;
+};
 
 export const initialData = {
   currentUser: {
     userId: null,
     email: null,
     profileImageUrl: null,
-    skill: null,
     role: null,
-    position: null,
     description: null,
     nickname: null,
+    favorites: [
+      {
+        favoriteId: 1,
+        courtId: 3,
+        courtName: "용왕산 근린 공원 농구장",
+        latitude: 34.567234,
+        longitude: 12.493048,
+        createdAt: "2021-01-01T12:20:10",
+        updatedAt: "2021-01-01T12:20:10",
+      },
+      {
+        favoriteId: 2,
+        courtId: 4,
+        courtName: "한강공원 농구장",
+        latitude: 34.567234,
+        longitude: 12.493048,
+        createdAt: "2021-01-01T12:20:10",
+        updatedAt: "2021-01-01T12:20:10",
+      },
+    ],
     followers: [],
     following: [],
     notifications: [],
+    reservations: [],
   },
-  isLoading: false,
+  isLoading: true,
 };
 
 export const reducer: Reducer<DataProps, ReducerAction> = (
@@ -24,21 +65,30 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
   { type, payload }
 ) => {
   switch (type) {
-    case actionTypes.GET_CURRENT_USER: {
+    case authTypes.SET_CURRENT_USER: {
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
+          userId: payload.userId,
+          nickname: payload.nickname,
+          notifications: [...payload.notifications],
+          email: payload.email,
+          positions: payload.positions,
+          proficiency: payload.proficiency,
+          profileImageUrl: payload.profileImage,
+          role: payload.role,
+          description: payload.description,
         },
       };
     }
-    case actionTypes.CLEAR_CURRENT_USER: {
+    case authTypes.CLEAR_CURRENT_USER: {
       return {
         ...prevState,
         ...initialData,
       };
     }
-    case actionTypes.LOADING_ON: {
+    case authTypes.LOADING_ON: {
       return {
         ...prevState,
         currentUser: {
@@ -47,13 +97,104 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isLoading: true,
       };
     }
-    case actionTypes.LOADING_OFF: {
+    case authTypes.LOADING_OFF: {
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
         },
         isLoading: false,
+      };
+    }
+    case authTypes.GET_MY_FAVORITES: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          favorites: payload.favorites,
+        },
+      };
+    }
+    case authTypes.CREATE_FAVORITE: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          favorites: [...prevState.currentUser.favorites, payload.favorite],
+        },
+      };
+    }
+    case authTypes.DELETE_FAVORITE: {
+      const { deletedFavoriteId } = payload;
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          favorites: prevState.currentUser.favorites.filter(
+            ({ favoriteId }) => favoriteId !== deletedFavoriteId
+          ),
+        },
+      };
+    }
+    case authTypes.SET_MY_RESERVATIONS: {
+      const { reservations } = payload;
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          reservations: [...reservations],
+        },
+      };
+    }
+    case authTypes.PUSH_NOTIFICATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          notifications: [
+            ...prevState.currentUser.notifications,
+            payload.notification,
+          ],
+        },
+      };
+    }
+    case authTypes.CREATE_RESERVATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          // 최신순? 현재시간에서 가장 가까운
+          reservations: [
+            payload.createdReservation,
+            ...prevState.currentUser.reservations,
+          ],
+        },
+      };
+    }
+    case authTypes.UPDATE_RESERVATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          reservations: prevState.currentUser.reservations.map((reservation) =>
+            reservation.reservationId ===
+            payload.updatedReservation.reservationId
+              ? payload.updatedReservation
+              : reservation
+          ),
+        },
+      };
+    }
+    case authTypes.DELETE_RESERVATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          reservations: prevState.currentUser.reservations.filter(
+            ({ reservationId }) =>
+              reservationId !== payload.deletedReservationId
+          ),
+        },
       };
     }
     default: {

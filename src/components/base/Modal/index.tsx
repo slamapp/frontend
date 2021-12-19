@@ -16,6 +16,7 @@ interface Props {
 const Modal = ({
   children,
   width = 500,
+  maxWidth,
   height,
   visible = false,
   onClose = () => {},
@@ -32,7 +33,10 @@ const Modal = ({
     onClose();
   });
 
-  const containerStyle = useMemo(() => ({ width, height }), [width, height]);
+  const containerStyle = useMemo(
+    () => ({ width, maxWidth, height }),
+    [width, maxWidth, height]
+  );
 
   const el = useMemo(() => {
     if (typeof document !== "undefined") {
@@ -70,7 +74,7 @@ const BackgroundDim = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 3000;
 `;
 
 const ModalContainer = styled.div`
@@ -82,6 +86,7 @@ const ModalContainer = styled.div`
   background-color: white;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
+  border-radius: ${({ theme }) => theme.borderRadiuses.lg};
 `;
 
 export default Modal;

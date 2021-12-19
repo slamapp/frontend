@@ -1,44 +1,63 @@
-import { actionTypes } from "./actionTypes";
-
-export type ActionType = typeof actionTypes;
-export type ActionTypeUnion = ActionType[keyof ActionType];
-
 export type Follow = {
   followId: number;
   followerId: number;
   followingId: number;
 };
 
-export type Notification = {
-  notificationId: number;
-  courtId: number;
+type NotificationType = "FOLLOWING" | "LOUDSPEAKER";
+
+export interface Notification extends DefaultNotification {
+  followerInfo: FollowerInfo | null;
+  loudSpeakerInfo: LoudSpeakerInfo | null;
+}
+
+export interface DefaultNotification {
+  type: NotificationType;
+  isRead: boolean;
+  isClicked: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+type FollowerInfo = {
   userId: number;
-  content: string;
-  notificationType: string;
+  userNickname: string;
+  userImage: string;
 };
 
-export interface DataProps {
-  currentUser: {
-    userId: number | null;
-    email: string | null;
-    profileImageUrl: string | null;
-    skill: string | null;
-    role: string | null;
-    position: string | null;
-    description: string | null;
-    nickname: string | null;
-    followers: Follow[];
-    following: Follow[];
-    notifications: Notification[];
+type LoudSpeakerInfo = {
+  court: {
+    name: string;
+    latitude: number;
+    longitude: number;
+    image: string;
+    basketCount: number;
+    createdAt: string;
+    updatedAt: string;
   };
-  isLoading: boolean;
-}
+  startTime: string;
+};
 
-export interface ContextProps {
-  authProps: DataProps;
-}
+export type Favorite = {
+  favoriteId: number;
+  courtId: number;
+  courtName: string;
+  latitude: number;
+  longitude: number;
+  createdAt: string;
+  updatedAt: string;
+};
 
-export type ReducerAction = {
-  type: ActionTypeUnion;
-  payload?: any;
+export type Reservation = {
+  reservationId: number;
+  courtId: number;
+  courtName: string;
+  latitude: number;
+  longitude: number;
+  basketCount: number;
+  numberOfReservations: number;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  updatedAt: string;
 };

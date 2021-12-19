@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
 import Link from "next/link";
-import { useNavigationContext } from "@contexts/NavigationProvider";
 import { Icon } from "@components/base";
+import { useNavigationContext } from "@contexts/hooks";
 
 const BottomNavigation = () => {
   const {
@@ -17,26 +17,22 @@ const BottomNavigation = () => {
       isCurrentPage: currentPage === pageType.FAVORITES,
     },
     {
-      href: "/map",
+      href: "/courts",
       name: "compass",
       isCurrentPage: currentPage === pageType.MAP,
     },
     {
-      href: "/book",
+      href: "/reservations",
       name: "calendar",
-      isCurrentPage: currentPage === pageType.BOOK,
+      isCurrentPage: currentPage === pageType.RESERVATIONS,
     },
-    {
-      href: "/activity",
-      name: "users",
-      isCurrentPage: currentPage === pageType.ACTIVITY,
-    },
-    // 테스트 용
-    {
-      href: "/login",
-      name: "log-in",
-      isCurrentPage: currentPage === pageType.LOGIN,
-    },
+
+    // TODO: 2순위: 팔로우한 사용자들의 예약 알기 탭
+    // {
+    //   href: "/activity",
+    //   name: "users",
+    //   isCurrentPage: currentPage === pageType.ACTIVITY,
+    // },
   ] as const;
 
   return (
@@ -63,7 +59,6 @@ const Container = styled.nav`
   background: white;
   display: flex;
   align-items: center;
-  box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
   bottom: 0;
   left: 0;
   right: 0;

@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 
 type Handler = (contentRect: DOMRectReadOnly) => void;
 
-const useResize = <T extends Handler>(handler: T) => {
-  const savedHandler = useRef<T>(handler);
-  const ref = useRef(null);
+const useResize = <T extends Element>(handler: Handler) => {
+  const savedHandler = useRef<Handler>(handler);
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     savedHandler.current = handler;

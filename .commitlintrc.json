@@ -21,7 +21,8 @@
         "hotfix",
         "improve",
         "move",
-        "add"
+        "add",
+        "remove"
       ]
     ]
   }

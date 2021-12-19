@@ -1,19 +1,6 @@
 import type { ReactNode } from "react";
-import { createContext, useCallback, useContext, useState } from "react";
-
-interface ContextValues {
-  map: kakao.maps.Map | undefined;
-  handleInitMap: (map: kakao.maps.Map) => void;
-}
-
-const initialValues = {
-  map: undefined,
-  handleInitMap: () => {},
-};
-
-const MapContext = createContext<ContextValues>(initialValues);
-
-export const useMapContext = () => useContext(MapContext);
+import { useCallback, useState } from "react";
+import Context from "./context";
 
 interface Props {
   children: ReactNode;
@@ -27,9 +14,9 @@ const MapProvider = ({ children }: Props) => {
   }, []);
 
   return (
-    <MapContext.Provider value={{ map, handleInitMap }}>
+    <Context.Provider value={{ map, handleInitMap }}>
       {children}
-    </MapContext.Provider>
+    </Context.Provider>
   );
 };
 

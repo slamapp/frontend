@@ -14,7 +14,7 @@ const Container = forwardRef<HTMLDivElement, { children: ReactNode }>(
     }, []);
 
     return (
-      <StyledContainer ref={ref} height={height}>
+      <StyledContainer ref={ref} height={height} id="scrolled-container">
         {children}
       </StyledContainer>
     );
@@ -30,6 +30,6 @@ const StyledContainer = styled.div<{ height: number }>`
   overflow-x: hidden;
   max-width: 640px;
   margin: auto;
-  background-color: #fafafa;
+  background-color: ${({ theme }) => theme.colors.gray50};
   height: ${({ height }) => `${height}`}px;
 `;
