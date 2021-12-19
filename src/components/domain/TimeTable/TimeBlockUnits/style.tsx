@@ -103,7 +103,7 @@ const HoursHorizontalDivider = styled.div`
   height: 2px;
   width: 20%;
   top: -1px;
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
   opacity: 0.08;
 `;
 
@@ -129,7 +129,7 @@ const BallColumn = styled(OneSixthColumn)`
 const VerticalDivider = styled.div`
   width: 8px;
   height: 100%;
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
 `;
 
 const Selector = styled.div<any>`
@@ -139,7 +139,7 @@ const Selector = styled.div<any>`
   width: 100%;
   height: 100%;
   color: white;
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
   border-radius: 16px;
   border: 8px solid ${({ theme }) => theme.colors.slam.orange.strong};
   box-sizing: border-box;
@@ -160,7 +160,7 @@ const ReservationMarker = styled.div<any>`
     height: ${height}px;
     border: ${selected && "8px solid orange"};
   `};
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.gray900};
   color: white;
   border-radius: 16px;
   box-sizing: border-box;
