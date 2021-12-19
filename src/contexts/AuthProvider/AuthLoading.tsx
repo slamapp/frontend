@@ -37,7 +37,7 @@ const LoadingContainer = styled.div<{ isShow: boolean }>`
   z-index: 4000;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
 
   // 애니메이션
