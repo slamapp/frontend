@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { MouseEvent } from "react";
+import { css } from "@emotion/react";
+import { Text, Button } from "@components/base";
 import type { NewCourt } from "./types";
 
 interface Props {
@@ -23,16 +25,26 @@ const NewCourtItem = ({ data, state, style }: Props) => {
   return (
     <Link href={`/admin/newcourts/${data.newCourtId}`} passHref>
       <Container style={style}>
-        <p>{data.name}</p>
+        <CourtName strong block>
+          {data.name}
+        </CourtName>
         {state === "READY" ? (
-          <div>
-            <button onClick={handleDeny}>거절</button>
-            <button onClick={handleAccept}>승인</button>
-          </div>
+          <ButtonContainer>
+            <Button fullWidth tertiary onClick={handleDeny}>
+              거절하기
+            </Button>
+            <Button fullWidth onClick={handleAccept}>
+              승인하기
+            </Button>
+          </ButtonContainer>
         ) : data.status === "ACCEPT" ? (
-          <StatusBar className="accept">승인</StatusBar>
+          <StatusBar fullWidth className="accept">
+            승인됨
+          </StatusBar>
         ) : (
-          <StatusBar className="deny">거절</StatusBar>
+          <StatusBar fullWidth className="deny">
+            거절됨
+          </StatusBar>
         )}
       </Container>
     </Link>
@@ -42,22 +54,36 @@ const NewCourtItem = ({ data, state, style }: Props) => {
 export default NewCourtItem;
 
 const Container = styled.a`
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid black;
+  ${({ theme }) => css`
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: ${theme.colors.white};
+    border-radius: ${theme.borderRadiuses.md};
+    box-shadow: ${theme.boxShadows.sm};
+    padding: ${theme.gaps.base};
+  `}
 `;
 
-const StatusBar = styled.span`
-  height: 100%;
+const StatusBar = styled(Button)`
+  text-align: center;
 
   &.accept {
-    background: lightgreen;
+    background: ${({ theme }) => theme.colors.green.light};
   }
 
   &.deny {
-    background: orange;
+    background: ${({ theme }) => theme.colors.red.light};
   }
+`;
+
+const CourtName = styled(Text)`
+  margin-bottom: ${({ theme }) => theme.gaps.sm};
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
