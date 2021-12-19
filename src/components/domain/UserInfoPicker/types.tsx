@@ -15,7 +15,7 @@ const proficiencies = {
 
 type Position = typeof positions;
 export type PositionValueUnion = Position[keyof Position];
-export type PositionKeyUnion = keyof Position | null;
+export type PositionKeyUnion = keyof Position;
 
 type Proficiency = typeof proficiencies;
 export type ProficiencyValueUnion =
