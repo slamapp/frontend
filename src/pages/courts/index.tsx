@@ -267,10 +267,10 @@ const Courts: NextPage = () => {
   }, [map]);
 
   useEffect(() => {
-    if (map && map?.getLevel() <= 4) {
+    if (map) {
       fetchCourtsByBoundsAndDatetime(map);
     }
-  }, [map, fetchCourtsByBoundsAndDatetime, level, center]);
+  }, [map, fetchCourtsByBoundsAndDatetime, center]);
 
   return (
     <>
@@ -289,6 +289,7 @@ const Courts: NextPage = () => {
           level={level}
           center={center}
           onDragEnd={fetchCourtsByBoundsAndDatetime}
+          onZoomChanged={fetchCourtsByBoundsAndDatetime}
         >
           <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
           <Map.CurrentLocationButton
