@@ -100,7 +100,9 @@ const Reservations: NextPage = UtilRoute("private", () => {
 const TabStyle = styled.div`
   display: flex;
   justify-content: space-around;
+  align-items: center;
   height: 52px;
+  border-bottom: 4px solid ${({ theme }) => theme.colors.gray100};
 `;
 
 const PageContainer = styled.div`

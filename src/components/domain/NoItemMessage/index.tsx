@@ -25,10 +25,11 @@ const NoItemMessage = ({
         height={170}
         src={
           type === "favorite"
-            ? "assets/basketball/fire_on_favorited.gif"
-            : "assets/basketball/fire_on_reservated.gif"
+            ? "assets/basketball/fire_off_favorited.gif"
+            : "assets/basketball/fire_off_reservated.gif"
         }
         alt="basketball"
+        style={{ marginBottom: -4 }}
       />
       <Spacer gap="xxs" type="vertical" style={{ textAlign: "center" }}>
         <Text size="md" block strong>
@@ -42,6 +43,7 @@ const NoItemMessage = ({
           {buttonTitle}
         </SearchButton>
       </Link>
+      <div style={{ height: 40 }}></div>
     </WrapperSpacer>
   );
 };
