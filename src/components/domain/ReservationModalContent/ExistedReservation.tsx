@@ -4,7 +4,9 @@ import React, { useCallback, useState } from "react";
 
 import { BottomFixedContainer } from "../BottomFixedButton";
 import Modal from "../Modal";
-import CommonModalContent from "./StepTwoCommonContent";
+import ParticipantsPerTime from "./ParticipantsPerTime";
+import SelectedTime from "./SelectedTime";
+import * as S from "./style";
 
 interface Props {
   timeSlot: string;
@@ -30,10 +32,10 @@ const ExistedReservationContent = ({
   const onClose = () => setIsModalOpen(false);
   return (
     <>
-      <CommonModalContent
-        timeSlot={timeSlot}
-        participantsPerBlock={participantsPerBlock}
-      />
+      <S.ModalContent>
+        <SelectedTime timeSlot={timeSlot} />
+        <ParticipantsPerTime participantsPerBlock={participantsPerBlock} />
+      </S.ModalContent>
       <BottomFixedBackground>
         <Button type="button" size="lg" onClick={handleClickButton} secondary>
           예약 취소하기

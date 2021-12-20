@@ -1,25 +1,33 @@
-import { Button } from "@components/base";
-import React, { MouseEvent, useCallback, useState } from "react";
-import Modal from "../Modal";
+import React, { useCallback, useState } from "react";
+
+import { Spacer, Text } from "@components/base";
+import * as S from "./style";
 import BottomFixedButton from "../BottomFixedButton";
-import CommonModalContent from "./StepTwoCommonContent";
 import HasBallDecisionModal from "./HasBallDecisionModal";
+import ParticipantsPerTime from "./ParticipantsPerTime";
+import TimeForm from "./TimeForm";
 
 interface Props {
-  timeSlot: string;
+  startTime: string;
+  endTime: string | null;
+  currentInput: "START" | "END";
   hasBall: boolean;
   buttonText: string;
   requestDisabled: boolean;
   participantsPerBlock: any[];
+  onSetCurrentInput: (currentInput: string) => void;
   onChangeHasBall: (hasBall: boolean) => void;
   onSubmit: (hasBall: boolean) => void;
 }
 
 const SelectedRangeContent = ({
-  timeSlot,
+  startTime,
+  endTime,
+  currentInput,
   buttonText,
   participantsPerBlock,
   requestDisabled,
+  onSetCurrentInput,
   onChangeHasBall,
   onSubmit,
 }: Props) => {
@@ -40,10 +48,18 @@ const SelectedRangeContent = ({
 
   return (
     <>
-      <CommonModalContent
-        timeSlot={timeSlot}
-        participantsPerBlock={participantsPerBlock}
-      />
+      <S.ModalContent>
+        <Spacer gap="xs" type="vertical">
+          <Text>선택한 시간</Text>
+          <TimeForm
+            onSetCurrentInput={onSetCurrentInput}
+            currentInput={currentInput}
+            startTime={startTime}
+            endTime={endTime}
+          />
+        </Spacer>
+        <ParticipantsPerTime participantsPerBlock={participantsPerBlock} />
+      </S.ModalContent>
       <div
         style={{
           padding: "0 20px",
@@ -55,7 +71,7 @@ const SelectedRangeContent = ({
           onClick={handleClickButton}
         >
           {!requestDisabled
-            ? `${timeSlot}${buttonText}`
+            ? `${startTime}-${endTime} ${buttonText}`
             : "이미 예약한 시간이 포함되어 있습니다"}
         </BottomFixedButton>
       </div>
