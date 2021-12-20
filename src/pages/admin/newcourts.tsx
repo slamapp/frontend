@@ -27,35 +27,34 @@ const NewCourtsPage: NextPage = () => {
 
   const [readyData, setReadyData] = useState<NewCourt[]>(dummyData);
   const [doneData, setDoneData] = useState<NewCourt[]>([]);
-  const [currentLastId, setCurrentLastId] = useState<number>();
+  const [currentLastId, setCurrentLastId] = useState<number>(0);
 
-  const getNewCourts = useCallback(
-    async (status: "READY" | "DONE", curLastId) => {
-      try {
-        const { contents, lastId } = await managementApi.getNewCourts(
-          status,
-          !curLastId,
-          curLastId
-        );
-        if (status === "READY") {
-          setReadyData((prev) => [...prev, ...contents]);
-        } else {
-          setDoneData((prev) => [...prev, ...contents]);
-        }
-        setCurrentLastId(lastId);
-      } catch (error) {
-        console.error(error);
+  const getNewCourts = useCallback(async (status: "READY" | "DONE") => {
+    if (currentLastId === null) return;
+    try {
+      const { contents, lastId } = await managementApi.getNewCourts(
+        status,
+        !currentLastId,
+        currentLastId
+      );
+      if (status === "READY") {
+        setReadyData((prev) => [...prev, ...contents]);
+      } else {
+        setDoneData((prev) => [...prev, ...contents]);
       }
-    },
-    []
-  );
+      setCurrentLastId(lastId);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   useEffect(() => {
-    getNewCourts("READY", 0);
+    getNewCourts("READY");
   }, []);
 
   const handleClick = (status: "READY" | "DONE") => {
-    getNewCourts(status, 0);
+    setCurrentLastId(0);
+    getNewCourts(status);
   };
 
   return (
