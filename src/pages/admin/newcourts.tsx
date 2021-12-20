@@ -1,16 +1,17 @@
 import { useNavigationContext } from "@contexts/hooks";
 import { NextPage } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Spacer, Tab } from "@components/base";
 import styled from "@emotion/styled";
 import { NewCourtItem, NewCourt } from "@components/domain";
+import managementApi from "@service/managementApi";
 
 const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.ADMIN_NEWCOURTS);
 
   // 더미 데이터
-  const readyData: NewCourt[] = [
+  const dummyData: NewCourt[] = [
     {
       newCourtId: 1,
       name: "반포한강공원 체력단련장 농구장",
@@ -24,35 +25,43 @@ const NewCourtsPage: NextPage = () => {
     },
   ];
 
-  const doneData: NewCourt[] = [
-    {
-      newCourtId: 2,
-      name: "잠실한강공원 농구장",
-      basketCount: 1,
-      longitude: 127.082348760182,
-      latitude: 37.5177740347208,
-      image: null,
-      texture: "RUBBER",
-      status: "ACCEPT",
-      createdAt: "2021-01-01T12:20:10",
+  const [readyData, setReadyData] = useState<NewCourt[]>(dummyData);
+  const [doneData, setDoneData] = useState<NewCourt[]>([]);
+  const [currentLastId, setCurrentLastId] = useState<number>();
+
+  const getNewCourts = useCallback(
+    async (status: "READY" | "DONE", curLastId) => {
+      try {
+        const { contents, lastId } = await managementApi.getNewCourts(
+          status,
+          !curLastId,
+          curLastId
+        );
+        if (status === "READY") {
+          setReadyData((prev) => [...prev, ...contents]);
+        } else {
+          setDoneData((prev) => [...prev, ...contents]);
+        }
+        setCurrentLastId(lastId);
+      } catch (error) {
+        console.error(error);
+      }
     },
-    {
-      newCourtId: 3,
-      name: "잘못된 농구장",
-      basketCount: 1,
-      longitude: 127.077064497635,
-      latitude: 37.5270939663765,
-      image: null,
-      texture: "RUBBER",
-      status: "DENY",
-      createdAt: "2021-01-01T12:20:10",
-    },
-  ];
+    []
+  );
+
+  useEffect(() => {
+    getNewCourts("READY", 0);
+  }, []);
+
+  const handleClick = (status: "READY" | "DONE") => {
+    getNewCourts(status, 0);
+  };
 
   return (
     <div>
-      <Tab>
-        <Tab.Item title="처리 대기" index="ready">
+      <Tab onClick={handleClick}>
+        <Tab.Item title="처리 대기" index="READY">
           <Container>
             <Spacer gap="base" type="vertical">
               {readyData.map((court) => (
@@ -62,10 +71,11 @@ const NewCourtsPage: NextPage = () => {
                   state="READY"
                 />
               ))}
+              처리 대기
             </Spacer>
           </Container>
         </Tab.Item>
-        <Tab.Item title="처리 완료" index="done">
+        <Tab.Item title="처리 완료" index="DONE">
           <Container>
             <Spacer gap="base" type="vertical">
               {doneData.map((court) => (
@@ -75,6 +85,7 @@ const NewCourtsPage: NextPage = () => {
                   state="DONE"
                 />
               ))}
+              처리 완료
             </Spacer>
           </Container>
         </Tab.Item>
