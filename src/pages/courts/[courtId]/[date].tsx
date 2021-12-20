@@ -30,83 +30,6 @@ interface IReservation {
   hasBall: boolean;
 }
 
-const data: { reservations: IReservation[] } = {
-  reservations: [
-    {
-      reservationId: 10,
-      userId: 2,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T14:00:00",
-      hasBall: true,
-    },
-    {
-      reservationId: 13,
-      userId: 3,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 17,
-      userId: 4,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 21,
-      userId: 5,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T14:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 24,
-      userId: 6,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T14:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 27,
-      userId: 8,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 28,
-      userId: 9,
-      courtId: 7,
-      startTime: "2021-01-01T14:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 29,
-      userId: 1,
-      courtId: 7,
-      startTime: "2021-01-01T14:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 290,
-      userId: 9,
-      courtId: 7,
-      startTime: "2021-01-01T19:00:00",
-      endTime: "2021-01-01T21:00:00",
-      hasBall: true,
-    },
-  ],
-};
-
 const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   const timeTable = Array.from({ length: TIME_TABLE_ROWS }, () => ({
     peopleCount: 0,
@@ -152,20 +75,6 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
     { timeTable, existedReservations: [] }
   );
 };
-
-interface DataProps {
-  step: number;
-  mode: "create" | "number";
-  startIndex: number;
-  endIndex: number;
-  timeTable: any[];
-  originalTimeTable: any[];
-  modalContentData: any[];
-  hasBall: boolean;
-  existedReservations: any[];
-  selectedReservationId: number;
-  requestDisabled: boolean;
-}
 
 const initialState = {
   step: 1,
@@ -435,12 +344,12 @@ const Reservation: NextPage = () => {
   }, []);
 
   const handleStartCreate = useCallback(() => {
-    setIsOpen(false);
+    // setIsOpen(false);
     dispatch({ type: "START_CREATE" });
   }, []);
 
   const handleDecreaseStep = useCallback(() => {
-    setIsOpen(false);
+    // setIsOpen(false);
     dispatch({ type: "DECREASE_STEP" });
   }, []);
 
