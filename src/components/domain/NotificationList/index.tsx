@@ -21,7 +21,4 @@ const NotificationList = () => {
 
 export default NotificationList;
 
-const NotificationListContainer = styled.div`
-  height: 100%;
-  background: orange;
-`;
+const NotificationListContainer = styled.div``;

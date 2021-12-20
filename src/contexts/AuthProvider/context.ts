@@ -12,8 +12,10 @@ export interface ContextProps {
   createFavorite: (courtId: number) => void;
   deleteFavorite: (favoriteId: number) => void;
   pushNotification: (notification: Notification) => void;
+  unshiftNotification: (notification: Notification) => void;
   getMyFavorites: () => void;
   getMyReservations: () => void;
+  getMoreNotifications: () => void;
 }
 
 const Context = createContext<ContextProps>({} as ContextProps);

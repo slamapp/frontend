@@ -179,6 +179,18 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
+    case authTypes.UNSHIFT_NOTIFICATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          notifications: [
+            payload.notification,
+            ...prevState.currentUser.notifications,
+          ],
+        },
+      };
+    }
     case authTypes.CREATE_RESERVATION: {
       return {
         ...prevState,
