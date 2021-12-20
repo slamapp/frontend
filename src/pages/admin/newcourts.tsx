@@ -5,6 +5,9 @@ import { Spacer, Tab } from "@components/base";
 import styled from "@emotion/styled";
 import { NewCourtItem, NewCourt } from "@components/domain";
 import managementApi from "@service/managementApi";
+import { useInfiniteScroll } from "@hooks/.";
+
+type Status = "READY" | "DONE";
 
 const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
@@ -27,9 +30,10 @@ const NewCourtsPage: NextPage = () => {
 
   const [readyData, setReadyData] = useState<NewCourt[]>(dummyData);
   const [doneData, setDoneData] = useState<NewCourt[]>([]);
-  const [currentLastId, setCurrentLastId] = useState<number>(0);
+  const [currentLastId, setCurrentLastId] = useState<number | null>(0);
+  const [activeStatus, setActiveStatus] = useState<Status>("READY");
 
-  const getNewCourts = useCallback(async (status: "READY" | "DONE") => {
+  const getNewCourts = useCallback(async (status: Status) => {
     if (currentLastId === null) return;
     try {
       const { contents, lastId } = await managementApi.getNewCourts(
@@ -52,10 +56,16 @@ const NewCourtsPage: NextPage = () => {
     getNewCourts("READY");
   }, []);
 
-  const handleClick = (status: "READY" | "DONE") => {
+  const handleClick = (status: Status) => {
     setCurrentLastId(0);
     getNewCourts(status);
+    setActiveStatus(status);
   };
+
+  const ref = useRef<HTMLDivElement>(null);
+  const [isFetching] = useInfiniteScroll(ref, () => {
+    getNewCourts(activeStatus);
+  });
 
   return (
     <div>
@@ -63,6 +73,7 @@ const NewCourtsPage: NextPage = () => {
         <Tab.Item title="처리 대기" index="READY">
           <Container>
             <Spacer gap="base" type="vertical">
+              {isFetching}
               {readyData.map((court) => (
                 <NewCourtItem
                   key={court.newCourtId}
@@ -89,6 +100,7 @@ const NewCourtsPage: NextPage = () => {
           </Container>
         </Tab.Item>
       </Tab>
+      <div ref={ref} style={{ height: 10 }}></div>
     </div>
   );
 };
