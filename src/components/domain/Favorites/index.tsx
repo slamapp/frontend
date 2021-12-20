@@ -68,6 +68,7 @@ const Favorites: NextPage = UtilRoute("private", () => {
     return (
       <NoItemMessage
         title={"즐겨찾는 농구장이 없으시네요? 🤔"}
+        type="favorite"
         description={"즐겨찾기하면 더 빠르게 예약하실 수 있어요"}
         buttonTitle={"즐겨찾는 농구장 등록하기"}
       />

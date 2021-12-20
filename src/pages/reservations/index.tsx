@@ -49,6 +49,7 @@ const Reservations: NextPage = () => {
         upcomingReservations.length === 0 ? (
           <NoItemMessage
             title="예약이 아직 없어요 🤔"
+            type="reservation"
             description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
             buttonTitle="예약할 농구장 찾기"
           />
