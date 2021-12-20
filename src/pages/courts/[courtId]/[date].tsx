@@ -644,7 +644,6 @@ const Reservation: NextPage = () => {
   }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
 
   useEffect(() => {
-    // FIXME router.isReady
     const initReservations = async () => {
       const { reservations } = await courtApi.getAllCourtReservationsByDate(
         courtId as string,
@@ -657,8 +656,10 @@ const Reservation: NextPage = () => {
       });
     };
 
-    initReservations();
-  }, [courtId, date, currentUser]);
+    if (router.isReady && currentUser.userId) {
+      initReservations();
+    }
+  }, [courtId, date, currentUser.userId, router]);
 
   return (
     <div>
