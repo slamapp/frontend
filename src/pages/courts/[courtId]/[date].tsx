@@ -149,15 +149,9 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
       return {
         ...state,
         startIndex,
-        lastIndex: null,
+        endIndex: null,
         selectedReservationId: null,
         modalContentData: state.timeTable[startIndex].users,
-      };
-    }
-    case "SET_END_INDEX": {
-      const { endIndex } = payload;
-      return {
-        ...state,
       };
     }
     case "SET_HAS_BALL": {
@@ -217,22 +211,22 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
           };
         }
 
-        if (timeIndex > endIndex) {
-          return {
-            ...state,
-            startIndex: timeIndex,
-            endIndex: null,
-            currentInput: "END",
-            timeTable: [...originalTimeTable],
-          };
-        }
-
         if (endIndex - timeIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
           console.log("3시간을 초과하여 예약할 수 없습니다.");
           timeIndex = endIndex - MAX_RESERVATION_TIME_BLOCK_UNIT + 1;
         }
 
         if (mode === "create") {
+          if (timeIndex > endIndex) {
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable: [...originalTimeTable],
+            };
+          }
+
           const timeTable = [...originalTimeTable];
 
           const modalContentData = [];
@@ -264,13 +258,38 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         } else {
           // * update
           const timeTable = [...originalTimeTable];
-
-          const modalContentData = [];
-          let requestDisabled = false;
-
           const selectedReservation = existedReservations.find(
             ({ reservationId }: any) => reservationId === selectedReservationId
           );
+
+          if (timeIndex > endIndex) {
+            for (
+              let i = selectedReservation.startIndex;
+              i <= selectedReservation.endIndex;
+              i += 1
+            ) {
+              const { peopleCount, users } = timeTable[i];
+
+              timeTable[i] = {
+                ...timeTable[i],
+                peopleCount: peopleCount - 1,
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+              };
+            }
+
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable,
+            };
+          }
+
+          const modalContentData = [];
+          let requestDisabled = false;
 
           if (endIndex < selectedReservation.endIndex) {
             for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
@@ -341,22 +360,21 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
           selectedReservationId,
         } = state;
 
-        if (timeIndex < startIndex) {
-          return {
-            ...state,
-            startIndex: timeIndex,
-            endIndex: null,
-            currentInput: "END",
-            timeTable: [...originalTimeTable],
-          };
-        }
-
         if (timeIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
           console.log("3시간을 초과하여 예약할 수 없습니다.");
           timeIndex = startIndex + MAX_RESERVATION_TIME_BLOCK_UNIT - 1;
         }
 
         if (mode === "create") {
+          if (timeIndex < startIndex) {
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable: [...originalTimeTable],
+            };
+          }
           const timeTable = [...originalTimeTable];
 
           const modalContentData = [];
@@ -388,12 +406,49 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         } else {
           const timeTable = [...originalTimeTable];
 
-          const modalContentData = [];
-          let requestDisabled = false;
-
           const selectedReservation = existedReservations.find(
             ({ reservationId }: any) => reservationId === selectedReservationId
           );
+          if (timeIndex < startIndex) {
+            console.log("여기로 오는 것이 맞느냐");
+
+            console.log(
+              selectedReservation.startIndex,
+              selectedReservation.endIndex
+            );
+
+            for (
+              let i = selectedReservation.startIndex;
+              i <= selectedReservation.endIndex;
+              i += 1
+            ) {
+              console.log("여기로 안들어오는거닝ㅁ?");
+              const { peopleCount, users } = timeTable[i];
+
+              timeTable[i] = {
+                ...timeTable[i],
+                peopleCount: peopleCount - 1,
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+              };
+
+              console.log(timeTable[i]);
+            }
+
+            console.log(timeTable);
+
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable,
+            };
+          }
+
+          const modalContentData = [];
+          let requestDisabled = false;
 
           if (selectedReservation.startIndex < startIndex) {
             for (
@@ -502,11 +557,6 @@ const Reservation: NextPage = () => {
   const handleSetCurrentBlock = (startIndex: number) => {
     setIsOpen(true);
     dispatch({ type: "CLICK_BLOCK", payload: { startIndex } });
-  };
-
-  const handleSetEndIndex = (endIndex: number) => {
-    setIsOpen(true);
-    dispatch({ type: "SET_END_INDEX", payload: { endIndex } });
   };
 
   const onClose = useCallback(() => {
