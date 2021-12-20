@@ -2,7 +2,12 @@ import { useRouter } from "next/router";
 import { useReducer, ReactNode, useEffect, useCallback } from "react";
 
 import { useLocalToken } from "@hooks/domain";
-import { reservationApi, favoriteApi, userApi } from "@service/.";
+import {
+  reservationApi,
+  favoriteApi,
+  userApi,
+  notificationApi,
+} from "@service/.";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
@@ -16,6 +21,7 @@ interface Props {
 
 const AuthProvider = ({ children }: Props) => {
   const [authProps, dispatch] = useReducer(reducer, initialData);
+
   const [token, _] = useLocalToken();
 
   const router = useRouter();
@@ -138,11 +144,30 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, []);
 
-  const pushNotification = (notification: Notification) => {
-    console.log(notification);
+  interface Res {
+    contents: Notification[];
+    lastId: number | null;
+  }
 
+  const getMoreNotifications = async () => {
+    const { notificationLastId } = authProps.currentUser;
+
+    if (notificationLastId) {
+      const { contents, lastId: fetchedLastId } =
+        await notificationApi.getNotifications<Res>({
+          lastId: notificationLastId,
+        });
+
+      dispatch({
+        type: authTypes.PUSH_NOTIFICATIONS,
+        payload: { notifications: contents, lastId: fetchedLastId },
+      });
+    }
+  };
+
+  const unshiftNotification = (notification: Notification) => {
     dispatch({
-      type: authTypes.PUSH_NOTIFICATION,
+      type: authTypes.UNSHIFT_NOTIFICATION,
       payload: { notification },
     });
   };
@@ -176,11 +201,12 @@ const AuthProvider = ({ children }: Props) => {
         logout,
         createFavorite,
         deleteFavorite,
-        pushNotification,
         getMyFavorites,
         getMyReservations,
         updateMyProfile,
         deleteMyProfileImage,
+        getMoreNotifications,
+        unshiftNotification,
       }}
     >
       <AuthLoading />

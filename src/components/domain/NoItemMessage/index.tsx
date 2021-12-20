@@ -8,7 +8,7 @@ interface Props {
   description: string;
   buttonTitle: string;
   style?: CSSProperties;
-  type: "reservation" | "favorite";
+  type: "reservation" | "favorite" | "notification";
 }
 
 const NoItemMessage = ({
@@ -26,7 +26,9 @@ const NoItemMessage = ({
         src={
           type === "favorite"
             ? "assets/basketball/fire_off_favorited.gif"
-            : "assets/basketball/fire_off_reservated.gif"
+            : type === "reservation"
+            ? "assets/basketball/fire_off_reservated.gif"
+            : "assets/basketball/animation_off_400.png"
         }
         alt="basketball"
         style={{ marginBottom: -4 }}

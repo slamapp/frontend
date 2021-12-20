@@ -10,7 +10,7 @@ const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
   const {
     authProps: { currentUser },
   } = useAuthContext();
-  const { userId, profileImageUrl } = currentUser;
+  const { userId, profileImageUrl, notifications } = currentUser;
 
   const {
     navigationProps: {
@@ -45,7 +45,15 @@ const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
         </IconGroup>
         <IconGroup>
           {isNotifications && (
-            <Badge count={0} maxCount={10}>
+            <Badge
+              count={notifications.reduce(
+                (acc, { isRead }) => acc + (isRead ? 0 : 1),
+                0
+              )}
+              showZero
+              dot={false}
+              maxCount={10}
+            >
               <Link href="/notifications" passHref>
                 <Icon name="bell" size={24} />
               </Link>
