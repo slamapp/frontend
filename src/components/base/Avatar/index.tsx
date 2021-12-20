@@ -22,8 +22,8 @@ const Avatar = ({
   className,
   lazy,
   threshold,
-  src = "assets/default_profile.svg",
-  size = 72,
+  src,
+  size = 70,
   shape = "round",
   placeholder,
   alt,
@@ -33,6 +33,8 @@ const Avatar = ({
   ...props
 }: Props) => {
   const [loaded, setLoaded] = useState(false);
+
+  const BASE_PROFILE_IMAGE_URL = "/assets/default_profile.svg";
 
   useEffect(() => {
     const image = new Image();
@@ -46,13 +48,13 @@ const Avatar = ({
         block
         lazy={lazy}
         threshold={threshold}
-        src={src}
+        src={src ?? BASE_PROFILE_IMAGE_URL}
         width={typeof size === "number" ? size : undefined}
         height={typeof size === "number" ? size : undefined}
         placeholder={placeholder}
         alt={alt}
         mode={mode}
-        style={{ opacity: loaded ? 1 : 0 }}
+        style={src && { opacity: loaded ? 1 : 0 }}
       />
       {isEdit ? (
         <Filter>
