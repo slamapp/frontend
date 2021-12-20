@@ -21,6 +21,7 @@ interface Props {
     onClick?: () => void;
   };
   custom?: boolean;
+  containerStyle?: CSSProperties;
 }
 
 const BottomFixedButton: React.FC<Props> = ({
@@ -33,10 +34,11 @@ const BottomFixedButton: React.FC<Props> = ({
   bottom,
   iconButton,
   custom = false,
+  containerStyle,
 }) => {
   return typeof document !== "undefined" ? (
     ReactDOM.createPortal(
-      <Background bottom={bottom} custom={custom}>
+      <Background bottom={bottom} custom={custom} style={containerStyle}>
         {iconButton && iconButton.href ? (
           <Link href={iconButton.href} passHref>
             <IconButton name={iconButton.icon} />

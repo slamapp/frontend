@@ -219,7 +219,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
               type="button"
               disabled={!center}
               onClick={savedLocation}
-              style={{ zIndex: 10000000 }}
+              containerStyle={{ zIndex: 10000000 }}
             >
               농구장 위치 저장하기
             </BottomFixedButton>
