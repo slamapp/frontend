@@ -8,7 +8,8 @@ const TimeInput: React.FC<any> = ({ time, selected, text, onClick }) => {
   return (
     <TimeInputWrapper selected={selected} onClick={onClick}>
       <Text block>{text}</Text>
-      <S.TimeSlotText style={{ textAlign: "center" }}>
+
+      <S.TimeSlotText style={{ textAlign: "center" }} isPlaceHolder={!time}>
         {time || "시간 입력"}
       </S.TimeSlotText>
     </TimeInputWrapper>

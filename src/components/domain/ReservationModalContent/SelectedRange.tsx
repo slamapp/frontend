@@ -73,7 +73,7 @@ const SelectedRangeContent = ({
           {!requestDisabled
             ? endTime
               ? `${startTime}-${endTime} ${buttonText}`
-              : "종료 시각을 선택해주세요"
+              : "종료 시간을 선택해주세요"
             : "이미 예약한 시간이 포함되어 있습니다"}
         </BottomFixedButton>
       </div>

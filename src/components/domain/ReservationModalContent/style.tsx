@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 import { Text } from "@components/base";
+import { css } from "@emotion/react";
 
 export const ModalContent = styled.section`
   display: flex;
@@ -25,4 +26,10 @@ export const AvatarGroup = styled.div`
 export const TimeSlotText = styled(Text)`
   font-weight: bold;
   font-size: ${({ theme }) => theme.fontSizes.lg};
+  ${({ isPlaceHolder, theme }) =>
+    isPlaceHolder &&
+    css`
+      color: ${theme.colors.gray400};
+      font-weight: 500;
+    `};
 `;
