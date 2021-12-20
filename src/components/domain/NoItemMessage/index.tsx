@@ -8,16 +8,28 @@ interface Props {
   description: string;
   buttonTitle: string;
   style?: CSSProperties;
+  type: "reservation" | "favorite";
 }
 
-const NoItemMessage = ({ title, description, buttonTitle, style }: Props) => {
+const NoItemMessage = ({
+  title,
+  description,
+  buttonTitle,
+  style,
+  type,
+}: Props) => {
   return (
     <WrapperSpacer gap="base" type="vertical" style={style}>
       <Image
-        width={70}
-        height={70}
-        src="assets/basketball/only_ball_500.gif"
+        width={90}
+        height={170}
+        src={
+          type === "favorite"
+            ? "assets/basketball/fire_off_favorited.gif"
+            : "assets/basketball/fire_off_reservated.gif"
+        }
         alt="basketball"
+        style={{ marginBottom: -4 }}
       />
       <Spacer gap="xxs" type="vertical" style={{ textAlign: "center" }}>
         <Text size="md" block strong>
@@ -27,10 +39,11 @@ const NoItemMessage = ({ title, description, buttonTitle, style }: Props) => {
       </Spacer>
       <Link href="/courts" passHref>
         <SearchButton fullWidth>
-          <SearchIcon name="compass" size="sm" color="white" />
+          <SearchIcon name="map" size="sm" color="white" />
           {buttonTitle}
         </SearchButton>
       </Link>
+      <div style={{ height: 40 }}></div>
     </WrapperSpacer>
   );
 };

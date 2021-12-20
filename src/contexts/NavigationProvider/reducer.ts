@@ -98,7 +98,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isNotifications: false,
         isProfile: false,
         isMenu: false,
-        title: "농구장 탐색",
+        title: "농구장 찾기",
       };
     }
     case pageType.COURT_RESERVATIONS: {
