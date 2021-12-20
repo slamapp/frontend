@@ -240,7 +240,7 @@ const User: NextPage = UtilRoute("private", () => {
               </ProfileFavoritesListItem>
             ))
           ) : (
-            <Chip secondary>정보 없음</Chip>
+            <Chip secondary>등록한 농구장이 없습니다</Chip>
           )}
         </div>
       </AdditionalInfoSpacer>
