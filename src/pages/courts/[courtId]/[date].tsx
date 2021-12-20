@@ -202,6 +202,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
           endIndex,
           existedReservations,
           selectedReservationId,
+          hasBall,
         } = state;
 
         if (endIndex === null) {
@@ -268,7 +269,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
               i <= selectedReservation.endIndex;
               i += 1
             ) {
-              const { peopleCount, users } = timeTable[i];
+              const { peopleCount, users, ballCount } = timeTable[i];
 
               timeTable[i] = {
                 ...timeTable[i],
@@ -276,6 +277,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
                 users: users.filter(
                   ({ userId }: any) => userId !== selectedReservation.userId
                 ),
+                ballCount: hasBall ? ballCount - 1 : ballCount,
               };
             }
 
@@ -293,13 +295,16 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
 
           if (endIndex < selectedReservation.endIndex) {
             for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
-              const { users, peopleCount, hasReservation } = timeTable[i];
+              const { users, peopleCount, ballCount, hasReservation } =
+                timeTable[i];
               timeTable[i] = {
                 ...timeTable[i],
                 users: users.filter(
                   ({ userId }: any) => userId !== selectedReservation.userId
                 ),
                 peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
               };
             }
           }
@@ -310,25 +315,33 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
               i < timeIndex;
               i += 1
             ) {
-              const { users, peopleCount, hasReservation } = timeTable[i];
+              const { users, peopleCount, ballCount, hasReservation } =
+                timeTable[i];
               timeTable[i] = {
                 ...timeTable[i],
                 users: users.filter(
                   ({ userId }: any) => userId !== selectedReservation.userId
                 ),
                 peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
               };
             }
           }
 
           for (let i = timeIndex; i <= endIndex; i += 1) {
-            const { users, peopleCount, hasReservation } = timeTable[i];
+            const { users, peopleCount, hasReservation, ballCount } =
+              timeTable[i];
 
-            if (!hasReservation) {
+            if (
+              i < selectedReservation.startIndex ||
+              i > selectedReservation.endIndex
+            ) {
               timeTable[i] = {
                 ...timeTable[i],
                 users: [...users, user],
                 peopleCount: peopleCount + 1,
+                ballCount: hasBall ? ballCount + 1 : ballCount,
               };
             }
 
@@ -358,6 +371,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
           startIndex,
           existedReservations,
           selectedReservationId,
+          hasBall,
         } = state;
 
         if (timeIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
@@ -410,33 +424,24 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
             ({ reservationId }: any) => reservationId === selectedReservationId
           );
           if (timeIndex < startIndex) {
-            console.log("여기로 오는 것이 맞느냐");
-
-            console.log(
-              selectedReservation.startIndex,
-              selectedReservation.endIndex
-            );
-
             for (
               let i = selectedReservation.startIndex;
               i <= selectedReservation.endIndex;
               i += 1
             ) {
-              console.log("여기로 안들어오는거닝ㅁ?");
-              const { peopleCount, users } = timeTable[i];
+              const { peopleCount, users, ballCount, hasReservation } =
+                timeTable[i];
 
               timeTable[i] = {
                 ...timeTable[i],
-                peopleCount: peopleCount - 1,
+                peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
                 users: users.filter(
                   ({ userId }: any) => userId !== selectedReservation.userId
                 ),
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
               };
-
-              console.log(timeTable[i]);
             }
-
-            console.log(timeTable);
 
             return {
               ...state,
@@ -456,38 +461,49 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
               i < startIndex;
               i += 1
             ) {
-              const { users, peopleCount, hasReservation } = timeTable[i];
+              const { users, peopleCount, hasReservation, ballCount } =
+                timeTable[i];
               timeTable[i] = {
                 ...timeTable[i],
                 users: users.filter(
                   ({ userId }: any) => userId !== selectedReservation.userId
                 ),
                 peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
               };
             }
           }
 
           if (selectedReservation.endIndex - timeIndex > 0) {
             for (let i = selectedReservation.endIndex; i > timeIndex; i -= 1) {
-              const { users, peopleCount, hasReservation } = timeTable[i];
+              const { users, peopleCount, ballCount, hasReservation } =
+                timeTable[i];
               timeTable[i] = {
                 ...timeTable[i],
                 users: users.filter(
                   ({ userId }: any) => userId !== selectedReservation.userId
                 ),
                 peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
               };
             }
           }
 
           for (let i = startIndex; i <= timeIndex; i += 1) {
-            const { users, peopleCount, hasReservation } = timeTable[i];
+            const { users, peopleCount, hasReservation, ballCount } =
+              timeTable[i];
 
-            if (!hasReservation) {
+            if (
+              i < selectedReservation.startIndex ||
+              i > selectedReservation.endIndex
+            ) {
               timeTable[i] = {
                 ...timeTable[i],
                 users: [...users, user],
                 peopleCount: peopleCount + 1,
+                ballCount: hasBall ? ballCount + 1 : ballCount,
               };
             }
 
