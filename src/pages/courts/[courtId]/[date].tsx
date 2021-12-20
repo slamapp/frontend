@@ -217,7 +217,15 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
           };
         }
 
-        if (timeIndex > endIndex) return state;
+        if (timeIndex > endIndex) {
+          return {
+            ...state,
+            startIndex: timeIndex,
+            endIndex: null,
+            currentInput: "END",
+            timeTable: [...originalTimeTable],
+          };
+        }
 
         if (endIndex - timeIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
           console.log("3시간을 초과하여 예약할 수 없습니다.");
@@ -333,7 +341,15 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
           selectedReservationId,
         } = state;
 
-        if (timeIndex < startIndex) return state;
+        if (timeIndex < startIndex) {
+          return {
+            ...state,
+            startIndex: timeIndex,
+            endIndex: null,
+            currentInput: "END",
+            timeTable: [...originalTimeTable],
+          };
+        }
 
         if (timeIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
           console.log("3시간을 초과하여 예약할 수 없습니다.");
