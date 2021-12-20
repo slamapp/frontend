@@ -12,23 +12,26 @@ interface Props {
   [x: string]: any;
 }
 const NewCourtItem = ({ data, state, style }: Props) => {
-  const handleDeny = (e: MouseEvent<HTMLButtonElement>, newCourtId: number) => {
+  const handleDeny = async (
+    e: MouseEvent<HTMLButtonElement>,
+    newCourtId: number
+  ) => {
     e.preventDefault();
     try {
-      managementApi.denyNewCourt(newCourtId);
+      await managementApi.denyNewCourt(newCourtId);
       alert("거절 완료했습니다.");
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleAccept = (
+  const handleAccept = async (
     e: MouseEvent<HTMLButtonElement>,
     newCourtId: number
   ) => {
     e.preventDefault();
     try {
-      managementApi.acceptNewCourt(newCourtId);
+      await managementApi.acceptNewCourt(newCourtId);
       alert("승인 완료했습니다.");
     } catch (error) {
       console.error(error);
