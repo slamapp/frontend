@@ -14,6 +14,7 @@ export interface DataProps {
     followers: Follow[];
     following: Follow[];
     notifications: Notification[];
+    notificationLastId: number | null | undefined;
     reservations: Reservation[];
   };
   isLoading: boolean;
@@ -32,29 +33,11 @@ export const initialData = {
     role: null,
     description: null,
     nickname: null,
-    favorites: [
-      {
-        favoriteId: 1,
-        courtId: 3,
-        courtName: "용왕산 근린 공원 농구장",
-        latitude: 34.567234,
-        longitude: 12.493048,
-        createdAt: "2021-01-01T12:20:10",
-        updatedAt: "2021-01-01T12:20:10",
-      },
-      {
-        favoriteId: 2,
-        courtId: 4,
-        courtName: "한강공원 농구장",
-        latitude: 34.567234,
-        longitude: 12.493048,
-        createdAt: "2021-01-01T12:20:10",
-        updatedAt: "2021-01-01T12:20:10",
-      },
-    ],
+    favorites: [],
     followers: [],
     following: [],
     notifications: [],
+    notificationLastId: undefined,
     reservations: [],
   },
   isLoading: true,
@@ -66,6 +49,8 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
 ) => {
   switch (type) {
     case authTypes.SET_CURRENT_USER: {
+      console.log(payload.notifications);
+
       return {
         ...prevState,
         currentUser: {
@@ -79,6 +64,8 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
           profileImageUrl: payload.profileImage,
           role: payload.role,
           description: payload.description,
+          notificationLastId:
+            payload.notifications[payload.notifications.length - 1]?.id || null,
         },
       };
     }
@@ -167,18 +154,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.PUSH_NOTIFICATION: {
-      return {
-        ...prevState,
-        currentUser: {
-          ...prevState.currentUser,
-          notifications: [
-            ...prevState.currentUser.notifications,
-            payload.notification,
-          ],
-        },
-      };
-    }
+
     case authTypes.UNSHIFT_NOTIFICATION: {
       return {
         ...prevState,
@@ -227,6 +203,21 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
             ({ reservationId }) =>
               reservationId !== payload.deletedReservationId
           ),
+        },
+      };
+    }
+    case authTypes.PUSH_NOTIFICATIONS: {
+      console.log("push notifications", payload);
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          notifications: [
+            ...prevState.currentUser.notifications,
+            ...payload.notifications,
+          ],
+          notificationLastId:
+            payload.notifications.length !== 0 ? payload.lastId : null,
         },
       };
     }

@@ -144,22 +144,25 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, []);
 
-  const getMoreNotifications = async () => {
-    const { notifications } = authProps.currentUser;
-    const { contents } = await notificationApi.getNotifications<{
-      contents: Notification[];
-    }>({
-      lastId: 4,
-      // notifications[notifications.length - 1].id,
-    });
-    contents.forEach((notification) => pushNotification(notification));
-  };
+  interface Res {
+    contents: Notification[];
+    lastId: number | null;
+  }
 
-  const pushNotification = (notification: Notification) => {
-    dispatch({
-      type: authTypes.PUSH_NOTIFICATION,
-      payload: { notification },
-    });
+  const getMoreNotifications = async () => {
+    const { notificationLastId } = authProps.currentUser;
+
+    if (notificationLastId) {
+      const { contents, lastId: fetchedLastId } =
+        await notificationApi.getNotifications<Res>({
+          lastId: notificationLastId,
+        });
+
+      dispatch({
+        type: authTypes.PUSH_NOTIFICATIONS,
+        payload: { notifications: contents, lastId: fetchedLastId },
+      });
+    }
   };
 
   const unshiftNotification = (notification: Notification) => {
@@ -198,7 +201,6 @@ const AuthProvider = ({ children }: Props) => {
         logout,
         createFavorite,
         deleteFavorite,
-        pushNotification,
         getMyFavorites,
         getMyReservations,
         updateMyProfile,

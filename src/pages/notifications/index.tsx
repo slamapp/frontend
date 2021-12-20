@@ -1,33 +1,45 @@
 import { NextPage } from "next";
-import React, { useCallback, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import UtilRoute from "UtilRoute";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import NotificationList from "@components/domain/NotificationList";
-import { useInfiniteScroll } from "@hooks/.";
-import { Skeleton, Spinner } from "@components/base";
+import { useIntersectionObserver } from "@hooks/.";
+import { Skeleton } from "@components/base";
+import { NoItemMessage } from "@components/domain";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
-  const { getMoreNotifications } = useAuthContext();
-
+  const { authProps, getMoreNotifications } = useAuthContext();
+  const { notificationLastId } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.NOTIFICATIONS);
 
   const ref = useRef<HTMLDivElement>(null);
-  const [isFetching] = useInfiniteScroll(ref, getMoreNotifications, 1);
+  const entry = useIntersectionObserver(ref, {});
 
-  console.log(isFetching);
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      getMoreNotifications();
+    }
+  }, [entry?.isIntersecting]);
 
   return (
     <PageConainer>
       <NotificationList />
-
-      <div ref={ref} style={{ height: 100 }}>
-        {isFetching && (
-          <>
+      <div ref={ref} style={{ minHeight: 200 }}>
+        {notificationLastId ? (
+          <div>
             <SkeletonNotification />
             <SkeletonNotification />
-          </>
+          </div>
+        ) : (
+          <NoItemMessage
+            type="notification"
+            title="알림이 없습니다"
+            description="유용한 정보를 알림에서 모아 보실 수 있어요"
+            buttonTitle="지도에서 내 주변 농구장 찾기"
+            style={{ marginLeft: 16, marginRight: 16 }}
+          />
         )}
       </div>
     </PageConainer>

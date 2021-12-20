@@ -2,18 +2,18 @@ import { request, authRequest, authFileRequest } from "./fetcher";
 
 const notificationApi = {
   getNotifications: <R>({
-    size = 5,
-    lastId = 0,
+    size = 3,
+    lastId,
     isFirst = false,
   }: {
     size?: number;
-    lastId?: number;
+    lastId?: number | null;
     isFirst?: boolean;
   }) => {
     return authRequest.get<R, R>("/notifications", {
       params: {
         size,
-        lastId,
+        lastId: lastId || 0,
         isFirst,
       },
     });

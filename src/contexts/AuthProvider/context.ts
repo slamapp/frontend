@@ -11,7 +11,6 @@ export interface ContextProps {
   deleteMyProfileImage: () => void;
   createFavorite: (courtId: number) => void;
   deleteFavorite: (favoriteId: number) => void;
-  pushNotification: (notification: Notification) => void;
   unshiftNotification: (notification: Notification) => void;
   getMyFavorites: () => void;
   getMyReservations: () => void;
