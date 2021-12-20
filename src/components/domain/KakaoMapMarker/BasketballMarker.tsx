@@ -1,3 +1,4 @@
+import { useAuthContext } from "@contexts/hooks";
 import { useCallback, useEffect, useMemo } from "react";
 
 interface Props {
@@ -10,6 +11,9 @@ const PAUSE_COURT_NUMBER = 0;
 const FIRE_COURT_NUMBER = 6;
 
 const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
+  const { authProps } = useAuthContext();
+  const { favorites, reservations } = authProps.currentUser;
+
   const marker = useMemo(
     () =>
       new kakao.maps.Marker({
@@ -25,15 +29,46 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
 
   useEffect(() => {
     if (map) {
-      let imageSrc = "/assets/basketball/fire_off_400.gif";
-      imageSrc =
-        court.courtReservation === PAUSE_COURT_NUMBER
-          ? "/assets/basketball/animation_off_400.png"
-          : imageSrc;
-      imageSrc =
-        court.courtReservation >= FIRE_COURT_NUMBER
-          ? "/assets/basketball/fire_on_400.gif"
-          : imageSrc;
+      let imageSrc = "/assets/basketball/animation_off_400.png";
+
+      const isReservatedCourt = reservations.some(
+        ({ courtId }) => courtId === court.courtId
+      );
+      const isFavoritedCourt = favorites.some(
+        ({ courtId }) => courtId === court.courtId
+      );
+
+      if (isFavoritedCourt) {
+        imageSrc = "/assets/basketball/animation_off_favorited.png";
+      }
+
+      if (
+        court.courtReservation > PAUSE_COURT_NUMBER &&
+        court.courtReservation < FIRE_COURT_NUMBER
+      ) {
+        if (isReservatedCourt && isFavoritedCourt) {
+          imageSrc = "/assets/basketball/fire_off_all_tagged.gif";
+        } else if (isReservatedCourt) {
+          imageSrc = "/assets/basketball/fire_off_reservated.gif";
+        } else if (isFavoritedCourt) {
+          imageSrc = "/assets/basketball/fire_off_favorited.gif";
+        } else {
+          imageSrc = "/assets/basketball/fire_off_400.gif";
+        }
+      }
+
+      if (court.courtReservation >= FIRE_COURT_NUMBER) {
+        if (isReservatedCourt && isFavoritedCourt) {
+          imageSrc = "/assets/basketball/fire_on_all_tagged.gif";
+        } else if (isReservatedCourt) {
+          imageSrc = "/assets/basketball/fire_on_reservated.gif";
+        } else if (isFavoritedCourt) {
+          imageSrc = "/assets/basketball/fire_on_favorited.gif";
+        } else {
+          imageSrc = "/assets/basketball/fire_on_400.gif";
+        }
+      }
+
       const imageSize = new kakao.maps.Size(80, 150);
       const imageOption = {
         offset: new kakao.maps.Point(27, 69),
