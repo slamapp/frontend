@@ -21,15 +21,6 @@ import {
 } from "@utils/timeTable";
 import { courtApi, reservationApi } from "@service/.";
 
-interface IReservation {
-  reservationId: number | string;
-  userId: number | string;
-  courtId: number;
-  startTime: string;
-  endTime: string;
-  hasBall: boolean;
-}
-
 const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   const timeTable = Array.from({ length: TIME_TABLE_ROWS }, () => ({
     peopleCount: 0,
@@ -89,6 +80,19 @@ const initialState = {
   selectedReservationId: null,
   requestDisabled: false,
   currentInput: "START",
+};
+
+const getIsPastDay = (date: string) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return new Date(date).getTime() < today.getTime();
+};
+
+const getIsPastTime = (datetime: string) => {
+  const today = new Date();
+
+  return new Date(datetime).getTime() < today.getTime();
 };
 
 const reducer: Reducer<any, any> = (state, { type, payload }) => {
@@ -151,6 +155,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         startIndex,
         endIndex: null,
         selectedReservationId: null,
+        selectedReservation: null,
         modalContentData: state.timeTable[startIndex].users,
       };
     }
@@ -180,6 +185,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         ...state,
         selectedReservationId,
         modalContentData,
+        selectedReservation,
         startIndex: null,
       };
     }
@@ -562,6 +568,7 @@ const Reservation: NextPage = () => {
     existedReservations,
     requestDisabled,
     selectedReservationId,
+    selectedReservation,
     modalContentData,
     hasBall,
     currentInput,
@@ -692,13 +699,7 @@ const Reservation: NextPage = () => {
   );
 
   useEffect(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (
-      router.isReady &&
-      new Date(date as string).getTime() < today.getTime()
-    ) {
+    if (router.isReady && getIsPastDay(date as string)) {
       alert("과거의 예약 정보는 확인할 수 없습니다.");
       router.replace("/courts");
     }
@@ -767,19 +768,31 @@ const Reservation: NextPage = () => {
             availableReservation={!timeTable[startIndex].hasReservation}
           />
         )}
+
+        {console.log(
+          `${date} ${getTimeFromIndex(selectedReservation?.startIndex)}`
+        )}
+        {console.log(
+          getIsPastTime(
+            `${date} ${getTimeFromIndex(selectedReservation?.startIndex)}`
+          )
+        )}
         {isOpen &&
           step === 1 &&
           selectedReservationId !== null &&
           modalContentData && (
             <ModalContent.ExistedReservation
-              timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
-                endIndex + 1
-              )}
+              timeSlot={`${getTimeFromIndex(
+                selectedReservation.startIndex
+              )} - ${getTimeFromIndex(selectedReservation.endIndex + 1)}
               `}
               reservationId={selectedReservationId}
               participantsPerBlock={modalContentData}
               onDeleteReservation={handleDeleteReservation}
               onStartUpdate={handleStartUpdate}
+              requestDisabled={getIsPastTime(
+                `${date} ${getTimeFromIndex(selectedReservation.startIndex)}`
+              )}
             />
           )}
         {isOpen && step === 2 && modalContentData && (
