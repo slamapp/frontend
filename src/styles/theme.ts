@@ -46,6 +46,7 @@ const theme = {
     kakao: {
       yellow: {
         strong: "#F7E600",
+        middle: "#FFF683",
       },
       brown: {
         strong: "#3A1D1D",
