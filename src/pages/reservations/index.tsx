@@ -7,8 +7,9 @@ import { reservationApi } from "@service/.";
 import ReservationItem from "@components/domain/ReservationItem";
 import { Spacer, Text } from "@components/base";
 import { NoItemMessage } from "@components/domain";
+import UtilRoute from "UtilRoute";
 
-const Reservations: NextPage = () => {
+const Reservations: NextPage = UtilRoute("private", () => {
   const { authProps, getMyReservations } = useAuthContext();
   const { reservations: upcomingReservations } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
@@ -94,7 +95,7 @@ const Reservations: NextPage = () => {
       <TabContentsWrapper>{menuTab[activeIndex].tabContent}</TabContentsWrapper>
     </PageContainer>
   );
-};
+});
 
 const TabStyle = styled.div`
   display: flex;
