@@ -78,6 +78,11 @@ const StyledButton = styled.button<Omit<Props, "children">>`
       }
     `}
 
+  font-weight: bold;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
   ${({ theme, secondary }) =>
     secondary &&
     css`
@@ -90,7 +95,7 @@ const StyledButton = styled.button<Omit<Props, "children">>`
       }
     `}
 
-    ${({ theme, tertiary }) =>
+  ${({ theme, tertiary }) =>
     tertiary &&
     css`
       background-color: ${theme.colors.gray200};
@@ -101,10 +106,6 @@ const StyledButton = styled.button<Omit<Props, "children">>`
         background-color: ${theme.colors.gray400};
       }
     `}
-  font-weight: bold;
-  border: none;
-  outline: none;
-  cursor: pointer;
 
   &:disabled {
     cursor: not-allowed;

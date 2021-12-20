@@ -182,7 +182,7 @@ const User: NextPage = UtilRoute("private", () => {
         {!isMe ? (
           <ButtonContainer>
             <Link href={`/chat/${userId}`} passHref>
-              <a>
+              <a style={{ width: "100%" }}>
                 <Button fullWidth secondary>
                   메시지
                 </Button>
