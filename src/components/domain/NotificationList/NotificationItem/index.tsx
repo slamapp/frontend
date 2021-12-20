@@ -7,7 +7,6 @@ import { CourtItem, LinkAvatar } from "@components/domain";
 import "dayjs/locale/ko";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -118,7 +117,7 @@ const NotificationItemContainer = styled.div<{
   align-items: center;
   gap: 12px;
   padding: 12px;
-  margin: 12px;
+  margin-bottom: 12px;
   ${({ theme, type }) => css`
     background: ${type === "FOLLOWING"
       ? theme.colors.white
