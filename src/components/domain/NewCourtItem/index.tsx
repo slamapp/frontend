@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { css } from "@emotion/react";
@@ -11,7 +12,8 @@ interface Props {
   [x: string]: any;
 }
 const NewCourtItem = ({ data, state, style }: Props) => {
-  const handleDeny = (newCourtId: number) => {
+  const handleDeny = (e: MouseEvent<HTMLButtonElement>, newCourtId: number) => {
+    e.preventDefault();
     try {
       managementApi.denyNewCourt(newCourtId);
       alert("거절 완료했습니다.");
@@ -20,7 +22,11 @@ const NewCourtItem = ({ data, state, style }: Props) => {
     }
   };
 
-  const handleAccept = (newCourtId: number) => {
+  const handleAccept = (
+    e: MouseEvent<HTMLButtonElement>,
+    newCourtId: number
+  ) => {
+    e.preventDefault();
     try {
       managementApi.acceptNewCourt(newCourtId);
       alert("승인 완료했습니다.");
@@ -40,11 +46,11 @@ const NewCourtItem = ({ data, state, style }: Props) => {
             <Button
               fullWidth
               tertiary
-              onClick={() => handleDeny(data.newCourtId)}
+              onClick={(e) => handleDeny(e, data.newCourtId)}
             >
               거절하기
             </Button>
-            <Button fullWidth onClick={() => handleAccept(data.newCourtId)}>
+            <Button fullWidth onClick={(e) => handleAccept(e, data.newCourtId)}>
               승인하기
             </Button>
           </ButtonContainer>
