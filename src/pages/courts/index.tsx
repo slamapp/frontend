@@ -20,6 +20,7 @@ import {
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { courtApi } from "@service/.";
+import { getDateStringFromDate } from "@utils/timeTable";
 import type { Coord } from "../../types/map";
 
 declare global {
@@ -237,7 +238,11 @@ const Courts: NextPage = () => {
   useEffect(() => {
     const restoreCourts = async (courtId: number) => {
       try {
-        const court: any = await courtApi.getCourtDetail(courtId);
+        const court: any = await courtApi.getCourtDetail(
+          courtId,
+          getDateStringFromDate(selectedDate),
+          selectedSlot
+        );
 
         const { latitude, longitude } = court;
 
@@ -262,10 +267,10 @@ const Courts: NextPage = () => {
   }, [map]);
 
   useEffect(() => {
-    if (map && map?.getLevel() <= 4) {
+    if (map) {
       fetchCourtsByBoundsAndDatetime(map);
     }
-  }, [map, fetchCourtsByBoundsAndDatetime, level, center]);
+  }, [map, fetchCourtsByBoundsAndDatetime, center]);
 
   return (
     <>
@@ -284,6 +289,7 @@ const Courts: NextPage = () => {
           level={level}
           center={center}
           onDragEnd={fetchCourtsByBoundsAndDatetime}
+          onZoomChanged={fetchCourtsByBoundsAndDatetime}
         >
           <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
           <Map.CurrentLocationButton

@@ -10,7 +10,7 @@ const useStomp: UseStomp = (token: string) => {
   const [compatClient, setCompatClient] = useState<CompatClient | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { authProps, pushNotification } = useAuthContext();
+  const { authProps, unshiftNotification } = useAuthContext();
   const {
     currentUser: { userId },
   } = authProps;
@@ -30,11 +30,10 @@ const useStomp: UseStomp = (token: string) => {
           setIsLoading(false);
           subscribe(newClient, `/user/${userId}/notification`, (body) => {
             console.log(body);
-            pushNotification(body as Notification);
+            unshiftNotification(body as Notification);
           });
           subscribe(newClient, `/user/${`courtId`}/chat`, (body) => {
             console.log(body);
-            pushNotification(body as Notification);
           });
         },
         handleError

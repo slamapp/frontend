@@ -12,10 +12,11 @@ type NotificationType = "FOLLOWING" | "LOUDSPEAKER";
 
 export interface Notification extends DefaultNotification {
   followerInfo: FollowerInfo | null;
-  loudSpeakerInfo: LoudSpeakerInfo | null;
+  loudspeakerInfo: LoudspeakerInfo | null;
 }
 
 export interface DefaultNotification {
+  id: number;
   type: NotificationType;
   isRead: boolean;
   isClicked: boolean;
@@ -29,8 +30,9 @@ type FollowerInfo = {
   userImage: string;
 };
 
-type LoudSpeakerInfo = {
-  court: {
+type LoudspeakerInfo = {
+  courtInfo: {
+    id: string;
     name: string;
     latitude: number;
     longitude: number;

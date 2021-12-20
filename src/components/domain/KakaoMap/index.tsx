@@ -23,6 +23,7 @@ interface Props {
   children: ReactNode;
   onClick?: (_: kakao.maps.Map, event: kakao.maps.event.MouseEvent) => void;
   onDragEnd?: any;
+  onZoomChanged?: any;
 }
 
 const KakaoMap = ({
@@ -32,6 +33,7 @@ const KakaoMap = ({
   zoomable = true,
   onClick,
   onDragEnd,
+  onZoomChanged,
   children,
   style,
 }: Props): JSX.Element => {
@@ -80,6 +82,7 @@ const KakaoMap = ({
 
   useKakaoMapEvent<kakao.maps.Map>(map, "click", onClick);
   useKakaoMapEvent<kakao.maps.Map>(map, "dragend", onDragEnd);
+  useKakaoMapEvent<kakao.maps.Map>(map, "zoom_changed", onZoomChanged);
 
   return (
     <>

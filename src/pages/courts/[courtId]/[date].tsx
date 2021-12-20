@@ -526,11 +526,12 @@ const Reservation: NextPage = () => {
   );
 
   useEffect(() => {
-    if (new Date(date as string).getTime() < new Date().getTime()) {
-      // TODO: 과거 예약 정보 링크로 들어올 시 모달로 안내 후 사용자를 /courts로 이동
-      // alert("과거의 예약 정보는 확인할 수 없습니다.");
-      router.replace("/courts");
-    }
+    // FIXME 과거 예약 정보 링크로 들어올 시 모달로 안내 후 사용자를 /courts로 이동하는 시간계산 실패
+    // if (new Date(date as string).getTime() < new Date().getTime()) {
+    //   // TODO: 과거 예약 정보 링크로 들어올 시 모달로 안내 후 사용자를 /courts로 이동
+    //   // alert("과거의 예약 정보는 확인할 수 없습니다.");
+    //   router.replace("/courts");
+    // }
   });
 
   useEffect(() => {
@@ -546,6 +547,7 @@ const Reservation: NextPage = () => {
   }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
 
   useEffect(() => {
+    // FIXME router.isReady
     const initReservations = async () => {
       const { reservations } = await courtApi.getAllCourtReservationsByDate(
         courtId as string,

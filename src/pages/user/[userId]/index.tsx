@@ -99,7 +99,15 @@ const User: NextPage = UtilRoute("private", () => {
         sendFollow({ receiverId: pageUserInfo.userId });
       }
       setPageUserInfo((prevState) =>
-        prevState ? { ...prevState, isFollowing: !prevIsFollowing } : null
+        prevState
+          ? {
+              ...prevState,
+              isFollowing: !prevIsFollowing,
+              followerCount: prevIsFollowing
+                ? prevState.followerCount - 1
+                : prevState.followerCount + 1,
+            }
+          : null
       );
     }
   };
@@ -173,7 +181,7 @@ const User: NextPage = UtilRoute("private", () => {
                 onClick={() => alert("개발 예정")}
                 style={{ cursor: "pointer" }}
               >
-                ?
+                6.3
               </dd>
             </div>
           </StatBar>
@@ -182,7 +190,7 @@ const User: NextPage = UtilRoute("private", () => {
         {!isMe ? (
           <ButtonContainer>
             <Link href={`/chat/${userId}`} passHref>
-              <a>
+              <a style={{ width: "100%" }}>
                 <Button fullWidth secondary>
                   메시지
                 </Button>
@@ -240,7 +248,7 @@ const User: NextPage = UtilRoute("private", () => {
               </ProfileFavoritesListItem>
             ))
           ) : (
-            <Chip secondary>정보 없음</Chip>
+            <Chip secondary>등록한 농구장이 없습니다</Chip>
           )}
         </div>
       </AdditionalInfoSpacer>
