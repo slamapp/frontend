@@ -616,7 +616,10 @@ const Reservation: NextPage = () => {
       setIsOpen(true);
       dispatch({
         type: "SET_TIME_INDEX",
-        payload: { timeIndex, user: currentUser },
+        payload: {
+          timeIndex,
+          user: { currentUser, avatarImgSrc: currentUser.profileImageUrl },
+        },
       });
     },
     [currentUser]
