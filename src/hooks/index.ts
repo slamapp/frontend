@@ -19,3 +19,4 @@ export { default as useTimeout } from "./useTimeout";
 export { default as useTimeoutFn } from "./useTimeoutFn";
 export { default as useToggle } from "./useToggle";
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
+export { default as useIntersectionObserver } from "./useIntersectionObserver";
