@@ -42,7 +42,7 @@ const NewCourtItem = ({ data, state, style }: Props) => {
     <Link href={`/admin/newcourts/${data.newCourtId}`} passHref>
       <Container style={style}>
         <CourtName strong block>
-          {data.name}
+          {data.courtName}
         </CourtName>
         {state === "READY" ? (
           <ButtonContainer>
