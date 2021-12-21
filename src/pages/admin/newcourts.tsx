@@ -1,9 +1,9 @@
 import { useNavigationContext } from "@contexts/hooks";
 import { NextPage } from "next";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Spacer, Tab } from "@components/base";
+import { Spacer, Tab, Text } from "@components/base";
 import styled from "@emotion/styled";
-import { NewCourtItem, NewCourt } from "@components/domain";
+import { NewCourtItem, NewCourt, Modal } from "@components/domain";
 import managementApi from "@service/managementApi";
 import { useInfiniteScroll } from "@hooks/.";
 
@@ -18,6 +18,8 @@ const NewCourtsPage: NextPage = () => {
   const [currentLastId, setCurrentLastId] = useState<number | null>(0);
   const [activeStatus, setActiveStatus] = useState<Status>("READY");
   const [isFetching, setIsFetching] = useState(false);
+  const [isOpenDenyModal, setIsOpenDenyModal] = useState(false);
+  const [isOpenAcceptModal, setIsOpenAcceptModal] = useState(false);
 
   const loadMore = useCallback(
     async (status: Status) => {
@@ -117,6 +119,8 @@ const NewCourtsPage: NextPage = () => {
                   key={court.newCourtId}
                   data={court}
                   state="READY"
+                  setIsOpenAcceptModal={setIsOpenAcceptModal}
+                  setIsOpenDenyModal={setIsOpenDenyModal}
                 />
               ))}
             </Spacer>
@@ -138,6 +142,28 @@ const NewCourtsPage: NextPage = () => {
       </Tab>
       {readyData.length === 0 && <div style={{ flex: 1 }}></div>}
       <div ref={ref} style={{ height: 10 }}></div>
+
+      <Modal
+        visible={isOpenDenyModal}
+        onClose={() => setIsOpenDenyModal(false)}
+      >
+        <Modal.Header>
+          <Text style={{ textAlign: "center" }} block>
+            거절이 완료되었습니다.
+          </Text>
+        </Modal.Header>
+      </Modal>
+
+      <Modal
+        visible={isOpenAcceptModal}
+        onClose={() => setIsOpenAcceptModal(false)}
+      >
+        <Modal.Header>
+          <Text style={{ textAlign: "center" }} block>
+            승인이 완료되었습니다.
+          </Text>
+        </Modal.Header>
+      </Modal>
     </div>
   );
 };
