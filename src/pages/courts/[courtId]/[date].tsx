@@ -578,8 +578,6 @@ const Reservation: NextPage = () => {
     currentInput,
   } = reservation;
 
-  console.log(modalContentData);
-
   const [snap, setSnap] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
