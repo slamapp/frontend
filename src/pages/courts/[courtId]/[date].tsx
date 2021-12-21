@@ -544,7 +544,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
 const Reservation: NextPage = () => {
   const router = useRouter();
   const {
-    query: { courtId, date },
+    query: { courtId, date, timeSlot },
   } = router;
 
   const {
@@ -705,6 +705,16 @@ const Reservation: NextPage = () => {
       alert("과거의 예약 정보는 확인할 수 없습니다.");
       router.replace("/courts");
     }
+
+    const el = document.querySelector("#scrolled-container");
+
+    if (router.isReady && !timeSlot) {
+      el!.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
   }, [router]);
 
   useEffect(() => {
@@ -810,7 +820,6 @@ const Reservation: NextPage = () => {
           />
         )}
       </ModalSheet>
-
       <div style={{ height: 320 }}></div>
     </div>
   );
