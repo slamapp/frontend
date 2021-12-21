@@ -83,8 +83,6 @@ const AuthProvider = ({ children }: Props) => {
         type: authTypes.DELETE_MY_PROFILE_IMAGE,
         payload: { deletedMyProfileImage },
       });
-      alert("기본 이미지로 변경하시겠어요?"); // TODO: 모달 띄워서 물어보기
-      router.replace(`/user/${authProps.currentUser.userId}`);
     } catch (error) {
       console.error(error);
     } finally {
