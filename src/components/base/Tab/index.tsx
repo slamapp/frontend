@@ -13,10 +13,16 @@ import TabItem from "./TabItem";
 interface Props {
   children?: ReactNode;
   active?: boolean;
+  onClick?: (param?: any) => void;
   [x: string]: any;
 }
 
-const Tab = ({ children, active = false, ...props }: Props) => {
+const Tab = ({
+  children,
+  active = false,
+  onClick = () => {},
+  ...props
+}: Props) => {
   const [currentActive, setCurrentActive] = useState(() => {
     if (active) {
       return active;
@@ -39,6 +45,7 @@ const Tab = ({ children, active = false, ...props }: Props) => {
         active: element.props.index === currentActive,
         onClick: () => {
           setCurrentActive(element.props.index);
+          onClick(element.props.index);
         },
       });
     });

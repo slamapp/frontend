@@ -1,16 +1,18 @@
-import { useState, useEffect, useCallback, MouseEvent } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Sheet from "react-modal-sheet";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
 
 import UtilRoute from "UtilRoute";
-import { Input, Spacer, Text, Button, Label, Icon } from "@components/base";
+import { Input, Text, Button, Label, Icon, Spacer } from "@components/base";
 import {
   Map,
   GeneralMarker,
   BottomFixedButton,
   ValidationNoticeBar,
+  LeadToLoginModal,
 } from "@components/domain";
 import { useForm, Error } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
@@ -42,6 +44,8 @@ interface Geocoder extends kakao.maps.services.Geocoder {
 const CreateCourt: NextPage = UtilRoute("private", () => {
   const { map } = useMapContext();
 
+  const router = useRouter();
+
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.COURT_CREATE);
 
@@ -53,6 +57,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
   const [savedPosition, setSavedPosition] = useState<Coord>();
   const [address, setAddress] = useState<string>();
   const [validatedBasketCount, setValidatedBasketCount] = useState(1);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
     const geocoder = new kakao.maps.services.Geocoder();
@@ -136,9 +141,15 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             image: values.image,
           };
 
-          const newCourt = await courtApi.createNewCourt(valuesWithPosition);
-
-          alert(newCourt);
+          try {
+            await courtApi.createNewCourt(valuesWithPosition);
+            alert(
+              "제출해주신 농구장 정보는 관리자 승인을 거쳐 등록될 예정입니다."
+            );
+            router.push("/courts");
+          } catch (error) {
+            console.log(error);
+          }
         }
       },
       validate: ({ basketCount, name }) => {
@@ -298,10 +309,44 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             </div>
           </Spacer>
         </MainContainer>
-        <BottomFixedButton type="submit" onClick={handleSubmit}>
+        <BottomFixedButton
+          type="submit"
+          onClick={() => setIsOpenConfirmModal(true)}
+        >
           {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
         </BottomFixedButton>
       </form>
+
+      <LeadToLoginModal
+        headerContent={
+          <Spacer gap={4} type="vertical" style={{ textAlign: "center" }}>
+            <Text size="md" strong block>
+              새 농구장 추가를 제안하시겠습니까?
+            </Text>
+            <SubText size="xs" block>
+              제출한 코트 정보는 관리자의 승인을 거쳐 반영됩니다.
+            </SubText>
+          </Spacer>
+        }
+        isOpen={isOpenConfirmModal}
+        cancel={{
+          content: "닫기",
+          handle: () => {
+            setIsOpenConfirmModal(false);
+          },
+        }}
+        confirm={{
+          content: "제출하기",
+          handle: (e) => {
+            try {
+              handleSubmit(e);
+              router.push("/courts");
+            } catch (error) {
+              console.error(error);
+            }
+          },
+        }}
+      />
     </div>
   );
 });
@@ -371,4 +416,8 @@ const MoveToMap = styled.a`
   right: 0;
   z-index: 1;
   cursor: pointer;
+`;
+
+const SubText = styled(Text)`
+  color: ${({ theme }) => theme.colors.gray500};
 `;

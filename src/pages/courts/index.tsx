@@ -5,7 +5,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import { useLocalToken } from "@hooks/domain";
 
-import { getCurrentLocation } from "@utils/geolocation";
+import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
 import { Button, ModalSheet, Spacer, Text } from "@components/base";
 import {
   DatePicker,
@@ -16,6 +16,7 @@ import {
   SlotKeyUnion,
   CourtItem,
   LeadToLoginModal,
+  BasketballLoading,
 } from "@components/domain";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
@@ -86,7 +87,7 @@ const Courts: NextPage = () => {
   const [courts, setCourts] = useState<any>();
 
   const [level, setLevel] = useState<number>(3);
-  const [center, setCenter] = useState<Coord>();
+  const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
 
   const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
   const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
@@ -94,12 +95,12 @@ const Courts: NextPage = () => {
   );
 
   // TODO: API 명세 나올 경우 any 수정해주기
+  const [isInitialized, setIsInitialized] = useState(false);
   const [selectedCourt, setSelectedCourt] = useState<any>(null);
-  const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
+  const [isAddressLoading, setIsAddressLoading] = useState(false);
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] =
-    useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] = useState(false);
 
   useMountCustomButtonEvent("추가", () => {
     if (localToken) {
@@ -232,6 +233,7 @@ const Courts: NextPage = () => {
   const handleGetCurrentLocation = useCallback(async () => {
     getCurrentLocation(async ([latitude, longitude]) => {
       setCenter([latitude, longitude]);
+      setIsInitialized(true);
     });
   }, []);
 
@@ -251,6 +253,7 @@ const Courts: NextPage = () => {
           setIsOpen(true);
           searchAddrFromCoords(latitude, longitude);
           setSelectedCourt(court);
+          setIsInitialized(true);
         }
       } catch (error) {
         console.error(error);
@@ -284,40 +287,38 @@ const Courts: NextPage = () => {
         onClick={handleDateClick}
       />
 
-      {center ? (
-        <Map.KakaoMap
-          level={level}
-          center={center}
-          onDragEnd={fetchCourtsByBoundsAndDatetime}
-          onZoomChanged={fetchCourtsByBoundsAndDatetime}
-        >
-          <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
-          <Map.CurrentLocationButton
-            onGetCurrentLocation={handleGetCurrentLocation}
-          />
-          <TopFixedSlotPicker
-            currentDateTimeSlot={
-              selectedDate.getTime() === currentDate.getTime()
-                ? getSlotFromDate(new Date())
-                : null
-            }
-            selectedSlot={selectedSlot}
-            onChange={handleChangeSlot}
-          />
-          {map &&
-            courts &&
-            courts.map((court: any) => (
-              <BasketballMarker
-                key={court.courtId}
-                map={map}
-                court={court}
-                onClick={handleMarkerClick}
-              />
-            ))}
-        </Map.KakaoMap>
-      ) : (
-        <div>현재 위치를 받아오는 중입니다.</div>
-      )}
+      <Map.KakaoMap
+        level={level}
+        center={center}
+        onDragEnd={fetchCourtsByBoundsAndDatetime}
+        onZoomChanged={fetchCourtsByBoundsAndDatetime}
+      >
+        <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
+        <Map.CurrentLocationButton
+          onGetCurrentLocation={handleGetCurrentLocation}
+        />
+        <TopFixedSlotPicker
+          currentDateTimeSlot={
+            selectedDate.getTime() === currentDate.getTime()
+              ? getSlotFromDate(new Date())
+              : null
+          }
+          selectedSlot={selectedSlot}
+          onChange={handleChangeSlot}
+        />
+        {!isInitialized && <BasketballLoading />}
+
+        {map &&
+          courts &&
+          courts.map((court: any) => (
+            <BasketballMarker
+              key={court.courtId}
+              map={map}
+              court={court}
+              onClick={handleMarkerClick}
+            />
+          ))}
+      </Map.KakaoMap>
 
       <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
         {selectedCourt && (

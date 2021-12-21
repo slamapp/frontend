@@ -20,9 +20,5 @@ export default LoaderBasketball;
 const LottieWrapper = styled.div`
   width: 150px;
   height: 150px;
-  position: absolute;
   z-index: 1;
-  left: 50%;
-  top: 20%;
-  transform: translateX(-50%);
 `;

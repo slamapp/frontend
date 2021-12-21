@@ -1,13 +1,13 @@
 import { NextPage } from "next";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { reservationApi } from "@service/.";
-import ReservationItem from "@components/domain/ReservationItem";
 import { Spacer, Text } from "@components/base";
-import { NoItemMessage } from "@components/domain";
+import { NoItemMessage, ReservationItem } from "@components/domain";
 import UtilRoute from "UtilRoute";
+import useInfiniteScroll from "@hooks/useInfiniteScroll";
 
 const Reservations: NextPage = UtilRoute("private", () => {
   const { authProps, getMyReservations } = useAuthContext();
@@ -18,9 +18,11 @@ const Reservations: NextPage = UtilRoute("private", () => {
     getMyReservations();
   }, []);
 
+  const ref = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [expiredReservations, setExpiredReservations] = useState<any[]>([]);
-  const [currentLastId, setCurrentLastId] = useState();
+  const [currentLastId, setCurrentLastId] = useState<any>();
+  const [isFetching, setIsFetching] = useState(false);
 
   const tabClickHandler = (index: number) => {
     setActiveIndex(index);
@@ -28,16 +30,51 @@ const Reservations: NextPage = UtilRoute("private", () => {
 
   const expiredHandleClick = useCallback(async () => {
     setActiveIndex(1);
+
     if (currentLastId !== null) {
       const { contents, lastId } =
         await reservationApi.getMyExpiredReservations(
           !currentLastId,
           currentLastId
         );
+
       setExpiredReservations((prev) => [...prev, ...contents]);
       setCurrentLastId(lastId);
     }
   }, [currentLastId]);
+
+  const loadMore = useCallback(async () => {
+    if (expiredReservations.length !== 0 && currentLastId !== null) {
+      const { contents, lastId } =
+        await reservationApi.getMyExpiredReservations(
+          !currentLastId,
+          currentLastId
+        );
+
+      setExpiredReservations((prev) => [...prev, ...contents]);
+      setCurrentLastId(lastId);
+    }
+  }, [currentLastId, expiredReservations]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(async (entry) => {
+          if (entry.isIntersecting) {
+            setIsFetching(false);
+            await loadMore();
+            setIsFetching(true);
+          }
+        });
+      },
+      { threshold: 1.0 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, [ref, loadMore]);
 
   const menuTab = [
     {
@@ -93,6 +130,8 @@ const Reservations: NextPage = UtilRoute("private", () => {
         })}
       </TabStyle>
       <TabContentsWrapper>{menuTab[activeIndex].tabContent}</TabContentsWrapper>
+
+      <div ref={ref} style={{ height: 20 }}></div>
     </PageContainer>
   );
 });
@@ -114,6 +153,7 @@ const PageContainer = styled.div`
 
 const TabContentsWrapper = styled.div`
   flex: 1;
+  margin-top: 16px;
 `;
 
 export default Reservations;

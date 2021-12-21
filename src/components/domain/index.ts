@@ -36,3 +36,5 @@ export { default as NotificationList } from "./NotificationList";
 
 export { default as Modal } from "./Modal";
 export { DayOfTheWeek } from "./CourtItem/style";
+
+export { default as BasketballLoading } from "./BasketballLoading";
