@@ -17,7 +17,7 @@ const NewCourtsPage: NextPage = () => {
   const dummyData: NewCourt[] = [
     {
       newCourtId: 1,
-      name: "반포한강공원 체력단련장 농구장",
+      courtName: "반포한강공원 체력단련장 농구장",
       basketCount: 1,
       longitude: 126.995269636407,
       latitude: 37.5097694752014,
