@@ -87,7 +87,7 @@ const Courts: NextPage = () => {
 
   const [courts, setCourts] = useState<any>();
 
-  const [level, setLevel] = useState<number>(3);
+  const [level, setLevel] = useState<number>(5);
   const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
 
   const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
@@ -184,12 +184,16 @@ const Courts: NextPage = () => {
   );
 
   const handleZoomIn = useCallback(() => {
-    setLevel((level) => level - 1);
-  }, []);
+    if (map) {
+      setLevel(map.getLevel() - 1);
+    }
+  }, [map]);
 
   const handleZoomOut = useCallback(() => {
-    setLevel((level) => level + 1);
-  }, []);
+    if (map) {
+      setLevel(map.getLevel() + 1);
+    }
+  }, [map]);
 
   const handleChangeSlot = useCallback((e) => {
     setSelectedSlot(e.target.value);
@@ -408,7 +412,11 @@ const Courts: NextPage = () => {
       </ModalSheet>
 
       <LeadToLoginModal
-        headerContent={"로그인하면 새 농구장을 추가할 수 있습니다"}
+        headerContent={
+          <p style={{ textAlign: "center" }}>
+            로그인하면 새 농구장을 추가할 수 있습니다
+          </p>
+        }
         isOpen={isOpenLeadToLoginModal}
         cancel={{
           content: "닫기",
