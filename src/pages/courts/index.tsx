@@ -62,6 +62,7 @@ const getSlotFromDate = (date: Date): SlotKeyUnion => {
 
 const Courts: NextPage = () => {
   const router = useRouter();
+
   const {
     navigationProps,
     useMountPage,
@@ -252,7 +253,7 @@ const Courts: NextPage = () => {
           setCenter([latitude, longitude]);
           setIsOpen(true);
           searchAddrFromCoords(latitude, longitude);
-          setSelectedCourt(court);
+          setSelectedCourt({ ...court, courtId });
           setIsInitialized(true);
         }
       } catch (error) {
@@ -260,12 +261,14 @@ const Courts: NextPage = () => {
       }
     };
 
-    const { courtId } = router.query;
+    if (router.isReady) {
+      const { courtId } = router.query;
 
-    if (courtId) {
-      restoreCourts(+courtId);
-    } else {
-      handleGetCurrentLocation();
+      if (courtId) {
+        restoreCourts(+courtId);
+      } else {
+        handleGetCurrentLocation();
+      }
     }
   }, [map]);
 
