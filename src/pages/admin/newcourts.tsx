@@ -1,58 +1,115 @@
 import { useNavigationContext } from "@contexts/hooks";
 import { NextPage } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Spacer, Tab } from "@components/base";
 import styled from "@emotion/styled";
 import { NewCourtItem, NewCourt } from "@components/domain";
+import managementApi from "@service/managementApi";
+import { useInfiniteScroll } from "@hooks/.";
+
+type Status = "READY" | "DONE";
 
 const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.ADMIN_NEWCOURTS);
 
-  // 더미 데이터
-  const readyData: NewCourt[] = [
-    {
-      newCourtId: 1,
-      name: "반포한강공원 체력단련장 농구장",
-      basketCount: 1,
-      longitude: 126.995269636407,
-      latitude: 37.5097694752014,
-      image: null,
-      texture: "RUBBER",
-      status: "READY",
-      createdAt: "2021-01-01T12:20:10",
-    },
-  ];
+  const [readyData, setReadyData] = useState<NewCourt[]>([]);
+  const [doneData, setDoneData] = useState<NewCourt[]>([]);
+  const [currentLastId, setCurrentLastId] = useState<number | null>(0);
+  const [activeStatus, setActiveStatus] = useState<Status>("READY");
+  const [isFetching, setIsFetching] = useState(false);
 
-  const doneData: NewCourt[] = [
-    {
-      newCourtId: 2,
-      name: "잠실한강공원 농구장",
-      basketCount: 1,
-      longitude: 127.082348760182,
-      latitude: 37.5177740347208,
-      image: null,
-      texture: "RUBBER",
-      status: "ACCEPT",
-      createdAt: "2021-01-01T12:20:10",
+  const loadMore = useCallback(
+    async (status: Status) => {
+      if (readyData.length === 0 || isFetching || currentLastId === null) {
+        return;
+      }
+
+      try {
+        setIsFetching(true);
+        const { contents, lastId } = await managementApi.getNewCourts(
+          status,
+          !currentLastId,
+          currentLastId
+        );
+        if (status === "READY") {
+          setReadyData((prev) => [...prev, ...contents]);
+        } else {
+          setDoneData((prev) => [...prev, ...contents]);
+        }
+        setCurrentLastId(lastId);
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsFetching(false);
     },
-    {
-      newCourtId: 3,
-      name: "잘못된 농구장",
-      basketCount: 1,
-      longitude: 127.077064497635,
-      latitude: 37.5270939663765,
-      image: null,
-      texture: "RUBBER",
-      status: "DENY",
-      createdAt: "2021-01-01T12:20:10",
+    [currentLastId, isFetching, readyData.length]
+  );
+
+  const getNewCourts = useCallback(
+    async (status: Status) => {
+      try {
+        setIsFetching(true);
+        const { contents, lastId } = await managementApi.getNewCourts(
+          status,
+          !currentLastId,
+          currentLastId
+        );
+        if (status === "READY") {
+          setReadyData((prev) => [...prev, ...contents]);
+        } else {
+          setDoneData((prev) => [...prev, ...contents]);
+        }
+        setCurrentLastId(lastId);
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsFetching(false);
     },
-  ];
+    [currentLastId, isFetching, readyData.length]
+  );
+
+  const handleClick = (status: Status) => {
+    setCurrentLastId(0);
+    setReadyData([]);
+    setDoneData([]);
+    setActiveStatus(status);
+  };
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getNewCourts("READY");
+  }, []);
+
+  useEffect(() => {
+    getNewCourts(activeStatus);
+  }, [activeStatus]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(async (entry) => {
+          if (entry.isIntersecting) {
+            await loadMore(activeStatus);
+          }
+        });
+      },
+      { threshold: 1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, [ref, activeStatus, getNewCourts]);
 
   return (
-    <div>
-      <Tab>
-        <Tab.Item title="처리 대기" index="ready">
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <Tab onClick={handleClick}>
+        <Tab.Item title="처리 대기" index="READY">
           <Container>
             <Spacer gap="base" type="vertical">
               {readyData.map((court) => (
@@ -65,7 +122,7 @@ const NewCourtsPage: NextPage = () => {
             </Spacer>
           </Container>
         </Tab.Item>
-        <Tab.Item title="처리 완료" index="done">
+        <Tab.Item title="처리 완료" index="DONE">
           <Container>
             <Spacer gap="base" type="vertical">
               {doneData.map((court) => (
@@ -79,6 +136,8 @@ const NewCourtsPage: NextPage = () => {
           </Container>
         </Tab.Item>
       </Tab>
+      {readyData.length === 0 && <div style={{ flex: 1 }}></div>}
+      <div ref={ref} style={{ height: 10 }}></div>
     </div>
   );
 };

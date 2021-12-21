@@ -23,7 +23,7 @@ export type StatusKeyUnion = keyof Status;
 
 export interface NewCourt {
   newCourtId: number;
-  name: string;
+  courtName: string;
   basketCount: number;
   longitude: number;
   latitude: number;

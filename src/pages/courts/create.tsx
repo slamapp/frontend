@@ -44,10 +44,10 @@ interface Geocoder extends kakao.maps.services.Geocoder {
 const CreateCourt: NextPage = UtilRoute("private", () => {
   const { map } = useMapContext();
 
+  const router = useRouter();
+
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.COURT_CREATE);
-
-  const router = useRouter();
 
   const [isOpen, setOpen] = useState(false);
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
@@ -140,10 +140,15 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             texture: values.texture,
             image: values.image,
           };
+
           try {
             await courtApi.createNewCourt(valuesWithPosition);
+            alert(
+              "제출해주신 농구장 정보는 관리자 승인을 거쳐 등록될 예정입니다."
+            );
+            router.push("/courts");
           } catch (error) {
-            console.error(error);
+            console.log(error);
           }
         }
       },

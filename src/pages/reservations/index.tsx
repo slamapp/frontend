@@ -22,6 +22,7 @@ const Reservations: NextPage = UtilRoute("private", () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [expiredReservations, setExpiredReservations] = useState<any[]>([]);
   const [currentLastId, setCurrentLastId] = useState<any>();
+  const [isFetching, setIsFetching] = useState(false);
 
   const tabClickHandler = (index: number) => {
     setActiveIndex(index);
@@ -55,7 +56,25 @@ const Reservations: NextPage = UtilRoute("private", () => {
     }
   }, [currentLastId, expiredReservations]);
 
-  const [isFetching] = useInfiniteScroll(ref, loadMore);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(async (entry) => {
+          if (entry.isIntersecting) {
+            setIsFetching(false);
+            await loadMore();
+            setIsFetching(true);
+          }
+        });
+      },
+      { threshold: 1.0 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, [ref, loadMore]);
 
   const menuTab = [
     {
@@ -134,6 +153,7 @@ const PageContainer = styled.div`
 
 const TabContentsWrapper = styled.div`
   flex: 1;
+  margin-top: 16px;
 `;
 
 export default Reservations;

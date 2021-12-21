@@ -40,6 +40,9 @@ const Loudspeaker = ({ startTime }: Iprops) => {
 };
 
 const StyledButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${({ theme }) => theme.buttonHeights.lg};
   height: ${({ theme }) => theme.buttonHeights.lg};
   background: ${({ theme }) => theme.colors.activeGradientColor};

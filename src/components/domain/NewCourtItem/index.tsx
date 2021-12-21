@@ -1,8 +1,9 @@
+import { MouseEvent } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { MouseEvent } from "react";
 import { css } from "@emotion/react";
 import { Text, Button } from "@components/base";
+import managementApi from "@service/managementApi";
 import type { NewCourt } from "./types";
 
 interface Props {
@@ -10,30 +11,49 @@ interface Props {
   state: "READY" | "DONE";
   [x: string]: any;
 }
-
 const NewCourtItem = ({ data, state, style }: Props) => {
-  const handleDeny = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleDeny = async (
+    e: MouseEvent<HTMLButtonElement>,
+    newCourtId: number
+  ) => {
     e.preventDefault();
-    // TODO: API 보내기
+    try {
+      await managementApi.denyNewCourt(newCourtId);
+      alert("거절 완료했습니다.");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleAccept = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleAccept = async (
+    e: MouseEvent<HTMLButtonElement>,
+    newCourtId: number
+  ) => {
     e.preventDefault();
-    // TODO: API 보내기
+    try {
+      await managementApi.acceptNewCourt(newCourtId);
+      alert("승인 완료했습니다.");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <Link href={`/admin/newcourts/${data.newCourtId}`} passHref>
       <Container style={style}>
         <CourtName strong block>
-          {data.name}
+          {data.courtName}
         </CourtName>
         {state === "READY" ? (
           <ButtonContainer>
-            <Button fullWidth tertiary onClick={handleDeny}>
+            <Button
+              fullWidth
+              tertiary
+              onClick={(e) => handleDeny(e, data.newCourtId)}
+            >
               거절하기
             </Button>
-            <Button fullWidth onClick={handleAccept}>
+            <Button fullWidth onClick={(e) => handleAccept(e, data.newCourtId)}>
               승인하기
             </Button>
           </ButtonContainer>
