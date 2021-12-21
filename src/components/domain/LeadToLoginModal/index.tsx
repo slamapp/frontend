@@ -7,11 +7,11 @@ interface Props {
   isOpen: boolean;
   cancel: {
     content: ReactNode;
-    handle: () => void;
+    handle: (e?: any) => void;
   };
   confirm: {
     content: ReactNode;
-    handle: () => void;
+    handle: (e?: any) => void;
   };
 }
 
