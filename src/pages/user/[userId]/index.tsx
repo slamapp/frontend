@@ -17,6 +17,7 @@ import {
   PositionKeyUnion,
   ProficiencyKeyUnion,
   ProfileFavoritesListItem,
+  BasketballLoading,
 } from "@components/domain";
 import {
   getTranslatedPositions,
@@ -126,7 +127,7 @@ const User: NextPage = UtilRoute("private", () => {
   }, [userId, getMyProfile, getOtherProfile, queryUserId]);
 
   if (pageUserInfo === null) {
-    return <>Loading</>;
+    return <BasketballLoading />;
   }
 
   const {
