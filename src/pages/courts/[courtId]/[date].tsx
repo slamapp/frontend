@@ -594,7 +594,7 @@ const Reservation: NextPage = () => {
   }, []);
 
   const handleDecreaseStep = useCallback(() => {
-    // setIsOpen(false);
+    setIsOpen(false);
     dispatch({ type: "DECREASE_STEP" });
   }, []);
 
