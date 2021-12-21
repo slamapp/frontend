@@ -76,13 +76,19 @@ const Favorites: NextPage = UtilRoute("private", () => {
   }
 
   return (
-    <Spacer gap="base" type="vertical">
+    <Spacer
+      gap="base"
+      type="vertical"
+      style={{
+        marginTop: 56,
+      }}
+    >
       {favorites.map(
         ({ favoriteId, courtName, courtId, latitude, longitude }) => (
           <FavoriteItem key={favoriteId}>
             <Spacer gap="xs" type="vertical">
               <CourtItem.Header>{courtName}</CourtItem.Header>
-              <CourtItem.Address>{"주소 넣기"}</CourtItem.Address>
+              {/* <CourtItem.Address>{"주소 넣기"}</CourtItem.Address> */}
             </Spacer>
 
             <Actions gap="xs">
@@ -94,7 +100,7 @@ const Favorites: NextPage = UtilRoute("private", () => {
                 longitude={longitude}
                 courtName={courtName}
               />
-              <Link href="/" passHref>
+              <Link href={`/courts?courtId=${courtId}`} passHref>
                 <Button size="lg" style={{ flex: 1 }}>
                   예약하기
                 </Button>
