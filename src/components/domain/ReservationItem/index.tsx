@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Spacer } from "@components/base";
+import { Avatar, Spacer } from "@components/base";
 import CourtItem from "../CourtItem";
 import Loudspeaker from "./Loudspeaker";
 import ReservationItemBottom from "./ReservationItemBottom";
@@ -29,6 +29,7 @@ const UpcomingReservations = ({
   numberOfReservations,
   latitude,
   longitude,
+  expired,
 }: any) => {
   return (
     <ReservationItem key={reservationId}>
@@ -56,6 +57,7 @@ const UpcomingReservations = ({
         startTime={startTime}
         endTime={endTime}
         numberOfReservations={numberOfReservations}
+        expired={expired}
       />
     </ReservationItem>
   );
@@ -64,6 +66,9 @@ const UpcomingReservations = ({
 export default UpcomingReservations;
 
 const ReservationItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadiuses.md};
   padding: 20px;
@@ -71,6 +76,7 @@ const ReservationItem = styled.div`
 
 const Actions = styled(Spacer)`
   justify-content: flex-end;
+  align-items: center;
   margin-top: ${({ theme }) => theme.gaps.sm};
   margin-bottom: ${({ theme }) => theme.gaps.base};
 `;

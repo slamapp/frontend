@@ -7,7 +7,6 @@ import { reservationApi } from "@service/.";
 import { Spacer, Text } from "@components/base";
 import { NoItemMessage, ReservationItem } from "@components/domain";
 import UtilRoute from "UtilRoute";
-import useInfiniteScroll from "@hooks/useInfiniteScroll";
 
 const Reservations: NextPage = UtilRoute("private", () => {
   const { authProps, getMyReservations } = useAuthContext();
@@ -123,6 +122,7 @@ const Reservations: NextPage = UtilRoute("private", () => {
                 <ReservationItem
                   key={reservation.reservationId}
                   {...reservation}
+                  expired
                 />
               ))}
           </Spacer>
