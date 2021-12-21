@@ -64,7 +64,7 @@ const ExistedReservationContent = ({
           </div>
         ) : (
           <Text block style={{ margin: "0 auto" }}>
-            종료된 예약입니다.
+            예약을 수정 또는 취소할 수 없습니다.
           </Text>
         )}
       </BottomFixedBackground>
