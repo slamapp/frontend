@@ -1,10 +1,12 @@
-import { Button } from "@components/base";
+import { Button, Text } from "@components/base";
 import styled from "@emotion/styled";
 import React, { useCallback, useState } from "react";
 
 import { BottomFixedContainer } from "../BottomFixedButton";
 import Modal from "../Modal";
-import CommonModalContent from "./StepTwoCommonContent";
+import ParticipantsPerTime from "./ParticipantsPerTime";
+import SelectedTime from "./SelectedTime";
+import * as S from "./style";
 
 interface Props {
   timeSlot: string;
@@ -12,6 +14,7 @@ interface Props {
   reservationId: number;
   onDeleteReservation: (reservationId: number) => void;
   onStartUpdate: () => void;
+  requestDisabled: boolean;
 }
 
 const ExistedReservationContent = ({
@@ -20,6 +23,7 @@ const ExistedReservationContent = ({
   reservationId,
   onDeleteReservation,
   onStartUpdate,
+  requestDisabled,
 }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -30,17 +34,39 @@ const ExistedReservationContent = ({
   const onClose = () => setIsModalOpen(false);
   return (
     <>
-      <CommonModalContent
-        timeSlot={timeSlot}
-        participantsPerBlock={participantsPerBlock}
-      />
+      <S.ModalContent>
+        <SelectedTime timeSlot={timeSlot} />
+        <ParticipantsPerTime participantsPerBlock={participantsPerBlock} />
+      </S.ModalContent>
+
       <BottomFixedBackground>
-        <Button type="button" size="lg" onClick={handleClickButton} secondary>
-          예약 취소하기
-        </Button>
-        <Button type="button" size="lg" onClick={onStartUpdate}>
-          예약 수정하기
-        </Button>
+        {!requestDisabled ? (
+          <div
+            style={{
+              margin: "0 auto",
+              display: "flex",
+              position: "relative",
+              width: "100%",
+              gap: "10px",
+            }}
+          >
+            <Button
+              type="button"
+              size="lg"
+              onClick={handleClickButton}
+              secondary
+            >
+              예약 취소하기
+            </Button>
+            <Button type="button" size="lg" onClick={onStartUpdate}>
+              예약 수정하기
+            </Button>
+          </div>
+        ) : (
+          <Text block style={{ margin: "0 auto" }}>
+            예약을 수정 또는 취소할 수 없습니다.
+          </Text>
+        )}
       </BottomFixedBackground>
 
       <Modal visible={isModalOpen} onClose={onClose}>
@@ -66,15 +92,7 @@ export default ExistedReservationContent;
 
 const BottomFixedBackground = styled(BottomFixedContainer)`
   display: flex;
-  button {
-    width: calc(50% - 27.5px);
-  }
   button:first-of-type {
-    left: 20px;
     border: 2px solid black;
-  }
-
-  button:last-of-type {
-    right: 20px;
   }
 `;

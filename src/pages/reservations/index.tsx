@@ -4,9 +4,8 @@ import styled from "@emotion/styled";
 
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { reservationApi } from "@service/.";
-import ReservationItem from "@components/domain/ReservationItem";
 import { Spacer, Text } from "@components/base";
-import { NoItemMessage } from "@components/domain";
+import { NoItemMessage, ReservationItem } from "@components/domain";
 import UtilRoute from "UtilRoute";
 
 const Reservations: NextPage = UtilRoute("private", () => {

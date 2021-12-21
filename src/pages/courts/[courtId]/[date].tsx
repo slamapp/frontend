@@ -21,92 +21,6 @@ import {
 } from "@utils/timeTable";
 import { courtApi, reservationApi } from "@service/.";
 
-interface IReservation {
-  reservationId: number | string;
-  userId: number | string;
-  courtId: number;
-  startTime: string;
-  endTime: string;
-  hasBall: boolean;
-}
-
-const data: { reservations: IReservation[] } = {
-  reservations: [
-    {
-      reservationId: 10,
-      userId: 2,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T14:00:00",
-      hasBall: true,
-    },
-    {
-      reservationId: 13,
-      userId: 3,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 17,
-      userId: 4,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 21,
-      userId: 5,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T14:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 24,
-      userId: 6,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T14:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 27,
-      userId: 8,
-      courtId: 7,
-      startTime: "2021-01-01T12:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 28,
-      userId: 9,
-      courtId: 7,
-      startTime: "2021-01-01T14:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 29,
-      userId: 1,
-      courtId: 7,
-      startTime: "2021-01-01T14:00:00",
-      endTime: "2021-01-01T15:00:00",
-      hasBall: false,
-    },
-    {
-      reservationId: 290,
-      userId: 9,
-      courtId: 7,
-      startTime: "2021-01-01T19:00:00",
-      endTime: "2021-01-01T21:00:00",
-      hasBall: true,
-    },
-  ],
-};
-
 const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   const timeTable = Array.from({ length: TIME_TABLE_ROWS }, () => ({
     peopleCount: 0,
@@ -153,20 +67,6 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   );
 };
 
-interface DataProps {
-  step: number;
-  mode: "create" | "number";
-  startIndex: number;
-  endIndex: number;
-  timeTable: any[];
-  originalTimeTable: any[];
-  modalContentData: any[];
-  hasBall: boolean;
-  existedReservations: any[];
-  selectedReservationId: number;
-  requestDisabled: boolean;
-}
-
 const initialState = {
   step: 1,
   mode: "create",
@@ -179,6 +79,22 @@ const initialState = {
   existedReservations: [],
   selectedReservationId: null,
   requestDisabled: false,
+  currentInput: "START",
+};
+
+const getIsPastDay = (date: string) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return new Date(date).getTime() < today.getTime();
+};
+
+const ONE_HOUR = 60 * 60 * 1000;
+
+const getIsPastTime = (datetime: string) => {
+  const today = new Date();
+
+  return new Date(datetime).getTime() < today.getTime() - ONE_HOUR;
 };
 
 const reducer: Reducer<any, any> = (state, { type, payload }) => {
@@ -201,6 +117,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         ...state,
         mode: "create",
         step: state.step + 1,
+        currentInput: "END",
       };
     }
     case "START_UPDATE": {
@@ -218,6 +135,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         startIndex,
         endIndex,
         hasBall,
+        selectedReservation,
       };
     }
     case "DECREASE_STEP": {
@@ -231,121 +149,17 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         hasBall: false,
       };
     }
-    case "SET_START_INDEX": {
+    case "CLICK_BLOCK": {
       const { startIndex } = payload;
 
       return {
         ...state,
         startIndex,
-        lastIndex: null,
+        endIndex: null,
         selectedReservationId: null,
+        selectedReservation: null,
         modalContentData: state.timeTable[startIndex].users,
       };
-    }
-    case "SET_END_INDEX": {
-      let { endIndex } = payload;
-      const {
-        mode,
-        originalTimeTable,
-        startIndex,
-        existedReservations,
-        selectedReservationId,
-      } = state;
-
-      if (endIndex < startIndex) return state;
-
-      if (endIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
-        console.log("3시간을 초과하여 예약할 수 없습니다.");
-        endIndex = startIndex + MAX_RESERVATION_TIME_BLOCK_UNIT - 1;
-      }
-
-      if (mode === "create") {
-        const timeTable = [...originalTimeTable];
-
-        const modalContentData = [];
-        let requestDisabled = false;
-
-        for (let i = startIndex; i <= endIndex; i += 1) {
-          const { users, peopleCount, hasReservation } = timeTable[i];
-
-          timeTable[i] = {
-            ...timeTable[i],
-            users: hasReservation ? users : [...users, { userId: "me" }],
-            peopleCount: hasReservation ? peopleCount : peopleCount + 1,
-          };
-
-          modalContentData.push({ index: i, users: timeTable[i].users });
-
-          if (timeTable[i].hasReservation) {
-            requestDisabled = true;
-          }
-        }
-
-        return {
-          ...state,
-          endIndex,
-          timeTable,
-          modalContentData,
-          requestDisabled,
-        };
-      } else {
-        const timeTable = [...originalTimeTable];
-
-        const modalContentData = [];
-        let requestDisabled = false;
-
-        const selectedReservation = existedReservations.find(
-          ({ reservationId }: any) => reservationId === selectedReservationId
-        );
-
-        if (selectedReservation.endIndex - endIndex > 0) {
-          for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
-            const { users, peopleCount } = timeTable[i];
-            timeTable[i] = {
-              ...timeTable[i],
-              users: users.filter(
-                ({ userId }: any) => userId !== selectedReservation.userId
-              ),
-              peopleCount: peopleCount - 1,
-            };
-          }
-        }
-
-        for (let i = startIndex; i <= endIndex; i += 1) {
-          const { users, peopleCount, hasReservation } = timeTable[i];
-
-          if (
-            !(
-              i >= selectedReservation.startIndex &&
-              i <= selectedReservation.endIndex
-            )
-          ) {
-            timeTable[i] = {
-              ...timeTable[i],
-              users: [...users, { userId: "me" }],
-              peopleCount: peopleCount + 1,
-            };
-          }
-
-          modalContentData.push({ index: i, users: timeTable[i].users });
-
-          if (
-            i < selectedReservation.startIndex &&
-            i > selectedReservation.endIndex &&
-            hasReservation
-          ) {
-            requestDisabled = true;
-          }
-        }
-
-        return {
-          ...state,
-          endIndex,
-          requestDisabled,
-          timeTable,
-          modalContentData,
-        };
-      }
     }
     case "SET_HAS_BALL": {
       const { hasBall } = payload;
@@ -373,8 +187,353 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
         ...state,
         selectedReservationId,
         modalContentData,
+        selectedReservation,
         startIndex: null,
       };
+    }
+    case "SET_CURRENT_INPUT": {
+      const { currentInput } = payload;
+
+      return {
+        ...state,
+        currentInput,
+      };
+    }
+    case "SET_TIME_INDEX": {
+      const { user } = payload;
+      let { timeIndex } = payload;
+
+      if (state.currentInput === "START") {
+        const {
+          mode,
+          originalTimeTable,
+          endIndex,
+          existedReservations,
+          selectedReservationId,
+          hasBall,
+        } = state;
+
+        if (endIndex === null) {
+          return {
+            ...state,
+            startIndex: timeIndex,
+          };
+        }
+
+        if (endIndex - timeIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
+          console.log("3시간을 초과하여 예약할 수 없습니다.");
+          timeIndex = endIndex - MAX_RESERVATION_TIME_BLOCK_UNIT + 1;
+        }
+
+        if (mode === "create") {
+          if (timeIndex > endIndex) {
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable: [...originalTimeTable],
+            };
+          }
+
+          const timeTable = [...originalTimeTable];
+
+          const modalContentData = [];
+          let requestDisabled = false;
+
+          for (let i = timeIndex; i <= endIndex; i += 1) {
+            const { users, peopleCount, hasReservation } = timeTable[i];
+
+            timeTable[i] = {
+              ...timeTable[i],
+              users: hasReservation ? users : [...users, user],
+              peopleCount: hasReservation ? peopleCount : peopleCount + 1,
+            };
+
+            modalContentData.push({ index: i, users: timeTable[i].users });
+
+            if (timeTable[i].hasReservation) {
+              requestDisabled = true;
+            }
+          }
+
+          return {
+            ...state,
+            startIndex: timeIndex,
+            timeTable,
+            modalContentData,
+            requestDisabled,
+          };
+        } else {
+          // * update
+          const timeTable = [...originalTimeTable];
+          const selectedReservation = existedReservations.find(
+            ({ reservationId }: any) => reservationId === selectedReservationId
+          );
+
+          if (timeIndex > endIndex) {
+            for (
+              let i = selectedReservation.startIndex;
+              i <= selectedReservation.endIndex;
+              i += 1
+            ) {
+              const { peopleCount, users, ballCount } = timeTable[i];
+
+              timeTable[i] = {
+                ...timeTable[i],
+                peopleCount: peopleCount - 1,
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+                ballCount: hasBall ? ballCount - 1 : ballCount,
+              };
+            }
+
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable,
+            };
+          }
+
+          const modalContentData = [];
+          let requestDisabled = false;
+
+          if (endIndex < selectedReservation.endIndex) {
+            for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
+              const { users, peopleCount, ballCount, hasReservation } =
+                timeTable[i];
+              timeTable[i] = {
+                ...timeTable[i],
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+                peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
+              };
+            }
+          }
+
+          if (timeIndex > selectedReservation.startIndex) {
+            for (
+              let i = selectedReservation.startIndex;
+              i < timeIndex;
+              i += 1
+            ) {
+              const { users, peopleCount, ballCount, hasReservation } =
+                timeTable[i];
+              timeTable[i] = {
+                ...timeTable[i],
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+                peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
+              };
+            }
+          }
+
+          for (let i = timeIndex; i <= endIndex; i += 1) {
+            const { users, peopleCount, hasReservation, ballCount } =
+              timeTable[i];
+
+            if (
+              i < selectedReservation.startIndex ||
+              i > selectedReservation.endIndex
+            ) {
+              timeTable[i] = {
+                ...timeTable[i],
+                users: [...users, user],
+                peopleCount: peopleCount + 1,
+                ballCount: hasBall ? ballCount + 1 : ballCount,
+              };
+            }
+
+            modalContentData.push({ index: i, users: timeTable[i].users });
+
+            if (
+              i < selectedReservation.startIndex ||
+              (i > selectedReservation.endIndex && hasReservation)
+            ) {
+              requestDisabled = true;
+            }
+          }
+
+          return {
+            ...state,
+            startIndex: timeIndex,
+            requestDisabled,
+            timeTable,
+            modalContentData,
+          };
+        }
+      } else {
+        // * endIndex
+        const {
+          mode,
+          originalTimeTable,
+          startIndex,
+          existedReservations,
+          selectedReservationId,
+          hasBall,
+        } = state;
+
+        if (timeIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
+          console.log("3시간을 초과하여 예약할 수 없습니다.");
+          timeIndex = startIndex + MAX_RESERVATION_TIME_BLOCK_UNIT - 1;
+        }
+
+        if (mode === "create") {
+          if (timeIndex < startIndex) {
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable: [...originalTimeTable],
+            };
+          }
+          const timeTable = [...originalTimeTable];
+
+          const modalContentData = [];
+          let requestDisabled = false;
+
+          for (let i = startIndex; i <= timeIndex; i += 1) {
+            const { users, peopleCount, hasReservation } = timeTable[i];
+
+            timeTable[i] = {
+              ...timeTable[i],
+              users: hasReservation ? users : [...users, user],
+              peopleCount: hasReservation ? peopleCount : peopleCount + 1,
+            };
+
+            modalContentData.push({ index: i, users: timeTable[i].users });
+
+            if (timeTable[i].hasReservation) {
+              requestDisabled = true;
+            }
+          }
+
+          return {
+            ...state,
+            endIndex: timeIndex,
+            timeTable,
+            modalContentData,
+            requestDisabled,
+          };
+        } else {
+          const timeTable = [...originalTimeTable];
+
+          const selectedReservation = existedReservations.find(
+            ({ reservationId }: any) => reservationId === selectedReservationId
+          );
+          if (timeIndex < startIndex) {
+            for (
+              let i = selectedReservation.startIndex;
+              i <= selectedReservation.endIndex;
+              i += 1
+            ) {
+              const { peopleCount, users, ballCount, hasReservation } =
+                timeTable[i];
+
+              timeTable[i] = {
+                ...timeTable[i],
+                peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
+              };
+            }
+
+            return {
+              ...state,
+              startIndex: timeIndex,
+              endIndex: null,
+              currentInput: "END",
+              timeTable,
+            };
+          }
+
+          const modalContentData = [];
+          let requestDisabled = false;
+
+          if (selectedReservation.startIndex < startIndex) {
+            for (
+              let i = selectedReservation.startIndex;
+              i < startIndex;
+              i += 1
+            ) {
+              const { users, peopleCount, hasReservation, ballCount } =
+                timeTable[i];
+              timeTable[i] = {
+                ...timeTable[i],
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+                peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
+              };
+            }
+          }
+
+          if (selectedReservation.endIndex - timeIndex > 0) {
+            for (let i = selectedReservation.endIndex; i > timeIndex; i -= 1) {
+              const { users, peopleCount, ballCount, hasReservation } =
+                timeTable[i];
+              timeTable[i] = {
+                ...timeTable[i],
+                users: users.filter(
+                  ({ userId }: any) => userId !== selectedReservation.userId
+                ),
+                peopleCount: hasReservation ? peopleCount - 1 : peopleCount,
+                ballCount:
+                  hasReservation && hasBall ? ballCount - 1 : ballCount,
+              };
+            }
+          }
+
+          for (let i = startIndex; i <= timeIndex; i += 1) {
+            const { users, peopleCount, hasReservation, ballCount } =
+              timeTable[i];
+
+            if (
+              i < selectedReservation.startIndex ||
+              i > selectedReservation.endIndex
+            ) {
+              timeTable[i] = {
+                ...timeTable[i],
+                users: [...users, user],
+                peopleCount: peopleCount + 1,
+                ballCount: hasBall ? ballCount + 1 : ballCount,
+              };
+            }
+
+            modalContentData.push({ index: i, users: timeTable[i].users });
+
+            if (
+              i < selectedReservation.startIndex ||
+              (i > selectedReservation.endIndex && hasReservation)
+            ) {
+              requestDisabled = true;
+            }
+          }
+
+          return {
+            ...state,
+            endIndex: timeIndex,
+            requestDisabled,
+            timeTable,
+            modalContentData,
+          };
+        }
+      }
     }
 
     default:
@@ -385,13 +544,11 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
 const Reservation: NextPage = () => {
   const router = useRouter();
   const {
-    query: { courtId, date },
+    query: { courtId, date, timeSlot },
   } = router;
 
   const {
-    authProps: {
-      currentUser: { userId },
-    },
+    authProps: { currentUser },
   } = useAuthContext();
 
   const {
@@ -413,21 +570,18 @@ const Reservation: NextPage = () => {
     existedReservations,
     requestDisabled,
     selectedReservationId,
+    selectedReservation,
     modalContentData,
     hasBall,
+    currentInput,
   } = reservation;
 
   const [snap, setSnap] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const handleSetStartIndex = (startIndex: number) => {
+  const handleSetCurrentBlock = (startIndex: number) => {
     setIsOpen(true);
-    dispatch({ type: "SET_START_INDEX", payload: { startIndex } });
-  };
-
-  const handleSetEndIndex = (endIndex: number) => {
-    setIsOpen(true);
-    dispatch({ type: "SET_END_INDEX", payload: { endIndex } });
+    dispatch({ type: "CLICK_BLOCK", payload: { startIndex } });
   };
 
   const onClose = useCallback(() => {
@@ -435,12 +589,12 @@ const Reservation: NextPage = () => {
   }, []);
 
   const handleStartCreate = useCallback(() => {
-    setIsOpen(false);
+    // setIsOpen(false);
     dispatch({ type: "START_CREATE" });
   }, []);
 
   const handleDecreaseStep = useCallback(() => {
-    setIsOpen(false);
+    // setIsOpen(false);
     dispatch({ type: "DECREASE_STEP" });
   }, []);
 
@@ -525,14 +679,43 @@ const Reservation: NextPage = () => {
     []
   );
 
+  const handleSetCurrentInput = useCallback((currentInput: string) => {
+    dispatch({
+      type: "SET_CURRENT_INPUT",
+      payload: { currentInput },
+    });
+  }, []);
+
+  const handleSetTime = useCallback(
+    (timeIndex: number) => {
+      setIsOpen(true);
+      dispatch({
+        type: "SET_TIME_INDEX",
+        payload: {
+          timeIndex,
+          user: { currentUser, avatarImgSrc: currentUser.profileImageUrl },
+        },
+      });
+    },
+    [currentUser]
+  );
+
   useEffect(() => {
-    // FIXME 과거 예약 정보 링크로 들어올 시 모달로 안내 후 사용자를 /courts로 이동하는 시간계산 실패
-    // if (new Date(date as string).getTime() < new Date().getTime()) {
-    //   // TODO: 과거 예약 정보 링크로 들어올 시 모달로 안내 후 사용자를 /courts로 이동
-    //   // alert("과거의 예약 정보는 확인할 수 없습니다.");
-    //   router.replace("/courts");
-    // }
-  });
+    if (router.isReady && getIsPastDay(date as string)) {
+      alert("과거의 예약 정보는 확인할 수 없습니다.");
+      router.replace("/courts");
+    }
+
+    const el = document.querySelector("#scrolled-container");
+
+    if (router.isReady && !timeSlot) {
+      el!.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [router]);
 
   useEffect(() => {
     setNavigationTitle(<ReservationTitle date={date as string} />);
@@ -547,27 +730,29 @@ const Reservation: NextPage = () => {
   }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
 
   useEffect(() => {
-    // FIXME router.isReady
     const initReservations = async () => {
       const { reservations } = await courtApi.getAllCourtReservationsByDate(
         courtId as string,
         date as string
       );
 
-      dispatch({ type: "SET_TIMETABLE", payload: { reservations, userId } });
+      dispatch({
+        type: "SET_TIMETABLE",
+        payload: { reservations, userId: currentUser.userId },
+      });
     };
 
-    initReservations();
-  }, [courtId, date, userId]);
+    if (router.isReady && currentUser.userId) {
+      initReservations();
+    }
+  }, [courtId, date, currentUser.userId, router]);
 
   return (
     <div>
       <TimeTable
         isToday={date === getDateStringFromDate(new Date())}
         timeTable={timeTable || []}
-        onClickStatusBlock={
-          step === 1 ? handleSetStartIndex : handleSetEndIndex
-        }
+        onClickStatusBlock={step === 1 ? handleSetCurrentBlock : handleSetTime}
         onClickReservationMarker={
           step === 1 ? handleClickReservationMarker : () => {}
         }
@@ -595,29 +780,34 @@ const Reservation: NextPage = () => {
             availableReservation={!timeTable[startIndex].hasReservation}
           />
         )}
+
         {isOpen &&
           step === 1 &&
           selectedReservationId !== null &&
           modalContentData && (
             <ModalContent.ExistedReservation
-              timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
-                endIndex + 1
-              )}
+              timeSlot={`${getTimeFromIndex(
+                selectedReservation.startIndex
+              )} - ${getTimeFromIndex(selectedReservation.endIndex + 1)}
               `}
               reservationId={selectedReservationId}
               participantsPerBlock={modalContentData}
               onDeleteReservation={handleDeleteReservation}
               onStartUpdate={handleStartUpdate}
+              requestDisabled={getIsPastTime(
+                `${date} ${getTimeFromIndex(selectedReservation.startIndex)}`
+              )}
             />
           )}
         {isOpen && step === 2 && modalContentData && (
           <ModalContent.SelectedRange
-            timeSlot={`${getTimeFromIndex(startIndex)} - ${getTimeFromIndex(
-              endIndex + 1
-            )}`}
+            startTime={getTimeFromIndex(startIndex)}
+            endTime={endIndex ? getTimeFromIndex(endIndex + 1) : null}
+            currentInput={currentInput}
             participantsPerBlock={modalContentData}
             hasBall={hasBall}
             requestDisabled={requestDisabled}
+            onSetCurrentInput={handleSetCurrentInput}
             onChangeHasBall={handleChangeHasBall}
             onSubmit={
               mode === "create"
@@ -630,7 +820,6 @@ const Reservation: NextPage = () => {
           />
         )}
       </ModalSheet>
-
       <div style={{ height: 320 }}></div>
     </div>
   );
