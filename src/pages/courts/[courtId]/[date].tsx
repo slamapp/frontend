@@ -92,12 +92,13 @@ const ONE_HOUR = 60 * 60 * 1000;
 
 const getIsPastTime = (datetime: string) => {
   const today = new Date();
+  const date = new Date(datetime);
+  date.setTime(date.getTime() - ONE_HOUR);
 
-  return new Date(datetime).getTime() < today.getTime() - ONE_HOUR;
+  return date < today;
 };
 
 const reducer: Reducer<any, any> = (state, { type, payload }) => {
-  console.log(type);
   switch (type) {
     case "SET_TIMETABLE": {
       const { reservations, userId } = payload;
@@ -696,7 +697,10 @@ const Reservation: NextPage = () => {
         type: "SET_TIME_INDEX",
         payload: {
           timeIndex,
-          user: { currentUser, avatarImgSrc: currentUser.profileImageUrl },
+          user: {
+            user: currentUser,
+            avatarImgSrc: currentUser.profileImageUrl,
+          },
         },
       });
     },
