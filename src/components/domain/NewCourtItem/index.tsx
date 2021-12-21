@@ -1,9 +1,11 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { css } from "@emotion/react";
 import { Text, Button } from "@components/base";
 import managementApi from "@service/managementApi";
+import { useRouter } from "next/router";
+
 import type { NewCourt } from "./types";
 
 interface Props {
@@ -11,7 +13,15 @@ interface Props {
   state: "READY" | "DONE";
   [x: string]: any;
 }
-const NewCourtItem = ({ data, state, style }: Props) => {
+const NewCourtItem = ({
+  data,
+  state,
+  style,
+  setIsOpenDenyModal,
+  setIsOpenAcceptModal,
+}: Props) => {
+  const router = useRouter();
+
   const handleDeny = async (
     e: MouseEvent<HTMLButtonElement>,
     newCourtId: number
@@ -19,7 +29,11 @@ const NewCourtItem = ({ data, state, style }: Props) => {
     e.preventDefault();
     try {
       await managementApi.denyNewCourt(newCourtId);
-      alert("거절 완료했습니다.");
+      setIsOpenDenyModal(true);
+      setTimeout(() => {
+        setIsOpenDenyModal(false);
+        router.reload();
+      }, 1000);
     } catch (error) {
       console.error(error);
     }
@@ -32,7 +46,11 @@ const NewCourtItem = ({ data, state, style }: Props) => {
     e.preventDefault();
     try {
       await managementApi.acceptNewCourt(newCourtId);
-      alert("승인 완료했습니다.");
+      setIsOpenAcceptModal(true);
+      setTimeout(() => {
+        setIsOpenAcceptModal(false);
+        router.reload();
+      }, 1000);
     } catch (error) {
       console.error(error);
     }

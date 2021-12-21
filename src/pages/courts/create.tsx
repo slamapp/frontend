@@ -13,6 +13,7 @@ import {
   BottomFixedButton,
   ValidationNoticeBar,
   LeadToLoginModal,
+  BasketballLoading,
 } from "@components/domain";
 import { useForm, Error } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
@@ -203,7 +204,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
               <DecoIcon name="map-pin" color="#FE6D04" />
               {address ?? `지도에서 위치를 선택해주세요`}
             </MapGuide>
-            {!center && <Text>현재 위치를 받아오는 중입니다.</Text>}
+            {!center && <BasketballLoading />}
             {center && isOpen ? (
               <Map.KakaoMap
                 level={level}

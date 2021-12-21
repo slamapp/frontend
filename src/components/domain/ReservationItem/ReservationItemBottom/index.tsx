@@ -6,44 +6,15 @@ import { Button, Icon, Text } from "@components/base";
 import reservationAPI from "@service/reservationApi";
 import FollowListItem from "../../FollowListItem";
 
-/*
-const dummyParticipants = [
-  {
-    followId: 3,
-    userId: 2,
-    nickname: "hey",
-    isFollowed: true,
-    profileImage: "https://picsum.photos/250/250",
-    createdAt: "2021-01-01T12:20:10",
-    updatedAt: "2021-01-01T12:20:10",
-  },
-  {
-    userId: 4,
-    nickname: "florar",
-    isFollowed: false,
-    profileImage: "https://a3.com",
-    createdAt: "2021-01-01T12:20:10",
-    updatedAt: "2021-01-01T12:20:10",
-  },
-  {
-    userId: 5,
-    nickname: "jelli",
-    isFollowed: false,
-    profileImage: "https://a3.com",
-    createdAt: "2021-01-01T12:20:10",
-    updatedAt: "2021-01-01T12:20:10",
-  },
-];
-*/
-
 const ReservationItemBottom = ({
   courtId,
   startTime,
   endTime,
   numberOfReservations,
+  expired,
 }: any) => {
   const [visible, setVisible] = useState(false);
-  const [participants, setParticipants] = useState<any>();
+  const [participants, setParticipants] = useState<any>([]);
 
   const handleClick = useCallback(async () => {
     setVisible((prev) => !prev);
@@ -63,13 +34,18 @@ const ReservationItemBottom = ({
           <Icon name="users" size="sm" />
           <Text>{numberOfReservations}</Text>
         </ParticipantsToggle>
-        <Link href={`courts/${courtId}/${startTime.substring(0, 10)}`} passHref>
-          <Button>예약 확인하기</Button>
-        </Link>
+        {!expired && (
+          <Link
+            href={`courts/${courtId}/${startTime.substring(0, 10)}`}
+            passHref
+          >
+            <Button>예약 확인하기</Button>
+          </Link>
+        )}
       </Container>
       {visible && (
         <ParticipantList>
-          {participants &&
+          {participants.length !== 0 ? (
             participants.map(
               ({ userId, nickname, profileImage, isFollowed }: any) => (
                 <FollowListItem
@@ -80,7 +56,10 @@ const ReservationItemBottom = ({
                   {nickname}
                 </FollowListItem>
               )
-            )}
+            )
+          ) : (
+            <Text>함께한 사람이 없었어요 😢</Text>
+          )}
         </ParticipantList>
       )}
     </>

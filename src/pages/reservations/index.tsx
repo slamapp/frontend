@@ -7,7 +7,6 @@ import { reservationApi } from "@service/.";
 import { Spacer, Text } from "@components/base";
 import { NoItemMessage, ReservationItem } from "@components/domain";
 import UtilRoute from "UtilRoute";
-import useInfiniteScroll from "@hooks/useInfiniteScroll";
 
 const Reservations: NextPage = UtilRoute("private", () => {
   const { authProps, getMyReservations } = useAuthContext();
@@ -86,7 +85,7 @@ const Reservations: NextPage = UtilRoute("private", () => {
       tabContent:
         upcomingReservations.length === 0 ? (
           <NoItemMessage
-            title="예약이 아직 없어요 🤔"
+            title="다가올 예약이 아직 없어요 🤔"
             type="reservation"
             description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
             buttonTitle="예약할 농구장 찾기"
@@ -108,17 +107,26 @@ const Reservations: NextPage = UtilRoute("private", () => {
           지난 예약
         </Text>
       ),
-      tabContent: (
-        <Spacer gap="md" type="vertical">
-          {expiredReservations &&
-            expiredReservations.map((reservation: any) => (
-              <ReservationItem
-                key={reservation.reservationId}
-                {...reservation}
-              />
-            ))}
-        </Spacer>
-      ),
+      tabContent:
+        expiredReservations.length === 0 ? (
+          <NoItemMessage
+            title="지난 예약이 아직 없어요 🤔"
+            type="reservation"
+            description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
+            buttonTitle="예약할 농구장 찾기"
+          />
+        ) : (
+          <Spacer gap="md" type="vertical">
+            {expiredReservations &&
+              expiredReservations.map((reservation: any) => (
+                <ReservationItem
+                  key={reservation.reservationId}
+                  {...reservation}
+                  expired
+                />
+              ))}
+          </Spacer>
+        ),
     },
   ];
 

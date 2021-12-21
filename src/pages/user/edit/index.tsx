@@ -11,8 +11,12 @@ import Head from "next/head";
 import UtilRoute from "UtilRoute";
 import userApi from "@service/userApi";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
-import { PositionKeyUnion, ProficiencyKeyUnion } from "@components/domain";
-import ProfileForm from "../../../components/domain/ProfileForm/index";
+import {
+  PositionKeyUnion,
+  ProficiencyKeyUnion,
+  BasketballLoading,
+} from "@components/domain";
+import ProfileForm from "@components/domain/ProfileForm/index";
 
 type ResponseUserProfile = {
   nickname: string;
@@ -82,7 +86,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   }, [getMyProfile]);
 
   if (pageUserInfo === null) {
-    return <>Loading</>;
+    return <BasketballLoading />;
   }
 
   const { nickname, profileImage, description, proficiency, positions } =

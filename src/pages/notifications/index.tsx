@@ -10,7 +10,7 @@ import { NoItemMessage } from "@components/domain";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
   const { authProps, getMoreNotifications } = useAuthContext();
-  const { notificationLastId } = authProps.currentUser;
+  const { notificationLastId, notifications } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.NOTIFICATIONS);
 
@@ -33,13 +33,15 @@ const NotificationsPage: NextPage = UtilRoute("private", () => {
             <SkeletonNotification />
           </div>
         ) : (
-          <NoItemMessage
-            type="notification"
-            title="알림이 없습니다"
-            description="유용한 정보를 알림에서 모아 보실 수 있어요"
-            buttonTitle="지도에서 내 주변 농구장 찾기"
-            style={{ marginLeft: 16, marginRight: 16 }}
-          />
+          notifications.length === 0 || (
+            <NoItemMessage
+              type="notification"
+              title="더 받아올 알림이 없습니다"
+              description="유용한 정보를 알림에서 모아 보실 수 있어요"
+              buttonTitle="지도에서 내 주변 농구장 찾기"
+              style={{ marginLeft: 16, marginRight: 16 }}
+            />
+          )
         )}
       </div>
     </PageConainer>

@@ -25,7 +25,7 @@ const managementAPI = {
         });
   },
   acceptNewCourt: (newCourtId: number) =>
-    authRequest.patch("/management/newCourts/accept", newCourtId),
+    authRequest.patch("/management/newCourt/accept", newCourtId),
   denyNewCourt: (newCourtId: number) =>
     authRequest.patch("/management/newCourt/deny", newCourtId),
 };

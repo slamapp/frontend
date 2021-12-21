@@ -62,6 +62,7 @@ const getSlotFromDate = (date: Date): SlotKeyUnion => {
 
 const Courts: NextPage = () => {
   const router = useRouter();
+
   const {
     navigationProps,
     useMountPage,
@@ -86,7 +87,7 @@ const Courts: NextPage = () => {
 
   const [courts, setCourts] = useState<any>();
 
-  const [level, setLevel] = useState<number>(3);
+  const [level, setLevel] = useState<number>(5);
   const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
 
   const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
@@ -114,6 +115,7 @@ const Courts: NextPage = () => {
 
   const onClose = useCallback(() => {
     setIsOpen(false);
+    setSelectedCourt(null);
   }, []);
 
   // TODO: 노체 코드와 동일한 부분 중복 줄이기, hooks로 빼기
@@ -182,12 +184,16 @@ const Courts: NextPage = () => {
   );
 
   const handleZoomIn = useCallback(() => {
-    setLevel((level) => level - 1);
-  }, []);
+    if (map) {
+      setLevel(map.getLevel() - 1);
+    }
+  }, [map]);
 
   const handleZoomOut = useCallback(() => {
-    setLevel((level) => level + 1);
-  }, []);
+    if (map) {
+      setLevel(map.getLevel() + 1);
+    }
+  }, [map]);
 
   const handleChangeSlot = useCallback((e) => {
     setSelectedSlot(e.target.value);
@@ -252,7 +258,7 @@ const Courts: NextPage = () => {
           setCenter([latitude, longitude]);
           setIsOpen(true);
           searchAddrFromCoords(latitude, longitude);
-          setSelectedCourt(court);
+          setSelectedCourt({ ...court, courtId });
           setIsInitialized(true);
         }
       } catch (error) {
@@ -260,18 +266,34 @@ const Courts: NextPage = () => {
       }
     };
 
-    const { courtId } = router.query;
+    if (router.isReady) {
+      const { courtId } = router.query;
 
-    if (courtId) {
-      restoreCourts(+courtId);
-    } else {
-      handleGetCurrentLocation();
+      if (courtId) {
+        restoreCourts(+courtId);
+      } else {
+        handleGetCurrentLocation();
+      }
     }
   }, [map]);
 
   useEffect(() => {
+    const updateSelectedCourtDetail = async () => {
+      const court: any = await courtApi.getCourtDetail(
+        selectedCourt.courtId,
+        getDateStringFromDate(selectedDate),
+        selectedSlot
+      );
+
+      setSelectedCourt((prev: any) => ({ ...prev, ...court }));
+    };
+
     if (map) {
       fetchCourtsByBoundsAndDatetime(map);
+
+      if (selectedCourt) {
+        updateSelectedCourtDetail();
+      }
     }
   }, [map, fetchCourtsByBoundsAndDatetime, center]);
 
@@ -390,7 +412,11 @@ const Courts: NextPage = () => {
       </ModalSheet>
 
       <LeadToLoginModal
-        headerContent={"로그인하면 새 농구장을 추가할 수 있습니다"}
+        headerContent={
+          <p style={{ textAlign: "center" }}>
+            로그인하면 새 농구장을 추가할 수 있습니다
+          </p>
+        }
         isOpen={isOpenLeadToLoginModal}
         cancel={{
           content: "닫기",

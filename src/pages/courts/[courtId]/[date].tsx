@@ -33,7 +33,6 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
     (acc: any, reservation: any) => {
       const { existedReservations, timeTable } = acc;
       const startRow = getIndexFromDateString(reservation.startTime);
-      // TODO: 왜 -1 해야 되더라
       const endRow = getIndexFromDateString(reservation.endTime);
       const hasReservation = reservation.userId === userId;
 
@@ -41,12 +40,12 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
         existedReservations.push({
           reservationId: reservation.reservationId,
           startIndex: startRow,
-          endIndex: endRow,
+          endIndex: endRow - 1,
           hasBall: reservation.hasBall,
         });
       }
 
-      for (let i = startRow; i <= endRow; i += 1) {
+      for (let i = startRow; i < endRow; i += 1) {
         timeTable[i].peopleCount += 1;
 
         timeTable[i].ballCount = reservation.hasBall
@@ -612,7 +611,7 @@ const Reservation: NextPage = () => {
       const data = {
         courtId: Number(courtId),
         startTime: getDatetimeString(date as string, startIndex),
-        endTime: getDatetimeString(date as string, endIndex),
+        endTime: getDatetimeString(date as string, endIndex + 1),
         hasBall,
       };
 
@@ -636,7 +635,7 @@ const Reservation: NextPage = () => {
       const data = {
         courtId: Number(courtId),
         startTime: getDatetimeString(date as string, startIndex),
-        endTime: getDatetimeString(date as string, endIndex),
+        endTime: getDatetimeString(date as string, endIndex + 1),
         hasBall,
       };
 
