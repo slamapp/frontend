@@ -140,8 +140,6 @@ const User: NextPage = UtilRoute("private", () => {
     isFollowing,
   } = pageUserInfo;
 
-  console.log(pageUserInfo);
-
   return (
     <div>
       <Head>

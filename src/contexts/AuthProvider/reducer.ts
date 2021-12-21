@@ -49,8 +49,6 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
 ) => {
   switch (type) {
     case authTypes.SET_CURRENT_USER: {
-      console.log(payload.notifications);
-
       return {
         ...prevState,
         currentUser: {
@@ -207,7 +205,6 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
       };
     }
     case authTypes.PUSH_NOTIFICATIONS: {
-      console.log("push notifications", payload);
       return {
         ...prevState,
         currentUser: {
