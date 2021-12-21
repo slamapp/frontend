@@ -71,11 +71,10 @@ const NewCourtsPage: NextPage = () => {
     [currentLastId, isFetching, readyData.length]
   );
 
-  const handleClick = async (status: Status) => {
+  const handleClick = (status: Status) => {
     setCurrentLastId(0);
     setReadyData([]);
     setDoneData([]);
-    await getNewCourts(status);
     setActiveStatus(status);
   };
 
@@ -84,6 +83,10 @@ const NewCourtsPage: NextPage = () => {
   useEffect(() => {
     getNewCourts("READY");
   }, []);
+
+  useEffect(() => {
+    getNewCourts(activeStatus);
+  }, [activeStatus]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
