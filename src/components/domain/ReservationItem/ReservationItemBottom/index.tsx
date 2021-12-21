@@ -43,7 +43,7 @@ const ReservationItemBottom = ({
   numberOfReservations,
 }: any) => {
   const [visible, setVisible] = useState(false);
-  const [participants, setParticipants] = useState<any>();
+  const [participants, setParticipants] = useState<any>([]);
 
   const handleClick = useCallback(async () => {
     setVisible((prev) => !prev);
@@ -69,7 +69,7 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          {participants &&
+          {participants.length !== 0 ? (
             participants.map(
               ({ userId, nickname, profileImage, isFollowed }: any) => (
                 <FollowListItem
@@ -80,7 +80,10 @@ const ReservationItemBottom = ({
                   {nickname}
                 </FollowListItem>
               )
-            )}
+            )
+          ) : (
+            <Text>함께한 사람이 없었어요 😢</Text>
+          )}
         </ParticipantList>
       )}
     </>
