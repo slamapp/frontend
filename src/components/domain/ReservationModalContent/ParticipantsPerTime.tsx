@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 import { Avatar, Text } from "@components/base";
 import { getTimeFromIndex } from "@utils/timeTable";
+import Link from "next/link";
 import * as S from "./style";
 
 const ParticipantsPerTime: React.FC<{ participantsPerBlock: any[] }> = ({
@@ -16,12 +17,9 @@ const ParticipantsPerTime: React.FC<{ participantsPerBlock: any[] }> = ({
           <S.AvatarGroup>
             {users &&
               users.map(({ userId, avatarImgSrc }: any) => (
-                <Avatar
-                  key={userId}
-                  src={avatarImgSrc}
-                  shape="circle"
-                  size="md"
-                />
+                <Link href={`/user/${userId}`} key={userId} passHref>
+                  <Avatar src={avatarImgSrc} shape="circle" size="md" />
+                </Link>
               ))}
           </S.AvatarGroup>
         </ParticipantWithTimeWrapper>

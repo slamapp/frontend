@@ -1,4 +1,5 @@
 import { Avatar, Text } from "@components/base";
+import Link from "next/link";
 import BottomFixedButton from "../BottomFixedButton";
 import * as S from "./style";
 
@@ -34,12 +35,9 @@ const BlockStatusContent = ({
           <S.AvatarGroup>
             {participants &&
               participants.map(({ userId, avatarImgSrc }: any) => (
-                <Avatar
-                  key={userId}
-                  src={avatarImgSrc}
-                  shape="circle"
-                  size="lg"
-                />
+                <Link key={userId} href={`/user/${userId}`} passHref>
+                  <Avatar src={avatarImgSrc} shape="circle" size="lg" />
+                </Link>
               ))}
           </S.AvatarGroup>
         </S.ContentWrapper>
