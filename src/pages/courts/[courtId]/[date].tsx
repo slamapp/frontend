@@ -89,10 +89,12 @@ const getIsPastDay = (date: string) => {
   return new Date(date).getTime() < today.getTime();
 };
 
+const ONE_HOUR = 60 * 60 * 1000;
+
 const getIsPastTime = (datetime: string) => {
   const today = new Date();
 
-  return new Date(datetime).getTime() < today.getTime();
+  return new Date(datetime).getTime() < today.getTime() - ONE_HOUR;
 };
 
 const reducer: Reducer<any, any> = (state, { type, payload }) => {
@@ -769,14 +771,6 @@ const Reservation: NextPage = () => {
           />
         )}
 
-        {console.log(
-          `${date} ${getTimeFromIndex(selectedReservation?.startIndex)}`
-        )}
-        {console.log(
-          getIsPastTime(
-            `${date} ${getTimeFromIndex(selectedReservation?.startIndex)}`
-          )
-        )}
         {isOpen &&
           step === 1 &&
           selectedReservationId !== null &&
