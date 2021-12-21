@@ -14,14 +14,15 @@ const ParticipantsPerTime: React.FC<{ participantsPerBlock: any[] }> = ({
         <ParticipantWithTimeWrapper key={index}>
           <span>{getTimeFromIndex(index)}</span>
           <S.AvatarGroup>
-            {users.map(({ userId, avatarImgSrc }: any) => (
-              <Avatar
-                key={userId}
-                src={avatarImgSrc}
-                shape="circle"
-                size="md"
-              />
-            ))}
+            {users &&
+              users.map(({ userId, avatarImgSrc }: any) => (
+                <Avatar
+                  key={userId}
+                  src={avatarImgSrc}
+                  shape="circle"
+                  size="md"
+                />
+              ))}
           </S.AvatarGroup>
         </ParticipantWithTimeWrapper>
       ))}

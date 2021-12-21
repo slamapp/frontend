@@ -27,6 +27,7 @@ const TimeTable = ({
   step,
   existedReservations,
   selectedReservationId,
+  onClose,
 }: any) => {
   const currentTimeIndex = useMemo(
     () => (isToday ? getIndexFromDate(new Date()) : null),
@@ -86,6 +87,7 @@ const TimeTable = ({
           height={height}
           previous
           disabled={isToday}
+          onClose={onClose}
         />
         {timeTable.map((item: any, index: number) => (
           <TimeBlockUnit
@@ -145,7 +147,7 @@ const TimeTable = ({
             </>
           )
         )}
-        <ActionTimeBlockUnit height={height} next />
+        <ActionTimeBlockUnit height={height} next onClose={onClose} />
       </S.TimeTableContainer>
     </div>
   );

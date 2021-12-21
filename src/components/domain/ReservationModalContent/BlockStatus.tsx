@@ -32,14 +32,15 @@ const BlockStatusContent = ({
           <Text>함께하는 사람들</Text>
           {participants.length === 0 && <Text>아직 참여자가 없습니다.</Text>}
           <S.AvatarGroup>
-            {participants.map(({ userId, avatarImgSrc }: any) => (
-              <Avatar
-                key={userId}
-                src={avatarImgSrc}
-                shape="circle"
-                size="lg"
-              />
-            ))}
+            {participants &&
+              participants.map(({ userId, avatarImgSrc }: any) => (
+                <Avatar
+                  key={userId}
+                  src={avatarImgSrc}
+                  shape="circle"
+                  size="lg"
+                />
+              ))}
           </S.AvatarGroup>
         </S.ContentWrapper>
       </S.ModalContent>

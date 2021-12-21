@@ -25,6 +25,7 @@ const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
   previous,
   next,
   disabled,
+  onClose,
 }) => {
   const {
     query: { courtId, date },
@@ -60,7 +61,7 @@ const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
             }`}
             passHref
           >
-            <S.NavigationBlock>
+            <S.NavigationBlock onClick={onClose}>
               {previous ? "전 날 예약 보기" : "다음 날 예약보기"}
             </S.NavigationBlock>
           </Link>
