@@ -23,7 +23,7 @@ const reservationApi = {
           },
         })
       : authRequest.get<R, R>("/reservations/expired", {
-          params: { isFirst, lastId: "0", size: 2 },
+          params: { isFirst, lastId: "0", size: 5 },
         });
   },
   getMyReservationParticipants: <R>({ courtId, startTime, endTime }: any) =>
