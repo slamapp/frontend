@@ -115,6 +115,7 @@ const Courts: NextPage = () => {
 
   const onClose = useCallback(() => {
     setIsOpen(false);
+    setSelectedCourt(null);
   }, []);
 
   // TODO: 노체 코드와 동일한 부분 중복 줄이기, hooks로 빼기
@@ -273,8 +274,22 @@ const Courts: NextPage = () => {
   }, [map]);
 
   useEffect(() => {
+    const updateSelectedCourtDetail = async () => {
+      const court: any = await courtApi.getCourtDetail(
+        selectedCourt.courtId,
+        getDateStringFromDate(selectedDate),
+        selectedSlot
+      );
+
+      setSelectedCourt((prev: any) => ({ ...prev, ...court }));
+    };
+
     if (map) {
       fetchCourtsByBoundsAndDatetime(map);
+
+      if (selectedCourt) {
+        updateSelectedCourtDetail();
+      }
     }
   }, [map, fetchCourtsByBoundsAndDatetime, center]);
 
