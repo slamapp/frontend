@@ -97,6 +97,7 @@ const getIsPastTime = (datetime: string) => {
 };
 
 const reducer: Reducer<any, any> = (state, { type, payload }) => {
+  console.log(type);
   switch (type) {
     case "SET_TIMETABLE": {
       const { reservations, userId } = payload;
@@ -114,6 +115,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
     case "START_CREATE": {
       return {
         ...state,
+        modalContentData: [],
         mode: "create",
         step: state.step + 1,
         currentInput: "END",
@@ -575,6 +577,8 @@ const Reservation: NextPage = () => {
     currentInput,
   } = reservation;
 
+  console.log(modalContentData);
+
   const [snap, setSnap] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -699,6 +703,10 @@ const Reservation: NextPage = () => {
     [currentUser]
   );
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   useEffect(() => {
     if (router.isReady && getIsPastDay(date as string)) {
       alert("과거의 예약 정보는 확인할 수 없습니다.");
@@ -762,6 +770,7 @@ const Reservation: NextPage = () => {
         step={step}
         selectedReservationId={selectedReservationId}
         existedReservations={existedReservations}
+        onClose={handleClose}
       />
       <ModalSheet
         isOpen={isOpen}

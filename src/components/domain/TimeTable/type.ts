@@ -25,6 +25,7 @@ interface ActionTimeBlockUnitProps
   extends Pick<TimeBlockUnitWrapperProps, "height" | "previous" | "next"> {
   rowRef?: RefObject<HTMLDivElement>;
   disabled?: boolean;
+  onClose: () => void;
 }
 
 interface HourProps {

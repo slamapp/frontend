@@ -108,6 +108,7 @@ const HoursHorizontalDivider = styled.div`
 `;
 
 const StatusColumn = styled(FourSixthColumn)<StatusProps>`
+  cursor: pointer;
   background-color: ${({ status, theme }) => {
     switch (status) {
       case "active":
