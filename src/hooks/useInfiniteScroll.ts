@@ -6,29 +6,39 @@ const useInfiniteScroll = (
   threshold = 1.0
 ) => {
   const [isFetching, setIsFetching] = useState(false);
-  const intersectionObserver = useRef<IntersectionObserver>();
+  const [intersectionObserver, setIntersectionObserver] =
+    useState<IntersectionObserver>();
 
   useEffect(() => {
-    intersectionObserver.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(async (entry) => {
-          if (entry.isIntersecting && !isFetching) {
-            console.log("intersecting!");
-            setIsFetching(true);
-            await loadMore();
-            setIsFetching(false);
-          }
-        });
-      },
-      { threshold }
+    setIntersectionObserver(
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach(async (entry) => {
+            if (entry.isIntersecting && !isFetching) {
+              setIsFetching(true);
+              await loadMore();
+              setIsFetching(false);
+            }
+          });
+        },
+        { threshold }
+      )
     );
   }, [isFetching, loadMore, threshold]);
 
   useEffect(() => {
-    if (target.current && intersectionObserver.current) {
-      intersectionObserver.current.observe(target.current);
+    const el = target.current;
+
+    if (el && intersectionObserver) {
+      intersectionObserver.observe(target.current);
     }
-  }, [target]);
+
+    return () => {
+      if (el) {
+        intersectionObserver?.unobserve(el);
+      }
+    };
+  }, [target, intersectionObserver]);
 
   return [isFetching];
 };

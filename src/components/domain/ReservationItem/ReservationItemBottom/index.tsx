@@ -53,7 +53,6 @@ const ReservationItemBottom = ({
       endTime,
     });
 
-    console.log(participants);
     setParticipants(participants);
   }, [courtId, startTime, endTime]);
 
