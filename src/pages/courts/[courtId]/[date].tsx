@@ -92,12 +92,13 @@ const ONE_HOUR = 60 * 60 * 1000;
 
 const getIsPastTime = (datetime: string) => {
   const today = new Date();
+  const date = new Date(datetime);
+  date.setTime(date.getTime() - ONE_HOUR);
 
-  return new Date(datetime).getTime() < today.getTime() - ONE_HOUR;
+  return date < today;
 };
 
 const reducer: Reducer<any, any> = (state, { type, payload }) => {
-  console.log(type);
   switch (type) {
     case "SET_TIMETABLE": {
       const { reservations, userId } = payload;
@@ -204,16 +205,25 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
       const { user } = payload;
       let { timeIndex } = payload;
 
-      if (state.currentInput === "START") {
-        const {
-          mode,
-          originalTimeTable,
-          endIndex,
-          existedReservations,
-          selectedReservationId,
-          hasBall,
-        } = state;
+      const {
+        mode,
+        originalTimeTable,
+        endIndex,
+        existedReservations,
+        selectedReservationId,
+        startIndex,
+        hasBall,
+      } = state;
 
+      const timeTable = [...originalTimeTable];
+      const selectedReservation = existedReservations.find(
+        ({ reservationId }: any) => reservationId === selectedReservationId
+      );
+
+      const modalContentData = [];
+      let requestDisabled = false;
+
+      if (state.currentInput === "START") {
         if (endIndex === null) {
           return {
             ...state,
@@ -237,11 +247,6 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
             };
           }
 
-          const timeTable = [...originalTimeTable];
-
-          const modalContentData = [];
-          let requestDisabled = false;
-
           for (let i = timeIndex; i <= endIndex; i += 1) {
             const { users, peopleCount, hasReservation } = timeTable[i];
 
@@ -253,7 +258,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
 
             modalContentData.push({ index: i, users: timeTable[i].users });
 
-            if (timeTable[i].hasReservation) {
+            if (hasReservation) {
               requestDisabled = true;
             }
           }
@@ -266,12 +271,6 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
             requestDisabled,
           };
         } else {
-          // * update
-          const timeTable = [...originalTimeTable];
-          const selectedReservation = existedReservations.find(
-            ({ reservationId }: any) => reservationId === selectedReservationId
-          );
-
           if (timeIndex > endIndex) {
             for (
               let i = selectedReservation.startIndex;
@@ -298,9 +297,6 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
               timeTable,
             };
           }
-
-          const modalContentData = [];
-          let requestDisabled = false;
 
           if (endIndex < selectedReservation.endIndex) {
             for (let i = selectedReservation.endIndex; i > endIndex; i -= 1) {
@@ -357,8 +353,9 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
             modalContentData.push({ index: i, users: timeTable[i].users });
 
             if (
-              i < selectedReservation.startIndex ||
-              (i > selectedReservation.endIndex && hasReservation)
+              (i < selectedReservation.startIndex ||
+                i > selectedReservation.endIndex) &&
+              hasReservation
             ) {
               requestDisabled = true;
             }
@@ -373,16 +370,6 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
           };
         }
       } else {
-        // * endIndex
-        const {
-          mode,
-          originalTimeTable,
-          startIndex,
-          existedReservations,
-          selectedReservationId,
-          hasBall,
-        } = state;
-
         if (timeIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
           console.log("3시간을 초과하여 예약할 수 없습니다.");
           timeIndex = startIndex + MAX_RESERVATION_TIME_BLOCK_UNIT - 1;
@@ -398,10 +385,6 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
               timeTable: [...originalTimeTable],
             };
           }
-          const timeTable = [...originalTimeTable];
-
-          const modalContentData = [];
-          let requestDisabled = false;
 
           for (let i = startIndex; i <= timeIndex; i += 1) {
             const { users, peopleCount, hasReservation } = timeTable[i];
@@ -414,7 +397,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
 
             modalContentData.push({ index: i, users: timeTable[i].users });
 
-            if (timeTable[i].hasReservation) {
+            if (hasReservation) {
               requestDisabled = true;
             }
           }
@@ -427,11 +410,6 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
             requestDisabled,
           };
         } else {
-          const timeTable = [...originalTimeTable];
-
-          const selectedReservation = existedReservations.find(
-            ({ reservationId }: any) => reservationId === selectedReservationId
-          );
           if (timeIndex < startIndex) {
             for (
               let i = selectedReservation.startIndex;
@@ -460,9 +438,6 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
               timeTable,
             };
           }
-
-          const modalContentData = [];
-          let requestDisabled = false;
 
           if (selectedReservation.startIndex < startIndex) {
             for (
@@ -519,8 +494,9 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
             modalContentData.push({ index: i, users: timeTable[i].users });
 
             if (
-              i < selectedReservation.startIndex ||
-              (i > selectedReservation.endIndex && hasReservation)
+              (i < selectedReservation.startIndex ||
+                i > selectedReservation.endIndex) &&
+              hasReservation
             ) {
               requestDisabled = true;
             }
@@ -576,8 +552,6 @@ const Reservation: NextPage = () => {
     hasBall,
     currentInput,
   } = reservation;
-
-  console.log(modalContentData);
 
   const [snap, setSnap] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -696,7 +670,10 @@ const Reservation: NextPage = () => {
         type: "SET_TIME_INDEX",
         payload: {
           timeIndex,
-          user: { currentUser, avatarImgSrc: currentUser.profileImageUrl },
+          user: {
+            user: currentUser,
+            avatarImgSrc: currentUser.profileImageUrl,
+          },
         },
       });
     },
