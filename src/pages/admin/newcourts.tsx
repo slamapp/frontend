@@ -73,6 +73,8 @@ const NewCourtsPage: NextPage = () => {
 
   const handleClick = async (status: Status) => {
     setCurrentLastId(0);
+    setReadyData([]);
+    setDoneData([]);
     await getNewCourts(status);
     setActiveStatus(status);
   };
@@ -114,7 +116,6 @@ const NewCourtsPage: NextPage = () => {
                   state="READY"
                 />
               ))}
-              처리 대기
             </Spacer>
           </Container>
         </Tab.Item>
@@ -128,7 +129,6 @@ const NewCourtsPage: NextPage = () => {
                   state="DONE"
                 />
               ))}
-              처리 완료
             </Spacer>
           </Container>
         </Tab.Item>
