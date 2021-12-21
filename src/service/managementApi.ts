@@ -12,7 +12,7 @@ const managementAPI = {
             status,
             isFirst,
             lastId,
-            size: 2,
+            size: 10,
           },
         })
       : authRequest.get<R, R>("/management/newCourts", {
@@ -20,7 +20,7 @@ const managementAPI = {
             status,
             isFirst,
             lastId: 0,
-            size: 2,
+            size: 10,
           },
         });
   },

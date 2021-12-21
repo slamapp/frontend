@@ -13,67 +13,100 @@ const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.ADMIN_NEWCOURTS);
 
-  // 더미 데이터
-  const dummyData: NewCourt[] = [
-    {
-      newCourtId: 1,
-      courtName: "반포한강공원 체력단련장 농구장",
-      basketCount: 1,
-      longitude: 126.995269636407,
-      latitude: 37.5097694752014,
-      image: null,
-      texture: "RUBBER",
-      status: "READY",
-      createdAt: "2021-01-01T12:20:10",
-    },
-  ];
-
-  const [readyData, setReadyData] = useState<NewCourt[]>(dummyData);
+  const [readyData, setReadyData] = useState<NewCourt[]>([]);
   const [doneData, setDoneData] = useState<NewCourt[]>([]);
   const [currentLastId, setCurrentLastId] = useState<number | null>(0);
   const [activeStatus, setActiveStatus] = useState<Status>("READY");
+  const [isFetching, setIsFetching] = useState(false);
 
-  const getNewCourts = useCallback(async (status: Status) => {
-    if (currentLastId === null) return;
-    try {
-      const { contents, lastId } = await managementApi.getNewCourts(
-        status,
-        !currentLastId,
-        currentLastId
-      );
-      if (status === "READY") {
-        setReadyData((prev) => [...prev, ...contents]);
-      } else {
-        setDoneData((prev) => [...prev, ...contents]);
+  const loadMore = useCallback(
+    async (status: Status) => {
+      if (readyData.length === 0 || isFetching || currentLastId === null) {
+        return;
       }
-      setCurrentLastId(lastId);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+
+      try {
+        setIsFetching(true);
+        const { contents, lastId } = await managementApi.getNewCourts(
+          status,
+          !currentLastId,
+          currentLastId
+        );
+        if (status === "READY") {
+          setReadyData((prev) => [...prev, ...contents]);
+        } else {
+          setDoneData((prev) => [...prev, ...contents]);
+        }
+        setCurrentLastId(lastId);
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsFetching(false);
+    },
+    [currentLastId, isFetching, readyData.length]
+  );
+
+  const getNewCourts = useCallback(
+    async (status: Status) => {
+      try {
+        setIsFetching(true);
+        const { contents, lastId } = await managementApi.getNewCourts(
+          status,
+          !currentLastId,
+          currentLastId
+        );
+        if (status === "READY") {
+          setReadyData((prev) => [...prev, ...contents]);
+        } else {
+          setDoneData((prev) => [...prev, ...contents]);
+        }
+        setCurrentLastId(lastId);
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsFetching(false);
+    },
+    [currentLastId, isFetching, readyData.length]
+  );
+
+  const handleClick = async (status: Status) => {
+    setCurrentLastId(0);
+    await getNewCourts(status);
+    setActiveStatus(status);
+  };
+
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getNewCourts("READY");
   }, []);
 
-  const handleClick = (status: Status) => {
-    setCurrentLastId(0);
-    getNewCourts(status);
-    setActiveStatus(status);
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(async (entry) => {
+          if (entry.isIntersecting) {
+            await loadMore(activeStatus);
+          }
+        });
+      },
+      { threshold: 1 }
+    );
 
-  const ref = useRef<HTMLDivElement>(null);
-  const [isFetching] = useInfiniteScroll(ref, () => {
-    getNewCourts(activeStatus);
-  });
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, [ref, activeStatus, getNewCourts]);
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <Tab onClick={handleClick}>
         <Tab.Item title="처리 대기" index="READY">
           <Container>
             <Spacer gap="base" type="vertical">
-              {isFetching}
               {readyData.map((court) => (
                 <NewCourtItem
                   key={court.newCourtId}
@@ -100,6 +133,7 @@ const NewCourtsPage: NextPage = () => {
           </Container>
         </Tab.Item>
       </Tab>
+      {readyData.length === 0 && <div style={{ flex: 1 }}></div>}
       <div ref={ref} style={{ height: 10 }}></div>
     </div>
   );
