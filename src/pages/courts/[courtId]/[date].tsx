@@ -727,6 +727,8 @@ const Reservation: NextPage = () => {
     } else {
       clearNavigationEvent();
     }
+
+    return () => clearNavigationEvent();
   }, [step, clearNavigationEvent, setCustomButtonEvent, handleDecreaseStep]);
 
   useEffect(() => {
