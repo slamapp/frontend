@@ -5,6 +5,14 @@
 <div align="center">
 <div>같이 농구할 사람이 없다고?<br />나랑 슬램하러 가자 ⛹🏻‍♀️</div>
 <div><a href="https://slams.app/">👉 https://slams.app 👈</a></div>
+<br>
+<div><img src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/emotion-C43BAD?style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"></div>
+  
+
 </div>
 
 <br>
@@ -97,7 +105,7 @@
 
 <br>
 
-# 프로젝트 실행 방법
+# ⚡ 프로젝트 실행 방법
 
 node v16.13.0
 yarn
@@ -107,16 +115,6 @@ yarn cache clean
 yarn
 yarn dev
 ```
-
-<br>
-
-# 기술 스택
-
-<div><img src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
-<img src="https://img.shields.io/badge/emotion-C43BAD?style=for-the-badge&logoColor=white">
-<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"></div>
 
 <br>
 
