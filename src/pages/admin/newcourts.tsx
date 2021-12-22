@@ -82,10 +82,6 @@ const NewCourtsPage: NextPage = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getNewCourts("READY");
-  }, []);
-
-  useEffect(() => {
     getNewCourts(activeStatus);
   }, [activeStatus]);
 
