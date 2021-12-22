@@ -41,7 +41,10 @@ const ProfileForm = ({
   // TODO: 리팩토링
 
   const router = useRouter();
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
+  const [isOpenDeleteImageConfirmModal, setIsOpenDeleteImageConfirmModal] =
+    useState<boolean>(false);
+  const [isOpenEditConfirmModal, setIsOpenEditConfirmModal] =
+    useState<boolean>(false);
 
   useEffect(() => {
     setSelectedProficiency(proficiency);
@@ -93,6 +96,10 @@ const ProfileForm = ({
 
       return errors;
     },
+    confirmModal: {
+      isOpenConfirmModal: isOpenEditConfirmModal,
+      setIsOpenConfirmModal: setIsOpenEditConfirmModal,
+    },
   });
 
   return (
@@ -109,7 +116,7 @@ const ProfileForm = ({
               />
             </Upload>
             <Button
-              onClick={() => setIsOpenConfirmModal(true)}
+              onClick={() => setIsOpenDeleteImageConfirmModal(true)}
               type="button"
               secondary
             >
@@ -179,12 +186,12 @@ const ProfileForm = ({
       </form>
 
       <LeadToLoginModal
-        headerContent={`기본 프로필 이미지로 변경하시겠습니까?`}
-        isOpen={isOpenConfirmModal}
+        headerContent={`기본 프로필 이미지로 변경하시겠어요?`}
+        isOpen={isOpenDeleteImageConfirmModal}
         cancel={{
           content: "닫기",
           handle: () => {
-            setIsOpenConfirmModal(false);
+            setIsOpenDeleteImageConfirmModal(false);
           },
         }}
         confirm={{
@@ -192,7 +199,29 @@ const ProfileForm = ({
           handle: (e) => {
             try {
               handleDeleteProfileImage();
-              setIsOpenConfirmModal(false);
+              setIsOpenDeleteImageConfirmModal(false);
+              router.replace("/user/edit");
+            } catch (error) {
+              console.error(error);
+            }
+          },
+        }}
+      />
+
+      <LeadToLoginModal
+        headerContent={`프로필을 수정하시겠어요?`}
+        isOpen={isOpenEditConfirmModal}
+        cancel={{
+          content: "닫기",
+          handle: () => {
+            setIsOpenEditConfirmModal(false);
+          },
+        }}
+        confirm={{
+          content: "수정하기",
+          handle: (e) => {
+            try {
+              handleSubmit(e);
               router.replace("/user/edit");
             } catch (error) {
               console.error(error);
