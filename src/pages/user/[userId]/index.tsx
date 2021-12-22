@@ -91,8 +91,8 @@ const User: NextPage = UtilRoute("private", () => {
       setPageUserInfo(data);
     } catch (error: any) {
       console.error(error);
-      const { status } = error.response.data;
-      if (status === 400) {
+      const { message } = error.response.data;
+      if (message === "Entity Not Found") {
         setIsError(true);
       }
     }
