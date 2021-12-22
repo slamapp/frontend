@@ -52,6 +52,7 @@ const ReservationItemBottom = ({
                   key={userId}
                   src={profileImage}
                   isFollowed={isFollowed}
+                  userId={userId}
                 >
                   {nickname}
                 </FollowListItem>

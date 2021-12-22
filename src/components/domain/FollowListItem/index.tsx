@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react";
 import styled from "@emotion/styled";
 import type { ReactNode } from "react";
 import { Avatar, Button, Spacer, Text } from "@components/base";
+import { LinkAvatar } from "@components/domain";
 
 interface Props {
   children: ReactNode;
@@ -9,6 +10,7 @@ interface Props {
   style?: CSSProperties;
   src: string;
   isFollowed: boolean;
+  userId: number;
 }
 // 아바타 + 이름 + 버튼
 
@@ -18,6 +20,7 @@ const FollowListItem: React.FC<Props> = ({
   style,
   src,
   isFollowed,
+  userId,
 }) => {
   return (
     <ListItem className={className} style={style}>
@@ -27,7 +30,7 @@ const FollowListItem: React.FC<Props> = ({
           alignItems: "center",
         }}
       >
-        <Avatar shape="circle" size={36} src={src} />
+        <LinkAvatar size={36} imageUrl={src} userId={userId} />
         <Text size="base" strong>
           {children}
         </Text>
