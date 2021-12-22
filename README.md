@@ -54,7 +54,7 @@
 
 # 👨‍👩‍👧‍👧 팀원 소개
 
-|                            고종현                             |                             권정희                             |                            박세림                            |                            임경희                             |
+|                            종현(마누)                             |                             정희(한나)                             |                            세림(앤)                            |                            경희(노체)                             |
 | :-----------------------------------------------------------: | :------------------------------------------------------------: | :----------------------------------------------------------: | :-----------------------------------------------------------: |
 | ![Manu](https://avatars.githubusercontent.com/u/61593290?v=4) | ![Hanna](https://avatars.githubusercontent.com/u/68159627?v=4) | ![Ann](https://avatars.githubusercontent.com/u/33405125?v=4) | ![koby](https://avatars.githubusercontent.com/u/84858773?v=4) |
 |            [manudeli](https://github.com/manudeli)            |           [grighth12](https://github.com/grighth12)            |          [Parkserim](https://github.com/Parkserim)           |              [limkhl](https://github.com/limkhl)              |
