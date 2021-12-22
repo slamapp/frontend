@@ -66,6 +66,10 @@ const Tab = ({
 
 const TabItemContainer = styled.div`
   display: flex;
+  position: sticky;
+  align-self: flex-start;
+  box-shadow: ${({ theme }) => theme.boxShadows.sm};
+  top: 56px;
 `;
 
 const childrenToArray = (children: ReactNode, types: "Tab.Item") => {

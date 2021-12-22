@@ -220,6 +220,19 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         title: "사용자 메뉴",
       };
     }
+    case pageType.ERROR: {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: true,
+        currentPage: type,
+        isBack: true,
+        isNotifications: true,
+        isProfile: true,
+        isMenu: false,
+        title: "",
+      };
+    }
     case navigationType.SET_IS_TOP_TRANSPARENT: {
       return { ...prevState, isTopTransparent: payload.isTopTransparent };
     }

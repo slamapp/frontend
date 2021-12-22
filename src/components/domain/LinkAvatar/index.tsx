@@ -20,13 +20,19 @@ const getSize = (size: Size) => {
 interface Props {
   userId: string | number;
   imageUrl: string;
-  size?: Size;
+  size?: Size | number;
 }
 
 const LinkAvatar = ({ userId, imageUrl, size = "middle" }: Props) => {
   return (
     <Link href={`/user/${userId || 1}`} passHref>
-      <Avatar size={getSize(size)} src={imageUrl} shape="circle" />
+      <a>
+        <Avatar
+          size={typeof size === "number" ? size : getSize(size)}
+          src={imageUrl}
+          shape="circle"
+        />
+      </a>
     </Link>
   );
 };

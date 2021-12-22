@@ -10,7 +10,9 @@ interface Props {
 
 const LinkStrong = ({ href, children }: Props) => (
   <Link href={href} passHref>
-    <Strong>{children}</Strong>
+    <a>
+      <Strong>{children}</Strong>
+    </a>
   </Link>
 );
 

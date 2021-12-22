@@ -18,7 +18,9 @@ const ParticipantsPerTime: React.FC<{ participantsPerBlock: any[] }> = ({
             {users &&
               users.map(({ userId, avatarImgSrc }: any) => (
                 <Link href={`/user/${userId}`} key={userId} passHref>
-                  <Avatar src={avatarImgSrc} shape="circle" size="md" />
+                  <a>
+                    <Avatar src={avatarImgSrc} shape="circle" size="md" />
+                  </a>
                 </Link>
               ))}
           </S.AvatarGroup>

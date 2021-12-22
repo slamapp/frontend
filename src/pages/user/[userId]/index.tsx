@@ -23,6 +23,7 @@ import {
   getTranslatedPositions,
   getTranslatedProficiency,
 } from "@utils/userInfo";
+import Custom404 from "@pages/404";
 
 type ResponseUserProfile = {
   createdAt: string;
@@ -71,6 +72,7 @@ const User: NextPage = UtilRoute("private", () => {
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   );
+  const [isError, setIsError] = useState(false);
 
   const getMyProfile = useCallback(async () => {
     try {
@@ -87,8 +89,12 @@ const User: NextPage = UtilRoute("private", () => {
         queryUserId
       );
       setPageUserInfo(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      const { message } = error.response.data;
+      if (message === "Entity Not Found") {
+        setIsError(true);
+      }
     }
   }, [queryUserId]);
 
@@ -127,6 +133,9 @@ const User: NextPage = UtilRoute("private", () => {
   }, [userId, getMyProfile, getOtherProfile, queryUserId]);
 
   if (pageUserInfo === null) {
+    if (isError) {
+      return <Custom404 />;
+    }
     return <BasketballLoading />;
   }
 

@@ -56,7 +56,12 @@ const FollowingPage: NextPage = UtilRoute("private", () => {
       {followings &&
         followings.map(
           ({ followerId, receiverId, nickName, profileImage }: any) => (
-            <FollowListItem key={followerId} src={profileImage} isFollowed>
+            <FollowListItem
+              key={followerId}
+              src={profileImage}
+              userId={receiverId}
+              isFollowed
+            >
               {nickName}
             </FollowListItem>
           )
