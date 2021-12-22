@@ -23,6 +23,7 @@ export const pageType = {
   USER_CHATROOM: "USER_CHATROOM",
   COURT_CHATROOM: "COURT_CHATROOM",
   ADMIN_NEWCOURTS: "ADMIN_NEWCOURTS",
+  ERROR: "ERROR",
 } as const;
 
 export const navigationType = {
