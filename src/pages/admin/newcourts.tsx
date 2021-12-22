@@ -73,6 +73,8 @@ const NewCourtsPage: NextPage = () => {
   );
 
   const handleClick = (status: Status) => {
+    if (activeStatus === status) return;
+
     setCurrentLastId(0);
     setReadyData([]);
     setDoneData([]);
@@ -135,7 +137,8 @@ const NewCourtsPage: NextPage = () => {
           </Container>
         </Tab.Item>
       </Tab>
-      {readyData.length === 0 && <div style={{ flex: 1 }}></div>}
+      {readyData.length === 0 ||
+        (doneData.length === 0 && <div style={{ flex: 1 }}></div>)}
       <div ref={ref} style={{ height: 10 }}></div>
 
       <Modal
