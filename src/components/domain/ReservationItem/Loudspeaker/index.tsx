@@ -1,10 +1,7 @@
 import { Button } from "@components/base";
+import { useSocketContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
-
-interface Iprops {
-  startTime: string;
-}
 
 const ONE_HOUR_SECONDS = 3600;
 
@@ -15,7 +12,15 @@ const getRestTimeBeforeActivate = (startTime: any) => {
   return timeDiff - ONE_HOUR_SECONDS * 1000;
 };
 
-const Loudspeaker = ({ startTime }: Iprops) => {
+interface Props {
+  startTime: string;
+  courtId: number;
+  reservationId: number;
+}
+
+const Loudspeaker = ({ startTime, courtId, reservationId }: Props) => {
+  const { sendLoudSpeaker } = useSocketContext();
+
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
@@ -36,7 +41,15 @@ const Loudspeaker = ({ startTime }: Iprops) => {
     }
   }, []);
 
-  return <div>{isActive ? <StyledButton>🔈</StyledButton> : null}</div>;
+  return (
+    <div
+      onClick={() => {
+        sendLoudSpeaker({ courtId, startTime, reservationId });
+      }}
+    >
+      {isActive ? <StyledButton>🔈</StyledButton> : null}
+    </div>
+  );
 };
 
 const StyledButton = styled(Button)`

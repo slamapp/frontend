@@ -142,11 +142,10 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             image: values.image,
           };
 
+          setIsOpenConfirmModal(true);
+
           try {
             await courtApi.createNewCourt(valuesWithPosition);
-            alert(
-              "제출해주신 농구장 정보는 관리자 승인을 거쳐 등록될 예정입니다."
-            );
             router.push("/courts");
           } catch (error) {
             console.log(error);
@@ -167,6 +166,10 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
         }
 
         return errors;
+      },
+      confirmModal: {
+        isOpenConfirmModal,
+        setIsOpenConfirmModal,
       },
     });
 
@@ -240,7 +243,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
         <Sheet.Backdrop onViewportBoxUpdate={() => {}} />
       </CustomSheet>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         <MainContainer>
           <Spacer gap="base" type="vertical">
             <div>
@@ -310,17 +313,14 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
             </div>
           </Spacer>
         </MainContainer>
-        <BottomFixedButton
-          type="submit"
-          onClick={() => setIsOpenConfirmModal(true)}
-        >
+        <BottomFixedButton type="submit" onClick={(e) => handleSubmit(e)}>
           {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
         </BottomFixedButton>
       </form>
 
       <LeadToLoginModal
         headerContent={
-          <Spacer gap={4} type="vertical" style={{ textAlign: "center" }}>
+          <Spacer gap={4} type="vertical">
             <Text size="md" strong block>
               새 농구장 추가를 제안하시겠습니까?
             </Text>
