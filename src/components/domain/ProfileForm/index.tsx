@@ -191,11 +191,7 @@ const ProfileForm = ({
       </form>
 
       <LeadToLoginModal
-        headerContent={
-          <Text block style={{ textAlign: "center" }}>
-            기본 프로필 이미지로 변경하시겠습니까?
-          </Text>
-        }
+        headerContent={`기본 프로필 이미지로 변경하시겠습니까?`}
         isOpen={isOpenConfirmModal}
         cancel={{
           content: "닫기",

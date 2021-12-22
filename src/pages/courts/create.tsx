@@ -320,7 +320,7 @@ const CreateCourt: NextPage = UtilRoute("private", () => {
 
       <LeadToLoginModal
         headerContent={
-          <Spacer gap={4} type="vertical" style={{ textAlign: "center" }}>
+          <Spacer gap={4} type="vertical">
             <Text size="md" strong block>
               새 농구장 추가를 제안하시겠습니까?
             </Text>

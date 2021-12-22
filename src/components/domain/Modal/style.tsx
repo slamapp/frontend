@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 const Header = styled.div`
   padding: 40px 0;
+  text-align: center;
 `;
 
 const BottomButtonContainer = styled.div`

@@ -1,11 +1,10 @@
 import { useNavigationContext } from "@contexts/hooks";
 import { NextPage } from "next";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Spacer, Tab, Text } from "@components/base";
+import { Spacer, Tab } from "@components/base";
 import styled from "@emotion/styled";
 import { NewCourtItem, NewCourt, Modal } from "@components/domain";
 import managementApi from "@service/managementApi";
-import { useInfiniteScroll } from "@hooks/.";
 
 type Status = "READY" | "DONE";
 
@@ -147,22 +146,14 @@ const NewCourtsPage: NextPage = () => {
         visible={isOpenDenyModal}
         onClose={() => setIsOpenDenyModal(false)}
       >
-        <Modal.Header>
-          <Text style={{ textAlign: "center" }} block>
-            거절이 완료되었습니다.
-          </Text>
-        </Modal.Header>
+        <Modal.Header>거절이 완료되었습니다.</Modal.Header>
       </Modal>
 
       <Modal
         visible={isOpenAcceptModal}
         onClose={() => setIsOpenAcceptModal(false)}
       >
-        <Modal.Header>
-          <Text style={{ textAlign: "center" }} block>
-            승인이 완료되었습니다.
-          </Text>
-        </Modal.Header>
+        <Modal.Header>승인이 완료되었습니다.</Modal.Header>
       </Modal>
     </div>
   );
