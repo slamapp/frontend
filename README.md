@@ -1,11 +1,10 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/788e8a4e-dbcd-40c1-b939-c2f7e6eca82a/deploy-status)](https://app.netlify.com/sites/slams/deploys)
 
-<div style="text-align: center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
+<div align="center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
 
-<div style="text-align: center">
-<p>같이 농구할 사람이 없다고?<br />나랑 슬램하러 가자 ⛹🏻‍♀️</p>
-
-<p><a href="https://slams.app/">👉 https://slams.app 👈</a></p>
+<div align="center">
+<div>같이 농구할 사람이 없다고?<br />나랑 슬램하러 가자 ⛹🏻‍♀️</div>
+<div><a href="https://slams.app/">👉 https://slams.app 👈</a></div>
 </div>
 
 <br>
@@ -83,7 +82,7 @@
 
 <br>
 
-## 프로젝트 실행 방법
+# 프로젝트 실행 방법
 
 node v16.13.0
 yarn
@@ -96,10 +95,15 @@ yarn dev
 
 <br>
 
-## 기술 스택
+# 기술 스택
 
-<img src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
+<div><img src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
 <img src="https://img.shields.io/badge/emotion-C43BAD?style=for-the-badge&logoColor=white">
-<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white">
+<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"></div>
+
+<br>
+
+# 🔗 Server Git Repo
+[Slam Server](https://github.com/prgrms-web-devcourse/slam-server)
