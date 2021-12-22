@@ -3,15 +3,7 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 
 import useForm, { Error } from "@hooks/useForm";
-import {
-  Avatar,
-  Spacer,
-  Upload,
-  Button,
-  Label,
-  Input,
-  Text,
-} from "@components/base";
+import { Avatar, Spacer, Upload, Button, Label, Input } from "@components/base";
 import {
   BottomFixedButton,
   PositionsPicker,
@@ -95,7 +87,7 @@ const ProfileForm = ({
       if (!selectedProficiency) {
         errors.proficiency = "숙련도를 선택해주세요.";
       }
-      if (!selectedPositions) {
+      if (selectedPositions.length < 1) {
         errors.positions = "포지션 2개 혹은 미정을 선택해주세요.";
       }
 
@@ -165,9 +157,7 @@ const ProfileForm = ({
               selectedValue={selectedPositions}
               onChange={handleChangePositions}
             />
-            <ValidationNoticeBar
-              errors={errors.positions}
-            ></ValidationNoticeBar>
+            <ValidationNoticeBar errors={errors.positions} />
           </div>
           <div>
             <Label isRequired>숙련도</Label>
@@ -175,9 +165,7 @@ const ProfileForm = ({
               selectedValue={selectedProficiency}
               onChange={handleChangeProficiency}
             />
-            <ValidationNoticeBar
-              errors={errors.proficiency}
-            ></ValidationNoticeBar>
+            <ValidationNoticeBar errors={errors.proficiency} />
           </div>
         </Container>
         <BottomFixedButton
