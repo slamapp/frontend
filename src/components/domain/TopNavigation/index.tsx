@@ -55,7 +55,9 @@ const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
               maxCount={10}
             >
               <Link href="/notifications" passHref>
-                <Icon name="bell" size={24} />
+                <a>
+                  <Icon name="bell" size={24} />
+                </a>
               </Link>
             </Badge>
           )}
@@ -70,7 +72,9 @@ const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
           )}
           {isMenu && (
             <Link href={`/user/menu`} passHref>
-              <Icon name="menu" size={24} />
+              <a>
+                <Icon name="menu" size={24} />
+              </a>
             </Link>
           )}
 

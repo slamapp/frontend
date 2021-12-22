@@ -16,11 +16,13 @@ const NavIcon = ({ href, iconName, pageType }: Props) => {
 
   return (
     <Link href={href} key={href} passHref>
-      <Icon
-        name={iconName}
-        size={24}
-        color={currentPage === pageType ? "black" : "#cfcfcf"}
-      />
+      <a>
+        <Icon
+          name={iconName}
+          size={24}
+          color={currentPage === pageType ? "black" : "#cfcfcf"}
+        />
+      </a>
     </Link>
   );
 };

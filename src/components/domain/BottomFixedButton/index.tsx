@@ -41,7 +41,9 @@ const BottomFixedButton: React.FC<Props> = ({
       <Background bottom={bottom} custom={custom} style={containerStyle}>
         {iconButton && iconButton.href ? (
           <Link href={iconButton.href} passHref>
-            <IconButton name={iconButton.icon} />
+            <a>
+              <IconButton name={iconButton.icon} />
+            </a>
           </Link>
         ) : (
           iconButton && <IconButton name={iconButton.icon} />

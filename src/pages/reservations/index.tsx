@@ -78,7 +78,11 @@ const Reservations: NextPage = UtilRoute("private", () => {
   const menuTab = [
     {
       tabTitle: (
-        <Text strong={activeIndex === 0} onClick={() => tabClickHandler(0)}>
+        <Text
+          strong={activeIndex === 0}
+          onClick={() => tabClickHandler(0)}
+          style={{ cursor: "pointer" }}
+        >
           다가올 예약
         </Text>
       ),
@@ -103,7 +107,11 @@ const Reservations: NextPage = UtilRoute("private", () => {
     },
     {
       tabTitle: (
-        <Text strong={activeIndex === 1} onClick={expiredHandleClick}>
+        <Text
+          strong={activeIndex === 1}
+          onClick={expiredHandleClick}
+          style={{ cursor: "pointer" }}
+        >
           지난 예약
         </Text>
       ),

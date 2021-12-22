@@ -36,7 +36,9 @@ const BlockStatusContent = ({
             {participants &&
               participants.map(({ userId, avatarImgSrc }: any) => (
                 <Link key={userId} href={`/user/${userId}`} passHref>
-                  <Avatar src={avatarImgSrc} shape="circle" size="lg" />
+                  <a>
+                    <Avatar src={avatarImgSrc} shape="circle" size="lg" />
+                  </a>
                 </Link>
               ))}
           </S.AvatarGroup>

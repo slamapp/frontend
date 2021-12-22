@@ -9,7 +9,9 @@ interface Props {
 const ChatButton: React.FC<Props> = ({ courtId }) => {
   return (
     <Link href={`/chat/courts/${courtId}`} passHref>
-      <IconButton name="message-square" />
+      <a>
+        <IconButton name="message-square" />
+      </a>
     </Link>
   );
 };
