@@ -38,7 +38,11 @@ const UpcomingReservations = ({
           <CourtItem.Header>{courtName}</CourtItem.Header>
           <CourtItem.Datetime endDatetime={endTime} startDatetime={startTime} />
         </Spacer>
-        <Loudspeaker startTime={startTime} />
+        <Loudspeaker
+          startTime={startTime}
+          courtId={courtId}
+          reservationId={reservationId}
+        />
       </HeaderContainer>
 
       <Actions gap="xs">
