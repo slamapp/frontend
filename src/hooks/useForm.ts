@@ -6,12 +6,17 @@ interface UseFormArgs<T> {
   initialValues: T;
   onSubmit: (values: T) => void;
   validate: (values: T) => Error<T>;
+  confirmModal?: {
+    isOpenConfirmModal: boolean;
+    setIsOpenConfirmModal: (onOff: boolean) => void;
+  };
 }
 
 const useForm = <T, H extends HTMLElement = HTMLFormElement>({
   initialValues,
   onSubmit,
   validate,
+  confirmModal,
 }: UseFormArgs<T>) => {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Error<T>>({});
@@ -27,7 +32,16 @@ const useForm = <T, H extends HTMLElement = HTMLFormElement>({
     e.preventDefault();
     const newErrors = validate ? validate(values) : {};
     if (Object.keys(newErrors).length === 0) {
-      await onSubmit(values);
+      if (!confirmModal) {
+        await onSubmit(values);
+        return;
+      }
+
+      if (confirmModal.isOpenConfirmModal) {
+        await onSubmit(values);
+      } else {
+        confirmModal.setIsOpenConfirmModal(true);
+      }
     }
     setErrors(newErrors);
     setIsLoading(false);
