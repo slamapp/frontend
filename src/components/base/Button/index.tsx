@@ -61,6 +61,7 @@ const StyledButton = styled.button<Omit<Props, "children">>`
     height: ${theme.buttonHeights[size!]};
     width: ${fullWidth && "100%"};
     padding: 0 ${theme.buttonRightLeftPaddings[size as Size]};
+    white-space: nowrap;
 
     font-size: ${theme.fontSizes[fontSizeMap[size as Size] as Size]};
     border-radius: ${theme.borderRadiuses[size as Size]};

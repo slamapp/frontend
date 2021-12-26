@@ -16,9 +16,7 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => (
         아니오
       </ConfirmButton>
       <ConfirmButton size="lg" onClick={() => onDecideBall(true)}>
-        네, 농구공을
-        <br />
-        가져갑니다
+        네, 농구공을 가져갑니다
       </ConfirmButton>
     </Modal.BottomButtonContainer>
   </Modal>
