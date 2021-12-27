@@ -1,12 +1,15 @@
-import React, { forwardRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { Icon, Badge } from "@components/base";
 import { useRouter } from "next/router";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
+import { useIntersectionObserver } from "@hooks/.";
 import LinkAvatar from "../LinkAvatar";
 
-const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
+const TopNavigation = () => {
+  const sensorRef = useRef<HTMLDivElement>(null);
+
   const {
     authProps: { currentUser },
   } = useAuthContext();
@@ -23,6 +26,7 @@ const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
       customButton,
       isTopTransparent,
     },
+    setIsTopTransparent,
   } = useNavigationContext();
 
   const router = useRouter();
@@ -31,73 +35,84 @@ const TopNavigation = forwardRef<HTMLElement>((_, ref) => {
     router.back();
   };
 
+  const entry = useIntersectionObserver(sensorRef, {});
+
+  useEffect(() => {
+    if (entry) setIsTopTransparent(entry.isIntersecting);
+  }, [entry?.isIntersecting]);
+
   return (
-    <Container isTransparent={isTopTransparent} ref={ref}>
-      <Wrapper>
-        <IconGroup>
-          {isBack && (
-            <CursorIcon
-              name="chevron-left"
-              size={24}
-              onClick={handleClickBack || handleDefaultBack}
-            />
-          )}
-        </IconGroup>
-        <IconGroup>
-          {isNotifications && (
-            <Badge
-              count={notifications.reduce(
-                (acc, { isRead }) => acc + (isRead ? 0 : 1),
-                0
-              )}
-              showZero
-              dot={false}
-              maxCount={10}
-            >
-              <Link href="/notifications" passHref>
+    <>
+      <Container isTransparent={isTopTransparent}>
+        <Wrapper>
+          <IconGroup>
+            {isBack && (
+              <CursorIcon
+                name="chevron-left"
+                size={24}
+                onClick={handleClickBack || handleDefaultBack}
+              />
+            )}
+          </IconGroup>
+          <IconGroup>
+            {isNotifications && (
+              <Badge
+                count={notifications.reduce(
+                  (acc, { isRead }) => acc + (isRead ? 0 : 1),
+                  0
+                )}
+                showZero
+                dot={false}
+                maxCount={10}
+              >
+                <Link href="/notifications" passHref>
+                  <a>
+                    <Icon name="bell" size={24} />
+                  </a>
+                </Link>
+              </Badge>
+            )}
+            {isProfile && (
+              <LinkAvatar
+                userId={userId || 1}
+                imageUrl={
+                  profileImageUrl ||
+                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                }
+              />
+            )}
+            {isMenu && (
+              <Link href={`/user/menu`} passHref>
                 <a>
-                  <Icon name="bell" size={24} />
+                  <Icon name="menu" size={24} />
                 </a>
               </Link>
-            </Badge>
-          )}
-          {isProfile && (
-            <LinkAvatar
-              userId={userId || 1}
-              imageUrl={
-                profileImageUrl ||
-                "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              }
-            />
-          )}
-          {isMenu && (
-            <Link href={`/user/menu`} passHref>
-              <a>
-                <Icon name="menu" size={24} />
-              </a>
-            </Link>
-          )}
+            )}
 
-          {customButton && (
-            <CustomButton onClick={customButton.handleClick}>
-              {customButton.title}
-            </CustomButton>
-          )}
-        </IconGroup>
-      </Wrapper>
-      <TitleWrapper>
-        <Title>{title}</Title>
-      </TitleWrapper>
-    </Container>
+            {customButton && (
+              <CustomButton onClick={customButton.handleClick}>
+                {customButton.title}
+              </CustomButton>
+            )}
+          </IconGroup>
+        </Wrapper>
+        <TitleWrapper>
+          <Title>{title}</Title>
+        </TitleWrapper>
+      </Container>
+      <TopNavigationSensor ref={sensorRef} />
+    </>
   );
-});
+};
 
 export default TopNavigation;
 
 const Container = styled.nav<{ isTransparent: boolean }>`
   z-index: 1000;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
 
   &::before {
     content: "";
@@ -163,4 +178,8 @@ const CustomButton = styled.div`
   :hover {
     cursor: pointer;
   }
+`;
+
+const TopNavigationSensor = styled.div`
+  min-height: 56px;
 `;
