@@ -368,11 +368,9 @@ const Courts: NextPage = () => {
                       timeSlot: selectedSlot,
                     },
                   }}
-                  as={`/courts/${
-                    selectedCourt.courtId
-                  }/${selectedDate.getFullYear()}-${
-                    selectedDate.getMonth() + 1
-                  }-${selectedDate.getDate()}`}
+                  as={`/courts/${selectedCourt.courtId}/${getDateStringFromDate(
+                    selectedDate
+                  )}`}
                   passHref
                 >
                   <Button style={{ flex: 1 }} size="lg">
