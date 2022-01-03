@@ -168,9 +168,7 @@ const Courts: NextPage = () => {
       const endLongitude = neLatLng.getLng();
 
       const { courts } = await courtApi.getCourtsByCoordsAndDate({
-        date: `${selectedDate.getFullYear()}-${
-          selectedDate.getMonth() + 1
-        }-${selectedDate.getDate()}`,
+        date: getDateStringFromDate(selectedDate),
         startLatitude,
         startLongitude,
         endLatitude,

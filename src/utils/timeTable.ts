@@ -7,10 +7,14 @@ export const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as con
 
 const TIME_OFFSET = 9;
 
+const MONTH_LENGTH = 2;
+const YEAR_LENGTH = 2;
+const TIME_LENGTH = 2;
+
 export const getTimeFromIndex = (index: number) => {
   const startHours = Math.floor(index / 2)
     .toString()
-    .padStart(2, "0");
+    .padStart(TIME_LENGTH, "0");
 
   return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
 };
@@ -31,7 +35,12 @@ export const getIndexFromDate = (date: Date) => {
 };
 
 export const getDateStringFromDate = (date: Date) =>
-  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(MONTH_LENGTH, "0")}-${date
+    .getDate()
+    .toString()
+    .padStart(YEAR_LENGTH, "0")}`;
 
 export const getDatetimeString = (dateString: string, index: number) => {
   const date = new Date(`${dateString} ${getTimeFromIndex(index)}`);
