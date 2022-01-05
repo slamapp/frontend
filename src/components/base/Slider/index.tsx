@@ -32,7 +32,9 @@ const Slider = ({
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!dragging) return;
+      if (!dragging) {
+        return;
+      }
 
       const handleOffset = e.pageX - sliderRef.current!.offsetLeft;
       const sliderWidth = sliderRef.current!.offsetWidth;
@@ -49,7 +51,9 @@ const Slider = ({
       }
 
       setValue(newValue);
-      if (onChange) onChange(value);
+      if (onChange) {
+        onChange(value);
+      }
     };
 
     document.addEventListener("mousemove", handleMouseMove);

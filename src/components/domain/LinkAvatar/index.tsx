@@ -25,7 +25,7 @@ interface Props {
 
 const LinkAvatar = ({ userId, imageUrl, size = "middle" }: Props) => {
   return (
-    <Link href={`/user/${userId || 1}`} passHref>
+    <Link href={`/user/${userId}`} passHref>
       <a>
         <Avatar
           size={typeof size === "number" ? size : getSize(size)}

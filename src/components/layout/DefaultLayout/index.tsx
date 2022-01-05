@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useRef } from "react";
 import styled from "@emotion/styled";
 import { BottomNavigation, TopNavigation } from "@components/domain";
 import { useNavigationContext } from "@contexts/hooks";
@@ -9,25 +9,12 @@ interface Props {
 }
 
 const DefaultLayout = ({ children }: Props) => {
-  const { navigationProps, setIsTopTransparent } = useNavigationContext();
+  const { navigationProps } = useNavigationContext();
   const { isBottomNavigation, isTopNavigation } = navigationProps;
 
-  const topNavigationRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = () =>
-    topNavigationRef.current &&
-    setIsTopTransparent(topNavigationRef.current.offsetTop < 56);
-
-  useEffect(() => {
-    containerRef.current?.addEventListener("scroll", handleScroll);
-    return () =>
-      containerRef.current?.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <Container ref={containerRef}>
-      {isTopNavigation && <TopNavigation ref={topNavigationRef} />}
+    <Container>
+      {isTopNavigation && <TopNavigation />}
       <StyledMain>{children}</StyledMain>
       {isBottomNavigation && <BottomNavigation />}
     </Container>

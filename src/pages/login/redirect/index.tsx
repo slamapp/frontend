@@ -25,7 +25,9 @@ const RedirectPage = () => {
   }, [token, getCurrentUser, setToken]);
 
   useEffect(() => {
-    if (token) getCurrentUserData();
+    if (token) {
+      getCurrentUserData();
+    }
   }, [token]);
 
   const NeedReLoginMarkUp = () => {
