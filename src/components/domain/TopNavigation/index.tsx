@@ -74,9 +74,9 @@ const TopNavigation = () => {
                 </Link>
               </Badge>
             )}
-            {isProfile && (
+            {isProfile && userId && (
               <LinkAvatar
-                userId={userId || 1}
+                userId={userId}
                 imageUrl={
                   profileImageUrl ||
                   "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
