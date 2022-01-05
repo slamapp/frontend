@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { Icon, Badge } from "@components/base";
@@ -43,6 +43,11 @@ const TopNavigation = () => {
     }
   }, [entry?.isIntersecting]);
 
+  const unreadNotificationsCount = useMemo(
+    () => notifications.reduce((acc, { isRead }) => acc + (isRead ? 0 : 1), 0),
+    [notifications]
+  );
+
   return (
     <>
       <Container isTransparent={isTopTransparent}>
@@ -59,10 +64,7 @@ const TopNavigation = () => {
           <IconGroup>
             {isNotifications && (
               <Badge
-                count={notifications.reduce(
-                  (acc, { isRead }) => acc + (isRead ? 0 : 1),
-                  0
-                )}
+                count={unreadNotificationsCount}
                 showZero
                 dot={false}
                 maxCount={10}
