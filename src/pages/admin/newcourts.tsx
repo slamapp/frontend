@@ -73,7 +73,9 @@ const NewCourtsPage: NextPage = () => {
   );
 
   const handleClick = (status: Status) => {
-    if (activeStatus === status) return;
+    if (activeStatus === status) {
+      return;
+    }
 
     setCurrentLastId(0);
     setReadyData([]);

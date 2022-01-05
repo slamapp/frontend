@@ -59,20 +59,26 @@ const Image = ({
     const handleLoadImage = () => setLoaded(true);
 
     const imgElement = imgRef.current;
-    if (imgElement)
+    if (imgElement) {
       imgElement.addEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
+    }
     return () => {
-      if (imgElement)
+      if (imgElement) {
         imgElement.removeEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
+      }
     };
   }, [lazy]);
 
   useEffect(() => {
-    if (!lazy) return;
+    if (!lazy) {
+      return;
+    }
 
     observer = new IntersectionObserver(onIntersection, { threshold });
 
-    if (imgRef.current) observer.observe(imgRef.current);
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
   }, [lazy, threshold]);
 
   return (

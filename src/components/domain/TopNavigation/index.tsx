@@ -38,7 +38,9 @@ const TopNavigation = () => {
   const entry = useIntersectionObserver(sensorRef, {});
 
   useEffect(() => {
-    if (entry) setIsTopTransparent(entry.isIntersecting);
+    if (entry) {
+      setIsTopTransparent(entry.isIntersecting);
+    }
   }, [entry?.isIntersecting]);
 
   return (

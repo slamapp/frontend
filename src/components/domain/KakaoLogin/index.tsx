@@ -36,7 +36,7 @@ const KakaoLogin = ({
       persistAccessToken,
       success: (response) => {
         setState({ isLoggedIn: true });
-        if (needProfile)
+        if (needProfile) {
           window.Kakao?.API.request({
             url: "/v2/user/me",
             success: (profile) => {
@@ -45,7 +45,9 @@ const KakaoLogin = ({
             },
             fail: onFail,
           });
-        else onSuccess({ response });
+        } else {
+          onSuccess({ response });
+        }
       },
       fail: onFail,
     });

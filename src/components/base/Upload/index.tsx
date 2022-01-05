@@ -33,7 +33,9 @@ const Upload = ({
   };
 
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
-    if (!droppable) return;
+    if (!droppable) {
+      return;
+    }
 
     e.preventDefault(); // 브라우저 기본 이벤트를 막는다.
     e.stopPropagation(); // 부모나 자식 컴포넌트로 이벤트가 전파되는 것을 막는다.
@@ -43,7 +45,9 @@ const Upload = ({
     }
   };
   const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    if (!droppable) return;
+    if (!droppable) {
+      return;
+    }
 
     e.preventDefault();
     e.stopPropagation();
@@ -51,13 +55,17 @@ const Upload = ({
     setDragging(false);
   };
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    if (!droppable) return;
+    if (!droppable) {
+      return;
+    }
 
     e.preventDefault();
     e.stopPropagation();
   };
   const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
-    if (!droppable) return;
+    if (!droppable) {
+      return;
+    }
 
     e.preventDefault();
     e.stopPropagation();
@@ -65,7 +73,9 @@ const Upload = ({
     const { files } = e.dataTransfer;
     const changedFile = files[0];
     setFile(changedFile);
-    if (onChange) onChange(changedFile);
+    if (onChange) {
+      onChange(changedFile);
+    }
     setDragging(false);
   };
 
