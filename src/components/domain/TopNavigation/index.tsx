@@ -113,10 +113,8 @@ export default TopNavigation;
 
 const Container = styled.nav<{ isTransparent: boolean }>`
   z-index: 1000;
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
 
   &::before {
     content: "";
@@ -185,5 +183,7 @@ const CustomButton = styled.div`
 `;
 
 const TopNavigationSensor = styled.div`
+  position: absolute;
   min-height: 56px;
+  width: 100%;
 `;
