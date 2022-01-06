@@ -157,7 +157,7 @@ const AuthProvider = ({ children }: Props) => {
         });
 
       dispatch({
-        type: authTypes.PUSH_NOTIFICATIONS,
+        type: authTypes.CONCAT_NOTIFICATIONS,
         payload: { notifications: contents, lastId: fetchedLastId },
       });
     }
@@ -203,6 +203,7 @@ const AuthProvider = ({ children }: Props) => {
         getMyReservations,
         updateMyProfile,
         deleteMyProfileImage,
+        setReadNotifications,
         getMoreNotifications,
         unshiftNotification,
       }}

@@ -204,7 +204,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.PUSH_NOTIFICATIONS: {
+    case authTypes.CONCAT_NOTIFICATIONS: {
       return {
         ...prevState,
         currentUser: {
