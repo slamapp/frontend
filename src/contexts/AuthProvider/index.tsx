@@ -203,7 +203,6 @@ const AuthProvider = ({ children }: Props) => {
         getMyReservations,
         updateMyProfile,
         deleteMyProfileImage,
-        setReadNotifications,
         getMoreNotifications,
         unshiftNotification,
       }}
