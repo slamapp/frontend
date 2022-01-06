@@ -14,6 +14,7 @@ export interface ContextProps {
   unshiftNotification: (notification: Notification) => void;
   getMyFavorites: () => void;
   getMyReservations: () => void;
+  readAllNotifications: () => void;
   getMoreNotifications: () => void;
 }
 

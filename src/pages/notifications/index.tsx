@@ -9,7 +9,8 @@ import { Skeleton } from "@components/base";
 import { NoItemMessage } from "@components/domain";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
-  const { authProps, getMoreNotifications } = useAuthContext();
+  const { authProps, getMoreNotifications, readAllNotifications } =
+    useAuthContext();
   const { notificationLastId, notifications } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.NOTIFICATIONS);
@@ -22,6 +23,8 @@ const NotificationsPage: NextPage = UtilRoute("private", () => {
       getMoreNotifications();
     }
   }, [entry?.isIntersecting]);
+
+  useEffect(() => readAllNotifications, []);
 
   return (
     <PageConainer>

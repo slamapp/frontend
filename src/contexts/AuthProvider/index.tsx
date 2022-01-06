@@ -142,6 +142,10 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, []);
 
+  const readAllNotifications = () => {
+    dispatch({ type: authTypes.READ_ALL_NOTIFICATIONS });
+  };
+
   interface Res {
     contents: Notification[];
     lastId: number | null;
@@ -203,6 +207,7 @@ const AuthProvider = ({ children }: Props) => {
         getMyReservations,
         updateMyProfile,
         deleteMyProfileImage,
+        readAllNotifications,
         getMoreNotifications,
         unshiftNotification,
       }}
