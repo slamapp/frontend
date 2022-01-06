@@ -2,11 +2,11 @@ import { PositionKeyUnion, ProficiencyKeyUnion } from "@components/domain";
 
 export type Role = "USER" | "ADMIN";
 
-export type Follow = {
+export interface Follow {
   followId: number;
   followerId: number;
   followingId: number;
-};
+}
 
 type NotificationType = "FOLLOWING" | "LOUDSPEAKER";
 
@@ -24,13 +24,13 @@ export interface DefaultNotification {
   updatedAt: string;
 }
 
-type FollowerInfo = {
+interface FollowerInfo {
   userId: number;
   userNickname: string;
   userImage: string;
-};
+}
 
-type LoudspeakerInfo = {
+interface LoudspeakerInfo {
   courtInfo: {
     id: string;
     name: string;
@@ -42,9 +42,9 @@ type LoudspeakerInfo = {
     updatedAt: string;
   };
   startTime: string;
-};
+}
 
-export type Favorite = {
+export interface Favorite {
   favoriteId: number;
   courtId: number;
   courtName: string;
@@ -52,9 +52,9 @@ export type Favorite = {
   longitude: number;
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type Reservation = {
+export interface Reservation {
   reservationId: number;
   courtId: number;
   courtName: string;
@@ -66,11 +66,11 @@ export type Reservation = {
   endTime: string;
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type EditableUserProfile = {
+export interface EditableUserProfile {
   nickname: string;
   description: string;
   proficiency: ProficiencyKeyUnion;
   positions: PositionKeyUnion[];
-};
+}
