@@ -142,21 +142,21 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, []);
 
-  const readAllNotifications = () => {
-    dispatch({ type: authTypes.READ_ALL_NOTIFICATIONS });
+  const readAllNotifications = async () => {
+    try {
+      await notificationApi.readAllNotifications();
+      dispatch({ type: authTypes.READ_ALL_NOTIFICATIONS });
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  interface Res {
-    contents: Notification[];
-    lastId: number | null;
-  }
 
   const getMoreNotifications = async () => {
     const { notificationLastId } = authProps.currentUser;
 
     if (notificationLastId) {
       const { contents, lastId: fetchedLastId } =
-        await notificationApi.getNotifications<Res>({
+        await notificationApi.getNotifications({
           lastId: notificationLastId,
         });
 

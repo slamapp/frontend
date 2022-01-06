@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import UtilRoute from "UtilRoute";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
@@ -24,7 +24,16 @@ const NotificationsPage: NextPage = UtilRoute("private", () => {
     }
   }, [entry?.isIntersecting]);
 
-  useEffect(() => readAllNotifications, []);
+  const isNeedReadAllNotifications = useMemo(
+    () => !!notifications.find((notification) => !notification.isRead),
+    [notifications]
+  );
+
+  useEffect(() => {
+    if (isNeedReadAllNotifications) {
+      readAllNotifications();
+    }
+  }, []);
 
   return (
     <PageConainer>
