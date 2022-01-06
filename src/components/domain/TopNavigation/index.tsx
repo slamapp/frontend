@@ -63,12 +63,7 @@ const TopNavigation = () => {
           </IconGroup>
           <IconGroup>
             {isNotifications && (
-              <Badge
-                count={unreadNotificationsCount}
-                showZero
-                dot={false}
-                maxCount={10}
-              >
+              <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
                 <Link href="/notifications" passHref>
                   <a>
                     <Icon name="bell" size={24} />
