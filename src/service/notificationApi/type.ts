@@ -1,6 +1,6 @@
 import { Notification } from "@contexts/AuthProvider/types";
 
-export interface IAPINotificationApi {
+export interface NotificationApi {
   getNotifications: (params: {
     size?: number;
     lastId?: number | null;
