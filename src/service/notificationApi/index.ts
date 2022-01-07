@@ -1,26 +1,15 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { ResGetNotifications } from "./type";
+import { IAPINotificationApi } from "./type";
 
-const notificationApi = {
-  getNotifications: ({
-    size = 3,
-    lastId,
-    isFirst = false,
-  }: {
-    size?: number;
-    lastId?: number | null;
-    isFirst?: boolean;
-  }) =>
-    authRequest.get<ResGetNotifications, ResGetNotifications>(
-      "/notifications",
-      {
-        params: {
-          size,
-          lastId: lastId || 0,
-          isFirst,
-        },
-      }
-    ),
+const notificationApi: IAPINotificationApi = {
+  getNotifications: ({ size = 3, lastId, isFirst = false }) =>
+    authRequest.get("/notifications", {
+      params: {
+        size,
+        lastId: lastId || 0,
+        isFirst,
+      },
+    }),
 
   readAllNotifications: () => authRequest.put("/notifications/read"),
 };
