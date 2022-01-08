@@ -32,4 +32,8 @@ const StyledContainer = styled.div<{ height: number }>`
   margin: auto;
   background-color: ${({ theme }) => theme.colors.gray50};
   height: ${({ height }) => `${height}`}px;
+
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 `;
