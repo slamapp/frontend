@@ -22,7 +22,7 @@ import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { courtApi } from "@service/.";
 import { getDateStringFromDate } from "@utils/timeTable";
-import type { Coord } from "../../types/map";
+import type { Coord } from "@domainTypes/map";
 
 declare global {
   interface Window {

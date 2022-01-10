@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import UtilRoute from "UtilRoute";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
@@ -9,7 +9,8 @@ import { Skeleton } from "@components/base";
 import { NoItemMessage } from "@components/domain";
 
 const NotificationsPage: NextPage = UtilRoute("private", () => {
-  const { authProps, getMoreNotifications } = useAuthContext();
+  const { authProps, getMoreNotifications, readAllNotifications } =
+    useAuthContext();
   const { notificationLastId, notifications } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.NOTIFICATIONS);
@@ -22,6 +23,17 @@ const NotificationsPage: NextPage = UtilRoute("private", () => {
       getMoreNotifications();
     }
   }, [entry?.isIntersecting]);
+
+  const isNeedReadAllNotifications = useMemo(
+    () => notifications.some((notification) => !notification.isRead),
+    [notifications]
+  );
+
+  useEffect(() => {
+    if (isNeedReadAllNotifications) {
+      readAllNotifications();
+    }
+  }, []);
 
   return (
     <PageConainer>

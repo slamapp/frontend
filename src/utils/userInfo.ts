@@ -3,7 +3,7 @@ import {
   ProficiencyValueUnion,
   PositionKeyUnion,
   PositionValueUnion,
-} from "@components/domain";
+} from "@domainTypes/.";
 
 const getKoreanProficiency = (englishProficiency: ProficiencyKeyUnion) => {
   switch (englishProficiency) {

@@ -9,7 +9,9 @@ const useTimeoutFn = (fn: () => void, ms: number) => {
   }, [fn]);
 
   const run = useCallback(() => {
-    if (timeoutId.current) clearTimeout(timeoutId.current);
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
 
     timeoutId.current = setTimeout(() => {
       callback.current();
@@ -17,7 +19,9 @@ const useTimeoutFn = (fn: () => void, ms: number) => {
   }, [ms]);
 
   const clear = useCallback(() => {
-    if (timeoutId.current) clearTimeout(timeoutId.current);
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
   }, []);
 
   useEffect(() => clear, [clear]);

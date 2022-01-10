@@ -1,3 +1,19 @@
+export const roles = {
+  USER: "USER",
+  ADMIN: "ADMIN",
+} as const;
+
+type RoleMap = typeof roles;
+
+export type Role = RoleMap[keyof RoleMap];
+
+export interface EditableUserProfile {
+  nickname: string;
+  description: string;
+  proficiency: ProficiencyKeyUnion;
+  positions: PositionKeyUnion[];
+}
+
 const positions = {
   PF: "파워포워드",
   SF: "스몰포워드",

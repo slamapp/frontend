@@ -11,12 +11,9 @@ import Head from "next/head";
 import UtilRoute from "UtilRoute";
 import userApi from "@service/userApi";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
-import {
-  PositionKeyUnion,
-  ProficiencyKeyUnion,
-  BasketballLoading,
-} from "@components/domain";
+import { BasketballLoading } from "@components/domain";
 import ProfileForm from "@components/domain/ProfileForm/index";
+import { PositionKeyUnion, ProficiencyKeyUnion } from "@domainTypes/.";
 
 type ResponseUserProfile = {
   nickname: string;

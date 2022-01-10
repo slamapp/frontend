@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { Radio } from "@components/base";
-import type { PositionKeyUnion, PositionValueUnion } from "./types";
+import { PositionValueUnion, PositionKeyUnion } from "@domainTypes/.";
 
 const positionItems: { value: PositionKeyUnion; text: PositionValueUnion }[] = [
   {

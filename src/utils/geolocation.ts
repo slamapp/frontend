@@ -1,4 +1,4 @@
-import { Coord } from "../types/map";
+import { Coord } from "@domainTypes/map";
 
 // 서울의 경도, 위도
 export const DEFAULT_POSITION: Coord = [37.5665, 126.978];

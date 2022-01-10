@@ -8,11 +8,11 @@ import {
   userApi,
   notificationApi,
 } from "@service/.";
+import { Notification, EditableUserProfile } from "@domainTypes/.";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
 import AuthLoading from "./AuthLoading";
-import { Notification, EditableUserProfile } from "./types";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {
@@ -142,17 +142,21 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, []);
 
-  interface Res {
-    contents: Notification[];
-    lastId: number | null;
-  }
+  const readAllNotifications = async () => {
+    try {
+      await notificationApi.readAllNotifications();
+      dispatch({ type: authTypes.READ_ALL_NOTIFICATIONS });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getMoreNotifications = async () => {
     const { notificationLastId } = authProps.currentUser;
 
     if (notificationLastId) {
       const { contents, lastId: fetchedLastId } =
-        await notificationApi.getNotifications<Res>({
+        await notificationApi.getNotifications({
           lastId: notificationLastId,
         });
 
@@ -203,6 +207,7 @@ const AuthProvider = ({ children }: Props) => {
         getMyReservations,
         updateMyProfile,
         deleteMyProfileImage,
+        readAllNotifications,
         getMoreNotifications,
         unshiftNotification,
       }}

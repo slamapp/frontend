@@ -80,10 +80,18 @@ const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
   const key = e.key !== " " ? e.key.toLowerCase() : "space";
 
   let modifiers = 0;
-  if (e.altKey) modifiers += ModifierBitMasks.alt;
-  if (e.ctrlKey) modifiers += ModifierBitMasks.ctrl;
-  if (e.metaKey) modifiers += ModifierBitMasks.meta;
-  if (e.shiftKey) modifiers += ModifierBitMasks.shift;
+  if (e.altKey) {
+    modifiers += ModifierBitMasks.alt;
+  }
+  if (e.ctrlKey) {
+    modifiers += ModifierBitMasks.ctrl;
+  }
+  if (e.metaKey) {
+    modifiers += ModifierBitMasks.meta;
+  }
+  if (e.shiftKey) {
+    modifiers += ModifierBitMasks.shift;
+  }
 
   return { modifiers, key };
 };
@@ -128,8 +136,11 @@ const useHotKey = (hotkeys: Hotkey[]) => {
     (global, combo, callbackName: CallbackName, e: KeyboardEvent) => {
       const keys = global ? globalKeys : localKeys;
       keys.forEach((hotkey) => {
-        if (comboMatches(parseKeyCombo(hotkey.combo), combo))
-          if (hotkey[callbackName]) hotkey[callbackName]!(e);
+        if (comboMatches(parseKeyCombo(hotkey.combo), combo)) {
+          if (hotkey[callbackName]) {
+            hotkey[callbackName]!(e);
+          }
+        }
       });
     },
     [localKeys, globalKeys]
