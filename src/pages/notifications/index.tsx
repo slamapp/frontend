@@ -25,7 +25,7 @@ const NotificationsPage: NextPage = UtilRoute("private", () => {
   }, [entry?.isIntersecting]);
 
   const isNeedReadAllNotifications = useMemo(
-    () => !!notifications.find((notification) => !notification.isRead),
+    () => notifications.some((notification) => !notification.isRead),
     [notifications]
   );
 
