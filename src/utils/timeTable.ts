@@ -11,15 +11,18 @@ const MONTH_LENGTH = 2;
 const YEAR_LENGTH = 2;
 const TIME_LENGTH = 2;
 
-export const getTimeFromIndex = (index: number) => {
-  const startHours = Math.floor(index / 2)
-    .toString()
-    .padStart(TIME_LENGTH, "0");
+export const getTimeFromIndex = (index: number): string => {
+  const startHours =
+    index === 48
+      ? "00"
+      : Math.floor(index / 2)
+          .toString()
+          .padStart(TIME_LENGTH, "0");
 
   return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
 };
 
-export const getIndexFromDateString = (dateString: string | Date) => {
+export const getIndexFromDateString = (dateString: string) => {
   const date = new Date(dateString);
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -27,7 +30,7 @@ export const getIndexFromDateString = (dateString: string | Date) => {
   return hours * 2 + (minutes === MINUTES_PER_TIME_BLOCK ? 1 : 0);
 };
 
-export const getIndexFromDate = (date: Date) => {
+export const getIndexFromDate = (date: Date): number => {
   const hours = date.getHours();
   const minutes = date.getMinutes();
 
@@ -47,7 +50,7 @@ export const getDatetimeString = (dateString: string, index: number) => {
 
   date.setHours(date.getHours() + TIME_OFFSET);
 
-  if (index === TIME_TABLE_ROWS - 1) {
+  if (index === TIME_TABLE_ROWS) {
     date.setDate(date.getDate() + 1);
   }
 
