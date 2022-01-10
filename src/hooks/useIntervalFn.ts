@@ -9,7 +9,9 @@ const useIntervalFn = (fn: () => void, ms: number) => {
   }, [fn]);
 
   const run = useCallback(() => {
-    if (intervalId.current) clearInterval(intervalId.current);
+    if (intervalId.current) {
+      clearInterval(intervalId.current);
+    }
 
     intervalId.current = setInterval(() => {
       callback.current();
@@ -17,7 +19,9 @@ const useIntervalFn = (fn: () => void, ms: number) => {
   }, [ms]);
 
   const clear = useCallback(() => {
-    if (intervalId.current) clearInterval(intervalId.current);
+    if (intervalId.current) {
+      clearInterval(intervalId.current);
+    }
   }, []);
 
   useEffect(() => clear, [clear]);
