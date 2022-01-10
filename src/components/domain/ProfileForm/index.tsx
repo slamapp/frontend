@@ -9,9 +9,8 @@ import {
   PositionsPicker,
   ProficiencyPicker,
   ValidationNoticeBar,
-  PositionKeyUnion,
-  ProficiencyKeyUnion,
 } from "@components/domain";
+import { PositionKeyUnion, ProficiencyKeyUnion } from "@domainTypes/.";
 import LeadToLoginModal from "../LeadToLoginModal";
 
 type ResponseUserProfile = {

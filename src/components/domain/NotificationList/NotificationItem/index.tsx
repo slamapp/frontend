@@ -1,5 +1,9 @@
 import React from "react";
-import { Notification } from "@contexts/AuthProvider/types";
+import {
+  Notification,
+  NotificationType,
+  notificationTypes,
+} from "@domainTypes/.";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { LinkStrong, Spacer } from "@components/base";
@@ -59,7 +63,7 @@ const getNotificationMarkUp = ({
   const dayFormatted = dayjs(date).format("YYYY-MM-DD");
 
   switch (type) {
-    case "FOLLOWING":
+    case notificationTypes.FOLLOWING:
       return (
         <>
           <LinkAvatar
@@ -76,7 +80,7 @@ const getNotificationMarkUp = ({
       );
       break;
 
-    case "LOUDSPEAKER":
+    case notificationTypes.LOUDSPEAKER:
       return (
         <>
           {loudspeakerInfo && (
@@ -112,17 +116,19 @@ const getNotificationMarkUp = ({
 };
 
 const NotificationItemContainer = styled.div<{
-  type: "LOUDSPEAKER" | "FOLLOWING";
+  type: NotificationType;
 }>`
   align-items: center;
   gap: 12px;
   padding: 12px;
   margin-bottom: 12px;
   ${({ theme, type }) => css`
-    background: ${type === "FOLLOWING"
+    background: ${type === notificationTypes.FOLLOWING
       ? theme.colors.white
       : theme.colors.activeGradientColor};
-    color: ${type === "FOLLOWING" ? theme.colors.gray900 : theme.colors.white};
+    color: ${type === notificationTypes.FOLLOWING
+      ? theme.colors.gray900
+      : theme.colors.white};
     border-radius: ${theme.borderRadiuses.sm};
     box-shadow: ${theme.boxShadows.sm};
   `}

@@ -22,12 +22,6 @@ export { default as ErrorMessage } from "./ErrorMessage";
 export { default as NewCourtItem } from "./NewCourtItem";
 export type { NewCourt } from "./NewCourtItem/types";
 export { PositionsPicker, ProficiencyPicker } from "./UserInfoPicker";
-export type {
-  PositionKeyUnion,
-  PositionValueUnion,
-  ProficiencyKeyUnion,
-  ProficiencyValueUnion,
-} from "./UserInfoPicker/types";
 export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";

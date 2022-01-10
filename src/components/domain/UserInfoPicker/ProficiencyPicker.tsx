@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { Radio } from "@components/base";
-import type { ProficiencyKeyUnion, ProficiencyValueUnion } from "./types";
+import { ProficiencyKeyUnion, ProficiencyValueUnion } from "@domainTypes/.";
 
 const proficiencyItems: {
   value: ProficiencyKeyUnion;

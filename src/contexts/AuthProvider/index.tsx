@@ -8,11 +8,11 @@ import {
   userApi,
   notificationApi,
 } from "@service/.";
+import { Notification, EditableUserProfile } from "@domainTypes/.";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
 import AuthLoading from "./AuthLoading";
-import { Notification, EditableUserProfile } from "./types";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {

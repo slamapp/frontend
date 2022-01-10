@@ -14,11 +14,10 @@ import {
   useSocketContext,
 } from "@contexts/hooks";
 import {
-  PositionKeyUnion,
-  ProficiencyKeyUnion,
   ProfileFavoritesListItem,
   BasketballLoading,
 } from "@components/domain";
+import { ProficiencyKeyUnion, PositionKeyUnion } from "@domainTypes/.";
 import {
   getTranslatedPositions,
   getTranslatedProficiency,

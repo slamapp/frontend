@@ -1,6 +1,12 @@
+import {
+  Notification,
+  Follow,
+  Role,
+  Favorite,
+  Reservation,
+} from "@domainTypes/.";
 import { Reducer } from "react";
 import { authTypes, ActionTypeUnion } from "./actionTypes";
-import { Follow, Favorite, Notification, Reservation, Role } from "./types";
 
 export interface DataProps {
   currentUser: {

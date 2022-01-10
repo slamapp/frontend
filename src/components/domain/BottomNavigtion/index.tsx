@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import React from "react";
 import { useAuthContext } from "@contexts/hooks";
 import { pageType } from "@contexts/NavigationProvider/actionTypes";
+import { roles } from "@domainTypes/.";
 import NavIcon from "./NavIcon";
 
 const BottomNavigation = () => {
@@ -49,7 +50,7 @@ const BottomNavigation = () => {
           iconName={"users"}
           pageType={pageType.ACTIVITY}
         /> */}
-        {role === "ADMIN" && (
+        {role === roles.ADMIN && (
           <NavIcon
             href={"/admin/newcourts"}
             iconName={"check-square"}
@@ -60,6 +61,8 @@ const BottomNavigation = () => {
     </Container>
   );
 };
+
+export default BottomNavigation;
 
 const Container = styled.nav`
   position: sticky;
@@ -79,5 +82,3 @@ const Wrapper = styled.div`
   height: 56px;
   flex: 1;
 `;
-
-export default BottomNavigation;

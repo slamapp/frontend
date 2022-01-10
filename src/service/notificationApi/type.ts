@@ -1,4 +1,4 @@
-import { Notification } from "@contexts/AuthProvider/types";
+import { Notification } from "@domainTypes/.";
 
 export interface NotificationApi {
   getNotifications: (params: {

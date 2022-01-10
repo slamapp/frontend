@@ -1,4 +1,4 @@
-import { EditableUserProfile } from "@contexts/AuthProvider/types";
+import { EditableUserProfile } from "@domainTypes/.";
 import { request, authRequest, authFileRequest } from "./fetcher";
 
 const userAPI = {

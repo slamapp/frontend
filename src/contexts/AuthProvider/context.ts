@@ -1,6 +1,6 @@
+import { Notification, EditableUserProfile } from "@domainTypes/.";
 import { createContext } from "react";
 import { DataProps } from "./reducer";
-import { Notification, EditableUserProfile } from "./types";
 
 export interface ContextProps {
   authProps: DataProps;

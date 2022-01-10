@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { DEFAULT_POSITION } from "@utils/geolocation";
 import { useMapContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
-import { Coord } from "../../../types/map";
+import { Coord } from "@domainTypes/.";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 import ZoomButton from "./ZoomButton";
 import CurrentLocationButton from "./CurrentLocationButton";
