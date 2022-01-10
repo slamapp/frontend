@@ -10,6 +10,7 @@ const Container = forwardRef<HTMLDivElement, { children: ReactNode }>(
     useEffect(() => {
       handleResize();
       window.addEventListener("resize", handleResize);
+
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 

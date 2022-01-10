@@ -4,9 +4,11 @@ const getLocalToken = (): string => {
 
   try {
     const item = localStorage.getItem(tokenKey);
+
     return item ? JSON.parse(item) : initialValue;
   } catch (error) {
     console.error(error);
+
     return initialValue;
   }
 };

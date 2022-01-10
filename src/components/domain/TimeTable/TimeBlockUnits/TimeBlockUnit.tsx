@@ -10,6 +10,7 @@ import Hour from "./Hour";
 
 const getTimeSlotFromIndex = (index: number) => {
   const startHours = Math.floor(index / 2);
+
   return index % 2 === 0
     ? `${startHours}:00 - ${startHours}:30`
     : `${startHours}:30 - ${startHours + 1}:00`;

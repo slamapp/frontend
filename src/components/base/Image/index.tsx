@@ -53,6 +53,7 @@ const Image = ({
   useEffect(() => {
     if (!lazy) {
       setLoaded(true);
+
       return;
     }
 
@@ -62,6 +63,7 @@ const Image = ({
     if (imgElement) {
       imgElement.addEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
     }
+
     return () => {
       if (imgElement) {
         imgElement.removeEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);

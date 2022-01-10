@@ -104,6 +104,7 @@ const NewCourtsPage: NextPage = () => {
     if (ref.current) {
       observer.observe(ref.current);
     }
+
     return () => observer.disconnect();
   }, [ref, activeStatus, getNewCourts]);
 

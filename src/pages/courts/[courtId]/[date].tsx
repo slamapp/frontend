@@ -165,6 +165,7 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
     }
     case "SET_HAS_BALL": {
       const { hasBall } = payload;
+
       return {
         ...state,
         hasBall,

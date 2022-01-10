@@ -113,6 +113,7 @@ const parseKeyCombo = (combo: string): KeyCombo => {
       key = piece;
     }
   });
+
   return { modifiers, key };
 };
 

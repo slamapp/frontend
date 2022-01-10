@@ -138,6 +138,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     }
     case authTypes.DELETE_FAVORITE: {
       const { deletedFavoriteId } = payload;
+
       return {
         ...prevState,
         currentUser: {
@@ -150,6 +151,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     }
     case authTypes.SET_MY_RESERVATIONS: {
       const { reservations } = payload;
+
       return {
         ...prevState,
         currentUser: {

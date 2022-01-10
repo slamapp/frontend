@@ -8,10 +8,12 @@ const socketUrl = `${endPoint + subfix}`;
 const socketApi = {
   getWebSocket: () => {
     const sockJs = new SockJS(socketUrl);
+
     return sockJs;
   },
   getCompatClient: () => {
     const sockJs = socketApi.getWebSocket();
+
     return Stomp.over(sockJs);
   },
 };

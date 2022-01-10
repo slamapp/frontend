@@ -24,10 +24,12 @@ const Breadcrumb = ({ children, ...props }: Props) => {
       }
 
       console.warn("Only accepts Breadcrumb.Item as it's children.");
+
       return false;
     })
     .map((item, index, elements) => {
       const element = item as ReactElement;
+
       return cloneElement(element, {
         ...element.props,
         active: index === elements.length - 1,

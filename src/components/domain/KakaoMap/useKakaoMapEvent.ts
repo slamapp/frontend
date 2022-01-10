@@ -14,6 +14,7 @@ const useKakaoMapEvent = <T extends kakao.maps.event.EventTarget>(
       if (arg === undefined) {
         return callback(target);
       }
+
       return callback(target, ...arg);
     };
 

@@ -24,6 +24,7 @@
     "no-shadow": "off",
     "react/display-name": "off",
     "camelcase": "off",
-    "curly": ["error", "all"]
+    "curly": ["error", "all"],
+    "newline-before-return": "error"
   }
 }

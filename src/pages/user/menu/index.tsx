@@ -35,6 +35,7 @@ const Menu: NextPage = UtilRoute("private", () => {
     logout();
     setIsModalOpen(false);
   };
+
   return (
     <div>
       <MenuList>

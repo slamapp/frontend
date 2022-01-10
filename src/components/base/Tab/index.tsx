@@ -84,6 +84,7 @@ const childrenToArray = (children: ReactNode, types: "Tab.Item") => {
         Array.isArray(types) ? types.join(", ") : types
       } as it's children.`
     );
+
     return false;
   });
 };

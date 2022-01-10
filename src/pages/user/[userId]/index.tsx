@@ -135,6 +135,7 @@ const User: NextPage = UtilRoute("private", () => {
     if (isError) {
       return <Custom404 />;
     }
+
     return <BasketballLoading />;
   }
 
