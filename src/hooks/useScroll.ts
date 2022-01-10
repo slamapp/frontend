@@ -27,6 +27,7 @@ const useScroll = <T extends HTMLElement>(): [
     };
 
     element.addEventListener("scroll", handleScroll, { passive: true });
+
     return () => {
       element.removeEventListener("scroll", handleScroll);
     };

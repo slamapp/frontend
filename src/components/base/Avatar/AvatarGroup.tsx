@@ -20,10 +20,12 @@ const AvatarGroup = ({
       }
 
       console.warn("Only accepts Avatar as it's children.");
+
       return false;
     })
     .map((avatar, index, avatars) => {
       const item = avatar as ReactElement;
+
       return React.cloneElement(item, {
         ...item.props,
         size,

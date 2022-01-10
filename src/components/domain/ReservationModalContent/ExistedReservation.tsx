@@ -32,6 +32,7 @@ const ExistedReservationContent = ({
   }, []);
 
   const onClose = () => setIsModalOpen(false);
+
   return (
     <>
       <S.ModalContent>

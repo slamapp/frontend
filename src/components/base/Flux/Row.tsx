@@ -36,6 +36,7 @@ const Row = ({
     if (Array.isArray(gutter)) {
       const horizontalGutter = gutter[0];
       const verticalGutter = gutter[1];
+
       return {
         marginTop: `-${verticalGutter / 2}px`,
         marginBottom: `-${verticalGutter / 2}px`,

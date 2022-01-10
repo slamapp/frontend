@@ -34,6 +34,7 @@ const useForm = <T, H extends HTMLElement = HTMLFormElement>({
     if (Object.keys(newErrors).length === 0) {
       if (!confirmModal) {
         await onSubmit(values);
+
         return;
       }
 

@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
-    "lint:fix": "eslint --fix 'src/**/*.{ts, tsx}'",
+    "lint:fix": "eslint --fix 'src/**'",
     "lint:css": "stylelint 'src/**/*.{ts, tsx}'",
     "prepare": "husky install"
   },

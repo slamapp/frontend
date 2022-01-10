@@ -6,6 +6,7 @@ const useInterval = (fn: () => void, ms: number) => {
 
   useEffect(() => {
     run();
+
     return clear;
   }, [run, clear]);
 

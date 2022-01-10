@@ -31,12 +31,14 @@ const useAsyncFn = (
         if (callId === lastCallId.current) {
           setState({ value, isLoading: false });
         }
+
         return value;
       },
       (error) => {
         if (callId === lastCallId.current) {
           setState({ error, isLoading: false });
         }
+
         return error;
       }
     );

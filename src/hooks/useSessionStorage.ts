@@ -7,9 +7,11 @@ const useSessionStorage = (
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = sessionStorage.getItem(key);
+
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.error(error);
+
       return initialValue;
     }
   });

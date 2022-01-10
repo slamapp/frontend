@@ -12,6 +12,7 @@ interface Props {
 const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
   const startDate = useMemo(() => new Date(startDatetime), [startDatetime]);
   const endDate = useMemo(() => new Date(endDatetime), [endDatetime]);
+
   return (
     <S.SubHeaderArea>
       <Spacer gap="xxs" type="vertical">

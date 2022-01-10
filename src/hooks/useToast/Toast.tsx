@@ -5,15 +5,15 @@ import { CreateToast } from "./types";
 class Toast {
   portal: HTMLElement | null = null;
 
-  createToast: CreateToast | null = null;
+  createToast: CreateToast | (() => void) = () => {
+    console.warn("아직 바인딩 안됨");
+  };
 
-  constructor() {
-    const portalId = "toast-portal";
+  constructor(portalId: string) {
     const portalElement = document.getElementById(portalId);
 
     if (portalElement) {
       this.portal = portalElement;
-      return;
     } else {
       this.portal = document.createElement("div");
       this.portal.id = portalId;
@@ -31,8 +31,8 @@ class Toast {
   }
 
   show(message: string, duration = 2000) {
-    this.createToast!(message, duration);
+    this.createToast?.(message, duration);
   }
 }
 
-export default new Toast();
+export default Toast;
