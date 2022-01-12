@@ -21,11 +21,28 @@ const Upload = ({
 }: Props) => {
   const [file, setFile] = useState(value);
   const [dragging, setDragging] = useState(false);
+  const [fileSrc, setFileSrc] = useState<string | ArrayBuffer | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const changedFile: File = (target.files as FileList)[0];
     setFile(changedFile);
+    getFileSrc(changedFile);
+  };
+
+  const getFileSrc = (fileBlob: File) => {
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      () => {
+        setFileSrc(reader.result);
+      },
+      false
+    );
+
+    if (fileBlob) {
+      reader.readAsDataURL(fileBlob);
+    }
   };
 
   const handleChooseFile = () => {
@@ -95,7 +112,9 @@ const Upload = ({
         accept={accept}
         onChange={handleFileChange}
       />
-      {typeof children === "function" ? children(file, dragging) : children}
+      {typeof children === "function"
+        ? children(file, fileSrc, dragging)
+        : children}
     </UploadContainer>
   );
 };
