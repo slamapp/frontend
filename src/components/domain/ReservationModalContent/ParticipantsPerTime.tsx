@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 import { Avatar, Text } from "@components/base";
-import { getTimeFromIndex } from "@utils/timeTable";
+import { getTimeFromIndex } from "@utils/date";
 import Link from "next/link";
 import * as S from "./style";
 

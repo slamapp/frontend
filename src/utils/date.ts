@@ -1,14 +1,16 @@
+import dayjs, { Dayjs } from "dayjs";
+
+export const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
+
 export const TIME_TABLE_ROWS = 24 * 2;
 export const MINUTES_PER_TIME_BLOCK = 30;
 export const MAX_RESERVATION_TIME_BLOCK_UNIT = 6;
 export const MAJOR_TIME_BLOCK_UNIT = 12;
 export const ACTIVE_RESERVATION_COUNT = 6;
-export const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
+
+const ONE_HOUR = 60 * 60 * 1000;
 
 const TIME_OFFSET = 9;
-
-const MONTH_LENGTH = 2;
-const YEAR_LENGTH = 2;
 const TIME_LENGTH = 2;
 
 export const getTimeFromIndex = (index: number): string => {
@@ -23,28 +25,23 @@ export const getTimeFromIndex = (index: number): string => {
 };
 
 export const getIndexFromDateString = (dateString: string) => {
-  const date = new Date(dateString);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+  const date = dayjs(dateString);
+  const hours = date.hour();
+  const minutes = date.minute();
 
   return hours * 2 + (minutes === MINUTES_PER_TIME_BLOCK ? 1 : 0);
 };
 
-export const getIndexFromDate = (date: Date): number => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+export const getIndexFromDate = (date: Dayjs): number => {
+  const hours = date.hour();
+  const minutes = date.minute();
 
   return hours * 2 + (minutes >= MINUTES_PER_TIME_BLOCK ? 1 : 0);
 };
 
-export const getDateStringFromDate = (date: Date) =>
-  `${date.getFullYear()}-${(date.getMonth() + 1)
-    .toString()
-    .padStart(MONTH_LENGTH, "0")}-${date
-    .getDate()
-    .toString()
-    .padStart(YEAR_LENGTH, "0")}`;
+export const getDateStringFromDate = (date: Dayjs) => date.format("YYYY-MM-DD");
 
+// TODO 추후 API 변경 시 dayjs utc 로 변경 예정
 export const getDatetimeString = (dateString: string, index: number) => {
   const date = new Date(`${dateString} ${getTimeFromIndex(index)}`);
 
@@ -58,3 +55,10 @@ export const getDatetimeString = (dateString: string, index: number) => {
 
   return datetimeString.slice(0, datetimeString.length - 1);
 };
+
+export const getIsOneHourLeft = (datetime: string) => {
+  return dayjs().diff(datetime) <= ONE_HOUR;
+};
+
+export const getCurrentDate = () =>
+  dayjs().hour(0).minute(0).second(0).millisecond(0);

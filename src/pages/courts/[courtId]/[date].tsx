@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useReducer, useState, Reducer } from "react";
+import dayjs from "dayjs";
 
 import { ModalSheet, Text } from "@components/base";
 import {
@@ -17,8 +18,8 @@ import {
   getIndexFromDateString,
   getTimeFromIndex,
   getDatetimeString,
-  getDateStringFromDate,
-} from "@utils/timeTable";
+  getIsOneHourLeft,
+} from "@utils/date";
 import { courtApi, reservationApi } from "@service/.";
 
 const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
@@ -79,23 +80,6 @@ const initialState = {
   selectedReservationId: null,
   requestDisabled: false,
   currentInput: "START",
-};
-
-const getIsPastDay = (date: string) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return new Date(date).getTime() < today.getTime();
-};
-
-const ONE_HOUR = 60 * 60 * 1000;
-
-const getIsPastTime = (datetime: string) => {
-  const today = new Date();
-  const date = new Date(datetime);
-  date.setTime(date.getTime() - ONE_HOUR);
-
-  return date < today;
 };
 
 const reducer: Reducer<any, any> = (state, { type, payload }) => {
@@ -519,6 +503,8 @@ const reducer: Reducer<any, any> = (state, { type, payload }) => {
   }
 };
 
+const getIsPast = (date: string) => dayjs().isAfter(date, "day");
+
 const Reservation: NextPage = () => {
   const router = useRouter();
   const {
@@ -686,7 +672,7 @@ const Reservation: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (router.isReady && getIsPastDay(date as string)) {
+    if (router.isReady && getIsPast(date as string)) {
       alert("과거의 예약 정보는 확인할 수 없습니다.");
       router.replace("/courts");
     }
@@ -737,7 +723,7 @@ const Reservation: NextPage = () => {
   return (
     <div>
       <TimeTable
-        isToday={date === getDateStringFromDate(new Date())}
+        isToday={dayjs().isSame(date as string, "day")}
         timeTable={timeTable || []}
         onClickStatusBlock={step === 1 ? handleSetCurrentBlock : handleSetTime}
         onClickReservationMarker={
@@ -782,7 +768,7 @@ const Reservation: NextPage = () => {
               participantsPerBlock={modalContentData}
               onDeleteReservation={handleDeleteReservation}
               onStartUpdate={handleStartUpdate}
-              requestDisabled={getIsPastTime(
+              requestDisabled={getIsOneHourLeft(
                 `${date} ${getTimeFromIndex(selectedReservation.startIndex)}`
               )}
             />

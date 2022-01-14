@@ -1,8 +1,5 @@
 import { Text } from "@components/base";
-import {
-  MAJOR_TIME_BLOCK_UNIT,
-  ACTIVE_RESERVATION_COUNT,
-} from "@utils/timeTable";
+import { MAJOR_TIME_BLOCK_UNIT, ACTIVE_RESERVATION_COUNT } from "@utils/date";
 import * as S from "./style";
 import { TimeBlockUnitProps, Status } from "../type";
 

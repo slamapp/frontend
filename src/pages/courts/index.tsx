@@ -3,8 +3,9 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import styled from "@emotion/styled";
-import { useLocalToken } from "@hooks/domain";
+import dayjs, { Dayjs } from "dayjs";
 
+import { useLocalToken } from "@hooks/domain";
 import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
 import { Button, ModalSheet, Spacer, Text } from "@components/base";
 import {
@@ -21,7 +22,7 @@ import {
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { courtApi } from "@service/.";
-import { getDateStringFromDate } from "@utils/timeTable";
+import { getCurrentDate, getDateStringFromDate } from "@utils/date";
 import type { Coord } from "@domainTypes/map";
 
 declare global {
@@ -43,8 +44,8 @@ interface Geocoder extends kakao.maps.services.Geocoder {
   ) => void;
 }
 
-const getSlotFromDate = (date: Date): SlotKeyUnion => {
-  const hour = date.getHours();
+const getSlotFromDate = (date: Dayjs): SlotKeyUnion => {
+  const hour = date.hour();
   let slot = "" as SlotKeyUnion;
 
   if (hour < 6) {
@@ -78,21 +79,16 @@ const Courts: NextPage = () => {
 
   const { map } = useMapContext();
 
-  const currentDate = useMemo(() => {
-    const date = new Date();
-    date.setHours(0, 0, 0, 0);
-
-    return date;
-  }, []);
+  const currentDate = useMemo(() => getCurrentDate(), []);
 
   const [courts, setCourts] = useState<any>();
 
   const [level, setLevel] = useState<number>(5);
   const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
 
-  const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(currentDate);
   const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
-    getSlotFromDate(new Date())
+    getSlotFromDate(dayjs())
   );
 
   // TODO: API 명세 나올 경우 any 수정해주기
@@ -198,9 +194,9 @@ const Courts: NextPage = () => {
   }, []);
 
   const handleDateClick = useCallback(
-    (selectedDate: Date) => {
-      if (selectedDate.getTime() === currentDate.getTime()) {
-        const currentSlot = getSlotFromDate(new Date());
+    (selectedDate: Dayjs) => {
+      if (currentDate.isSame(selectedDate)) {
+        const currentSlot = getSlotFromDate(dayjs());
         const selectedSlotIndex = slotItems.findIndex(
           ({ value }) => value === selectedSlot
         );
@@ -319,9 +315,7 @@ const Courts: NextPage = () => {
         />
         <TopFixedSlotPicker
           currentDateTimeSlot={
-            selectedDate.getTime() === currentDate.getTime()
-              ? getSlotFromDate(new Date())
-              : null
+            currentDate.isSame(selectedDate) ? getSlotFromDate(dayjs()) : null
           }
           selectedSlot={selectedSlot}
           onChange={handleChangeSlot}

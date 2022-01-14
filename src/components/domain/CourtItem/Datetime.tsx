@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { Spacer, Text } from "@components/base";
-import { weekdays } from "@utils/timeTable";
+import { weekdays } from "@utils/date";
 import * as S from "./style";
 
 interface Props {

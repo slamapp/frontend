@@ -1,9 +1,10 @@
+import dayjs from "dayjs";
 import {
   getTimeFromIndex,
   getIndexFromDateString,
   getDateStringFromDate,
   getDatetimeString,
-} from "./timeTable";
+} from "./date";
 
 describe("인덱스를 시간 문자열로 변환하기", () => {
   it("0 to 00:00", () => {
@@ -41,11 +42,11 @@ describe("시간을 인덱스로 변환하기", () => {
 
 describe("date 객체를 날짜 문자열로 변환하기", () => {
   it("2022-1-2 to 2022-01-02", () => {
-    expect(getDateStringFromDate(new Date("2022-1-2"))).toBe("2022-01-02");
+    expect(getDateStringFromDate(dayjs("2022-1-2"))).toBe("2022-01-02");
   });
 
   it("2022-12-28 to 2022-12-28", () => {
-    expect(getDateStringFromDate(new Date("2022-12-28"))).toBe("2022-12-28");
+    expect(getDateStringFromDate(dayjs("2022-12-28"))).toBe("2022-12-28");
   });
 });
 

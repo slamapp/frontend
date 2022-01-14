@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import styled from "@emotion/styled";
+import dayjs from "dayjs";
 
 import { useResize } from "@hooks/.";
 import { Image, Spacer, Text } from "@components/base";
 import { useRouter } from "next/router";
 import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
-import { getIndexFromDate } from "@utils/timeTable";
+import { getIndexFromDate } from "@utils/date";
 import { TimeBlockUnit, ActionTimeBlockUnit, Header } from "./TimeBlockUnits";
 import TimeRangeSelector from "./TimeRangeSelector";
 import * as S from "./style";
@@ -30,7 +31,7 @@ const TimeTable = ({
   onClose,
 }: any) => {
   const currentTimeIndex = useMemo(
-    () => (isToday ? getIndexFromDate(new Date()) : null),
+    () => (isToday ? getIndexFromDate(dayjs()) : null),
     [isToday]
   );
 
