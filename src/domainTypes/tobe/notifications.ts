@@ -1,46 +1,21 @@
-export interface Notification extends DefaultNotification {
-  followerInfo: FollowerInfo | null;
-  loudspeakerInfo: LoudspeakerInfo | null;
-}
+import { CommonObject } from "./common";
+import { Follow } from "./follows";
+import { Loudspeaker } from "./loudspeaker";
 
 export const notificationTypes = {
   FOLLOWING: "FOLLOWING",
   LOUDSPEAKER: "LOUDSPEAKER",
 } as const;
 
-export type NotificationType = NotificationTypeMap[keyof NotificationTypeMap];
-
-interface DefaultNotification {
-  id: number;
-  type: NotificationType;
-  isRead: boolean;
-  isClicked: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
 type NotificationTypeMap = typeof notificationTypes;
 
-interface FollowerInfo {
-  id: number;
-  creator: {
-    id: number;
-    nickname: string;
-    profileImage: string;
-  };
-}
+export type NotificationType = NotificationTypeMap[keyof NotificationTypeMap];
 
-interface LoudspeakerInfo {
-  court: {
-    id: string;
-    name: string;
-    latitude: number;
-    longitude: number;
-    image: string;
-    basketCount: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-
-  startTime: string;
+export interface Notification extends CommonObject {
+  type: NotificationType;
+  // follow | loudspeaker 알림
+  follow?: Follow;
+  loudspeaker?: Loudspeaker;
+  isRead: boolean;
+  isClicked: boolean;
 }
