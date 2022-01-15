@@ -1,4 +1,4 @@
-import { User } from "./users";
+import type { User } from "./users";
 
 export interface SenderObject extends CommonObject {
   sender: User;
@@ -10,4 +10,6 @@ export interface CommonObject {
   updatedAt: ISOString;
 }
 
-export type ISOString = string;
+export type ISOString = string; // TODO: regex로 ISOString 타입 좁히기
+
+export type OmitAt<T> = Omit<T, "createdAt" | "updatedAt">;

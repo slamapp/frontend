@@ -1,27 +1,23 @@
 import type { CommonObject } from "./common";
 
 export interface User extends CommonObject {
+  description: string;
   nickname: string;
   profileImage: string;
   role: Role;
-  positions: Position[];
+  positions: PositionKey[];
+  proficiency: ProficiencyKey;
 }
 
 export const roles = {
   USER: "USER",
   ADMIN: "ADMIN",
 } as const;
+
 type RoleMap = typeof roles;
 export type Role = RoleMap[keyof RoleMap];
 
-export interface EditableUserProfile {
-  nickname: string;
-  description: string;
-  proficiency: ProficiencyKeyUnion;
-  positions: PositionKeyUnion[];
-}
-
-const positions = {
+const positionType = {
   PF: "파워포워드",
   SF: "스몰포워드",
   SG: "슈팅가드",
@@ -29,17 +25,25 @@ const positions = {
   C: "센터",
   TBD: "미정",
 } as const;
-type Position = typeof positions;
-export type PositionValueUnion = Position[keyof Position];
-export type PositionKeyUnion = keyof Position;
 
-const proficiencies = {
+type PositionMap = typeof positionType;
+export type PositionValue = PositionMap[keyof PositionMap];
+export type PositionKey = keyof PositionMap;
+
+const proficiencyType = {
   BEGINNER: "뉴비",
   INTERMEDIATE: "중수",
   MASTER: "고수",
 } as const;
-type Proficiency = typeof proficiencies;
-export type ProficiencyValueUnion =
-  | Proficiency[keyof Proficiency]
+
+type ProficiencyMap = typeof proficiencyType;
+
+export type ProficiencyValue =
+  | ProficiencyMap[keyof ProficiencyMap]
   | "선택한 숙련도가 없습니다";
-export type ProficiencyKeyUnion = keyof Proficiency | null;
+export type ProficiencyKey = keyof ProficiencyMap | null;
+
+export type EditableUserProfile = Pick<
+  User,
+  "nickname" | "description" | "proficiency" | "positions"
+>;

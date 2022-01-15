@@ -1,8 +1,7 @@
-import { ISOString, SenderObject } from "./common";
-import { Court } from "./courts";
+import type { ISOString, OmitAt, SenderObject } from "./common";
+import type { Court } from "./court";
 
 export interface Loudspeaker extends SenderObject {
   startTime: ISOString;
-  endTime: ISOString;
-  court: Court;
+  court: OmitAt<Court>;
 }

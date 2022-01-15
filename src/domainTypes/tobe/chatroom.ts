@@ -1,7 +1,15 @@
 import type { Chat } from "./chat";
 import type { CommonObject } from "./common";
-import type { Court } from "./courts";
+import type { Court } from "./court";
 import type { User } from "./users";
+
+export interface Chatroom extends CommonObject {
+  admins: Admin[];
+  type: ChatroomType;
+  court?: Court;
+  participants: User[];
+  lastChat: Chat;
+}
 
 export const chatroomType = {
   USER: "USER",
@@ -11,14 +19,6 @@ export const chatroomType = {
 
 type ChatroomTypeMap = typeof chatroomType;
 type ChatroomType = ChatroomTypeMap[keyof ChatroomTypeMap];
-
-export interface Chatroom extends CommonObject {
-  admins: Admin[];
-  type: ChatroomType;
-  court?: Court;
-  participants: User[];
-  lastChat: Chat;
-}
 
 export const adminType = {
   OWNER: "OWNER",
