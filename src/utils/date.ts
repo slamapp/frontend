@@ -5,7 +5,7 @@ import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const weekdays = ["일", "월", "화", "수", "목", "금", "토"] as const;
+export const week = ["일", "월", "화", "수", "목", "금", "토"] as const;
 export const TIME_TABLE_ROWS = 24 * 2;
 export const MINUTES_PER_TIME_BLOCK = 30;
 export const MAX_RESERVATION_TIME_BLOCK_UNIT = 6;

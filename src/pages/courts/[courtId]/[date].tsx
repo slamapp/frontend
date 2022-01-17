@@ -12,7 +12,7 @@ import {
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 
 import {
-  weekdays,
+  week,
   TIME_TABLE_ROWS,
   MAX_RESERVATION_TIME_BLOCK_UNIT,
   getTimezoneIndexFromDatetime,
@@ -808,7 +808,7 @@ const ReservationTitle: React.FC<{ date: string }> = ({ date }) => {
     <Text size="base">
       {`${day.getFullYear()}년 ${day.getMonth() + 1}월 ${day.getDate()}일`}(
       <DayOfTheWeek index={day.getDay()} size="base">
-        {weekdays[day.getDay()]}
+        {week[day.getDay()]}
       </DayOfTheWeek>
       )
     </Text>

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Dayjs } from "dayjs";
 
 import { Text } from "@components/base";
-import { weekdays } from "@utils/date";
+import { week } from "@utils/date";
 
 interface Props {
   date: Dayjs;
@@ -19,7 +19,7 @@ const DateItem = React.memo(
       return (
         <DateItemContainer ref={ref} onClick={() => onClick(date)}>
           <DayOfTheWeek block index={dayOfWeekIndex}>
-            {weekdays[dayOfWeekIndex]}
+            {week[dayOfWeekIndex]}
           </DayOfTheWeek>
           <Day selected={selected}>
             <span>{date.date()}</span>

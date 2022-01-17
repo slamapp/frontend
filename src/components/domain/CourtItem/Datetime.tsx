@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { Spacer, Text } from "@components/base";
-import { weekdays } from "@utils/date";
+import { week } from "@utils/date";
 import * as S from "./style";
 
 interface Props {
@@ -21,7 +21,7 @@ const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
           {(startDate.getMonth() + 1).toString().padStart(2, "0")}월{" "}
           {startDate.getDate().toString().padStart(2, "0")}일 (
           <S.DayOfTheWeek index={startDate.getDay()}>
-            {weekdays[startDate.getDay()]}
+            {week[startDate.getDay()]}
           </S.DayOfTheWeek>
           )
         </Text>
