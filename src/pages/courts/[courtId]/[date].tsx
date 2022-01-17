@@ -802,13 +802,13 @@ const Reservation: NextPage = () => {
 export default Reservation;
 
 const ReservationTitle: React.FC<{ date: string }> = ({ date }) => {
-  const day = new Date(date as string);
+  const d = dayjs(date as string);
 
   return (
     <Text size="base">
-      {`${day.getFullYear()}년 ${day.getMonth() + 1}월 ${day.getDate()}일`}(
-      <DayOfTheWeek index={day.getDay()} size="base">
-        {week[day.getDay()]}
+      {d.format("YYYY년 MM월 DD일")} (
+      <DayOfTheWeek index={d.day()} size="base">
+        {week[d.day()]}
       </DayOfTheWeek>
       )
     </Text>
