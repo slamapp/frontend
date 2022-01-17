@@ -1,6 +1,6 @@
-import type { OmitAt, SenderObject } from "./common";
-import type { User } from "./users";
+import type { OmitAt, APISend } from "./common";
+import type { APIUser } from "./user";
 
-export interface Follow extends SenderObject {
-  receiver: OmitAt<User>;
+export interface APIFollow extends APISend {
+  receiver: OmitAt<APIUser>;
 }

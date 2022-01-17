@@ -1,10 +1,10 @@
-import type { User } from "./users";
+import type { APIUser } from "./user";
 
-export interface SenderObject extends CommonObject {
-  sender: User;
+export interface APISend extends APICommon {
+  sender: APIUser;
 }
 
-export interface CommonObject {
+export interface APICommon {
   id: number;
   createdAt: ISOString;
   updatedAt: ISOString;

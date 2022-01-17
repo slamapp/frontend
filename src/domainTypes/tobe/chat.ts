@@ -1,19 +1,12 @@
-import type { OmitAt, SenderObject } from "./common";
-import type { Loudspeaker } from "./loudspeaker";
-import type { Chatroom } from "./chatroom";
+import { ChatType } from "@enums/.";
+import type { OmitAt, APISend } from "./common";
+import type { APILoudspeaker } from "./loudspeaker";
+import type { APIChatroom } from "./chatroom";
 
-export interface Chat extends SenderObject {
+export interface APIChat extends APISend {
   text: ChatText;
   type: ChatType;
-  loudspeaker?: OmitAt<Loudspeaker>;
-  chatroom: OmitAt<Chatroom>;
+  loudspeaker?: OmitAt<APILoudspeaker>;
+  chatroom: OmitAt<APIChatroom>;
 }
-
-export const chatType = {
-  DEFAULT: "DEFAULT",
-  LOUDSPEAKER: "LOUDSPEAKER",
-} as const;
-
-type ChatTypeMap = typeof chatType;
-type ChatType = ChatTypeMap[keyof ChatTypeMap];
 type ChatText = string; // TODO: regex로 글자 수 제한하기

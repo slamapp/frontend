@@ -1,6 +1,6 @@
-import type { CommonObject } from "./common";
-import { Court } from "./court";
+import type { APICommon } from "./common";
+import { APICourt } from "./court";
 
-export interface Favorite extends CommonObject {
-  court: Pick<Court, "id" | "name" | "latitude" | "longitude">;
+export interface APIFavorite extends APICommon {
+  court: Pick<APICourt, "id" | "name" | "latitude" | "longitude">;
 }
