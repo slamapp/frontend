@@ -22,7 +22,10 @@ import {
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { courtApi } from "@service/.";
-import { getCurrentDate, getDateStringFromDate } from "@utils/date";
+import {
+  getTimezoneCurrentDate,
+  getTimezoneDateStringFromDate,
+} from "@utils/date";
 import type { Coord } from "@domainTypes/map";
 
 declare global {
@@ -44,7 +47,11 @@ interface Geocoder extends kakao.maps.services.Geocoder {
   ) => void;
 }
 
-const getSlotFromDate = (date: Dayjs): SlotKeyUnion => {
+const getSlotFromDate = (
+  date: Dayjs,
+  timezone = "Asia/Seoul"
+): SlotKeyUnion => {
+  date.tz(timezone);
   const hour = date.hour();
   let slot = "" as SlotKeyUnion;
 
@@ -79,7 +86,7 @@ const Courts: NextPage = () => {
 
   const { map } = useMapContext();
 
-  const currentDate = useMemo(() => getCurrentDate(), []);
+  const currentDate = useMemo(() => getTimezoneCurrentDate(), []);
 
   const [courts, setCourts] = useState<any>();
 
@@ -164,7 +171,7 @@ const Courts: NextPage = () => {
       const endLongitude = neLatLng.getLng();
 
       const { courts } = await courtApi.getCourtsByCoordsAndDate({
-        date: getDateStringFromDate(selectedDate),
+        date: getTimezoneDateStringFromDate(selectedDate),
         startLatitude,
         startLongitude,
         endLatitude,
@@ -242,7 +249,7 @@ const Courts: NextPage = () => {
       try {
         const court: any = await courtApi.getCourtDetail(
           courtId,
-          getDateStringFromDate(selectedDate),
+          getTimezoneDateStringFromDate(selectedDate),
           selectedSlot
         );
 
@@ -275,7 +282,7 @@ const Courts: NextPage = () => {
     const updateSelectedCourtDetail = async () => {
       const court: any = await courtApi.getCourtDetail(
         selectedCourt.courtId,
-        getDateStringFromDate(selectedDate),
+        getTimezoneDateStringFromDate(selectedDate),
         selectedSlot
       );
 
@@ -362,9 +369,9 @@ const Courts: NextPage = () => {
                       timeSlot: selectedSlot,
                     },
                   }}
-                  as={`/courts/${selectedCourt.courtId}/${getDateStringFromDate(
-                    selectedDate
-                  )}`}
+                  as={`/courts/${
+                    selectedCourt.courtId
+                  }/${getTimezoneDateStringFromDate(selectedDate)}`}
                   passHref
                 >
                   <Button style={{ flex: 1 }} size="lg">

@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import {
   getTimeFromIndex,
-  getIndexFromDateString,
-  getDateStringFromDate,
+  getTimezoneIndexFromDatetime,
+  getTimezoneDateStringFromDate,
   getDatetimeString,
 } from "./date";
 
@@ -22,31 +22,43 @@ describe("인덱스를 시간 문자열로 변환하기", () => {
 
 describe("시간을 인덱스로 변환하기", () => {
   it("2022-01-02 00:00 to 0", () => {
-    expect(getIndexFromDateString("2022-01-02 00:00")).toBe(0);
+    expect(getTimezoneIndexFromDatetime("2022-01-02 00:00")).toBe(0);
   });
 
   it("2022-01-02 11:30 to 23", () => {
-    expect(getIndexFromDateString("2022-01-02 11:30")).toBe(23);
+    expect(getTimezoneIndexFromDatetime("2022-01-02 11:30")).toBe(23);
   });
 });
 
 describe("시간을 인덱스로 변환하기", () => {
+  // * 이전 버전 유지를 위한 테스트 코드
   it("2022-01-02 00:00 to 0", () => {
-    expect(getIndexFromDateString("2022-01-02 00:00")).toBe(0);
+    expect(getTimezoneIndexFromDatetime("2022-01-02 00:00")).toBe(0);
   });
 
   it("2022-01-02 11:30 to 23", () => {
-    expect(getIndexFromDateString("2022-01-02 11:30")).toBe(23);
+    expect(getTimezoneIndexFromDatetime("2022-01-02 11:30")).toBe(23);
+  });
+
+  // * 절대시간 테스트
+  it("2022-01-02T00:00:00.000Z to 30", () => {
+    expect(getTimezoneIndexFromDatetime("2022-01-02T00:00:00.000Z")).toBe(18);
+  });
+
+  it("2022-01-02T15:00:00.000Z to 0", () => {
+    expect(getTimezoneIndexFromDatetime("2022-01-02T15:00:00.000Z")).toBe(0);
   });
 });
 
 describe("date 객체를 날짜 문자열로 변환하기", () => {
   it("2022-1-2 to 2022-01-02", () => {
-    expect(getDateStringFromDate(dayjs("2022-1-2"))).toBe("2022-01-02");
+    expect(getTimezoneDateStringFromDate(dayjs("2022-1-2"))).toBe("2022-01-02");
   });
 
   it("2022-12-28 to 2022-12-28", () => {
-    expect(getDateStringFromDate(dayjs("2022-12-28"))).toBe("2022-12-28");
+    expect(getTimezoneDateStringFromDate(dayjs("2022-12-28"))).toBe(
+      "2022-12-28"
+    );
   });
 });
 

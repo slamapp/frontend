@@ -15,7 +15,7 @@ import {
   weekdays,
   TIME_TABLE_ROWS,
   MAX_RESERVATION_TIME_BLOCK_UNIT,
-  getIndexFromDateString,
+  getTimezoneIndexFromDatetime,
   getTimeFromIndex,
   getDatetimeString,
   getIsOneHourLeft,
@@ -33,8 +33,8 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   return reservations.reduce(
     (acc: any, reservation: any) => {
       const { existedReservations, timeTable } = acc;
-      const startRow = getIndexFromDateString(reservation.startTime);
-      const endRow = getIndexFromDateString(reservation.endTime);
+      const startRow = getTimezoneIndexFromDatetime(reservation.startTime);
+      const endRow = getTimezoneIndexFromDatetime(reservation.endTime);
       const hasReservation = reservation.userId === userId;
 
       if (hasReservation) {
