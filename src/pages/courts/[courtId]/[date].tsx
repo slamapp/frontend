@@ -17,7 +17,7 @@ import {
   MAX_RESERVATION_TIME_BLOCK_UNIT,
   getTimezoneIndexFromDatetime,
   getTimeFromIndex,
-  getDatetimeString,
+  getISOString,
   getIsOneHourLeft,
 } from "@utils/date";
 import { courtApi, reservationApi } from "@service/.";
@@ -575,8 +575,8 @@ const Reservation: NextPage = () => {
 
       const data = {
         courtId: Number(courtId),
-        startTime: getDatetimeString(date as string, startIndex),
-        endTime: getDatetimeString(date as string, endIndex + 1),
+        startTime: getISOString(date as string, startIndex),
+        endTime: getISOString(date as string, endIndex + 1),
         hasBall,
       };
 
@@ -599,8 +599,8 @@ const Reservation: NextPage = () => {
 
       const data = {
         courtId: Number(courtId),
-        startTime: getDatetimeString(date as string, startIndex),
-        endTime: getDatetimeString(date as string, endIndex + 1),
+        startTime: getISOString(date as string, startIndex),
+        endTime: getISOString(date as string, endIndex + 1),
         hasBall,
       };
 

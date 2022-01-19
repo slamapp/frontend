@@ -56,18 +56,18 @@ export const getTimezoneCurrentDate = (timezone: Timezone = DEFAULT_TIMEZONE) =>
 
 // TODO 추후 API 변경 시 dayjs utc 로 변경 예정
 // * 서버와 통신시 쓰이는 절대시간을 생성하는 함수로 변경 예정
-export const getDatetimeString = (dateString: string, index: number) => {
-  const date = new Date(`${dateString} ${getTimeFromIndex(index)}`);
+export const getISOString = (date: string, index: number) => {
+  let d = dayjs(`${date} ${getTimeFromIndex(index)}`);
 
-  date.setHours(date.getHours() + TIME_OFFSET);
+  d = d.add(TIME_OFFSET, "hour");
 
   if (index === TIME_TABLE_ROWS) {
-    date.setDate(date.getDate() + 1);
+    d = d.add(1, "day");
   }
 
-  const datetimeString = date.toISOString();
+  const iso = d.utc().format();
 
-  return datetimeString.slice(0, datetimeString.length - 1);
+  return iso.slice(0, iso.length - 1);
 };
 
 // * 위도, 경도를 통해 timezone을 받아오는 함수 나중에 구현
