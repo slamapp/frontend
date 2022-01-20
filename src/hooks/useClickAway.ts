@@ -14,10 +14,14 @@ const useClickAway = <T extends HTMLElement>(handler: Handler) => {
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const handleEvent = (e: Event) => {
-      if (!element.contains(e.target as Node)) savedHandler.current(e);
+      if (!element.contains(e.target as Node)) {
+        savedHandler.current(e);
+      }
     };
 
     events.forEach((eventName) =>

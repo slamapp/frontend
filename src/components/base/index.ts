@@ -13,7 +13,6 @@ export { default as Spacer } from "./Spacer";
 export { default as Spinner } from "./Spinner";
 export { default as Tab } from "./Tab";
 export { default as Text } from "./Text";
-export { default as Toast } from "./Toast";
 export { default as Toggle } from "./Toggle";
 export { default as Upload } from "./Upload";
 export { default as ModalSheet } from "./ModalSheet";

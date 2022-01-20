@@ -1,27 +1,28 @@
 import React, { useMemo } from "react";
 import styled from "@emotion/styled";
+import { Dayjs } from "dayjs";
 
 import { Text } from "@components/base";
-import { weekdays } from "@utils/timeTable";
+import { week } from "@utils/date";
 
 interface Props {
-  date: Date;
+  date: Dayjs;
   selected: boolean;
-  onClick: (date: Date) => void;
+  onClick: (date: Dayjs) => void;
 }
 
 const DateItem = React.memo(
   React.forwardRef<HTMLDivElement, Props>(
     ({ date, onClick, selected }, ref) => {
-      const dayOfWeekIndex = useMemo(() => date.getDay(), [date]);
+      const dayOfWeekIndex = useMemo(() => date.day(), [date]);
 
       return (
         <DateItemContainer ref={ref} onClick={() => onClick(date)}>
           <DayOfTheWeek block index={dayOfWeekIndex}>
-            {weekdays[dayOfWeekIndex]}
+            {week[dayOfWeekIndex]}
           </DayOfTheWeek>
           <Day selected={selected}>
-            <span>{date.getDate()}</span>
+            <span>{date.date()}</span>
           </Day>
         </DateItemContainer>
       );

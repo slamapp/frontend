@@ -31,5 +31,6 @@ export const setInterceptors = (
       );
       instance.interceptors.response.use(res.onFulfilled, res.onRejected);
   }
+
   return instance;
 };

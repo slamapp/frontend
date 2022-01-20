@@ -1,6 +1,12 @@
+import {
+  Notification,
+  Follow,
+  Role,
+  Favorite,
+  Reservation,
+} from "@domainTypes/.";
 import { Reducer } from "react";
 import { authTypes, ActionTypeUnion } from "./actionTypes";
-import { Follow, Favorite, Notification, Reservation, Role } from "./types";
 
 export interface DataProps {
   currentUser: {
@@ -132,6 +138,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     }
     case authTypes.DELETE_FAVORITE: {
       const { deletedFavoriteId } = payload;
+
       return {
         ...prevState,
         currentUser: {
@@ -144,24 +151,12 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
     }
     case authTypes.SET_MY_RESERVATIONS: {
       const { reservations } = payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
           reservations: [...reservations],
-        },
-      };
-    }
-
-    case authTypes.UNSHIFT_NOTIFICATION: {
-      return {
-        ...prevState,
-        currentUser: {
-          ...prevState.currentUser,
-          notifications: [
-            payload.notification,
-            ...prevState.currentUser.notifications,
-          ],
         },
       };
     }
@@ -204,7 +199,19 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.PUSH_NOTIFICATIONS: {
+    case authTypes.UNSHIFT_NOTIFICATION: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          notifications: [
+            payload.notification,
+            ...prevState.currentUser.notifications,
+          ],
+        },
+      };
+    }
+    case authTypes.CONCAT_NOTIFICATIONS: {
       return {
         ...prevState,
         currentUser: {
@@ -215,6 +222,20 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
           ],
           notificationLastId:
             payload.notifications.length !== 0 ? payload.lastId : null,
+        },
+      };
+    }
+    case authTypes.READ_ALL_NOTIFICATIONS: {
+      return {
+        ...prevState,
+        currentUser: {
+          ...prevState.currentUser,
+          notifications: [
+            ...prevState.currentUser.notifications.map((notification) => ({
+              ...notification,
+              isRead: true,
+            })),
+          ],
         },
       };
     }

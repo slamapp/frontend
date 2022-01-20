@@ -12,7 +12,9 @@ const useResize = <T extends Element>(handler: Handler) => {
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const observer = new ResizeObserver((entries) => {
       savedHandler.current(entries[0].contentRect);

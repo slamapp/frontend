@@ -26,6 +26,7 @@ const Modal = ({
 
   useEffect(() => {
     setMounted(true);
+
     return () => setMounted(false);
   }, []);
 
@@ -45,9 +46,14 @@ const Modal = ({
   }, []);
 
   useIsomorphicLayoutEffect(() => {
-    if (el) document.body.appendChild(el);
+    if (el) {
+      document.body.appendChild(el);
+    }
+
     return () => {
-      if (el) document.body.removeChild(el);
+      if (el) {
+        document.body.removeChild(el);
+      }
     };
   });
 

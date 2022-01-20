@@ -25,6 +25,7 @@ const NavigationProvider = ({ children }: Props) => {
     useEffect(() => {
       const currentPage = getPageType(pageType);
       setCurrentPage(currentPage);
+
       return () => setCurrentPage(pageType.NONE);
     }, []);
 
@@ -37,6 +38,7 @@ const NavigationProvider = ({ children }: Props) => {
   const useDisableTopTransparent = () => {
     useEffect(() => {
       setIsTopTransparent(false);
+
       return () => setIsTopTransparent(true);
     }, []);
   };
@@ -64,6 +66,7 @@ const NavigationProvider = ({ children }: Props) => {
   ) =>
     useEffect(() => {
       setCustomButtonEvent(customButtonName, handleClick);
+
       return clearNavigationEvent;
     }, []);
 

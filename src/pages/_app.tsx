@@ -24,13 +24,13 @@ function MyApp({ Component, pageProps }: AppProps) {
           referrerPolicy="no-referrer"
         />
       </Head>
-      <Providers>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <Providers>
           <DefaultLayout>
             <Component {...pageProps} />
           </DefaultLayout>
-        </ThemeProvider>
-      </Providers>
+        </Providers>
+      </ThemeProvider>
     </>
   );
 }

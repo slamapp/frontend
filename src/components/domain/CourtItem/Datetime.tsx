@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-
+import dayjs from "dayjs";
 import { Spacer, Text } from "@components/base";
-import { weekdays } from "@utils/timeTable";
+import { week } from "@utils/date";
 import * as S from "./style";
 
 interface Props {
@@ -10,25 +10,20 @@ interface Props {
 }
 
 const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
-  const startDate = useMemo(() => new Date(startDatetime), [startDatetime]);
-  const endDate = useMemo(() => new Date(endDatetime), [endDatetime]);
+  const startDate = useMemo(() => dayjs(startDatetime), [startDatetime]);
+  const endDate = useMemo(() => dayjs(endDatetime), [endDatetime]);
+
   return (
     <S.SubHeaderArea>
       <Spacer gap="xxs" type="vertical">
         <Text strong>
-          {startDate.getFullYear()}년{" "}
-          {(startDate.getMonth() + 1).toString().padStart(2, "0")}월{" "}
-          {startDate.getDate().toString().padStart(2, "0")}일 (
-          <S.DayOfTheWeek index={startDate.getDay()}>
-            {weekdays[startDate.getDay()]}
+          {startDate.format("YYYY년 MM월 DD일")}
+          <S.DayOfTheWeek index={startDate.day()}>
+            {week[startDate.day()]}
           </S.DayOfTheWeek>
-          )
         </Text>
         <Text strong>
-          {startDate.getHours().toString().padStart(2, "0")}:
-          {startDate.getMinutes().toString().padStart(2, "0")} -{" "}
-          {endDate.getHours().toString().padStart(2, "0")}:
-          {endDate.getMinutes().toString().padStart(2, "0")}
+          {startDate.format("HH:MM")} - {endDate.format("HH:MM")}
         </Text>
       </Spacer>
     </S.SubHeaderArea>

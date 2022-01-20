@@ -6,10 +6,15 @@ const useKakaoMapEvent = <T extends kakao.maps.event.EventTarget>(
   callback: ((target: T, ...args: any[]) => void) | undefined
 ) => {
   useEffect(() => {
-    if (!target || !callback) return;
+    if (!target || !callback) {
+      return;
+    }
 
     const wrapCallback = (...arg: any[]) => {
-      if (arg === undefined) return callback(target);
+      if (arg === undefined) {
+        return callback(target);
+      }
+
       return callback(target, ...arg);
     };
 

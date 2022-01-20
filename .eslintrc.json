@@ -23,6 +23,8 @@
     "consistent-return": "off",
     "no-shadow": "off",
     "react/display-name": "off",
-    "camelcase": "off"
+    "camelcase": "off",
+    "curly": ["error", "all"],
+    "newline-before-return": "error"
   }
 }

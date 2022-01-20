@@ -20,6 +20,7 @@ const Col = ({
     if (Array.isArray(gutter)) {
       const horizontalGutter = gutter[0];
       const verticalGutter = gutter[1];
+
       return {
         paddingTop: `${verticalGutter / 2}px`,
         paddingBottom: `${verticalGutter / 2}px`,

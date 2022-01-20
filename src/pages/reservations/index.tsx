@@ -72,6 +72,7 @@ const Reservations: NextPage = UtilRoute("private", () => {
     if (ref.current) {
       observer.observe(ref.current);
     }
+
     return () => observer.disconnect();
   }, [ref, loadMore]);
 

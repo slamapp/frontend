@@ -26,9 +26,11 @@
       "@stories/*": ["stories/*"],
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"],
-      "@service/*": ["service/*"]
+      "@service/*": ["service/*"],
+      "@domainTypes/*": ["domainTypes/*"],
+      "@enums/*": ["enums/*"]
     },
-    "types": ["kakao.maps.d.ts"]
+    "types": ["kakao.maps.d.ts", "jest"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

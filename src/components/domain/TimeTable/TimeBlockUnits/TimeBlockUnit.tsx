@@ -2,18 +2,15 @@ import { Text } from "@components/base";
 import {
   MAJOR_TIME_BLOCK_UNIT,
   ACTIVE_RESERVATION_COUNT,
-} from "@utils/timeTable";
+  getTimeFromIndex,
+} from "@utils/date";
 import * as S from "./style";
 import { TimeBlockUnitProps, Status } from "../type";
 
 import Hour from "./Hour";
 
-const getTimeSlotFromIndex = (index: number) => {
-  const startHours = Math.floor(index / 2);
-  return index % 2 === 0
-    ? `${startHours}:00 - ${startHours}:30`
-    : `${startHours}:30 - ${startHours + 1}:00`;
-};
+const getTimeSlotFromIndex = (index: number) =>
+  `${getTimeFromIndex(index)} - ${getTimeFromIndex(index + 1)}`;
 
 const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
   index,

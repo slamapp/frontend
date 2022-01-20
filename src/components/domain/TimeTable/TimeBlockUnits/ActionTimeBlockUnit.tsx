@@ -1,23 +1,17 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getDateStringFromDate } from "@utils/timeTable";
+import dayjs from "dayjs";
+
+import { getTimezoneDateStringFromDate } from "@utils/date";
 import * as S from "./style";
 import { ActionTimeBlockUnitProps } from "../type";
 import Hour from "./Hour";
 
-const getNextDay = (date: string) => {
-  const currentDate = new Date(date);
-  currentDate.setDate(currentDate.getDate() + 1);
+const getNextDay = (date: string) =>
+  getTimezoneDateStringFromDate(dayjs(date).add(1, "day"));
 
-  return getDateStringFromDate(currentDate);
-};
-
-const getPrevDay = (date: string) => {
-  const currentDate = new Date(date);
-  currentDate.setDate(currentDate.getDate() - 1);
-
-  return getDateStringFromDate(currentDate);
-};
+const getPrevDay = (date: string) =>
+  getTimezoneDateStringFromDate(dayjs(date).subtract(1, "day"));
 
 const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
   height,

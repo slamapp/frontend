@@ -36,7 +36,7 @@ const ToastManager = ({ bind }: Props) => {
   }, [bind, createToast]);
 
   return (
-    <Container>
+    <>
       {toasts.map(({ id, message, duration }) => (
         <ToastItem
           message={message}
@@ -45,15 +45,8 @@ const ToastManager = ({ bind }: Props) => {
           onDone={() => removeToast(id)}
         />
       ))}
-    </Container>
+    </>
   );
 };
-
-const Container = styled.div`
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 1500;
-`;
 
 export default ToastManager;

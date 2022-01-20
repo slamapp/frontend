@@ -73,7 +73,9 @@ const NewCourtsPage: NextPage = () => {
   );
 
   const handleClick = (status: Status) => {
-    if (activeStatus === status) return;
+    if (activeStatus === status) {
+      return;
+    }
 
     setCurrentLastId(0);
     setReadyData([]);
@@ -102,6 +104,7 @@ const NewCourtsPage: NextPage = () => {
     if (ref.current) {
       observer.observe(ref.current);
     }
+
     return () => observer.disconnect();
   }, [ref, activeStatus, getNewCourts]);
 
