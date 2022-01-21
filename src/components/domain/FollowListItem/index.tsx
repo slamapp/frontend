@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import styled from "@emotion/styled";
 import type { ReactNode } from "react";
-import { Avatar, Button, Spacer, Text } from "@components/base";
+import { Button, Spacer, Text } from "@components/base";
 import { LinkAvatar } from "@components/domain";
 
 interface Props {
@@ -9,8 +9,8 @@ interface Props {
   className?: string;
   style?: CSSProperties;
   src: string;
-  isFollowed: boolean;
-  userId: number;
+  isFollowed?: boolean;
+  userId?: number;
 }
 // 아바타 + 이름 + 버튼
 
@@ -36,7 +36,9 @@ const FollowListItem: React.FC<Props> = ({
         </Text>
       </Spacer>
       <div>
-        {isFollowed ? (
+        {isFollowed === undefined ? (
+          <></>
+        ) : isFollowed ? (
           // TODO: 컨텍스트 함수로 대체
           <Button onClick={() => {}} secondary>
             팔로잉
