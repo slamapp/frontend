@@ -210,6 +210,7 @@ const AuthProvider = ({ children }: Props) => {
         readAllNotifications,
         getMoreNotifications,
         unshiftNotification,
+        authProviderInit,
       }}
     >
       <AuthLoading />
