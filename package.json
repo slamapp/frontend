@@ -5,18 +5,57 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "test": "jest",
+    "lint:fix": "eslint --fix 'src/**'",
+    "lint:css": "stylelint 'src/**/*.{ts, tsx}'",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "next": "12.0.4",
+    "@egjs/react-flicking": "^4.4.2",
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@stomp/stompjs": "^6.1.2",
+    "axios": "^0.24.0",
+    "dayjs": "^1.10.7",
+    "feather-icons": "^4.28.0",
+    "framer-motion": "^5.3.3",
+    "jest": "^27.4.7",
+    "next": "12.0.7",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "^17.0.2",
+    "react-lottie": "^1.2.3",
+    "react-modal-sheet": "^1.4.1",
+    "sockjs-client": "^1.5.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^4.0.0-beta.12",
+    "@types/feather-icons": "^4.7.0",
+    "@types/jest": "^27.4.0",
     "@types/node": "16.11.10",
     "@types/react": "17.0.37",
-    "eslint": "7",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-lottie": "^1.2.6",
+    "@types/sockjs-client": "^1.5.1",
+    "@types/uuid": "^8.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "commitlint": "^15.0.0",
+    "commitlint-config-gitmoji": "^2.2.5",
+    "eslint": "<8.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-next": "12.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": ">=6",
+    "kakao.maps.d.ts": "^0.1.24",
+    "lint-staged": ">=10",
+    "prettier": "^2.5.1",
     "typescript": "4.5.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": "eslint --cache --fix",
+    "*.{ts,tsx,js,css,md}": "prettier --write"
   }
 }
