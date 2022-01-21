@@ -1,5 +1,5 @@
 {
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "extends": [
     "next/core-web-vitals",
     "airbnb-base",
@@ -8,6 +8,7 @@
     "prettier"
   ],
   "rules": {
+    "prettier/prettier": "error",
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "no-unsafe-optional-chaining": "off",
