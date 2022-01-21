@@ -9,20 +9,20 @@ import { useAuthContext } from "@contexts/hooks";
 const RedirectPage = () => {
   const [isNeedReLogin, setIsNeedReLogin] = useState(false);
   const [_, setToken] = useLocalToken();
-  const { getCurrentUser } = useAuthContext();
+  const { authProviderInit } = useAuthContext();
   const router = useRouter();
   const { token } = router.query;
 
   const getCurrentUserData = useCallback(async () => {
     setToken(token);
     try {
-      await getCurrentUser();
+      await authProviderInit();
       router.replace("/");
     } catch (error) {
       console.error(error);
       setIsNeedReLogin(true);
     }
-  }, [token, getCurrentUser, setToken]);
+  }, [token, authProviderInit, setToken]);
 
   useEffect(() => {
     if (token) {

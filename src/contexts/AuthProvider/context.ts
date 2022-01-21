@@ -16,6 +16,7 @@ export interface ContextProps {
   getMyReservations: () => void;
   readAllNotifications: () => void;
   getMoreNotifications: () => void;
+  authProviderInit: () => void;
 }
 
 const Context = createContext<ContextProps>({} as ContextProps);
