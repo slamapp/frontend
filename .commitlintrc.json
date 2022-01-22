@@ -23,7 +23,8 @@
         "move",
         "add",
         "remove",
-        "dep"
+        "dep",
+        "revert"
       ]
     ]
   }
