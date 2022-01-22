@@ -1,4 +1,4 @@
-export default () =>
+const loadSdk = () =>
   new Promise((resolve) => {
     const js: HTMLScriptElement = document.createElement("script");
 
@@ -8,3 +8,5 @@ export default () =>
 
     document.body.append(js);
   });
+
+export default loadSdk;
