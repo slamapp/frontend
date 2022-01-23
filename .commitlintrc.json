@@ -22,7 +22,9 @@
         "improve",
         "move",
         "add",
-        "remove"
+        "remove",
+        "dep",
+        "revert"
       ]
     ]
   }
