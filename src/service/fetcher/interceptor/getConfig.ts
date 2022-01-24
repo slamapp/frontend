@@ -28,6 +28,7 @@ export const req = {
 
     if (isFileData) {
       config.headers = {
+        ...config.headers,
         ...fileHeaders,
       };
     }
