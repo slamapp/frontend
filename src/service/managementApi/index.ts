@@ -1,6 +1,7 @@
-import { request, authRequest, authFileRequest } from "./fetcher";
+import { request, authRequest, authFileRequest } from "../fetcher";
+import { Api } from "./type";
 
-const managementAPI = {
+const managementAPI: Api = {
   getNewCourts: <R>(
     status: "READY" | "DONE",
     isFirst: boolean,

@@ -1,7 +1,7 @@
-import { AxiosResponse } from "axios";
-import { request, authRequest, authFileRequest } from "./fetcher";
+import { request, authRequest, authFileRequest } from "../fetcher";
+import { Api } from "./type";
 
-const courtApi = {
+const courtApi: Api = {
   getCourtsByCoordsAndDate: <R>({
     date,
     time,

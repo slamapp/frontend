@@ -1,7 +1,8 @@
 import { EditableUserProfile } from "@domainTypes/.";
-import { request, authRequest, authFileRequest } from "./fetcher";
+import { request, authRequest, authFileRequest } from "../fetcher";
+import { Api } from "./type";
 
-const userAPI = {
+const userAPI: Api = {
   getUserData: () => authRequest.get("/users/me"),
   getMyProfile: <R>() => authRequest.get<R, R>("/users/myprofile"),
   getUserProfile: <R>(userId: number) =>

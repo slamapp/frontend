@@ -1,6 +1,7 @@
-import { request, authRequest, authFileRequest } from "./fetcher";
+import { request, authRequest, authFileRequest } from "../fetcher";
+import { Api } from "./type";
 
-const favoriteAPI = {
+const favoriteAPI: Api = {
   getMyFavorites: <R>() => authRequest.get<R, R>("/favorites"),
 
   createMyFavorite: <R>(courtId: number) =>

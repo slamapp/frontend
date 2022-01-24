@@ -1,4 +1,5 @@
-import { request, authRequest, authFileRequest } from "./fetcher";
+import { request, authRequest, authFileRequest } from "../fetcher";
+import { Api } from "./type";
 
 interface IReservation {
   courtId: number;
@@ -7,7 +8,7 @@ interface IReservation {
   hasBall: boolean;
 }
 
-const reservationApi = {
+const reservationApi: Api = {
   getMyReservations: <R>() => authRequest.get<R, R>("/reservations/upcoming"),
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
   getMyExpiredReservations: <R>(
