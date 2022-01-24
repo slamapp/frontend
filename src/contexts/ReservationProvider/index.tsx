@@ -22,12 +22,15 @@ const ReservationProvider = ({ children }: Props) => {
 
   const { startIndex, endIndex, selectedReservationId } = reservation;
 
-  const handleInitReservation = useCallback((reservations: any) => {
-    dispatch({
-      type: "SET_TIMETABLE",
-      payload: { reservations, userId: currentUser.userId },
-    });
-  }, []);
+  const handleInitReservation = useCallback(
+    (reservations: any) => {
+      dispatch({
+        type: actionTypes.SET_TIMETABLE,
+        payload: { reservations, userId: currentUser.userId },
+      });
+    },
+    [currentUser]
+  );
 
   const handleSetCurrentBlock = useCallback((startIndex: number) => {
     dispatch({ type: actionTypes.CLICK_BLOCK, payload: { startIndex } });

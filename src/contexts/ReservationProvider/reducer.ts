@@ -88,7 +88,7 @@ export const reducer: Reducer<any, ReducerAction> = (
         getTimeTableInfoFromReservations(reservations, userId);
 
       return {
-        ...state,
+        ...initialState,
         timeTable,
         originalTimeTable: timeTable,
         existedReservations,
