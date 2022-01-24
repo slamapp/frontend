@@ -2,41 +2,25 @@ import { useAuthContext } from "@contexts/hooks";
 import reservationApi from "@service/reservationApi";
 import { getISOString } from "@utils/date";
 import { useRouter } from "next/router";
-import { ReactNode, useCallback, useReducer, useState } from "react";
+import { ReactNode, useCallback, useReducer } from "react";
 import { actionTypes } from "./actionTypes";
 
 import ReservationContext from "./context";
-import { reducer, initialData } from "./reducer";
+import { reducer, initialState } from "./reducer";
 
 interface Props {
   children: ReactNode;
 }
 
 const ReservationProvider = ({ children }: Props) => {
-  const [reservation, dispatch] = useReducer(reducer, initialData);
+  const [reservation, dispatch] = useReducer(reducer, initialState);
   const router = useRouter();
 
   const {
     authProps: { currentUser },
   } = useAuthContext();
 
-  const [snap, setSnap] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const {
-    startIndex,
-    endIndex,
-    mode,
-    step,
-    timeTable,
-    existedReservations,
-    requestDisabled,
-    selectedReservationId,
-    selectedReservation,
-    modalContentData,
-    hasBall,
-    currentInput,
-  } = reservation;
+  const { startIndex, endIndex, selectedReservationId } = reservation;
 
   const handleInitReservation = useCallback((reservations: any) => {
     dispatch({
@@ -44,13 +28,9 @@ const ReservationProvider = ({ children }: Props) => {
       payload: { reservations, userId: currentUser.userId },
     });
   }, []);
-  const handleSetCurrentBlock = useCallback((startIndex: number) => {
-    setIsOpen(true);
-    dispatch({ type: actionTypes.CLICK_BLOCK, payload: { startIndex } });
-  }, []);
 
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
+  const handleSetCurrentBlock = useCallback((startIndex: number) => {
+    dispatch({ type: actionTypes.CLICK_BLOCK, payload: { startIndex } });
   }, []);
 
   const handleStartCreate = useCallback(() => {
@@ -59,12 +39,10 @@ const ReservationProvider = ({ children }: Props) => {
   }, []);
 
   const handleDecreaseStep = useCallback(() => {
-    setIsOpen(false);
     dispatch({ type: actionTypes.DECREASE_STEP });
   }, []);
 
   const handleStartUpdate = useCallback(() => {
-    setIsOpen(false);
     dispatch({ type: actionTypes.START_UPDATE });
   }, []);
 
@@ -138,7 +116,6 @@ const ReservationProvider = ({ children }: Props) => {
 
   const handleClickReservationMarker = useCallback(
     (selectedReservationId: number) => {
-      setIsOpen(true);
       dispatch({
         type: "CLICK_RESERVATION_MARKER",
         payload: { selectedReservationId },
@@ -156,7 +133,6 @@ const ReservationProvider = ({ children }: Props) => {
 
   const handleSetTime = useCallback(
     (timeIndex: number) => {
-      setIsOpen(true);
       dispatch({
         type: "SET_TIME_INDEX",
         payload: {
@@ -177,7 +153,6 @@ const ReservationProvider = ({ children }: Props) => {
         reservation,
         handleInitReservation,
         handleSetCurrentBlock,
-        handleClose,
         handleStartCreate,
         handleStartUpdate,
         handleDecreaseStep,

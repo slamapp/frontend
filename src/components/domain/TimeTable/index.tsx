@@ -108,7 +108,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
           disabled={isToday}
           onClose={onModalClose}
         />
-        {timeTable.map((item: any, index: number) => (
+        {timeTable?.map((item: any, index: number) => (
           <TimeBlockUnit
             key={index}
             height={height}
@@ -131,7 +131,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
             endIndex={endIndex}
           />
         )}
-        {existedReservations.map(
+        {existedReservations?.map(
           ({ reservationId, startIndex, endIndex }: any) => (
             <>
               {step === 2 && selectedReservationId === reservationId ? null : (

@@ -4,7 +4,6 @@ interface ContextProps {
   reservation: any;
   handleInitReservation: any;
   handleSetCurrentBlock: any;
-  handleClose: any;
   handleStartCreate: any;
   handleStartUpdate: any;
   handleDecreaseStep: any;

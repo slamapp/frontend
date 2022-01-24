@@ -56,7 +56,20 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   );
 };
 
-export const initialData = {};
+export const initialState = {
+  step: 1,
+  mode: "create",
+  startIndex: null,
+  endIndex: null,
+  timeTable: [],
+  originalTimeTable: [],
+  modalContentData: null,
+  hasBall: false,
+  existedReservations: [],
+  selectedReservationId: null,
+  requestDisabled: false,
+  currentInput: "START",
+};
 
 export const reducer: Reducer<any, ReducerAction> = (
   state,
