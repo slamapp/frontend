@@ -38,6 +38,6 @@ export const req = {
 };
 
 export const res = {
-  onFulfilled: (response: any) => response.data,
+  onFulfilled: (response: any) => response,
   onRejected: (error: any) => Promise.reject(error),
 };
