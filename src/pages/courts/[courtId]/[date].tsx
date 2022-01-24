@@ -704,7 +704,9 @@ const Reservation: NextPage = () => {
 
   useEffect(() => {
     const initReservations = async () => {
-      const { reservations } = await courtApi.getAllCourtReservationsByDate(
+      const {
+        data: { reservations },
+      } = await courtApi.getAllCourtReservationsByDate(
         courtId as string,
         date as string
       );

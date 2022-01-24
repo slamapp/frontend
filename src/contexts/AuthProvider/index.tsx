@@ -42,7 +42,7 @@ const AuthProvider = ({ children }: Props) => {
   const getCurrentUser = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
     try {
-      const data = await userApi.getUserData();
+      const { data } = await userApi.getUserData();
       setCurrentUser(data);
     } catch (error) {
       console.error(error);
@@ -56,9 +56,9 @@ const AuthProvider = ({ children }: Props) => {
     async (editedUserProfile: EditableUserProfile) => {
       dispatch({ type: authTypes.LOADING_ON });
       try {
-        const userProfile = await userApi.updateMyProfile<EditableUserProfile>(
-          editedUserProfile
-        );
+        const {
+          data: { userProfile },
+        } = await userApi.updateMyProfile(editedUserProfile);
         dispatch({
           type: authTypes.UPDATE_MY_PROFILE,
           payload: { userProfile },
@@ -76,9 +76,9 @@ const AuthProvider = ({ children }: Props) => {
   const deleteMyProfileImage = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
     try {
-      const deletedMyProfileImage = await userApi.deleteMyProfileImage<{
-        profileImage: string | null;
-      }>();
+      const {
+        data: { deletedMyProfileImage },
+      } = await userApi.deleteMyProfileImage();
       dispatch({
         type: authTypes.DELETE_MY_PROFILE_IMAGE,
         payload: { deletedMyProfileImage },
@@ -92,9 +92,9 @@ const AuthProvider = ({ children }: Props) => {
 
   const getMyReservations = useCallback(async () => {
     try {
-      const { reservations } = await reservationApi.getMyReservations<{
-        reservations: any[];
-      }>();
+      const {
+        data: { reservations },
+      } = await reservationApi.getMyReservations();
       dispatch({
         type: authTypes.SET_MY_RESERVATIONS,
         payload: { reservations },
@@ -106,7 +106,9 @@ const AuthProvider = ({ children }: Props) => {
 
   const getMyFavorites = useCallback(async () => {
     try {
-      const { favorites } = await favoriteApi.getMyFavorites();
+      const {
+        data: { favorites },
+      } = await favoriteApi.getMyFavorites();
 
       dispatch({
         type: authTypes.GET_MY_FAVORITES,
@@ -119,7 +121,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const createFavorite = useCallback(async (courtId: number) => {
     try {
-      const favorite = await favoriteApi.createMyFavorite(courtId);
+      const { data: favorite } = await favoriteApi.createMyFavorite(courtId);
       dispatch({
         type: authTypes.CREATE_FAVORITE,
         payload: { favorite },
@@ -131,8 +133,10 @@ const AuthProvider = ({ children }: Props) => {
 
   const deleteFavorite = useCallback(async (favoriteId: number) => {
     try {
-      const { favoriteId: deletedFavoriteId } =
-        await favoriteApi.deleteMyFavorite<{ favoriteId: number }>(favoriteId);
+      const {
+        data: { favoriteId: deletedFavoriteId },
+      } = await favoriteApi.deleteMyFavorite(favoriteId);
+
       dispatch({
         type: authTypes.DELETE_FAVORITE,
         payload: { deletedFavoriteId },
@@ -155,10 +159,11 @@ const AuthProvider = ({ children }: Props) => {
     const { notificationLastId } = authProps.currentUser;
 
     if (notificationLastId) {
-      const { contents, lastId: fetchedLastId } =
-        await notificationApi.getNotifications({
-          lastId: notificationLastId,
-        });
+      const {
+        data: { contents, lastId: fetchedLastId },
+      } = await notificationApi.getNotifications({
+        lastId: notificationLastId,
+      });
 
       dispatch({
         type: authTypes.CONCAT_NOTIFICATIONS,

@@ -31,11 +31,12 @@ const Reservations: NextPage = UtilRoute("private", () => {
     setActiveIndex(1);
 
     if (currentLastId !== null) {
-      const { contents, lastId } =
-        await reservationApi.getMyExpiredReservations(
-          !currentLastId,
-          currentLastId
-        );
+      const {
+        data: { contents, lastId },
+      } = await reservationApi.getMyExpiredReservations(
+        !currentLastId,
+        currentLastId
+      );
 
       setExpiredReservations((prev) => [...prev, ...contents]);
       setCurrentLastId(lastId);
@@ -44,11 +45,12 @@ const Reservations: NextPage = UtilRoute("private", () => {
 
   const loadMore = useCallback(async () => {
     if (expiredReservations.length !== 0 && currentLastId !== null) {
-      const { contents, lastId } =
-        await reservationApi.getMyExpiredReservations(
-          !currentLastId,
-          currentLastId
-        );
+      const {
+        data: { contents, lastId },
+      } = await reservationApi.getMyExpiredReservations(
+        !currentLastId,
+        currentLastId
+      );
 
       setExpiredReservations((prev) => [...prev, ...contents]);
       setCurrentLastId(lastId);

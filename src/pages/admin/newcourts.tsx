@@ -28,7 +28,9 @@ const NewCourtsPage: NextPage = () => {
 
       try {
         setIsFetching(true);
-        const { contents, lastId } = await managementApi.getNewCourts(
+        const {
+          data: { contents, lastId },
+        } = await managementApi.getNewCourts(
           status,
           !currentLastId,
           currentLastId
@@ -52,7 +54,9 @@ const NewCourtsPage: NextPage = () => {
     async (status: Status) => {
       try {
         setIsFetching(true);
-        const { contents, lastId } = await managementApi.getNewCourts(
+        const {
+          data: { contents, lastId },
+        } = await managementApi.getNewCourts(
           status,
           !currentLastId,
           currentLastId

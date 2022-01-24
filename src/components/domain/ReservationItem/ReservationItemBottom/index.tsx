@@ -18,7 +18,9 @@ const ReservationItemBottom = ({
 
   const handleClick = useCallback(async () => {
     setVisible((prev) => !prev);
-    const { participants } = await reservationAPI.getMyReservationParticipants({
+    const {
+      data: { participants },
+    } = await reservationAPI.getMyReservationParticipants({
       courtId,
       startTime,
       endTime,

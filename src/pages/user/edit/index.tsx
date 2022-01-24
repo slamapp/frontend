@@ -40,7 +40,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
 
   const getMyProfile = useCallback(async () => {
     try {
-      const data = await userApi.getMyProfile<ResponseUserProfile>();
+      const { data } = await userApi.getMyProfile();
       setPageUserInfo(data);
     } catch (error) {
       console.error(error);
