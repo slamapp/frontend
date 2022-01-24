@@ -4,13 +4,11 @@ import { Api } from "./type";
 
 const userAPI: Api = {
   getUserData: () => authRequest.get("/users/me"),
-  getMyProfile: <R>() => authRequest.get<R, R>("/users/myprofile"),
-  getUserProfile: <R>(userId: number) =>
-    authRequest.get<R, R>(`/users/${userId}`),
-  updateMyProfile: <R>(data: EditableUserProfile) =>
-    authRequest.put<R, R>("/users/myprofile", data),
-  deleteMyProfileImage: <R>() =>
-    authRequest.delete<R, R>("/users/myprofile/image"),
+  getMyProfile: () => authRequest.get("/users/myprofile"),
+  getUserProfile: (userId: number) => authRequest.get(`/users/${userId}`),
+  updateMyProfile: (data: EditableUserProfile) =>
+    authRequest.put("/users/myprofile", data),
+  deleteMyProfileImage: () => authRequest.delete("/users/myprofile/image"),
 };
 
 export default userAPI;

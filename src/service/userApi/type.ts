@@ -1,7 +1,9 @@
+import { ApiPromise } from "@service/type";
+
 export interface Api {
-  getUserData: any;
-  getMyProfile: any;
-  getUserProfile: any;
-  updateMyProfile: any;
-  deleteMyProfileImage: any;
+  getUserData: () => ApiPromise;
+  getMyProfile: () => ApiPromise;
+  getUserProfile: (...params: any[]) => ApiPromise;
+  updateMyProfile: (...params: any[]) => ApiPromise;
+  deleteMyProfileImage: () => ApiPromise;
 }

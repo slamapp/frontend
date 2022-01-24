@@ -1,5 +1,7 @@
+import { ApiPromise } from "@service/type";
+
 export interface Api {
-  getMyFavorites: any;
-  createMyFavorite: any;
-  deleteMyFavorite: any;
+  getMyFavorites: () => ApiPromise;
+  createMyFavorite: (...params: any[]) => ApiPromise;
+  deleteMyFavorite: (...params: any[]) => ApiPromise;
 }

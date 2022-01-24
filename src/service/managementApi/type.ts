@@ -1,5 +1,7 @@
+import { ApiPromise } from "@service/type";
+
 export interface Api {
-  getNewCourts: any;
-  acceptNewCourt: any;
-  denyNewCourt: any;
+  getNewCourts: (...params: any[]) => ApiPromise;
+  acceptNewCourt: (...params: any[]) => ApiPromise;
+  denyNewCourt: (...params: any[]) => ApiPromise;
 }

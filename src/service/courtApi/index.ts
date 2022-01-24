@@ -2,15 +2,15 @@ import { request, authRequest, authFileRequest } from "../fetcher";
 import { Api } from "./type";
 
 const courtApi: Api = {
-  getCourtsByCoordsAndDate: <R>({
+  getCourtsByCoordsAndDate: ({
     date,
     time,
     startLatitude,
     endLatitude,
     startLongitude,
     endLongitude,
-  }: any) =>
-    request.get<R, R>(`/courts`, {
+  }) =>
+    request.get(`/courts`, {
       params: {
         date,
         latitude: `${startLatitude},${endLatitude}`,
@@ -18,11 +18,11 @@ const courtApi: Api = {
         time,
       },
     }),
-  createNewCourt: (data: any) => authRequest.post(`/courts/new`, data),
-  getCourtDetail: <R>(courtId: number, date: string, time: string) =>
-    request.get<R, R>(`/courts/detail/${courtId}/${date}/${time}`),
-  getAllCourtReservationsByDate: <R>(courtId: string, date: string) =>
-    authRequest.get<R, R>(`/courts/${courtId}/reservations/${date}`),
+  createNewCourt: (data) => authRequest.post(`/courts/new`, data),
+  getCourtDetail: (courtId: number, date: string, time: string) =>
+    request.get(`/courts/detail/${courtId}/${date}/${time}`),
+  getAllCourtReservationsByDate: (courtId: string, date: string) =>
+    authRequest.get(`/courts/${courtId}/reservations/${date}`),
 };
 
 export default courtApi;
