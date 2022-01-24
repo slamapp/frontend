@@ -10,7 +10,7 @@ interface Props {
   style?: CSSProperties;
   src: string;
   isFollowed?: boolean;
-  userId?: number;
+  userId: number;
 }
 // 아바타 + 이름 + 버튼
 

@@ -31,7 +31,7 @@ const ReservationItemBottom = ({
   const {
     authProps: { currentUser },
   } = useAuthContext();
-  const { userId, profileImageUrl, notifications } = currentUser;
+  const { userId, profileImageUrl } = currentUser;
 
   return (
     <>
@@ -51,7 +51,9 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          <FollowListItem src="">me</FollowListItem>
+          <FollowListItem userId={userId} src={profileImageUrl}>
+            me
+          </FollowListItem>
           {participants.map(
             ({ userId, nickname, profileImage, isFollowed }: any) => (
               <FollowListItem
