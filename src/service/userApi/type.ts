@@ -5,5 +5,6 @@ export interface UserApi {
   getMyProfile: () => ApiPromise;
   getUserProfile: (...params: any[]) => ApiPromise;
   updateMyProfile: (...params: any[]) => ApiPromise;
+  updateMyProfileImage: (...params: any[]) => ApiPromise;
   deleteMyProfileImage: () => ApiPromise;
 }

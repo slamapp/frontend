@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ChangeEvent, DragEvent, ReactNode, useRef, useState } from "react";
+import { ChangeEvent, DragEvent, ReactNode, useState } from "react";
 
 interface Props {
   children?: ReactNode;
@@ -17,12 +17,12 @@ const Upload = ({
   accept,
   value,
   onChange,
+  inputRef,
   ...props
 }: Props) => {
   const [file, setFile] = useState(value);
   const [dragging, setDragging] = useState(false);
   const [fileSrc, setFileSrc] = useState<string | ArrayBuffer | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const changedFile: File = (target.files as FileList)[0];
@@ -97,7 +97,7 @@ const Upload = ({
   };
 
   return (
-    <UploadContainer
+    <div
       onClick={handleChooseFile}
       {...props}
       onDrop={handleFileDrop}
@@ -115,16 +115,11 @@ const Upload = ({
       {typeof children === "function"
         ? children(file, fileSrc, dragging)
         : children}
-    </UploadContainer>
+    </div>
   );
 };
 
 export default Upload;
-
-const UploadContainer = styled.div`
-  display: inline-block;
-  cursor: pointer;
-`;
 
 const Input = styled.input`
   display: none;

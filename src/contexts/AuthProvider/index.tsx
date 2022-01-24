@@ -73,6 +73,26 @@ const AuthProvider = ({ children }: Props) => {
     [authProps.currentUser.userId, router]
   );
 
+  const updateMyProfileImage = useCallback(
+    async (editedProfileImageFile: File) => {
+      dispatch({ type: authTypes.LOADING_ON });
+      try {
+        const userProfileImage = await userApi.updateMyProfileImage(
+          editedProfileImageFile
+        );
+        dispatch({
+          type: authTypes.UPDATE_MY_PROFILE_IMAGE,
+          payload: { userProfileImage },
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch({ type: authTypes.LOADING_OFF });
+      }
+    },
+    []
+  );
+
   const deleteMyProfileImage = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
     try {
@@ -83,6 +103,7 @@ const AuthProvider = ({ children }: Props) => {
         type: authTypes.DELETE_MY_PROFILE_IMAGE,
         payload: { deletedMyProfileImage },
       });
+      router.reload();
     } catch (error) {
       console.error(error);
     } finally {
@@ -211,6 +232,7 @@ const AuthProvider = ({ children }: Props) => {
         getMyFavorites,
         getMyReservations,
         updateMyProfile,
+        updateMyProfileImage,
         deleteMyProfileImage,
         readAllNotifications,
         getMoreNotifications,
