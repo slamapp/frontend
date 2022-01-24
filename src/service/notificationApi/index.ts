@@ -1,7 +1,7 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { NotificationApi } from "./type";
+import { Api } from "./type";
 
-const notificationApi: NotificationApi = {
+const notificationApi: Api = {
   getNotifications: ({ size = 3, lastId, isFirst = false }) =>
     authRequest.get("/notifications", {
       params: {
