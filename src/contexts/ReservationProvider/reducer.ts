@@ -4,6 +4,7 @@ import {
   getTimezoneIndexFromDatetime,
   MAX_RESERVATION_TIME_BLOCK_UNIT,
 } from "@utils/date";
+import dayjs from "dayjs";
 import { actionTypes, ActionTypeUnion } from "./actionTypes";
 
 export type ReducerAction = {
@@ -22,16 +23,20 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   return reservations.reduce(
     (acc: any, reservation: any) => {
       const { existedReservations, timeTable } = acc;
-      const startRow = getTimezoneIndexFromDatetime(reservation.startTime);
-      const endRow = getTimezoneIndexFromDatetime(reservation.endTime);
+      const { startTime, endTime, reservationId, hasBall } = reservation;
+      const startRow = getTimezoneIndexFromDatetime(startTime);
+      const endRow =
+        dayjs(startTime).date() !== dayjs(endTime).date()
+          ? TIME_TABLE_ROWS
+          : getTimezoneIndexFromDatetime(endTime);
       const hasReservation = reservation.userId === userId;
 
       if (hasReservation) {
         existedReservations.push({
-          reservationId: reservation.reservationId,
+          reservationId,
           startIndex: startRow,
           endIndex: endRow - 1,
-          hasBall: reservation.hasBall,
+          hasBall,
         });
       }
 
