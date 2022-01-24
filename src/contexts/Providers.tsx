@@ -4,6 +4,7 @@ import {
   NavigationProvider,
   SocketProvider,
   MapProvider,
+  ReservationProvider,
 } from ".";
 
 interface Props {
@@ -15,7 +16,9 @@ const Providers = ({ children }: Props) => {
     <AuthProvider>
       <SocketProvider>
         <NavigationProvider>
-          <MapProvider>{children}</MapProvider>
+          <ReservationProvider>
+            <MapProvider>{children}</MapProvider>
+          </ReservationProvider>
         </NavigationProvider>
       </SocketProvider>
     </AuthProvider>
