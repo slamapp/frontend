@@ -1,4 +1,7 @@
-const imageFileToFormData = (profileImageFile: File | null, key: string) => {
+const appendImageFileToFormData = (
+  profileImageFile: File | null,
+  key: string
+) => {
   if (!profileImageFile) {
     return null;
   }
@@ -9,4 +12,4 @@ const imageFileToFormData = (profileImageFile: File | null, key: string) => {
   return formData;
 };
 
-export default imageFileToFormData;
+export default appendImageFileToFormData;

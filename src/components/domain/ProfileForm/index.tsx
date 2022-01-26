@@ -11,7 +11,7 @@ import {
   ValidationNoticeBar,
 } from "@components/domain";
 import { PositionKeyUnion, ProficiencyKeyUnion } from "@domainTypes/.";
-import { imageFileToFormData } from "@utils/.";
+import { appendImageFileToFormData } from "@utils/.";
 import LeadToLoginModal from "../LeadToLoginModal";
 
 type ResponseUserProfile = {
@@ -73,7 +73,7 @@ const ProfileForm = ({
       const profileImageInputRef = profileImageRef?.current ?? null;
       const editedProfileImageFiles = profileImageInputRef?.files ?? null;
       const editedProfileImage = editedProfileImageFiles
-        ? imageFileToFormData(editedProfileImageFiles[0], "image")
+        ? appendImageFileToFormData(editedProfileImageFiles[0], "image")
         : null;
 
       try {

@@ -1,1 +1,1 @@
-export { default as imageFileToFormData } from "./imageFileToFormData";
+export { default as appendImageFileToFormData } from "./appendImageFileToFormData";
