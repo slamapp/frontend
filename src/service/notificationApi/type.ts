@@ -1,7 +1,7 @@
 import { Notification } from "@domainTypes/.";
 import { ApiPromise } from "@service/type";
 
-export interface Api {
+export interface NotificationApi {
   getNotifications: (param: {
     size?: number;
     lastId?: number | null;

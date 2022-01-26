@@ -1,7 +1,7 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { Api } from "./type";
+import { ManagementApi } from "./type";
 
-const managementAPI: Api = {
+const managementAPI: ManagementApi = {
   getNewCourts: (
     status: "READY" | "DONE",
     isFirst: boolean,

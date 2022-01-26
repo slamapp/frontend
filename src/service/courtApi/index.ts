@@ -1,7 +1,7 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { Api } from "./type";
+import { CourtApi } from "./type";
 
-const courtApi: Api = {
+const courtApi: CourtApi = {
   getCourtsByCoordsAndDate: ({
     date,
     time,

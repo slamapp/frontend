@@ -1,6 +1,6 @@
 import { ApiPromise } from "@service/type";
 
-export interface Api {
+export interface UserApi {
   getUserData: () => ApiPromise;
   getMyProfile: () => ApiPromise;
   getUserProfile: (...params: any[]) => ApiPromise;

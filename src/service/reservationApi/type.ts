@@ -1,6 +1,6 @@
 import { ApiPromise } from "@service/type";
 
-export interface Api {
+export interface ReservationApi {
   getMyReservations: () => ApiPromise;
   getMyUpcomingReservations: () => ApiPromise;
   getMyExpiredReservations: (...params: any[]) => ApiPromise;

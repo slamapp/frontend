@@ -1,6 +1,6 @@
 import { ApiPromise } from "@service/type";
 
-export interface Api {
+export interface CourtApi {
   getCourtsByCoordsAndDate: (...params: any[]) => ApiPromise;
   createNewCourt: (...params: any[]) => ApiPromise;
   getCourtDetail: (...params: any[]) => ApiPromise;
