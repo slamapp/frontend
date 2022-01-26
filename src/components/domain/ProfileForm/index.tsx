@@ -115,18 +115,14 @@ const ProfileForm = ({
         <Center>
           <Spacer gap="xs" type="vertical">
             <UploadableArea inputRef={profileImageRef}>
-              {(file: File, fileSrc: string) =>
-                fileSrc ? (
-                  <Avatar isEdit src={fileSrc} shape="circle" __TYPE="Avatar" />
-                ) : (
-                  <Avatar
-                    isEdit
-                    src={profileImage}
-                    shape="circle"
-                    __TYPE="Avatar"
-                  />
-                )
-              }
+              {(file: File, fileSrc: string) => (
+                <Avatar
+                  isEdit
+                  src={fileSrc || profileImage}
+                  shape="circle"
+                  __TYPE="Avatar"
+                />
+              )}
             </UploadableArea>
             <Button
               onClick={() => setIsOpenDeleteImageConfirmModal(true)}
