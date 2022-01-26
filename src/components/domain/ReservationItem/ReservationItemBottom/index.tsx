@@ -51,8 +51,8 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          {userId && profileImageUrl && (
-            <FollowListItem userId={userId} src={profileImageUrl}>
+          {userId && (
+            <FollowListItem userId={userId} src={profileImageUrl || "/assets/default_profile.svg"}>
               {nickname}
             </FollowListItem>
           )}
