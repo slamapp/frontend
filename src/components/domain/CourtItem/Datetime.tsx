@@ -17,13 +17,14 @@ const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
     <S.SubHeaderArea>
       <Spacer gap="xxs" type="vertical">
         <Text strong>
-          {startDate.format("YYYY년 MM월 DD일")}
+          {startDate.format("YYYY년 MM월 DD일")} (
           <S.DayOfTheWeek index={startDate.day()}>
             {week[startDate.day()]}
           </S.DayOfTheWeek>
+          )
         </Text>
         <Text strong>
-          {startDate.format("HH:MM")} - {endDate.format("HH:MM")}
+          {startDate.format("HH:mm")} - {endDate.format("HH:mm")}
         </Text>
       </Spacer>
     </S.SubHeaderArea>
