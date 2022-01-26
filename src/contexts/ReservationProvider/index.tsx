@@ -118,7 +118,7 @@ const ReservationProvider = ({ children }: Props) => {
     });
   }, []);
 
-  const handleClickReservationMarker = useCallback(
+  const handleSelectReservation = useCallback(
     (selectedReservationId: number) => {
       dispatch({
         type: "CLICK_RESERVATION_MARKER",
@@ -161,7 +161,7 @@ const ReservationProvider = ({ children }: Props) => {
         handleUpdateReservation,
         handleDeleteReservation,
         handleChangeHasBall,
-        handleClickReservationMarker,
+        handleSelectReservation,
         handleSetCurrentInput,
         handleSetTime,
       }}

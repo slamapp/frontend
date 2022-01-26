@@ -11,7 +11,7 @@ interface ContextProps {
   handleUpdateReservation: any;
   handleDeleteReservation: any;
   handleChangeHasBall: any;
-  handleClickReservationMarker: any;
+  handleSelectReservation: any;
   handleSetCurrentInput: any;
   handleSetTime: any;
 }

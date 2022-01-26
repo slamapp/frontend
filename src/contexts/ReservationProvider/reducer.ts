@@ -156,6 +156,7 @@ export const reducer: Reducer<any, ReducerAction> = (
     case actionTypes.CLICK_RESERVATION_MARKER: {
       const { existedReservations, timeTable } = state;
       const { selectedReservationId } = payload;
+      console.log(selectedReservationId);
 
       const selectedReservation = existedReservations.find(
         ({ reservationId }: any) => reservationId === selectedReservationId
