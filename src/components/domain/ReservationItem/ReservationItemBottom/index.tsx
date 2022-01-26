@@ -54,7 +54,10 @@ const ReservationItemBottom = ({
       {visible && (
         <ParticipantList>
           {userId && (
-            <FollowListItem userId={userId} src={profileImageUrl || "/assets/default_profile.svg"}>
+            <FollowListItem
+              userId={userId}
+              src={profileImageUrl || "/assets/default_profile.svg"}
+            >
               {nickname}
             </FollowListItem>
           )}
