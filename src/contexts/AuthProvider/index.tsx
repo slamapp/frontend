@@ -56,12 +56,12 @@ const AuthProvider = ({ children }: Props) => {
     async (editedUserProfile: EditableUserProfile) => {
       dispatch({ type: authTypes.LOADING_ON });
       try {
-        const {
-          data: { userProfile },
-        } = await userApi.updateMyProfile(editedUserProfile);
+        const { data: userProfile } = await userApi.updateMyProfile(
+          editedUserProfile
+        );
         dispatch({
           type: authTypes.UPDATE_MY_PROFILE,
-          payload: { userProfile },
+          payload: userProfile,
         });
         router.replace(`/user/${authProps.currentUser.userId}`);
       } catch (error) {
@@ -77,12 +77,12 @@ const AuthProvider = ({ children }: Props) => {
     async (editedProfileImageFile: File) => {
       dispatch({ type: authTypes.LOADING_ON });
       try {
-        const userProfileImage = await userApi.updateMyProfileImage(
+        const { data: userProfileImage } = await userApi.updateMyProfileImage(
           editedProfileImageFile
         );
         dispatch({
-          type: authTypes.UPDATE_MY_PROFILE_IMAGE,
-          payload: { userProfileImage },
+          type: authTypes.SET_MY_PROFILE_IMAGE,
+          payload: userProfileImage,
         });
       } catch (error) {
         console.error(error);
@@ -98,7 +98,7 @@ const AuthProvider = ({ children }: Props) => {
     try {
       await userApi.deleteMyProfileImage();
       dispatch({
-        type: authTypes.DELETE_MY_PROFILE_IMAGE,
+        type: authTypes.SET_MY_PROFILE_IMAGE,
       });
       router.reload();
     } catch (error) {
