@@ -31,16 +31,15 @@ const Upload = ({
   };
 
   const getFileSrc = (fileBlob: File) => {
-    const reader = new FileReader();
-    reader.addEventListener(
-      "load",
-      () => {
-        setFileSrc(reader.result);
-      },
-      false
-    );
-
     if (fileBlob) {
+      const reader = new FileReader();
+
+      const onFileLoadEnd = () => {
+        reader.removeEventListener("loadend", onFileLoadEnd, false);
+        setFileSrc(reader.result);
+      };
+
+      reader.addEventListener("loadend", onFileLoadEnd, false);
       reader.readAsDataURL(fileBlob);
     }
   };
