@@ -1,4 +1,5 @@
-import { request, authRequest, authFileRequest } from "./fetcher";
+import { request, authRequest, authFileRequest } from "../fetcher";
+import { ReservationApi } from "./type";
 
 interface IReservation {
   courtId: number;
@@ -7,35 +8,35 @@ interface IReservation {
   hasBall: boolean;
 }
 
-const reservationApi = {
-  getMyReservations: <R>() => authRequest.get<R, R>("/reservations/upcoming"),
+const reservationApi: ReservationApi = {
+  getMyReservations: () => authRequest.get("/reservations/upcoming"),
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
-  getMyExpiredReservations: <R>(
+  getMyExpiredReservations: (
     isFirst: boolean,
     lastId: number | undefined | null
   ) => {
     return lastId
-      ? authRequest.get<R, R>("/reservations/expired", {
+      ? authRequest.get("/reservations/expired", {
           params: {
             isFirst,
             lastId,
             size: 2,
           },
         })
-      : authRequest.get<R, R>("/reservations/expired", {
+      : authRequest.get("/reservations/expired", {
           params: { isFirst, lastId: "0", size: 5 },
         });
   },
-  getMyReservationParticipants: <R>({ courtId, startTime, endTime }: any) =>
-    authRequest.get<R, R>(`/reservations/${courtId}/${startTime}/${endTime}`),
+  getMyReservationParticipants: ({ courtId, startTime, endTime }: any) =>
+    authRequest.get(`/reservations/${courtId}/${startTime}/${endTime}`),
   createReservation: (data: IReservation) =>
     authRequest.post("/reservations", data),
   updateReservation: (
     reservationId: number | string,
     data: Omit<IReservation, "courtId">
   ) => authRequest.patch(`/reservations/${reservationId}`, data),
-  deleteReservation: <R>(reservationId: number | string) =>
-    authRequest.delete<R, R>(`/reservations/${reservationId}`),
+  deleteReservation: (reservationId: number | string) =>
+    authRequest.delete(`/reservations/${reservationId}`),
 };
 
 export default reservationApi;

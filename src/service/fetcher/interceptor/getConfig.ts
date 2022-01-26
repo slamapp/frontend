@@ -21,18 +21,10 @@ export const req = {
     isNeedToken = false,
     isFileData = false,
   }: InterceptorOption) => {
-    if (isNeedToken) {
-      const token = getLocalToken();
-
-      config.headers = {
-        ...defaultHeaders,
-        Authorization: `Bearer ${token}`,
-      };
-    } else {
-      config.headers = {
-        ...defaultHeaders,
-      };
-    }
+    config.headers = {
+      ...defaultHeaders,
+      ...(isNeedToken ? { Authorization: `Bearer ${getLocalToken()}` } : {}),
+    };
 
     if (isFileData) {
       config.headers = {
@@ -46,6 +38,6 @@ export const req = {
 };
 
 export const res = {
-  onFulfilled: (response: any) => response.data,
+  onFulfilled: (response: any) => response,
   onRejected: (error: any) => Promise.reject(error),
 };

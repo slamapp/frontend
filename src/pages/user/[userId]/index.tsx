@@ -75,7 +75,7 @@ const User: NextPage = UtilRoute("private", () => {
 
   const getMyProfile = useCallback(async () => {
     try {
-      const data = await userApi.getMyProfile<ResponseUserProfile>();
+      const { data } = await userApi.getMyProfile();
       setPageUserInfo(data);
     } catch (error) {
       console.error(error);
@@ -84,9 +84,7 @@ const User: NextPage = UtilRoute("private", () => {
 
   const getOtherProfile = useCallback(async () => {
     try {
-      const data = await userApi.getUserProfile<ResponseUserProfile>(
-        queryUserId
-      );
+      const { data } = await userApi.getUserProfile(queryUserId);
       setPageUserInfo(data);
     } catch (error: any) {
       console.error(error);

@@ -34,7 +34,9 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
   const getPageFavorites = async () => {
     try {
-      const { favorites } = await favoriteAPI.getMyFavorites();
+      const {
+        data: { favorites },
+      } = await favoriteAPI.getMyFavorites();
       setFavorites(favorites);
       setIsLoading(false);
     } catch (error) {

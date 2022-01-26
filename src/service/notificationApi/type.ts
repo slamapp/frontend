@@ -1,14 +1,15 @@
 import { Notification } from "@domainTypes/.";
+import { ApiPromise } from "@service/type";
 
-export interface Api {
-  getNotifications: (params: {
+export interface NotificationApi {
+  getNotifications: (param: {
     size?: number;
     lastId?: number | null;
     isFirst?: boolean;
-  }) => Promise<{
+  }) => ApiPromise<{
     contents: Notification[];
     lastId: number | null;
   }>;
 
-  readAllNotifications: () => Promise<any>;
+  readAllNotifications: () => ApiPromise;
 }

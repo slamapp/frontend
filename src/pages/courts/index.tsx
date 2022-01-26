@@ -170,7 +170,9 @@ const Courts: NextPage = () => {
       const endLatitude = neLatLng.getLat();
       const endLongitude = neLatLng.getLng();
 
-      const { courts } = await courtApi.getCourtsByCoordsAndDate({
+      const {
+        data: { courts },
+      } = await courtApi.getCourtsByCoordsAndDate({
         date: getTimezoneDateStringFromDate(selectedDate),
         startLatitude,
         startLongitude,
@@ -247,7 +249,7 @@ const Courts: NextPage = () => {
   useEffect(() => {
     const restoreCourts = async (courtId: number) => {
       try {
-        const court: any = await courtApi.getCourtDetail(
+        const { data: court } = await courtApi.getCourtDetail(
           courtId,
           getTimezoneDateStringFromDate(selectedDate),
           selectedSlot
@@ -280,7 +282,7 @@ const Courts: NextPage = () => {
 
   useEffect(() => {
     const updateSelectedCourtDetail = async () => {
-      const court: any = await courtApi.getCourtDetail(
+      const { data: court } = await courtApi.getCourtDetail(
         selectedCourt.courtId,
         getTimezoneDateStringFromDate(selectedDate),
         selectedSlot
