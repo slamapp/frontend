@@ -120,7 +120,9 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
             step={step}
             onClick={handleClickBlock}
             disabled={
-              isToday && !!currentTimeIndex && index < currentTimeIndex + 1
+              isToday &&
+              currentTimeIndex !== null &&
+              index < currentTimeIndex + 1
             }
           />
         ))}
