@@ -114,7 +114,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          profileImageUrl: payload.profileImage,
+          profileImageUrl: null,
         },
       };
     }

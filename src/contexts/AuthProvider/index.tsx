@@ -96,12 +96,9 @@ const AuthProvider = ({ children }: Props) => {
   const deleteMyProfileImage = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
     try {
-      const {
-        data: { deletedMyProfileImage },
-      } = await userApi.deleteMyProfileImage();
+      await userApi.deleteMyProfileImage();
       dispatch({
         type: authTypes.DELETE_MY_PROFILE_IMAGE,
-        payload: { deletedMyProfileImage },
       });
       router.reload();
     } catch (error) {
@@ -109,7 +106,7 @@ const AuthProvider = ({ children }: Props) => {
     } finally {
       dispatch({ type: authTypes.LOADING_OFF });
     }
-  }, [authProps.currentUser.userId, router]);
+  }, [router]);
 
   const getMyReservations = useCallback(async () => {
     try {
