@@ -109,12 +109,12 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.DELETE_MY_PROFILE_IMAGE: {
+    case authTypes.SET_MY_PROFILE_IMAGE: {
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          profileImageUrl: payload.profileImage,
+          profileImageUrl: payload?.profileImage ?? null,
         },
       };
     }

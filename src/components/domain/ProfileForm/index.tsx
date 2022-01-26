@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useRef, FormEvent, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 
@@ -11,11 +11,11 @@ import {
   ValidationNoticeBar,
 } from "@components/domain";
 import { PositionKeyUnion, ProficiencyKeyUnion } from "@domainTypes/.";
+import { appendImageFileToFormData } from "@utils/.";
 import LeadToLoginModal from "../LeadToLoginModal";
 
 type ResponseUserProfile = {
   nickname: string;
-  profileImage: string | null;
   description: string | null;
   proficiency: ProficiencyKeyUnion;
   positions: PositionKeyUnion[];
@@ -40,10 +40,13 @@ const ProfileForm = ({
   // TODO: 리팩토링
 
   const router = useRouter();
+
   const [isOpenDeleteImageConfirmModal, setIsOpenDeleteImageConfirmModal] =
     useState<boolean>(false);
   const [isOpenEditConfirmModal, setIsOpenEditConfirmModal] =
     useState<boolean>(false);
+
+  const profileImageRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setSelectedProficiency(proficiency);
@@ -56,7 +59,6 @@ const ProfileForm = ({
   >({
     initialValues: {
       nickname,
-      profileImage,
       description: description ?? "",
       proficiency,
       positions,
@@ -68,8 +70,14 @@ const ProfileForm = ({
         positions: selectedPositions,
       };
 
+      const profileImageInputRef = profileImageRef?.current ?? null;
+      const editedProfileImageFiles = profileImageInputRef?.files ?? null;
+      const editedProfileImage = editedProfileImageFiles
+        ? appendImageFileToFormData(editedProfileImageFiles[0], "image")
+        : null;
+
       try {
-        onSubmit(filledUserProfile);
+        onSubmit(filledUserProfile, editedProfileImage);
       } catch (error) {
         console.log(error);
       }
@@ -106,14 +114,16 @@ const ProfileForm = ({
       <form>
         <Center>
           <Spacer gap="xs" type="vertical">
-            <Upload style={{ textAlign: "center" }}>
-              <Avatar
-                isEdit
-                src={profileImage}
-                shape="circle"
-                __TYPE="Avatar"
-              />
-            </Upload>
+            <UploadableArea inputRef={profileImageRef}>
+              {(file: File, fileSrc: string) => (
+                <Avatar
+                  isEdit
+                  src={fileSrc || profileImage}
+                  shape="circle"
+                  __TYPE="Avatar"
+                />
+              )}
+            </UploadableArea>
             <Button
               onClick={() => setIsOpenDeleteImageConfirmModal(true)}
               type="button"
@@ -243,4 +253,8 @@ const Center = styled.div`
 
 const Container = styled(Spacer)`
   padding: ${({ theme }) => `30px ${theme.gaps.base} 120px`};
+`;
+
+const UploadableArea = styled(Upload)`
+  text-align: center;
 `;

@@ -1,10 +1,4 @@
-import {
-  useState,
-  useCallback,
-  ChangeEvent,
-  MouseEvent,
-  useEffect,
-} from "react";
+import { useState, useCallback, ChangeEvent, useEffect } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 
@@ -27,7 +21,8 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_EDIT);
 
-  const { updateMyProfile, deleteMyProfileImage } = useAuthContext();
+  const { updateMyProfile, updateMyProfileImage, deleteMyProfileImage } =
+    useAuthContext();
 
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
@@ -78,9 +73,19 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
     deleteMyProfileImage();
   };
 
+  const handleSubmit = async (
+    editedInfo: Omit<ResponseUserProfile, "profileImage">,
+    editedProfileImage: File
+  ) => {
+    if (editedProfileImage) {
+      await updateMyProfileImage(editedProfileImage);
+    }
+    await updateMyProfile(editedInfo);
+  };
+
   useEffect(() => {
     getMyProfile();
-  }, [getMyProfile]);
+  }, []);
 
   if (pageUserInfo === null) {
     return <BasketballLoading />;
@@ -102,7 +107,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
         description={description}
         proficiency={proficiency}
         positions={positions}
-        onSubmit={updateMyProfile}
+        onSubmit={handleSubmit}
         handleDeleteProfileImage={handleDeleteProfileImage}
         lengthLimit={lengthLimit}
         selectedProficiency={selectedProficiency}

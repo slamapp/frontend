@@ -8,6 +8,8 @@ const userAPI: UserApi = {
   getUserProfile: (userId: number) => authRequest.get(`/users/${userId}`),
   updateMyProfile: (data: EditableUserProfile) =>
     authRequest.put("/users/myprofile", data),
+  updateMyProfileImage: (editedProfileImageFile: File) =>
+    authFileRequest.put("/users/myprofile/image", editedProfileImageFile),
   deleteMyProfileImage: () => authRequest.delete("/users/myprofile/image"),
 };
 

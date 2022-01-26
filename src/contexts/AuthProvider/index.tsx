@@ -56,12 +56,12 @@ const AuthProvider = ({ children }: Props) => {
     async (editedUserProfile: EditableUserProfile) => {
       dispatch({ type: authTypes.LOADING_ON });
       try {
-        const {
-          data: { userProfile },
-        } = await userApi.updateMyProfile(editedUserProfile);
+        const { data: userProfile } = await userApi.updateMyProfile(
+          editedUserProfile
+        );
         dispatch({
           type: authTypes.UPDATE_MY_PROFILE,
-          payload: { userProfile },
+          payload: userProfile,
         });
         router.replace(`/user/${authProps.currentUser.userId}`);
       } catch (error) {
@@ -73,22 +73,40 @@ const AuthProvider = ({ children }: Props) => {
     [authProps.currentUser.userId, router]
   );
 
+  const updateMyProfileImage = useCallback(
+    async (editedProfileImageFile: File) => {
+      dispatch({ type: authTypes.LOADING_ON });
+      try {
+        const { data: userProfileImage } = await userApi.updateMyProfileImage(
+          editedProfileImageFile
+        );
+        dispatch({
+          type: authTypes.SET_MY_PROFILE_IMAGE,
+          payload: userProfileImage,
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch({ type: authTypes.LOADING_OFF });
+      }
+    },
+    []
+  );
+
   const deleteMyProfileImage = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
     try {
-      const {
-        data: { deletedMyProfileImage },
-      } = await userApi.deleteMyProfileImage();
+      await userApi.deleteMyProfileImage();
       dispatch({
-        type: authTypes.DELETE_MY_PROFILE_IMAGE,
-        payload: { deletedMyProfileImage },
+        type: authTypes.SET_MY_PROFILE_IMAGE,
       });
+      router.reload();
     } catch (error) {
       console.error(error);
     } finally {
       dispatch({ type: authTypes.LOADING_OFF });
     }
-  }, [authProps.currentUser.userId, router]);
+  }, [router]);
 
   const getMyReservations = useCallback(async () => {
     try {
@@ -211,6 +229,7 @@ const AuthProvider = ({ children }: Props) => {
         getMyFavorites,
         getMyReservations,
         updateMyProfile,
+        updateMyProfileImage,
         deleteMyProfileImage,
         readAllNotifications,
         getMoreNotifications,
