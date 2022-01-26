@@ -18,7 +18,7 @@ const getSize = (size: Size) => {
 };
 
 interface Props {
-  userId: string | number;
+  userId?: string | number;
   imageUrl: string;
   size?: Size | number;
 }

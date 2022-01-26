@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Button, Icon, Text } from "@components/base";
 import reservationAPI from "@service/reservationApi";
+import { useAuthContext } from "@contexts/hooks";
 import FollowListItem from "../../FollowListItem";
 
 const ReservationItemBottom = ({
@@ -29,6 +30,11 @@ const ReservationItemBottom = ({
     setParticipants(participants);
   }, [courtId, startTime, endTime]);
 
+  const {
+    authProps: { currentUser },
+  } = useAuthContext();
+  const { userId, profileImageUrl, nickname } = currentUser;
+
   return (
     <>
       <Container>
@@ -47,21 +53,22 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          {participants.length !== 0 ? (
-            participants.map(
-              ({ userId, nickname, profileImage, isFollowed }: any) => (
-                <FollowListItem
-                  key={userId}
-                  src={profileImage}
-                  isFollowed={isFollowed}
-                  userId={userId}
-                >
-                  {nickname}
-                </FollowListItem>
-              )
+          {userId && (
+            <FollowListItem userId={userId} src={profileImageUrl || "/assets/default_profile.svg"}>
+              {nickname}
+            </FollowListItem>
+          )}
+          {participants.map(
+            ({ userId, nickname, profileImage, isFollowed }: any) => (
+              <FollowListItem
+                key={userId}
+                src={profileImage}
+                isFollowed={isFollowed}
+                userId={userId}
+              >
+                {nickname}
+              </FollowListItem>
             )
-          ) : (
-            <Text>함께한 사람이 없었어요 😢</Text>
           )}
         </ParticipantList>
       )}
