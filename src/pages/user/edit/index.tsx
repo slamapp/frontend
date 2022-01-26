@@ -69,8 +69,8 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
     [selectedPositions]
   );
 
-  const handleDeleteProfileImage = async () => {
-    await deleteMyProfileImage();
+  const handleDeleteProfileImage = () => {
+    deleteMyProfileImage();
   };
 
   const handleSubmit = async (
@@ -84,11 +84,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      await getMyProfile();
-    };
-
-    fetchProfile();
+    getMyProfile();
   }, []);
 
   if (pageUserInfo === null) {
