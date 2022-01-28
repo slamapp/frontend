@@ -25,27 +25,14 @@ import {
 import Custom404 from "@pages/404";
 
 type ResponseUserProfile = {
-  createdAt: string;
-  updatedAt: string;
   userId: number;
   nickname: string;
-  isFollowing: boolean;
   followerCount: number;
   followingCount: number;
   profileImage: string;
   description: string;
   proficiency: ProficiencyKeyUnion;
   positions: PositionKeyUnion[];
-  favoriteCourts: [
-    {
-      courtId: number;
-      courtName: string;
-    },
-    {
-      courtId: number;
-      courtName: string;
-    }
-  ];
 };
 
 const User: NextPage = UtilRoute("private", () => {
@@ -58,7 +45,7 @@ const User: NextPage = UtilRoute("private", () => {
   const { sendFollow, sendFollowCancel } = useSocketContext();
   const { authProps } = useAuthContext();
 
-  const { userId, favorites } = authProps.currentUser;
+  const { userId, favorites: myFavorites } = authProps.currentUser;
 
   useMountPage((page) => page.USER);
   useDisableTopTransparent();
@@ -71,12 +58,36 @@ const User: NextPage = UtilRoute("private", () => {
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   );
+  const [pageFavorites, setPageFavorites] = useState<
+    { id: number; court: { id: number; name: string } }[]
+  >([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+
   const [isError, setIsError] = useState(false);
 
   const getMyProfile = useCallback(async () => {
     try {
-      const { data } = await userApi.getMyProfile();
-      setPageUserInfo(data);
+      setPageFavorites([
+        ...myFavorites.map(({ favoriteId, courtId, courtName }) => ({
+          id: favoriteId,
+          court: { id: courtId, name: courtName },
+        })),
+      ]);
+
+      const {
+        data: { followerCount, followingCount, user },
+      } = await userApi.getMyProfile();
+
+      setPageUserInfo({
+        description: user.description,
+        followerCount,
+        followingCount,
+        nickname: user.nickname,
+        positions: user.positions,
+        proficiency: user.proficiency,
+        profileImage: user.profileImage,
+        userId: user.id,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -86,6 +97,9 @@ const User: NextPage = UtilRoute("private", () => {
     try {
       const { data } = await userApi.getUserProfile(queryUserId);
       setPageUserInfo(data);
+      setIsFollowing(data.isFollowing);
+      // TODO: 즐겨찾기 API수정시 주석 풀고 디버깅 필요!
+      // setPageFavorites([...data.favorites]);
     } catch (error: any) {
       console.error(error);
       const { message } = error.response.data;
@@ -106,13 +120,13 @@ const User: NextPage = UtilRoute("private", () => {
         prevState
           ? {
               ...prevState,
-              isFollowing: !prevIsFollowing,
               followerCount: prevIsFollowing
                 ? prevState.followerCount - 1
                 : prevState.followerCount + 1,
             }
           : null
       );
+      setIsFollowing((prev) => !prev);
     }
   };
 
@@ -121,11 +135,13 @@ const User: NextPage = UtilRoute("private", () => {
   }, [pageUserInfo?.nickname, setNavigationTitle]);
 
   useEffect(() => {
-    if (queryUserId === userId) {
-      setIsMe(true);
-      getMyProfile();
-    } else {
-      getOtherProfile();
+    if (queryUserId && userId) {
+      if (queryUserId === userId) {
+        setIsMe(true);
+        getMyProfile();
+      } else {
+        getOtherProfile();
+      }
     }
   }, [userId, getMyProfile, getOtherProfile, queryUserId]);
 
@@ -145,7 +161,6 @@ const User: NextPage = UtilRoute("private", () => {
     description,
     positions,
     proficiency,
-    isFollowing,
   } = pageUserInfo;
 
   return (
@@ -247,10 +262,10 @@ const User: NextPage = UtilRoute("private", () => {
         </div>
         <div>
           <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
-          {favorites.length ? (
-            favorites.map(({ courtId, courtName }) => (
-              <ProfileFavoritesListItem key={courtId} courtId={courtId}>
-                {courtName}
+          {pageFavorites.length ? (
+            pageFavorites.map(({ id, court }) => (
+              <ProfileFavoritesListItem key={court.id} courtId={court.id}>
+                {court.name}
               </ProfileFavoritesListItem>
             ))
           ) : (
