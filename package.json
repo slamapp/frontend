@@ -1,5 +1,5 @@
 {
-  "name": "team_handdam_teamddam_clinet",
+  "name": "slam-client",
   "private": true,
   "scripts": {
     "dev": "next dev",
