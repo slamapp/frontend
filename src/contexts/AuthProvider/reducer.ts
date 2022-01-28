@@ -55,21 +55,23 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
 ) => {
   switch (type) {
     case authTypes.SET_CURRENT_USER: {
+      const { user, notifications } = payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          userId: payload.userId,
-          nickname: payload.nickname,
-          notifications: [...payload.notifications],
-          email: payload.email,
-          positions: payload.positions,
-          proficiency: payload.proficiency,
-          profileImageUrl: payload.profileImage,
-          role: payload.role,
-          description: payload.description,
+          userId: user.id,
+          nickname: user.nickname,
+          notifications: [...notifications],
+          email: user.email,
+          positions: user.positions,
+          proficiency: user.proficiency,
+          profileImageUrl: user.profileImage,
+          role: user.role,
+          description: user.description,
           notificationLastId:
-            payload.notifications[payload.notifications.length - 1]?.id || null,
+            notifications[notifications.length - 1]?.id || null,
         },
       };
     }
