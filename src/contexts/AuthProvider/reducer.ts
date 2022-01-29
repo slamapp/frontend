@@ -6,7 +6,7 @@ import {
   Reservation,
 } from "@domainTypes/.";
 import { Reducer } from "react";
-import { authTypes, ActionTypeUnion } from "./actionTypes";
+import type { ReducerActionUnion } from "./actionTypes";
 
 export interface DataProps {
   currentUser: {
@@ -26,11 +26,6 @@ export interface DataProps {
   isLoading: boolean;
 }
 
-export type ReducerAction = {
-  type: ActionTypeUnion;
-  payload?: any;
-};
-
 export const initialData = {
   currentUser: {
     userId: null,
@@ -49,12 +44,12 @@ export const initialData = {
   isLoading: true,
 };
 
-export const reducer: Reducer<DataProps, ReducerAction> = (
+export const reducer: Reducer<DataProps, ReducerActionUnion> = (
   prevState,
   { type, payload }
 ) => {
   switch (type) {
-    case authTypes.SET_CURRENT_USER: {
+    case "SET_CURRENT_USER": {
       const { user, notifications } = payload;
 
       return {
@@ -75,13 +70,13 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.CLEAR_CURRENT_USER: {
+    case "CLEAR_CURRENT_USER": {
       return {
         ...prevState,
         ...initialData,
       };
     }
-    case authTypes.LOADING_ON: {
+    case "LOADING_ON": {
       return {
         ...prevState,
         currentUser: {
@@ -90,7 +85,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isLoading: true,
       };
     }
-    case authTypes.LOADING_OFF: {
+    case "LOADING_OFF": {
       return {
         ...prevState,
         currentUser: {
@@ -99,7 +94,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         isLoading: false,
       };
     }
-    case authTypes.UPDATE_MY_PROFILE: {
+    case "UPDATE_MY_PROFILE": {
       return {
         ...prevState,
         currentUser: {
@@ -111,7 +106,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.SET_MY_PROFILE_IMAGE: {
+    case "SET_MY_PROFILE_IMAGE": {
       return {
         ...prevState,
         currentUser: {
@@ -120,7 +115,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.GET_MY_FAVORITES: {
+    case "GET_MY_FAVORITES": {
       return {
         ...prevState,
         currentUser: {
@@ -129,7 +124,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.CREATE_FAVORITE: {
+    case "CREATE_FAVORITE": {
       return {
         ...prevState,
         currentUser: {
@@ -138,7 +133,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.DELETE_FAVORITE: {
+    case "DELETE_FAVORITE": {
       const { deletedFavoriteId } = payload;
 
       return {
@@ -151,7 +146,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.SET_MY_RESERVATIONS: {
+    case "SET_MY_RESERVATIONS": {
       const { reservations } = payload;
 
       return {
@@ -162,46 +157,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.CREATE_RESERVATION: {
-      return {
-        ...prevState,
-        currentUser: {
-          ...prevState.currentUser,
-          // 최신순? 현재시간에서 가장 가까운
-          reservations: [
-            payload.createdReservation,
-            ...prevState.currentUser.reservations,
-          ],
-        },
-      };
-    }
-    case authTypes.UPDATE_RESERVATION: {
-      return {
-        ...prevState,
-        currentUser: {
-          ...prevState.currentUser,
-          reservations: prevState.currentUser.reservations.map((reservation) =>
-            reservation.reservationId ===
-            payload.updatedReservation.reservationId
-              ? payload.updatedReservation
-              : reservation
-          ),
-        },
-      };
-    }
-    case authTypes.DELETE_RESERVATION: {
-      return {
-        ...prevState,
-        currentUser: {
-          ...prevState.currentUser,
-          reservations: prevState.currentUser.reservations.filter(
-            ({ reservationId }) =>
-              reservationId !== payload.deletedReservationId
-          ),
-        },
-      };
-    }
-    case authTypes.UNSHIFT_NOTIFICATION: {
+    case "UNSHIFT_NOTIFICATION": {
       return {
         ...prevState,
         currentUser: {
@@ -213,7 +169,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.CONCAT_NOTIFICATIONS: {
+    case "CONCAT_NOTIFICATIONS": {
       return {
         ...prevState,
         currentUser: {
@@ -227,7 +183,7 @@ export const reducer: Reducer<DataProps, ReducerAction> = (
         },
       };
     }
-    case authTypes.READ_ALL_NOTIFICATIONS: {
+    case "READ_ALL_NOTIFICATIONS": {
       return {
         ...prevState,
         currentUser: {
