@@ -13,7 +13,7 @@ class MyDocument extends Document {
 
   render(): ReactElement {
     return (
-      <Html>
+      <Html lang="ko">
         <Head>
           <script
             async
