@@ -1,26 +1,22 @@
-import {
-  Notification,
-  Follow,
-  Role,
-  Favorite,
-  Reservation,
-} from "@domainTypes/.";
-import { Reducer } from "react";
+import type { Follow, Favorite, Reservation } from "@domainTypes/.";
+import { APINotification } from "@domainTypes/tobe/notification";
+import { APIUser } from "@domainTypes/tobe/user";
+import type { Reducer } from "react";
 import type { ActionUnion } from "./actionTypes";
 
 export interface DataProps {
   currentUser: {
-    userId: number | null;
-    email: string | null;
-    profileImageUrl: string | null;
-    role: Role | null;
-    description: string | null;
-    nickname: string | null;
+    userId: APIUser["id"] | null;
+    email: APIUser["email"] | null;
+    profileImage: APIUser["profileImage"] | null;
+    role: APIUser["role"] | null;
+    description: APIUser["description"] | null;
+    nickname: APIUser["nickname"] | null;
     favorites: Favorite[];
     followers: Follow[];
     following: Follow[];
-    notifications: Notification[];
-    notificationLastId: number | null | undefined;
+    notifications: APINotification[];
+    notificationLastId?: APINotification["id"] | null;
     reservations: Reservation[];
   };
   isLoading: boolean;
@@ -30,7 +26,7 @@ export const initialData = {
   currentUser: {
     userId: null,
     email: null,
-    profileImageUrl: null,
+    profileImage: null,
     role: null,
     description: null,
     nickname: null,
@@ -44,27 +40,34 @@ export const initialData = {
   isLoading: true,
 };
 
-export const reducer: Reducer<DataProps, ActionUnion> = (
-  prevState,
-  { type, payload }
-) => {
-  switch (type) {
+export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
+  switch (action.type) {
     case "SET_CURRENT_USER": {
-      const { user, notifications } = payload;
+      const { user, notifications } = action.payload;
+      const {
+        id,
+        nickname,
+        email,
+        positions,
+        proficiency,
+        profileImage,
+        role,
+        description,
+      } = user;
 
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          userId: user.id,
-          nickname: user.nickname,
+          userId: id,
+          nickname,
           notifications: [...notifications],
-          email: user.email,
-          positions: user.positions,
-          proficiency: user.proficiency,
-          profileImageUrl: user.profileImage,
-          role: user.role,
-          description: user.description,
+          email,
+          positions,
+          proficiency,
+          profileImage,
+          role,
+          description,
           notificationLastId:
             notifications[notifications.length - 1]?.id || null,
         },
@@ -95,46 +98,54 @@ export const reducer: Reducer<DataProps, ActionUnion> = (
       };
     }
     case "UPDATE_MY_PROFILE": {
+      const { nickname, positions, proficiency, description } = action.payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          nickname: payload.nickname,
-          positions: payload.positions,
-          proficiency: payload.proficiency,
-          description: payload.description,
+          nickname,
+          positions,
+          proficiency,
+          description,
         },
       };
     }
     case "SET_MY_PROFILE_IMAGE": {
+      const { profileImage } = action.payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          profileImageUrl: payload?.profileImage ?? null,
+          profileImageUrl: profileImage,
         },
       };
     }
     case "GET_MY_FAVORITES": {
+      const { favorites } = action.payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          favorites: payload.favorites,
+          favorites: [...favorites],
         },
       };
     }
     case "CREATE_FAVORITE": {
+      const { favorite } = action.payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          favorites: [...prevState.currentUser.favorites, payload.favorite],
+          favorites: [...prevState.currentUser.favorites, favorite],
         },
       };
     }
     case "DELETE_FAVORITE": {
-      const { deletedFavoriteId } = payload;
+      const { deletedFavoriteId } = action.payload;
 
       return {
         ...prevState,
@@ -147,7 +158,7 @@ export const reducer: Reducer<DataProps, ActionUnion> = (
       };
     }
     case "SET_MY_RESERVATIONS": {
-      const { reservations } = payload;
+      const { reservations } = action.payload;
 
       return {
         ...prevState,
@@ -158,28 +169,28 @@ export const reducer: Reducer<DataProps, ActionUnion> = (
       };
     }
     case "UNSHIFT_NOTIFICATION": {
+      const { notification } = action.payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          notifications: [
-            payload.notification,
-            ...prevState.currentUser.notifications,
-          ],
+          notifications: [notification, ...prevState.currentUser.notifications],
         },
       };
     }
     case "CONCAT_NOTIFICATIONS": {
+      const { notifications, lastId } = action.payload;
+
       return {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
           notifications: [
             ...prevState.currentUser.notifications,
-            ...payload.notifications,
+            ...notifications,
           ],
-          notificationLastId:
-            payload.notifications.length !== 0 ? payload.lastId : null,
+          notificationLastId: notifications.length !== 0 ? lastId : null,
         },
       };
     }

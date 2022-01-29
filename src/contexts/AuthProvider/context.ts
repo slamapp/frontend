@@ -1,18 +1,24 @@
-import { Notification, EditableUserProfile } from "@domainTypes/.";
+import { APINotification } from "@domainTypes/tobe/notification";
+import { APIUser } from "@domainTypes/tobe/user";
 import { createContext } from "react";
 import { DataProps } from "./reducer";
 
 export interface ContextProps {
   authProps: DataProps;
   setCurrentUser: (data: any) => void;
-  getCurrentUser: any;
+  getCurrentUser: () => Promise<void>;
   logout: () => void;
-  updateMyProfile: (editedUserProfile: EditableUserProfile) => Promise<void>;
+  updateMyProfile: (
+    editedUserProfile: Pick<
+      APIUser,
+      "nickname" | "description" | "proficiency" | "positions"
+    >
+  ) => Promise<void>;
   updateMyProfileImage: (editedProfileImageFile: File) => Promise<void>;
   deleteMyProfileImage: () => Promise<void>;
   createFavorite: (courtId: number) => void;
   deleteFavorite: (favoriteId: number) => void;
-  unshiftNotification: (notification: Notification) => void;
+  unshiftNotification: (notification: APINotification) => void;
   getMyFavorites: () => void;
   getMyReservations: () => void;
   readAllNotifications: () => void;

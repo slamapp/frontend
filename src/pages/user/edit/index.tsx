@@ -7,15 +7,9 @@ import userApi from "@service/userApi";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
 import { BasketballLoading } from "@components/domain";
 import ProfileForm from "@components/domain/ProfileForm/index";
-import { PositionKeyUnion, ProficiencyKeyUnion } from "@domainTypes/.";
-
-type ResponseUserProfile = {
-  nickname: string;
-  profileImage: string | null;
-  description: string;
-  proficiency: ProficiencyKeyUnion;
-  positions: PositionKeyUnion[];
-};
+import type { ProficiencyKey } from "@enums/proficiencyType";
+import type { PositionKey } from "@enums/positionType";
+import { APIUser } from "@domainTypes/tobe/user";
 
 const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
@@ -24,9 +18,10 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   const { updateMyProfile, updateMyProfileImage, deleteMyProfileImage } =
     useAuthContext();
 
-  const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
-    null
-  );
+  const [pageUserInfo, setPageUserInfo] = useState<Pick<
+    APIUser,
+    "nickname" | "profileImage" | "description" | "proficiency" | "positions"
+  > | null>(null);
 
   const lengthLimit = {
     nickname: 15,
@@ -53,14 +48,12 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   }, []);
 
   const [selectedProficiency, setSelectedProficiency] =
-    useState<ProficiencyKeyUnion>(null);
-  const [selectedPositions, setSelectedPositions] = useState<
-    PositionKeyUnion[]
-  >([]);
+    useState<ProficiencyKey>(null);
+  const [selectedPositions, setSelectedPositions] = useState<PositionKey[]>([]);
 
   const handleChangeProficiency = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setSelectedProficiency(e.target.value as ProficiencyKeyUnion);
+      setSelectedProficiency(e.target.value as ProficiencyKey);
     },
     []
   );
@@ -72,7 +65,7 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
       } else {
         setSelectedPositions([
           selectedPositions[1],
-          e.target.value as PositionKeyUnion,
+          e.target.value as PositionKey,
         ]);
       }
     },
@@ -84,7 +77,10 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   };
 
   const handleSubmit = async (
-    editedInfo: Omit<ResponseUserProfile, "profileImage">,
+    editedInfo: Pick<
+      APIUser,
+      "nickname" | "description" | "proficiency" | "positions"
+    >,
     editedProfileImage: File
   ) => {
     if (editedProfileImage) {

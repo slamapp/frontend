@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useReducer, ReactNode, useEffect, useCallback } from "react";
+
 import { useLocalToken } from "@hooks/domain";
 import {
   reservationApi,
@@ -7,10 +8,10 @@ import {
   userApi,
   notificationApi,
 } from "@service/.";
-import { Notification, EditableUserProfile } from "@domainTypes/.";
-import { APIUser } from "@domainTypes/tobe/user";
+
+import type { APIUser } from "@domainTypes/tobe/user";
 import { APINotification } from "@domainTypes/tobe/notification";
-import Context from "./context";
+import Context, { ContextProps } from "./context";
 import { initialData, reducer } from "./reducer";
 import AuthLoading from "./AuthLoading";
 
@@ -42,21 +43,22 @@ const AuthProvider = ({ children }: Props) => {
     []
   );
 
-  const getCurrentUser = useCallback(async () => {
-    dispatch({ type: "LOADING_ON" });
-    try {
-      const { data } = await userApi.getUserData();
-      setCurrentUser(data);
-    } catch (error) {
-      console.error(error);
-      logout();
-    } finally {
-      dispatch({ type: "LOADING_OFF" });
-    }
-  }, [logout, setCurrentUser]);
+  const getCurrentUser: ContextProps["getCurrentUser"] =
+    useCallback(async () => {
+      dispatch({ type: "LOADING_ON" });
+      try {
+        const { data } = await userApi.getUserData();
+        setCurrentUser(data);
+      } catch (error) {
+        console.error(error);
+        logout();
+      } finally {
+        dispatch({ type: "LOADING_OFF" });
+      }
+    }, [logout, setCurrentUser]);
 
-  const updateMyProfile = useCallback(
-    async (editedUserProfile: EditableUserProfile) => {
+  const updateMyProfile: ContextProps["updateMyProfile"] = useCallback(
+    async (editedUserProfile) => {
       dispatch({ type: "LOADING_ON" });
       try {
         const { data: userProfile } = await userApi.updateMyProfile(
@@ -97,7 +99,10 @@ const AuthProvider = ({ children }: Props) => {
     dispatch({ type: "LOADING_ON" });
     try {
       await userApi.deleteMyProfileImage();
-      dispatch({ type: "SET_MY_PROFILE_IMAGE" });
+      dispatch({
+        type: "SET_MY_PROFILE_IMAGE",
+        payload: { profileImage: null },
+      });
       router.reload();
     } catch (error) {
       console.error(error);
@@ -176,7 +181,7 @@ const AuthProvider = ({ children }: Props) => {
     }
   };
 
-  const unshiftNotification = (notification: Notification) => {
+  const unshiftNotification = (notification: APINotification) => {
     dispatch({ type: "UNSHIFT_NOTIFICATION", payload: { notification } });
   };
 

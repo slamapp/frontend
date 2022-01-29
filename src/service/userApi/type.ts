@@ -12,8 +12,8 @@ export interface UserApi {
     followingCount: number;
     user: APIUser;
   }>;
-  getUserProfile: (...params: any[]) => ApiPromise;
+  getUserProfile: (userId: APIUser["id"]) => ApiPromise;
   updateMyProfile: (...params: any[]) => ApiPromise;
-  updateMyProfileImage: (...params: any[]) => ApiPromise;
+  updateMyProfileImage: (editedProfileImageFile: File) => ApiPromise;
   deleteMyProfileImage: () => ApiPromise;
 }
