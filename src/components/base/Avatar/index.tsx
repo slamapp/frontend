@@ -26,7 +26,7 @@ const Avatar = ({
   size = 70,
   shape = "round",
   placeholder,
-  alt,
+  alt = "avatar",
   mode = "cover",
   __TYPE = "Avatar",
   isEdit = false,
