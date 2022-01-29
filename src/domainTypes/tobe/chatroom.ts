@@ -4,7 +4,7 @@ import type { APICommon } from "./common";
 import type { APICourt } from "./court";
 import type { APIUser } from "./user";
 
-export interface APIChatroom extends APICommon {
+export interface APIChatroom extends APICommon<string> {
   admins: Admin[];
   type: ChatroomType;
   court?: APICourt;

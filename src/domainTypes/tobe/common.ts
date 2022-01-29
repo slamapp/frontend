@@ -1,11 +1,11 @@
 import type { APIUser } from "./user";
 
-export interface APISend extends APICommon {
+export interface APISend<I = string> extends APICommon<I> {
   sender: APIUser;
 }
 
-export interface APICommon {
-  id: number;
+export interface APICommon<I = number> {
+  id: I;
   createdAt: ISOString;
   updatedAt: ISOString;
 }
