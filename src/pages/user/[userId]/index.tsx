@@ -23,6 +23,7 @@ import {
   getTranslatedProficiency,
 } from "@utils/userInfo";
 import Custom404 from "@pages/404";
+import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
 
 type ResponseUserProfile = {
   createdAt: string;
@@ -116,7 +117,7 @@ const User: NextPage = UtilRoute("private", () => {
     }
   };
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setNavigationTitle(`${pageUserInfo?.nickname}`);
   }, [pageUserInfo?.nickname, setNavigationTitle]);
 
