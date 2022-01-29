@@ -20,7 +20,11 @@ import {
   LeadToLoginModal,
   BasketballLoading,
 } from "@components/domain";
-import { useMapContext, useNavigationContext } from "@contexts/hooks";
+import {
+  useMapContext,
+  useNavigationContext,
+  useReservationContext,
+} from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { courtApi } from "@service/.";
 import {

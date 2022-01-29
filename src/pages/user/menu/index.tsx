@@ -46,7 +46,7 @@ const Menu: NextPage = UtilRoute("private", () => {
         ))}
       </MenuList>
       <Modal visible={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Modal.Header>정말 로그아웃 하시나요? 🤔</Modal.Header>
+        <Modal.Header block>정말 로그아웃 하시나요? 🤔</Modal.Header>
         <Modal.BottomButtonContainer>
           <Button
             style={{ flex: 1 }}

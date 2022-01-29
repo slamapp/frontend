@@ -75,6 +75,7 @@ export const initialState = {
   selectedReservationId: null,
   requestDisabled: false,
   currentInput: "START",
+  courtName: "",
 };
 
 export const reducer: Reducer<any, ReducerAction> = (
@@ -83,7 +84,7 @@ export const reducer: Reducer<any, ReducerAction> = (
 ) => {
   switch (type) {
     case actionTypes.SET_TIMETABLE: {
-      const { reservations, userId } = payload;
+      const { reservations, userId, courtName, date } = payload;
 
       const { timeTable, existedReservations } =
         getTimeTableInfoFromReservations(reservations, userId);
@@ -93,6 +94,8 @@ export const reducer: Reducer<any, ReducerAction> = (
         timeTable,
         originalTimeTable: timeTable,
         existedReservations,
+        courtName,
+        date,
       };
     }
     case actionTypes.START_CREATE: {

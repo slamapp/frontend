@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useReducer, useState, Reducer } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 import { ModalSheet, Text } from "@components/base";
@@ -121,7 +121,13 @@ const Reservation: NextPage = () => {
         date as string
       );
 
-      handleInitReservation(reservations);
+      const { courtName } = await courtApi.getCourtDetail(
+        +(courtId as string),
+        dayjs().format("YYYY-MM-DD"),
+        "dawn"
+      );
+
+      handleInitReservation(reservations, courtName, date);
     };
 
     if (router.isReady && currentUser.userId) {
