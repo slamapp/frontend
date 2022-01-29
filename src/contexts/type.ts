@@ -1,4 +1,8 @@
-export interface Action<T = string, P = undefined> {
-  type: T;
-  payload?: P;
+export interface ActionWithPayload<Type, Payload = any>
+  extends ActionWithoutPayload<Type> {
+  payload: Payload;
+}
+
+export interface ActionWithoutPayload<Type> {
+  type: Type;
 }
