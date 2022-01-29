@@ -29,6 +29,10 @@ class MyDocument extends Document {
             type="text/css"
             href="https://fonts.googleapis.com/css2?family=Righteous&display=swap"
           />
+          <link
+            href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
