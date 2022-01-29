@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 
 import UtilRoute from "UtilRoute";
 import { useNavigationContext } from "@contexts/hooks";
