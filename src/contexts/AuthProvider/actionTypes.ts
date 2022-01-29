@@ -1,17 +1,28 @@
-import { Action } from "@contexts/type";
+import type { ActionWithoutPayload, ActionWithPayload } from "@contexts/type";
+import { APINotification } from "@domainTypes/tobe/notification";
+import { APIUser } from "@domainTypes/tobe/user";
 
 export type ActionUnion =
-  | Action<"SET_CURRENT_USER", any>
-  | Action<"CLEAR_CURRENT_USER">
-  | Action<"LOADING_ON">
-  | Action<"LOADING_OFF">
-  | Action<"UPDATE_MY_PROFILE", any>
-  | Action<"SET_MY_PROFILE_IMAGE", any>
-  | Action<"GET_MY_FAVORITES", any>
-  | Action<"SET_MY_FAVORITES", any>
-  | Action<"CREATE_FAVORITE", any>
-  | Action<"DELETE_FAVORITE", any>
-  | Action<"CONCAT_NOTIFICATIONS", any>
-  | Action<"UNSHIFT_NOTIFICATION", any>
-  | Action<"READ_ALL_NOTIFICATIONS">
-  | Action<"SET_MY_RESERVATIONS", any>;
+  | ActionWithPayload<
+      "SET_CURRENT_USER",
+      { user: APIUser; notifications: APINotification[] }
+    >
+  | ActionWithoutPayload<"CLEAR_CURRENT_USER">
+  | ActionWithoutPayload<"LOADING_ON">
+  | ActionWithoutPayload<"LOADING_OFF">
+  | ActionWithPayload<
+      "UPDATE_MY_PROFILE",
+      Pick<APIUser, "nickname" | "positions" | "proficiency" | "description">
+    >
+  | ActionWithPayload<"SET_MY_PROFILE_IMAGE", Pick<APIUser, "profileImage">>
+  | ActionWithPayload<"GET_MY_FAVORITES", any>
+  | ActionWithPayload<"SET_MY_FAVORITES", any>
+  | ActionWithPayload<"CREATE_FAVORITE", any>
+  | ActionWithPayload<"DELETE_FAVORITE", any>
+  | ActionWithPayload<
+      "CONCAT_NOTIFICATIONS",
+      { notifications: APINotification[]; lastId: any }
+    >
+  | ActionWithPayload<"UNSHIFT_NOTIFICATION", any>
+  | ActionWithoutPayload<"READ_ALL_NOTIFICATIONS">
+  | ActionWithPayload<"SET_MY_RESERVATIONS", any>;
