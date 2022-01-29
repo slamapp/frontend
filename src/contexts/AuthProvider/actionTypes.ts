@@ -1,6 +1,6 @@
 import { Action } from "@contexts/type";
 
-export type ReducerActionUnion =
+export type ActionUnion =
   | Action<"SET_CURRENT_USER", any>
   | Action<"CLEAR_CURRENT_USER">
   | Action<"LOADING_ON">

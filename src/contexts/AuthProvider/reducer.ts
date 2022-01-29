@@ -6,7 +6,7 @@ import {
   Reservation,
 } from "@domainTypes/.";
 import { Reducer } from "react";
-import type { ReducerActionUnion } from "./actionTypes";
+import type { ActionUnion } from "./actionTypes";
 
 export interface DataProps {
   currentUser: {
@@ -44,7 +44,7 @@ export const initialData = {
   isLoading: true,
 };
 
-export const reducer: Reducer<DataProps, ReducerActionUnion> = (
+export const reducer: Reducer<DataProps, ActionUnion> = (
   prevState,
   { type, payload }
 ) => {
