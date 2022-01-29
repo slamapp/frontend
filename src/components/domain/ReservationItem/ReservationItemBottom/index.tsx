@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button, Icon, Text } from "@components/base";
 import reservationAPI from "@service/reservationApi";
 import { useAuthContext } from "@contexts/hooks";
+import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 import FollowListItem from "../../FollowListItem";
 
 const ReservationItemBottom = ({
@@ -33,7 +34,7 @@ const ReservationItemBottom = ({
   const {
     authProps: { currentUser },
   } = useAuthContext();
-  const { userId, profileImageUrl, nickname } = currentUser;
+  const { userId, profileImage, nickname } = currentUser;
 
   return (
     <>
@@ -56,7 +57,7 @@ const ReservationItemBottom = ({
           {userId && (
             <FollowListItem
               userId={userId}
-              src={profileImageUrl || "/assets/default_profile.svg"}
+              src={profileImage || DEFAULT_PROFILE_IMAGE_URL}
             >
               {nickname}
             </FollowListItem>

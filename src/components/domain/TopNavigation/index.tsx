@@ -5,6 +5,7 @@ import { Icon, Badge } from "@components/base";
 import { useRouter } from "next/router";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { useIntersectionObserver } from "@hooks/.";
+import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 import LinkAvatar from "../LinkAvatar";
 
 const TopNavigation = () => {
@@ -13,7 +14,7 @@ const TopNavigation = () => {
   const {
     authProps: { currentUser },
   } = useAuthContext();
-  const { userId, profileImageUrl, notifications } = currentUser;
+  const { userId, profileImage, notifications } = currentUser;
 
   const {
     navigationProps: {
@@ -74,10 +75,7 @@ const TopNavigation = () => {
             {isProfile && userId && (
               <LinkAvatar
                 userId={userId}
-                imageUrl={
-                  profileImageUrl ||
-                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                }
+                imageUrl={profileImage || DEFAULT_PROFILE_IMAGE_URL}
               />
             )}
             {isMenu && (
