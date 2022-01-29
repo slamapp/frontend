@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const router = useRouter();
 
-  const logout = useCallback(() => {
+  const logout: ContextProps["logout"] = useCallback(() => {
     localStorage.clear();
     dispatch({ type: "CLEAR_CURRENT_USER" });
     router.replace("/login");
@@ -36,10 +36,8 @@ const AuthProvider = ({ children }: Props) => {
     }, LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS);
   }, [router]);
 
-  const setCurrentUser = useCallback(
-    (data: { user: APIUser; notifications: APINotification[] }) => {
-      dispatch({ type: "SET_CURRENT_USER", payload: data });
-    },
+  const setCurrentUser: ContextProps["setCurrentUser"] = useCallback(
+    (data) => dispatch({ type: "SET_CURRENT_USER", payload: data }),
     []
   );
 
@@ -78,8 +76,8 @@ const AuthProvider = ({ children }: Props) => {
     [authProps.currentUser.userId, router]
   );
 
-  const updateMyProfileImage = useCallback(
-    async (editedProfileImageFile: File) => {
+  const updateMyProfileImage: ContextProps["updateMyProfileImage"] =
+    useCallback(async (editedProfileImageFile) => {
       dispatch({ type: "LOADING_ON" });
       try {
         const { data: userProfileImage } = await userApi.updateMyProfileImage(
@@ -91,106 +89,112 @@ const AuthProvider = ({ children }: Props) => {
       } finally {
         dispatch({ type: "LOADING_OFF" });
       }
+    }, []);
+
+  const deleteMyProfileImage: ContextProps["deleteMyProfileImage"] =
+    useCallback(async () => {
+      dispatch({ type: "LOADING_ON" });
+      try {
+        await userApi.deleteMyProfileImage();
+        dispatch({
+          type: "SET_MY_PROFILE_IMAGE",
+          payload: { profileImage: null },
+        });
+        router.reload();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch({ type: "LOADING_OFF" });
+      }
+    }, [router]);
+
+  const getMyReservations: ContextProps["getMyReservations"] =
+    useCallback(async () => {
+      try {
+        const { data } = await reservationApi.getMyReservations();
+        const { reservations } = data;
+        dispatch({ type: "SET_MY_RESERVATIONS", payload: { reservations } });
+      } catch (error) {
+        console.error(error);
+      }
+    }, []);
+
+  const getMyFavorites: ContextProps["getMyFavorites"] =
+    useCallback(async () => {
+      try {
+        const { data } = await favoriteApi.getMyFavorites();
+        const { favorites } = data;
+        dispatch({ type: "GET_MY_FAVORITES", payload: { favorites } });
+      } catch (error) {
+        console.error(error);
+      }
+    }, []);
+
+  const createFavorite: ContextProps["createFavorite"] = useCallback(
+    async (courtId: number) => {
+      try {
+        const { data: favorite } = await favoriteApi.createMyFavorite(courtId);
+        dispatch({ type: "CREATE_FAVORITE", payload: { favorite } });
+      } catch (error) {
+        console.error(error);
+      }
     },
     []
   );
 
-  const deleteMyProfileImage = useCallback(async () => {
-    dispatch({ type: "LOADING_ON" });
-    try {
-      await userApi.deleteMyProfileImage();
-      dispatch({
-        type: "SET_MY_PROFILE_IMAGE",
-        payload: { profileImage: null },
-      });
-      router.reload();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      dispatch({ type: "LOADING_OFF" });
-    }
-  }, [router]);
+  const deleteFavorite: ContextProps["deleteFavorite"] = useCallback(
+    async (favoriteId) => {
+      try {
+        const { data } = await favoriteApi.deleteMyFavorite(favoriteId);
+        const { favoriteId: deletedFavoriteId } = data;
+        dispatch({ type: "DELETE_FAVORITE", payload: { deletedFavoriteId } });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    []
+  );
 
-  const getMyReservations = useCallback(async () => {
-    try {
-      const {
-        data: { reservations },
-      } = await reservationApi.getMyReservations();
-      dispatch({ type: "SET_MY_RESERVATIONS", payload: { reservations } });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  const readAllNotifications: ContextProps["readAllNotifications"] =
+    async () => {
+      try {
+        await notificationApi.readAllNotifications();
+        dispatch({ type: "READ_ALL_NOTIFICATIONS" });
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const getMyFavorites = useCallback(async () => {
-    try {
-      const {
-        data: { favorites },
-      } = await favoriteApi.getMyFavorites();
+  const getMoreNotifications: ContextProps["getMoreNotifications"] =
+    async () => {
+      const { notificationLastId } = authProps.currentUser;
 
-      dispatch({ type: "GET_MY_FAVORITES", payload: { favorites } });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+      if (notificationLastId) {
+        const {
+          data: { contents, lastId: fetchedLastId },
+        } = await notificationApi.getNotifications({
+          lastId: notificationLastId,
+        });
 
-  const createFavorite = useCallback(async (courtId: number) => {
-    try {
-      const { data: favorite } = await favoriteApi.createMyFavorite(courtId);
-      dispatch({ type: "CREATE_FAVORITE", payload: { favorite } });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+        dispatch({
+          type: "CONCAT_NOTIFICATIONS",
+          payload: { notifications: contents, lastId: fetchedLastId },
+        });
+      }
+    };
 
-  const deleteFavorite = useCallback(async (favoriteId: number) => {
-    try {
-      const {
-        data: { favoriteId: deletedFavoriteId },
-      } = await favoriteApi.deleteMyFavorite(favoriteId);
-
-      dispatch({ type: "DELETE_FAVORITE", payload: { deletedFavoriteId } });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  const readAllNotifications = async () => {
-    try {
-      await notificationApi.readAllNotifications();
-      dispatch({ type: "READ_ALL_NOTIFICATIONS" });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getMoreNotifications = async () => {
-    const { notificationLastId } = authProps.currentUser;
-
-    if (notificationLastId) {
-      const {
-        data: { contents, lastId: fetchedLastId },
-      } = await notificationApi.getNotifications({
-        lastId: notificationLastId,
-      });
-
-      dispatch({
-        type: "CONCAT_NOTIFICATIONS",
-        payload: { notifications: contents, lastId: fetchedLastId },
-      });
-    }
-  };
-
-  const unshiftNotification = (notification: APINotification) => {
-    dispatch({ type: "UNSHIFT_NOTIFICATION", payload: { notification } });
-  };
+  const unshiftNotification: ContextProps["unshiftNotification"] = (
+    notification
+  ) => dispatch({ type: "UNSHIFT_NOTIFICATION", payload: { notification } });
 
   const authProviderInit = async () => {
-    // AuthProvider 마운트시 - 사용자정보(알림 포함) 받아오기
     try {
-      await getCurrentUser().then(() => {
-        getMyReservations();
-        getMyFavorites();
+      await getCurrentUser();
+      getMyReservations().catch((error) => {
+        console.error("getMyReservations Error", error);
+      });
+      getMyFavorites().catch((error) => {
+        console.error("getMyFavorites Error", error);
       });
     } catch (error) {
       console.error(error);
