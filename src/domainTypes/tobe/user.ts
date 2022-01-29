@@ -8,6 +8,7 @@ export interface APIUser extends APICommon {
   role: Role;
   positions: PositionKey[];
   proficiency: ProficiencyKey;
+  email: string;
 }
 
 export type EditableUserProfile = Pick<

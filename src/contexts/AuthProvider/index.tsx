@@ -9,6 +9,8 @@ import {
   notificationApi,
 } from "@service/.";
 import { Notification, EditableUserProfile } from "@domainTypes/.";
+import { APIUser } from "@domainTypes/tobe/user";
+import { APINotification } from "@domainTypes/tobe/notification";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import { authTypes } from "./actionTypes";
@@ -35,9 +37,12 @@ const AuthProvider = ({ children }: Props) => {
     }, LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS);
   }, [router]);
 
-  const setCurrentUser = useCallback((data) => {
-    dispatch({ type: authTypes.SET_CURRENT_USER, payload: data });
-  }, []);
+  const setCurrentUser = useCallback(
+    (data: { user: APIUser; notifications: APINotification[] }) => {
+      dispatch({ type: authTypes.SET_CURRENT_USER, payload: data });
+    },
+    []
+  );
 
   const getCurrentUser = useCallback(async () => {
     dispatch({ type: authTypes.LOADING_ON });
