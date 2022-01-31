@@ -10,7 +10,7 @@ interface Props {
 }
 
 const SocketProvider = ({ children }: Props) => {
-  const [token, _] = useLocalToken();
+  const [token] = useLocalToken();
   const { isConnected, isLoading, sendAuth } = useStomp(token);
 
   const sendFollow: SendFollow = (body) => {

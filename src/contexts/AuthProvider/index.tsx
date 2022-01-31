@@ -21,7 +21,7 @@ interface Props {
 const AuthProvider = ({ children }: Props) => {
   const [authProps, dispatch] = useReducer(reducer, initialData);
 
-  const [token, _] = useLocalToken();
+  const [token] = useLocalToken();
 
   const router = useRouter();
 

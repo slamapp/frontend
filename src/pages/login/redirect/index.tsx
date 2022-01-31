@@ -8,7 +8,7 @@ import { useAuthContext } from "@contexts/hooks";
 
 const RedirectPage = () => {
   const [isNeedReLogin, setIsNeedReLogin] = useState(false);
-  const [_, setToken] = useLocalToken();
+  const [, setToken] = useLocalToken();
   const { authProviderInit } = useAuthContext();
   const router = useRouter();
   const { token } = router.query;

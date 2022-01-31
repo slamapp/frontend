@@ -5,9 +5,9 @@ type KeyEvent = "keydown" | "keyup";
 type Handler = () => void;
 
 const useKey = (
-  event: KeyEvent = "keydown",
   targetKey: EventKeyValue,
-  handler: Handler
+  handler: Handler,
+  event: KeyEvent = "keydown"
 ) => {
   const handleKey = useCallback(
     ({ key }) => {

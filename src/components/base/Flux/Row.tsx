@@ -10,8 +10,8 @@ const AlignToCSSValue = {
   bottom: "flex-end",
 };
 
-type typeAlign = "top" | "middle" | "bottom";
-type typeJustify =
+type TypeAlign = "top" | "middle" | "bottom";
+type TypeJustify =
   | "start"
   | "center"
   | "space-between"
@@ -20,8 +20,8 @@ type typeJustify =
 
 interface Props {
   children?: ReactNode;
-  justify?: typeJustify;
-  align?: typeAlign;
+  justify?: TypeJustify;
+  align?: TypeAlign;
   gutter?: GutterType;
   [x: string]: any;
 }
@@ -69,8 +69,8 @@ const Row = ({
 export default Row;
 
 interface StyledRowProps {
-  justify?: typeJustify;
-  align?: typeAlign;
+  justify?: TypeJustify;
+  align?: TypeAlign;
 }
 
 const StyledRow = styled.div<StyledRowProps>`
