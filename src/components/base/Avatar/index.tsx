@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 import ImageComponent from "../Image";
 import AvatarGroup from "./AvatarGroup";
-import { AvatarShape } from "./types";
+import type { AvatarShape } from "./types";
 
 export interface Props {
   className?: string;

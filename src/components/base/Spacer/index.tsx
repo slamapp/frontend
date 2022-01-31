@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
 type Size = "xxs" | "xs" | "sm" | "base" | "md" | "lg" | "xl" | "xxl";
 interface Props {

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { ChangeEvent, DragEvent, ReactNode, useState } from "react";
+import type { ChangeEvent, DragEvent, ReactNode } from "react";
+import { useState } from "react";
 
 interface Props {
   children?: ReactNode;

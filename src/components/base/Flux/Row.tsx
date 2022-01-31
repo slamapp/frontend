@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import { ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
 import FluxProvider from "./FluxProvider";
-import { GutterType } from "./types";
+import type { GutterType } from "./types";
 
 const AlignToCSSValue = {
   top: "flex-start",

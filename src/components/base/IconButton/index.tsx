@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import type { MouseEvent } from "react";
-import Icon, { FeatherIconNameType } from "../Icon";
+import type { FeatherIconNameType } from "../Icon";
+import Icon from "../Icon";
 
 interface Props {
   name: FeatherIconNameType;

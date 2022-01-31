@@ -1,4 +1,5 @@
-import { HTMLAttributes, useState, FocusEvent } from "react";
+import type { HTMLAttributes, FocusEvent } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Label, Text } from "@components/base";

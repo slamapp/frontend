@@ -3,6 +3,7 @@
   "extends": [
     "next/core-web-vitals",
     "airbnb-base",
+    "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "prettier"
@@ -18,6 +19,7 @@
     "no-else-return": "off",
     "arrow-body-style": "off",
     "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/consistent-type-imports": "error",
     "no-nested-ternary": "off",
     "no-param-reassign": "off",
     "class-methods-use-this": "off",
