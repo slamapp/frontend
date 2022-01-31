@@ -140,10 +140,7 @@ const ReservationProvider = ({ children }: Props) => {
         type: "SET_TIME_INDEX",
         payload: {
           timeIndex,
-          user: {
-            user: currentUser,
-            avatarImgSrc: currentUser.profileImageUrl,
-          },
+          user: currentUser,
         },
       });
     },

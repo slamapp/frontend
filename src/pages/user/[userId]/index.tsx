@@ -17,24 +17,24 @@ import {
   ProfileFavoritesListItem,
   BasketballLoading,
 } from "@components/domain";
-import { ProficiencyKeyUnion, PositionKeyUnion } from "@domainTypes/.";
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
 } from "@utils/userInfo";
 import Custom404 from "@pages/404";
 import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
+import { APIUser } from "@domainTypes/tobe/user";
+import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 
-type ResponseUserProfile = {
+interface ResponseUserProfile
+  extends Pick<
+    APIUser,
+    "nickname" | "description" | "profileImage" | "proficiency" | "positions"
+  > {
   userId: number;
-  nickname: string;
   followerCount: number;
   followingCount: number;
-  profileImage: string;
-  description: string;
-  proficiency: ProficiencyKeyUnion;
-  positions: PositionKeyUnion[];
-};
+}
 
 const User: NextPage = UtilRoute("private", () => {
   const {
@@ -175,7 +175,10 @@ const User: NextPage = UtilRoute("private", () => {
         isBackgroundTransparent={navigationProps.isTopTransparent}
       >
         <MainInfoArea>
-          <Avatar src={profileImage} shape="circle" />
+          <Avatar
+            src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
+            shape="circle"
+          />
           <StatBar>
             <div>
               <Link href={`/user/${userId}/following`}>

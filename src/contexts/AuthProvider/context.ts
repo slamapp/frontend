@@ -1,23 +1,35 @@
-import { Notification, EditableUserProfile } from "@domainTypes/.";
+import { APICourt } from "@domainTypes/tobe/court";
+import { APIFavorite } from "@domainTypes/tobe/favorite";
+import { APINotification } from "@domainTypes/tobe/notification";
+import { APIUser } from "@domainTypes/tobe/user";
 import { createContext } from "react";
 import { DataProps } from "./reducer";
 
 export interface ContextProps {
   authProps: DataProps;
-  setCurrentUser: (data: any) => void;
-  getCurrentUser: any;
+
+  setCurrentUser: (data: {
+    user: APIUser;
+    notifications: APINotification[];
+  }) => void;
+  getCurrentUser: () => Promise<void>;
   logout: () => void;
-  updateMyProfile: (editedUserProfile: EditableUserProfile) => Promise<void>;
+  updateMyProfile: (
+    editedUserProfile: Pick<
+      APIUser,
+      "nickname" | "description" | "proficiency" | "positions"
+    >
+  ) => Promise<void>;
   updateMyProfileImage: (editedProfileImageFile: File) => Promise<void>;
   deleteMyProfileImage: () => Promise<void>;
-  createFavorite: (courtId: number) => void;
-  deleteFavorite: (favoriteId: number) => void;
-  unshiftNotification: (notification: Notification) => void;
-  getMyFavorites: () => void;
-  getMyReservations: () => void;
-  readAllNotifications: () => void;
-  getMoreNotifications: () => void;
-  authProviderInit: () => void;
+  createFavorite: (courtId: APICourt["id"]) => Promise<void>;
+  deleteFavorite: (favoriteId: APIFavorite["id"]) => Promise<void>;
+  unshiftNotification: (notification: APINotification) => void;
+  getMyFavorites: () => Promise<void>;
+  getMyReservations: () => Promise<void>;
+  readAllNotifications: () => Promise<void>;
+  getMoreNotifications: () => Promise<void>;
+  authProviderInit: () => Promise<void>;
 }
 
 const Context = createContext<ContextProps>({} as ContextProps);

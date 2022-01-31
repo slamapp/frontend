@@ -2,9 +2,9 @@ import { Role, PositionKey, ProficiencyKey } from "@enums/.";
 import type { APICommon } from "./common";
 
 export interface APIUser extends APICommon {
-  description: string;
+  description: string | null;
   nickname: string;
-  profileImage: string;
+  profileImage: string | null;
   role: Role;
   positions: PositionKey[];
   proficiency: ProficiencyKey;

@@ -10,16 +10,27 @@ import {
   ProficiencyPicker,
   ValidationNoticeBar,
 } from "@components/domain";
-import { PositionKeyUnion, ProficiencyKeyUnion } from "@domainTypes/.";
+
 import { appendImageFileToFormData } from "@utils/.";
+import { APIUser } from "@domainTypes/tobe/user";
+import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 import LeadToLoginModal from "../LeadToLoginModal";
 
-type ResponseUserProfile = {
-  nickname: string;
-  description: string | null;
-  proficiency: ProficiencyKeyUnion;
-  positions: PositionKeyUnion[];
-};
+interface Props
+  extends Pick<
+    APIUser,
+    "nickname" | "profileImage" | "description" | "proficiency" | "positions"
+  > {
+  onSubmit: any;
+  handleDeleteProfileImage: any;
+  lengthLimit: any;
+  selectedProficiency: any;
+  selectedPositions: any;
+  setSelectedProficiency: any;
+  setSelectedPositions: any;
+  handleChangePositions: any;
+  handleChangeProficiency: any;
+}
 
 const ProfileForm = ({
   nickname,
@@ -36,7 +47,7 @@ const ProfileForm = ({
   setSelectedPositions,
   handleChangePositions,
   handleChangeProficiency,
-}: any) => {
+}: Props) => {
   // TODO: 리팩토링
 
   const router = useRouter();
@@ -54,7 +65,7 @@ const ProfileForm = ({
   }, []);
 
   const { values, errors, isLoading, handleChange, handleSubmit } = useForm<
-    ResponseUserProfile,
+    Pick<APIUser, "nickname" | "description" | "proficiency" | "positions">,
     HTMLButtonElement
   >({
     initialValues: {
@@ -83,7 +94,9 @@ const ProfileForm = ({
       }
     },
     validate: ({ nickname, description }) => {
-      const errors: Error<ResponseUserProfile> = {};
+      const errors: Error<
+        Pick<APIUser, "nickname" | "description" | "proficiency" | "positions">
+      > = {};
 
       if (!nickname) {
         errors.nickname = "닉네임은 비워둘 수 없습니다.";
@@ -118,7 +131,7 @@ const ProfileForm = ({
               {(file: File, fileSrc: string) => (
                 <Avatar
                   isEdit
-                  src={fileSrc || profileImage}
+                  src={(fileSrc || profileImage) ?? DEFAULT_PROFILE_IMAGE_URL}
                   shape="circle"
                   __TYPE="Avatar"
                 />

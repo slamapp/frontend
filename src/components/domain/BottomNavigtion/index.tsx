@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import React from "react";
 import { useAuthContext } from "@contexts/hooks";
 import { pageType } from "@contexts/NavigationProvider/actionTypes";
-import { roles } from "@domainTypes/.";
 import NavIcon from "./NavIcon";
 
 const BottomNavigation = () => {
@@ -50,7 +49,7 @@ const BottomNavigation = () => {
           iconName={"users"}
           pageType={pageType.ACTIVITY}
         /> */}
-        {role === roles.ADMIN && (
+        {role === "ADMIN" && (
           <NavIcon
             href={"/admin/newcourts"}
             iconName={"check-square"}

@@ -1,8 +1,11 @@
 import { ChangeEvent } from "react";
 import { Radio } from "@components/base";
-import { PositionValueUnion, PositionKeyUnion } from "@domainTypes/.";
+import { PositionKey, PositionValue } from "@enums/positionType";
 
-const positionItems: { value: PositionKeyUnion; text: PositionValueUnion }[] = [
+const positionItems: {
+  value: PositionKey;
+  text: PositionValue;
+}[] = [
   {
     value: "PF",
     text: "파워포워드",
@@ -30,7 +33,7 @@ const positionItems: { value: PositionKeyUnion; text: PositionValueUnion }[] = [
 ];
 
 interface Props {
-  selectedValue: PositionKeyUnion[];
+  selectedValue: PositionKey[];
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
