@@ -6,6 +6,7 @@ import {
   MapProvider,
   ReservationProvider,
 } from ".";
+import AnalyticsProvider from "./AnalyticsProvider";
 
 interface Props {
   children: ReactNode;
@@ -17,7 +18,9 @@ const Providers = ({ children }: Props) => {
       <SocketProvider>
         <NavigationProvider>
           <ReservationProvider>
-            <MapProvider>{children}</MapProvider>
+            <MapProvider>
+              <AnalyticsProvider>{children}</AnalyticsProvider>
+            </MapProvider>
           </ReservationProvider>
         </NavigationProvider>
       </SocketProvider>
