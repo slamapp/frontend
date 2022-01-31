@@ -1,6 +1,5 @@
 import type { Favorite, Reservation } from "@domainTypes/.";
-import { APINotification } from "@domainTypes/tobe/notification";
-import { APIUser } from "@domainTypes/tobe/user";
+import type { APINotification, APIUser } from "@domainTypes/tobe";
 import type { Reducer } from "react";
 import type { ActionUnion } from "./actionTypes";
 

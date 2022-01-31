@@ -1,20 +1,21 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import styled from "@emotion/styled";
-import dayjs, { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 import { useLocalToken } from "@hooks/domain";
 import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
 import { Button, ModalSheet, Spacer, Text } from "@components/base";
+import type { SlotKeyUnion } from "@components/domain";
 import {
   DatePicker,
   SlotPicker,
   BasketballMarker,
   Map,
   slotItems,
-  SlotKeyUnion,
   CourtItem,
   LeadToLoginModal,
   BasketballLoading,

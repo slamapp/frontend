@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { v4 } from "uuid";
 
 import ToastItem from "./ToastItem";
-import { CreateToast } from "./types";
+import type { CreateToast } from "./types";
 
 interface Toast {
   id: string;

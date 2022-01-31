@@ -1,8 +1,9 @@
-import { useRef, FormEvent, useEffect, useState } from "react";
+import type { FormEvent } from "react";
+import { useRef, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-
-import useForm, { Error } from "@hooks/useForm";
+import type { Error } from "@hooks/useForm";
+import useForm from "@hooks/useForm";
 import { Avatar, Spacer, Upload, Button, Label, Input } from "@components/base";
 import {
   BottomFixedButton,
@@ -10,9 +11,8 @@ import {
   ProficiencyPicker,
   ValidationNoticeBar,
 } from "@components/domain";
-
+import type { APIUser } from "@domainTypes/tobe";
 import { appendImageFileToFormData } from "@utils/.";
-import { APIUser } from "@domainTypes/tobe/user";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 import LeadToLoginModal from "../LeadToLoginModal";
 

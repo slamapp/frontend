@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { EventKeyValue } from "./EventKeyValueType";
+import type { EventKeyValue } from "./EventKeyValueType";
 
 type KeyEvent = "keydown" | "keyup";
 type Handler = () => void;

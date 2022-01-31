@@ -1,12 +1,7 @@
-import { Reducer } from "react";
+import type { Reducer } from "react";
 
-import {
-  ActionTypeUnion,
-  navigationType,
-  pageType,
-  PageTypeUnion,
-  eventType,
-} from "./actionTypes";
+import type { ActionTypeUnion, PageTypeUnion } from "./actionTypes";
+import { navigationType, pageType, eventType } from "./actionTypes";
 
 export interface DataProps {
   isTopTransparent: boolean;

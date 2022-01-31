@@ -1,9 +1,11 @@
-import { APICourt } from "@domainTypes/tobe/court";
-import { APIFavorite } from "@domainTypes/tobe/favorite";
-import { APINotification } from "@domainTypes/tobe/notification";
-import { APIUser } from "@domainTypes/tobe/user";
 import { createContext } from "react";
-import { DataProps } from "./reducer";
+import type {
+  APICourt,
+  APIFavorite,
+  APINotification,
+  APIUser,
+} from "@domainTypes/tobe";
+import type { DataProps } from "./reducer";
 
 export interface ContextProps {
   authProps: DataProps;

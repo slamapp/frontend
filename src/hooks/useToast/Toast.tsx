@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import ToastManager from "./ToastManager";
-import { CreateToast } from "./types";
+import type { CreateToast } from "./types";
 
 class Toast {
   portal: HTMLElement | null = null;

@@ -1,6 +1,6 @@
+import type { ReactNode } from "react";
+import { useReducer, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
-import { useReducer, ReactNode, useEffect, useCallback } from "react";
-
 import { useLocalToken } from "@hooks/domain";
 import {
   reservationApi,
@@ -8,12 +8,10 @@ import {
   userApi,
   notificationApi,
 } from "@service/.";
-
-import type { APIUser } from "@domainTypes/tobe/user";
-import { APINotification } from "@domainTypes/tobe/notification";
-import Context, { ContextProps } from "./context";
+import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import AuthLoading from "./AuthLoading";
+import type { ContextProps } from "./context";
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000;
 interface Props {

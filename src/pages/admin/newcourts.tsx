@@ -1,9 +1,10 @@
 import { useNavigationContext } from "@contexts/hooks";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Spacer, Tab } from "@components/base";
 import styled from "@emotion/styled";
-import { NewCourtItem, NewCourt, Modal } from "@components/domain";
+import type { NewCourt } from "@components/domain";
+import { NewCourtItem, Modal } from "@components/domain";
 import managementApi from "@service/managementApi";
 
 type Status = "READY" | "DONE";

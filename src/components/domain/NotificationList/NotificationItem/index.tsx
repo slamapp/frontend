@@ -2,12 +2,13 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { LinkStrong, Spacer } from "@components/base";
-import { CourtItem, LinkAvatar } from "@components/domain";
 import "dayjs/locale/ko";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { APINotification } from "@domainTypes/tobe/notification";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
+import { CourtItem, LinkAvatar } from "@components/domain";
+
+import type { APINotification } from "@domainTypes/tobe";
 
 dayjs.extend(relativeTime);
 
@@ -52,58 +53,55 @@ export default NotificationItem;
 
 const getNotificationMarkUp = ({
   date,
-  notification: { type, loudspeaker, follow },
+  notification,
 }: {
   date: Date;
   notification: APINotification;
 }) => {
   const dayFormatted = dayjs(date).format("YYYY-MM-DD");
 
-  switch (type) {
-    case "FOLLOWING":
+  switch (notification.type) {
+    case "FOLLOW": {
+      const { sender } = notification.follow;
+
       return (
         <>
           <LinkAvatar
-            userId={follow!.sender.id}
-            imageUrl={follow!.sender.profileImage || DEFAULT_PROFILE_IMAGE_URL}
+            userId={sender.id}
+            imageUrl={sender.profileImage || DEFAULT_PROFILE_IMAGE_URL}
           />
           <div>
-            <LinkStrong href={`user/${follow!.sender.id}`}>
-              {follow!.sender.nickname}
+            <LinkStrong href={`user/${sender.id}`}>
+              {sender.nickname}
             </LinkStrong>
             님이 팔로우 했습니다
           </div>
         </>
       );
-      break;
+    }
+    case "LOUDSPEAKER": {
+      const { court } = notification.loudspeaker;
 
-    case "LOUDSPEAKER":
       return (
-        loudspeaker && (
-          <>
-            <CourtItem.KakaoMapLink
-              latitude={loudspeaker.court.latitude}
-              longitude={loudspeaker.court.longitude}
-              courtName={loudspeaker.court.name}
-              type="findRoad"
-            />
-
+        <>
+          <CourtItem.KakaoMapLink
+            latitude={court.latitude}
+            longitude={court.longitude}
+            courtName={court.name}
+            type="findRoad"
+          />
+          <div>
             <div>
-              <div>
-                <LinkStrong
-                  href={`courts/${loudspeaker.court.id}/${dayFormatted}`}
-                >
-                  {`${loudspeaker.court.name} (농구 골대 ${loudspeaker.court.basketCount} 개)`}
-                </LinkStrong>
-                에서 함께 농구할 사람을 급하게 구하고 있습니다
-              </div>
-
-              <div>{loudspeaker.court.image}</div>
+              <LinkStrong href={`courts/${court.id}/${dayFormatted}`}>
+                {`${court.name} (농구 골대 ${court.basketCount} 개)`}
+              </LinkStrong>
+              에서 함께 농구할 사람을 급하게 구하고 있습니다
             </div>
-          </>
-        )
+            <div>{court.image}</div>
+          </div>
+        </>
       );
-      break;
+    }
 
     default:
       break;
@@ -116,10 +114,10 @@ const NotificationItemContainer = styled.div<{ type: APINotification["type"] }>`
   padding: 12px;
   margin-bottom: 12px;
   ${({ theme, type }) => css`
-    background: ${type === "FOLLOWING"
+    background: ${type === "FOLLOW"
       ? theme.colors.white
       : theme.colors.activeGradientColor};
-    color: ${type === "FOLLOWING" ? theme.colors.gray900 : theme.colors.white};
+    color: ${type === "FOLLOW" ? theme.colors.gray900 : theme.colors.white};
     border-radius: ${theme.borderRadiuses.sm};
     box-shadow: ${theme.boxShadows.sm};
   `}

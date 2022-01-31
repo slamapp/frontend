@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import loadSdk from "./loadSdk";
-import { ExtendedWindow, Props } from "./types";
+import type { ExtendedWindow, Props } from "./types";
 
 declare let window: ExtendedWindow;
 

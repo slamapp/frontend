@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, CSSProperties } from "react";
-import type { ReactNode } from "react";
+import React, { useEffect, useRef } from "react";
+import type { ReactNode, CSSProperties } from "react";
 import { DEFAULT_POSITION } from "@utils/geolocation";
 import { useMapContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
-import { Coord } from "@domainTypes/.";
+import type { Coord } from "@domainTypes/.";
 import useKakaoMapEvent from "./useKakaoMapEvent";
 import ZoomButton from "./ZoomButton";
 import CurrentLocationButton from "./CurrentLocationButton";

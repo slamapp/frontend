@@ -1,9 +1,9 @@
 import { useAuthContext } from "@contexts/hooks";
-import { APINotification } from "@domainTypes/tobe/notification";
-import { CompatClient } from "@stomp/stompjs";
+import type { APINotification } from "@domainTypes/tobe";
+import type { CompatClient } from "@stomp/stompjs";
 import { useCallback, useEffect, useState } from "react";
 import { socketApi } from "service";
-import { SendAuth, UseStomp } from "./type";
+import type { SendAuth, UseStomp } from "./type";
 import { subscribe } from "./utils";
 
 const useStomp: UseStomp = (token: string) => {

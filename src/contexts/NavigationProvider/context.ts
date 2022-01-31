@@ -1,7 +1,10 @@
-import { createContext, ReactChild } from "react";
-import { PageType, pageType } from "./actionTypes";
-import { DataProps, initialData } from "./reducer";
-import { Events, GetPageType } from "./types";
+import type { ReactChild } from "react";
+import { createContext } from "react";
+import type { PageType } from "./actionTypes";
+import { pageType } from "./actionTypes";
+import type { DataProps } from "./reducer";
+import { initialData } from "./reducer";
+import type { Events, GetPageType } from "./types";
 
 export interface ContextProps {
   navigationProps: DataProps;

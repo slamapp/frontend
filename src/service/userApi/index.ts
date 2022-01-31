@@ -1,5 +1,5 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { UserApi } from "./type";
+import type { UserApi } from "./type";
 
 const userAPI: UserApi = {
   getUserData: () => authRequest.get("/users/me"),

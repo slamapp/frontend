@@ -23,7 +23,7 @@ import {
 } from "@utils/userInfo";
 import Custom404 from "@pages/404";
 import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
-import { APIUser } from "@domainTypes/tobe/user";
+import type { APIUser } from "@domainTypes/tobe";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 
 interface ResponseUserProfile

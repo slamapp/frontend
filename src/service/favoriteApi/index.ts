@@ -1,5 +1,5 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { FavoriteApi } from "./type";
+import type { FavoriteApi } from "./type";
 
 const favoriteAPI: FavoriteApi = {
   getMyFavorites: () => authRequest.get("/favorites"),

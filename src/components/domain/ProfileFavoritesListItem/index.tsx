@@ -1,6 +1,6 @@
-import React, { HTMLAttributes } from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import type { ReactNode } from "react";
+import type { ReactNode, HTMLAttributes } from "react";
 import { Icon, Button, Spacer, Text } from "@components/base";
 import Link from "next/link";
 

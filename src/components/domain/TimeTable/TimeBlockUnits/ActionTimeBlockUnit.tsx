@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import { getTimezoneDateStringFromDate } from "@utils/date";
 import * as S from "./style";
-import { ActionTimeBlockUnitProps } from "../type";
+import type { ActionTimeBlockUnitProps } from "../type";
 import Hour from "./Hour";
 
 const getNextDay = (date: string) =>

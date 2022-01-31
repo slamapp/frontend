@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import Flicking from "@egjs/react-flicking";
 import styled from "@emotion/styled";
-import { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
 import DateItem from "./DateItem";
 
 const DAY_RANGE = 14;

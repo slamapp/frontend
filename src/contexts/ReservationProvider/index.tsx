@@ -2,7 +2,8 @@ import { useAuthContext } from "@contexts/hooks";
 import reservationApi from "@service/reservationApi";
 import { getISOString } from "@utils/date";
 import { useRouter } from "next/router";
-import { ReactNode, useCallback, useReducer } from "react";
+import type { ReactNode } from "react";
+import { useCallback, useReducer } from "react";
 import { actionTypes } from "./actionTypes";
 
 import ReservationContext from "./context";

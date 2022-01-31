@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import { Radio } from "@components/base";
 import type { SlotValueUnion, SlotKeyUnion } from "./types";
 

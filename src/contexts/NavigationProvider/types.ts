@@ -1,4 +1,4 @@
-import { PageType, PageTypeUnion } from "./actionTypes";
+import type { PageType, PageTypeUnion } from "./actionTypes";
 
 export interface Events {
   back: null | ((...args: any[]) => void | Promise<any>);

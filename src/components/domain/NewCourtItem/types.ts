@@ -1,4 +1,4 @@
-import { StatusKeyUnion, TextureKeyUnion } from "@domainTypes/.";
+import type { StatusKeyUnion, TextureKeyUnion } from "@domainTypes/.";
 
 export interface NewCourt {
   newCourtId: number;

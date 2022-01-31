@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import UtilRoute from "UtilRoute";
 import styled from "@emotion/styled";
 import { Button, Spacer } from "@components/base";

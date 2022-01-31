@@ -1,11 +1,12 @@
-import { Reducer } from "react";
+import type { Reducer } from "react";
 import {
   TIME_TABLE_ROWS,
   getTimezoneIndexFromDatetime,
   MAX_RESERVATION_TIME_BLOCK_UNIT,
 } from "@utils/date";
 import dayjs from "dayjs";
-import { actionTypes, ActionTypeUnion } from "./actionTypes";
+import type { ActionTypeUnion } from "./actionTypes";
+import { actionTypes } from "./actionTypes";
 
 export type ReducerAction = {
   type: ActionTypeUnion;

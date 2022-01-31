@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 

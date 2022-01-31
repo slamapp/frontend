@@ -1,4 +1,4 @@
-import { ApiPromise } from "@service/type";
+import type { ApiPromise } from "@service/type";
 
 export interface FavoriteApi {
   getMyFavorites: () => ApiPromise;

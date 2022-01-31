@@ -1,4 +1,5 @@
-import React, { ReactNode, useRef } from "react";
+import type { ReactNode } from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import { BottomNavigation, TopNavigation } from "@components/domain";
 import { useNavigationContext } from "@contexts/hooks";

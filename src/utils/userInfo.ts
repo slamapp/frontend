@@ -1,5 +1,5 @@
-import { PositionKey, PositionValue } from "@enums/positionType";
-import { ProficiencyKey, ProficiencyValue } from "@enums/proficiencyType";
+import type { PositionKey, PositionValue } from "@enums/positionType";
+import type { ProficiencyKey, ProficiencyValue } from "@enums/proficiencyType";
 
 const getKoreanProficiency = (englishProficiency: ProficiencyKey) => {
   switch (englishProficiency) {

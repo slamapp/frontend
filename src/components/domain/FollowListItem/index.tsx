@@ -1,6 +1,6 @@
-import React, { CSSProperties } from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import type { ReactNode } from "react";
+import type { ReactNode, CSSProperties } from "react";
 import { Button, Spacer, Text } from "@components/base";
 import { LinkAvatar } from "@components/domain";
 

@@ -1,7 +1,7 @@
 import { Icon } from "@components/base";
-import { FeatherIconNameType } from "@components/base/Icon";
+import type { FeatherIconNameType } from "@components/base/Icon";
 import { useNavigationContext } from "@contexts/hooks";
-import { PageTypeUnion } from "@contexts/NavigationProvider/actionTypes";
+import type { PageTypeUnion } from "@contexts/NavigationProvider/actionTypes";
 import Link from "next/link";
 
 interface Props {

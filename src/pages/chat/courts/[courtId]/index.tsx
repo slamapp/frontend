@@ -1,5 +1,5 @@
 import { useNavigationContext } from "@contexts/hooks";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import React from "react";
 import UtilRoute from "UtilRoute";
 

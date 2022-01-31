@@ -1,6 +1,7 @@
 import { useLocalToken } from "@hooks/domain";
 import { useRouter } from "next/router";
-import { ComponentType, Fragment, ReactNode, useEffect, useState } from "react";
+import type { ComponentType, ReactNode } from "react";
+import { Fragment, useEffect } from "react";
 
 const routeOption = {
   private: "private",

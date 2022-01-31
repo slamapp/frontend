@@ -1,4 +1,5 @@
-import { MouseEvent, useState } from "react";
+import type { MouseEvent } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { css } from "@emotion/react";

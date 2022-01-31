@@ -1,5 +1,5 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { ManagementApi } from "./type";
+import type { ManagementApi } from "./type";
 
 const managementAPI: ManagementApi = {
   getNewCourts: (

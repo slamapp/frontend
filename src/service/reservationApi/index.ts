@@ -1,5 +1,5 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
-import { ReservationApi } from "./type";
+import type { ReservationApi } from "./type";
 
 interface IReservation {
   courtId: number;

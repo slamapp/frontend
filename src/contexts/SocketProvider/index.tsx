@@ -1,12 +1,8 @@
 import styled from "@emotion/styled";
 import { useLocalToken } from "@hooks/domain";
-import { ReactNode } from "react";
-import {
-  Context,
-  SendFollow,
-  SendFollowCancel,
-  SendLoudSpeaker,
-} from "./context";
+import type { ReactNode } from "react";
+import type { SendFollow, SendFollowCancel, SendLoudSpeaker } from "./context";
+import { Context } from "./context";
 import useStomp from "./useStomp";
 
 interface Props {

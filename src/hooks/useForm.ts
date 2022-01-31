@@ -1,4 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 
 export type Error<T> = { [P in keyof T]?: string };
 

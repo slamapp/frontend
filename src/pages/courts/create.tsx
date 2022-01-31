@@ -15,11 +15,12 @@ import {
   LeadToLoginModal,
   BasketballLoading,
 } from "@components/domain";
-import { useForm, Error } from "@hooks/.";
+import type { Error } from "@hooks/.";
+import { useForm } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { courtApi } from "@service/.";
-import { Coord } from "@domainTypes/.";
+import type { Coord } from "@domainTypes/.";
 
 interface Values {
   longitude?: number;

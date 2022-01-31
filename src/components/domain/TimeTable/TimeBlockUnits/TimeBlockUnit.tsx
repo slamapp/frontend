@@ -7,7 +7,7 @@ import {
 } from "@utils/date";
 import { useReservationContext } from "@contexts/hooks";
 import * as S from "./style";
-import { TimeBlockUnitProps, Status } from "../type";
+import type { TimeBlockUnitProps, Status } from "../type";
 import Hour from "./Hour";
 
 const getTimeSlotFromIndex = (index: number) =>

@@ -1,5 +1,5 @@
-import { APINotification } from "@domainTypes/tobe/notification";
-import { ApiPromise } from "@service/type";
+import type { APINotification } from "@domainTypes/tobe";
+import type { ApiPromise } from "@service/type";
 
 export interface NotificationApi {
   getNotifications: (param: {

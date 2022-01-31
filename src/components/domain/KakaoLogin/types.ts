@@ -1,4 +1,4 @@
-import { CSSProperties, ReactChild } from "react";
+import type { CSSProperties, ReactChild } from "react";
 
 export interface Props {
   token: string;

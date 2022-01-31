@@ -1,15 +1,14 @@
-import { useState, useCallback, ChangeEvent, useEffect } from "react";
-import { NextPage } from "next";
+import type { ChangeEvent } from "react";
+import { useState, useCallback, useEffect } from "react";
+import type { NextPage } from "next";
 import Head from "next/head";
-
 import UtilRoute from "UtilRoute";
 import userApi from "@service/userApi";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
 import { BasketballLoading } from "@components/domain";
 import ProfileForm from "@components/domain/ProfileForm/index";
-import type { ProficiencyKey } from "@enums/proficiencyType";
-import type { PositionKey } from "@enums/positionType";
-import { APIUser } from "@domainTypes/tobe/user";
+import type { PositionKey, ProficiencyKey } from "@enums/.";
+import type { APIUser } from "@domainTypes/tobe";
 
 const UserEditPage: NextPage = UtilRoute("private", () => {
   const { useMountPage } = useNavigationContext();

@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import React, { useRef, useEffect, useMemo } from "react";
 import UtilRoute from "UtilRoute";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
