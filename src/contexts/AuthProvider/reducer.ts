@@ -1,4 +1,4 @@
-import type { Follow, Favorite, Reservation } from "@domainTypes/.";
+import type { Favorite, Reservation } from "@domainTypes/.";
 import { APINotification } from "@domainTypes/tobe/notification";
 import { APIUser } from "@domainTypes/tobe/user";
 import type { Reducer } from "react";
@@ -13,8 +13,6 @@ export interface DataProps {
     description: APIUser["description"] | null;
     nickname: APIUser["nickname"] | null;
     favorites: Favorite[];
-    followers: Follow[];
-    following: Follow[];
     notifications: APINotification[];
     notificationLastId?: APINotification["id"] | null;
     reservations: Reservation[];
@@ -31,8 +29,6 @@ export const initialData = {
     description: null,
     nickname: null,
     favorites: [],
-    followers: [],
-    following: [],
     notifications: [],
     notificationLastId: undefined,
     reservations: [],
