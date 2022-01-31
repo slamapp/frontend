@@ -1,27 +1,29 @@
 import React from "react";
 import styled from "@emotion/styled";
-import type { ReactNode, CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { Button, Spacer, Text } from "@components/base";
-import { LinkAvatar } from "@components/domain";
+import { Profile } from "@components/domain";
+import type { APIUser } from "@domainTypes/tobe";
+import { useSocketContext } from "@contexts/hooks";
 
 interface Props {
-  children: ReactNode;
   className?: string;
   style?: CSSProperties;
-  src: string;
   isFollowed?: boolean;
-  userId: number;
+  user: Pick<APIUser, "id" | "nickname" | "profileImage">;
 }
 // 아바타 + 이름 + 버튼
 
-const FollowListItem: React.FC<Props> = ({
-  children,
+const UserListItem: React.FC<Props> = ({
   className,
   style,
-  src,
   isFollowed,
-  userId,
+  user,
 }) => {
+  const { sendFollow, sendFollowCancel } = useSocketContext();
+
+  const { id, nickname, profileImage } = user;
+
   return (
     <ListItem className={className} style={style}>
       <Spacer
@@ -30,22 +32,25 @@ const FollowListItem: React.FC<Props> = ({
           alignItems: "center",
         }}
       >
-        <LinkAvatar size={36} imageUrl={src} userId={userId} />
+        <Profile profileImage={profileImage} userId={id} nickname={nickname} />
         <Text size="base" strong>
-          {children}
+          {nickname}
         </Text>
       </Spacer>
       <div>
         {isFollowed === undefined ? (
           <></>
         ) : isFollowed ? (
-          // TODO: 컨텍스트 함수로 대체
-          <Button onClick={() => {}} secondary>
+          <Button
+            onClick={() => sendFollowCancel({ receiverId: user.id })}
+            secondary
+          >
             팔로잉
           </Button>
         ) : (
-          // TODO: 컨텍스트 함수로 대체
-          <Button onClick={() => {}}>팔로우</Button>
+          <Button onClick={() => sendFollow({ receiverId: user.id })}>
+            팔로우
+          </Button>
         )}
       </div>
     </ListItem>
@@ -59,4 +64,4 @@ const ListItem = styled.div`
   padding: 8px 0px;
 `;
 
-export default FollowListItem;
+export default UserListItem;
