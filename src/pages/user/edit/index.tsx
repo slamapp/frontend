@@ -36,7 +36,17 @@ const UserEditPage: NextPage = UtilRoute("private", () => {
   const getMyProfile = useCallback(async () => {
     try {
       const { data } = await userApi.getMyProfile();
-      setPageUserInfo(data);
+
+      const { description, nickname, positions, proficiency, profileImage } =
+        data.user;
+
+      setPageUserInfo({
+        description,
+        nickname,
+        positions,
+        proficiency,
+        profileImage,
+      });
     } catch (error) {
       console.error(error);
     }
