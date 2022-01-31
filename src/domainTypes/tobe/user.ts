@@ -1,5 +1,5 @@
-import { Role, PositionKey, ProficiencyKey } from "@enums/.";
-import type { APICommon } from "./common";
+import type { Role, PositionKey, ProficiencyKey } from "@enums/.";
+import type { APICommon } from "@domainTypes/tobe";
 
 export interface APIUser extends APICommon {
   description: string | null;
@@ -10,8 +10,3 @@ export interface APIUser extends APICommon {
   proficiency: ProficiencyKey;
   email: string;
 }
-
-export type EditableUserProfile = Pick<
-  APIUser,
-  "nickname" | "description" | "proficiency" | "positions"
->;

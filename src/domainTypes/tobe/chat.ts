@@ -1,7 +1,10 @@
-import { ChatType } from "@enums/.";
-import type { OmitAt, APISend } from "./common";
-import type { APILoudspeaker } from "./loudspeaker";
-import type { APIChatroom } from "./chatroom";
+import type { ChatType } from "@enums/.";
+import type {
+  APISend,
+  APILoudspeaker,
+  APIChatroom,
+  OmitAt,
+} from "@domainTypes/tobe";
 
 export interface APIChat extends APISend {
   text: ChatText;

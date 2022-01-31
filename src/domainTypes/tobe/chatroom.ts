@@ -1,8 +1,5 @@
-import { ChatroomAdminType, ChatroomType } from "@enums/.";
-import type { APIChat } from "./chat";
-import type { APICommon } from "./common";
-import type { APICourt } from "./court";
-import type { APIUser } from "./user";
+import type { APICommon, APICourt, APIUser, APIChat } from "@domainTypes/tobe";
+import type { ChatroomAdminType, ChatroomType } from "@enums/.";
 
 export interface APIChatroom extends APICommon<string> {
   admins: Admin[];
@@ -13,6 +10,6 @@ export interface APIChatroom extends APICommon<string> {
 }
 
 interface Admin {
-  id: Pick<APIUser, "id">;
+  id: APIUser["id"];
   type: ChatroomAdminType;
 }

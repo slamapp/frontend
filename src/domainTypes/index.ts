@@ -1,7 +1,6 @@
 export { textures } from "./courts";
 export { status } from "./newCourts";
 
-export type { Follow } from "./follows";
 export type { Favorite } from "./favorites";
 export type { Reservation } from "./reservations";
 export type { Coord } from "./map";

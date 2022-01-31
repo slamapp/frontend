@@ -1,11 +1,11 @@
-import type { APIUser } from "./user";
+import type { APIUser } from "@domainTypes/tobe";
 
-export interface APISend<I = string> extends APICommon<I> {
+export interface APISend<Id = string> extends APICommon<Id> {
   sender: APIUser;
 }
 
-export interface APICommon<I = number> {
-  id: I;
+export interface APICommon<Id = number> {
+  id: Id;
   createdAt: ISOString;
   updatedAt: ISOString;
 }

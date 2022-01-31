@@ -1,5 +1,5 @@
-import { TextureKey } from "@enums/.";
-import type { APICommon } from "./common";
+import type { APICommon } from "@domainTypes/tobe";
+import type { TextureKey } from "@enums/.";
 
 export interface APICourt extends APICommon {
   name: string;
