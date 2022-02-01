@@ -3,7 +3,6 @@ import { useCallback } from "react";
 
 import { IconButton } from "@components/base";
 import type { APIChatroom, APICourt, APIUser, OmitAt } from "@domainTypes/tobe";
-import { useRouter } from "next/router";
 
 interface Props<Type, Payload> {
   type: Type;
@@ -24,46 +23,48 @@ const ShareButton: FC<ShareButtonProps> = (props) => {
       return alert("공유하기 실패");
     }
 
-    const { Kakao, location } = window;
-    const requestUrl = `http://${location.hostname}${
-      location.port ? `:${location.port}` : ""
-    }/`;
+    const { Kakao } = window;
     const settings = {
-      requestUrl,
+      requestUrl: "https://slams.app",
       callback: () => {},
       templateId: 69947,
-      templateArgs: { name: "공유하기", url: requestUrl },
+      templateArgs: { path: "", courtName: "" },
       installTalk: true,
     };
 
     switch (props.type) {
       case "SHARE_COURT": {
         const { id, name } = props.payload;
-        settings.requestUrl += `courts?courtId=${id}`;
         settings.callback = () => {
-          alert(`코트 정보(${settings.requestUrl}) 공유에 성공했어요🥳`);
+          alert(`농구장 공유에 성공했어요🥳`);
         };
         settings.templateArgs = {
-          name: `${name}에서 농구 한판 어때요?🏀`,
-          url: settings.requestUrl,
+          courtName: `${name}`,
+          path: `/courts?courtId=${id}`,
         };
         break;
       }
 
       case "SHARE_CHATROOM": {
         const { id } = props.payload;
-        settings.requestUrl += `chat/${id}`;
         settings.callback = () => {
-          alert(`채팅방 정보(${settings.requestUrl}) 공유에 성공했어요🥳`);
+          alert(`채팅방 공유에 성공했어요🥳`);
+        };
+        settings.templateArgs = {
+          courtName: "채팅방",
+          path: `/chat/${id}`,
         };
         break;
       }
 
       case "SHARE_USER": {
         const { id } = props.payload;
-        settings.requestUrl += `user/${id}`;
         settings.callback = () => {
-          alert(`유저 정보(${settings.requestUrl}) 공유에 성공했어요🥳`);
+          alert(`사용자 공유에 성공했어요🥳`);
+        };
+        settings.templateArgs = {
+          courtName: "사용자",
+          path: `user/${id}`,
         };
         break;
       }
