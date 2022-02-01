@@ -360,7 +360,15 @@ const Courts: NextPage = () => {
             </ReservationCount>
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
-              <CourtItem.ShareButton />
+              <CourtItem.ShareButton
+                type="SHARE_COURT"
+                payload={{
+                  id: selectedCourt.courtId,
+                  latitude: selectedCourt.latitude,
+                  longitude: selectedCourt.longitude,
+                  name: selectedCourt.courtName,
+                }}
+              />
               <CourtItem.ChatLink courtId={selectedCourt.courtId} />
               <CourtItem.KakaoMapLink
                 latitude={selectedCourt.latitude}

@@ -103,7 +103,10 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
-              <CourtItem.ShareButton />
+              <CourtItem.ShareButton
+                type="SHARE_COURT"
+                payload={{ id: courtId, latitude, longitude, name: courtName }}
+              />
               <CourtItem.ChatLink courtId={courtId} />
               <CourtItem.KakaoMapLink
                 latitude={latitude}
