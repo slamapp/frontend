@@ -10,7 +10,7 @@ const BottomNavigation = () => {
   return (
     <Container>
       <Wrapper>
-        {role ? (
+        {role === "ADMIN" || role === "USER" ? (
           <>
             <NavIcon.Favorites />
             <NavIcon.Map />

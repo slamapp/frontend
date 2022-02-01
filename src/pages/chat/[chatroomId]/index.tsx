@@ -1,12 +1,8 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
+import { withRouteGuard } from "@hocs/.";
 import React from "react";
-import { useNavigationContext } from "@contexts/hooks";
-import UtilRoute from "UtilRoute";
 
-const ChatroomPage: NextPage = UtilRoute("private", () => {
-  const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.CHATROOM);
-
+const ChatroomPage: NextPage = withRouteGuard("private", () => {
   return <div>Chatroom Page</div>;
 });
 

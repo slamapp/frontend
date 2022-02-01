@@ -72,7 +72,12 @@ const FavoriteList = ({ isLoading, favorites }: Props) => {
               <CourtItem.Share
                 court={{ id: courtId, latitude, longitude, name: courtName }}
               />
-              <CourtItem.ChatLink courtId={courtId} />
+              <CourtItem.ChatLink
+                chatroomId={
+                  // TODO: Court에 chatroomId 포함시키기
+                  "1"
+                }
+              />
               <CourtItem.KakaoMapLink
                 latitude={latitude}
                 longitude={longitude}
