@@ -50,7 +50,7 @@ const UpcomingReservations = ({
         />
         <CourtItem.ChatLink
           chatroomId={
-            // TODO: chatroomId 필요
+            // TODO: Court에 chatroomId 포함시키기
             "1"
           }
         />
