@@ -361,7 +361,6 @@ const Courts: NextPage = () => {
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
               <CourtItem.ShareButton
-                type="COURT"
                 payload={{
                   id: selectedCourt.courtId,
                   latitude: selectedCourt.latitude,

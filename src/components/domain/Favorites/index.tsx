@@ -31,7 +31,15 @@ const Favorites: NextPage = UtilRoute("private", () => {
   useMountPage((page) => page.FAVORITES);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState<
+    {
+      favoriteId: string;
+      courtName: string;
+      courtId: number;
+      latitude: number;
+      longitude: number;
+    }[]
+  >([]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !window.Kakao.isInitialized()) {
@@ -103,10 +111,7 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
-              <CourtItem.ShareButton
-                type="COURT"
-                payload={{ id: courtId, latitude, longitude, name: courtName }}
-              />
+              <CourtItem.ShareButton id={courtId} name={courtName} />
               <CourtItem.ChatLink courtId={courtId} />
               <CourtItem.KakaoMapLink
                 latitude={latitude}

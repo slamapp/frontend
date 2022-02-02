@@ -45,10 +45,7 @@ const UpcomingReservations = ({
 
       <Actions gap="xs">
         <CourtItem.FavoritesToggle courtId={courtId} />
-        <CourtItem.ShareButton
-          type="COURT"
-          payload={{ id: courtId, latitude, longitude, name: courtName }}
-        />
+        <CourtItem.ShareButton id={courtId} name={courtName} />
         <CourtItem.ChatLink courtId={courtId} />
         <CourtItem.KakaoMapLink
           latitude={latitude}

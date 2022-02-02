@@ -1,10 +1,19 @@
 import type { APICommon, APICourt, APIUser, APIChat } from "@domainTypes/tobe";
 import type { ChatroomAdminType, ChatroomType } from "@enums/.";
 
-export interface APIChatroom extends APICommon<string> {
+export type APIChatroom = APICourtChatroom | APIUsersChatroom;
+
+export interface APICourtChatroom extends APICommon<string> {
   admins: Admin[];
   type: ChatroomType;
-  court?: APICourt;
+  court: APICourt;
+  participants: APIUser[];
+  lastChat: APIChat;
+}
+
+export interface APIUsersChatroom extends APICommon<string> {
+  admins: Admin[];
+  type: ChatroomType;
   participants: APIUser[];
   lastChat: APIChat;
 }

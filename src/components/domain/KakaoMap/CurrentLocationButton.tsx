@@ -3,7 +3,7 @@ import * as S from "./style";
 
 interface Props {
   bottom?: number;
-  onGetCurrentLocation: (e: MouseEvent<HTMLButtonElement>) => void;
+  onGetCurrentLocation: (e?: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const CurrentLocationButton: React.FC<Props> = ({

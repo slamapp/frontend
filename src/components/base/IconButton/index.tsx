@@ -10,7 +10,7 @@ interface Props {
   iconSize?: "sm" | "md" | "lg" | number;
   type?: "button" | "submit";
   iconColor?: string;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e?: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const IconButton = ({
