@@ -1,8 +1,9 @@
-const DEFAULT_MESSAGE_TEMPLATE = 69947;
+const DEFAULT_MESSAGE_TEMPLATE_ID = 69947;
+const DEFAULT_REQUEST_URL = "https://slams.app";
 
 const defaultSettings = {
-  templateId: DEFAULT_MESSAGE_TEMPLATE,
-  requestUrl: "https://slams.app",
+  templateId: DEFAULT_MESSAGE_TEMPLATE_ID,
+  requestUrl: DEFAULT_REQUEST_URL,
   installTalk: true,
 };
 

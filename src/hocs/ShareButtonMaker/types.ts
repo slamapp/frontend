@@ -6,18 +6,13 @@ import type {
   OmitAt,
 } from "@domainTypes/tobe";
 
-interface Props<Type, Payload> {
+interface Props<Type, Props> {
   type: Type;
-  payload: Payload;
+  props: Props;
 }
 
-export type HOCProps =
+export type Option =
   | Props<"COURT", Pick<APICourt, "id" | "latitude" | "longitude" | "name">>
   | Props<"COURT_CHATROOM", OmitAt<APICourtChatroom>>
   | Props<"USERS_CHATROOM", OmitAt<APIUsersChatroom>>
   | Props<"USER", OmitAt<APIUser>>;
-
-export type GetProps<T extends HOCProps["type"]> = Extract<
-  HOCProps,
-  { type: T }
->["payload"];

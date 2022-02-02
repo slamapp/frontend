@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 
 import { useLocalToken } from "@hooks/domain";
 import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
-import { Button, ModalSheet, Spacer, Text } from "@components/base";
+import { Button, IconButton, ModalSheet, Spacer, Text } from "@components/base";
 import type { SlotKeyUnion } from "@components/domain";
 import {
   DatePicker,
@@ -32,6 +32,7 @@ import {
   getTimezoneDateStringFromDate,
 } from "@utils/date";
 import type { Coord } from "@domainTypes/map";
+import ShareButtonMaker from "@hocs/ShareButtonMaker";
 
 declare global {
   interface Window {
@@ -360,13 +361,17 @@ const Courts: NextPage = () => {
             </ReservationCount>
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
-              <CourtItem.ShareButton
-                payload={{
-                  id: selectedCourt.courtId,
-                  latitude: selectedCourt.latitude,
-                  longitude: selectedCourt.longitude,
-                  name: selectedCourt.courtName,
+              <ShareButtonMaker
+                option={{
+                  type: "COURT",
+                  props: {
+                    id: selectedCourt.courtId,
+                    latitude: selectedCourt.latitude,
+                    longitude: selectedCourt.longitude,
+                    name: selectedCourt.courtName,
+                  },
                 }}
+                component={IconButton.Share}
               />
               <CourtItem.ChatLink courtId={selectedCourt.courtId} />
               <CourtItem.KakaoMapLink

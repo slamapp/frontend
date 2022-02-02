@@ -3,10 +3,11 @@ import Link from "next/link";
 import type { NextPage } from "next";
 import UtilRoute from "UtilRoute";
 import styled from "@emotion/styled";
-import { Button, Spacer } from "@components/base";
+import { Button, IconButton, Spacer } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import favoriteAPI from "@service/favoriteApi";
 import dynamic from "next/dynamic";
+import ShareButtonMaker from "@hocs/ShareButtonMaker";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
 
@@ -111,7 +112,14 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
-              <CourtItem.ShareButton id={courtId} name={courtName} />
+              <ShareButtonMaker
+                option={{
+                  type: "COURT",
+                  props: { id: courtId, latitude, longitude, name: courtName },
+                }}
+                component={IconButton.Share}
+              />
+
               <CourtItem.ChatLink courtId={courtId} />
               <CourtItem.KakaoMapLink
                 latitude={latitude}
