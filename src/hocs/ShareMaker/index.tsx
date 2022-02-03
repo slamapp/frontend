@@ -10,7 +10,7 @@ interface Props {
   component: ComponentType<{ onClick: (e?: MouseEvent<HTMLElement>) => void }>;
 }
 
-const ShareButtonMaker = ({ option, component: Component }: Props) => {
+const ShareMaker = ({ option, component: Component }: Props) => {
   let handleClick = () => {};
 
   switch (option.type) {
@@ -60,13 +60,11 @@ const ShareButtonMaker = ({ option, component: Component }: Props) => {
     }
 
     default: {
-      console.error(
-        "ShareButtonMaker를 HOC 패턴으로 option을 선택해 사용해주세요"
-      );
+      console.error("ShareMaker HOC 패턴으로 option을 선택해 사용해주세요");
     }
   }
 
   return <Component onClick={handleClick} />;
 };
 
-export default ShareButtonMaker;
+export default ShareMaker;

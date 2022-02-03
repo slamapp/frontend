@@ -7,7 +7,7 @@ import { Button, IconButton, Spacer } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import favoriteAPI from "@service/favoriteApi";
 import dynamic from "next/dynamic";
-import ShareButtonMaker from "@hocs/ShareButtonMaker";
+import ShareMaker from "@hocs/ShareMaker";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
 
@@ -112,7 +112,7 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
-              <ShareButtonMaker
+              <ShareMaker
                 option={{
                   type: "COURT",
                   props: { id: courtId, latitude, longitude, name: courtName },

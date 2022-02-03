@@ -32,7 +32,7 @@ import {
   getTimezoneDateStringFromDate,
 } from "@utils/date";
 import type { Coord } from "@domainTypes/map";
-import ShareButtonMaker from "@hocs/ShareButtonMaker";
+import ShareMaker from "@hocs/ShareMaker";
 
 declare global {
   interface Window {
@@ -361,7 +361,7 @@ const Courts: NextPage = () => {
             </ReservationCount>
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
-              <ShareButtonMaker
+              <ShareMaker
                 option={{
                   type: "COURT",
                   props: {

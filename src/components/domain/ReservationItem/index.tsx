@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { IconButton, Spacer } from "@components/base";
-import ShareButtonMaker from "@hocs/ShareButtonMaker";
+import ShareMaker from "@hocs/ShareMaker";
 import CourtItem from "../CourtItem";
 import Loudspeaker from "./Loudspeaker";
 import ReservationItemBottom from "./ReservationItemBottom";
@@ -46,7 +46,7 @@ const UpcomingReservations = ({
 
       <Actions gap="xs">
         <CourtItem.FavoritesToggle courtId={courtId} />
-        <ShareButtonMaker
+        <ShareMaker
           option={{
             type: "COURT",
             props: { id: courtId, latitude, longitude, name: courtName },
