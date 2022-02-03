@@ -8,6 +8,7 @@ import {
   userApi,
   notificationApi,
 } from "@service/.";
+import { Toast } from "@components/base";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import AuthLoading from "./AuthLoading";
@@ -188,14 +189,9 @@ const AuthProvider = ({ children }: Props) => {
   const authProviderInit = async () => {
     try {
       await getCurrentUser();
-      getMyReservations().catch((error) => {
-        console.error("getMyReservations Error", error);
-      });
-      getMyFavorites().catch((error) => {
-        console.error("getMyFavorites Error", error);
-      });
+      await Promise.all([getMyReservations(), getMyFavorites()]);
     } catch (error) {
-      console.error(error);
+      Toast.show("사용자 정보를 받아오는 도중에 문제가 생겼습니다.");
     }
   };
 

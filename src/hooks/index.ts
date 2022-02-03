@@ -20,4 +20,3 @@ export { default as useTimeoutFn } from "./useTimeoutFn";
 export { default as useToggle } from "./useToggle";
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
 export { default as useIntersectionObserver } from "./useIntersectionObserver";
-export { default as useToast } from "./useToast";

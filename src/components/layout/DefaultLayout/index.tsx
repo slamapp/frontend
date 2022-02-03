@@ -40,7 +40,7 @@ const ToastPortal = styled.div<{
     position: fixed;
     left: ${(containerRect?.left || 0) + 16}px;
     width: ${(containerRect?.width || 0) - 32}px;
-    bottom: ${isBottomNavigation ? 72 : 0}px;
+    bottom: ${isBottomNavigation ? 72 : 16}px;
   `}
 `;
 
