@@ -362,16 +362,13 @@ const Courts: NextPage = () => {
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
               <ShareMaker
-                option={{
-                  type: "COURT",
-                  props: {
-                    id: selectedCourt.courtId,
-                    latitude: selectedCourt.latitude,
-                    longitude: selectedCourt.longitude,
-                    name: selectedCourt.courtName,
-                  },
+                court={{
+                  id: selectedCourt.courtId,
+                  latitude: selectedCourt.latitude,
+                  longitude: selectedCourt.longitude,
+                  name: selectedCourt.courtName,
                 }}
-                component={IconButton.Share}
+                bind={(handler) => <IconButton.Share onClick={handler} />}
               />
               <CourtItem.ChatLink courtId={selectedCourt.courtId} />
               <CourtItem.KakaoMapLink

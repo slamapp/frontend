@@ -1,18 +1,31 @@
+import type { MouseEvent, ReactElement } from "react";
 import type {
-  APIUsersChatroom,
-  APICourtChatroom,
   APICourt,
+  APICourtChatroom,
   APIUser,
+  APIUsersChatroom,
   OmitAt,
 } from "@domainTypes/tobe";
 
-interface Props<Type, Props> {
-  type: Type;
-  props: Props;
+export type Props =
+  | CourtProps
+  | CourtChatroomProps
+  | UserChatroomProps
+  | UserProps;
+
+interface CourtProps extends DefaultProps {
+  court: Pick<APICourt, "id" | "latitude" | "longitude" | "name">;
+}
+interface CourtChatroomProps extends DefaultProps {
+  courtChatroom: OmitAt<APICourtChatroom>;
+}
+interface UserChatroomProps extends DefaultProps {
+  usersChatroom: OmitAt<APIUsersChatroom>;
+}
+interface UserProps extends DefaultProps {
+  user: OmitAt<APIUser>;
 }
 
-export type Option =
-  | Props<"COURT", Pick<APICourt, "id" | "latitude" | "longitude" | "name">>
-  | Props<"COURT_CHATROOM", OmitAt<APICourtChatroom>>
-  | Props<"USERS_CHATROOM", OmitAt<APIUsersChatroom>>
-  | Props<"USER", OmitAt<APIUser>>;
+interface DefaultProps {
+  bind: (handleClick: (event?: MouseEvent) => void) => ReactElement;
+}

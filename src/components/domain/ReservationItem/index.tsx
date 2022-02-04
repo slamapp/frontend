@@ -47,11 +47,8 @@ const UpcomingReservations = ({
       <Actions gap="xs">
         <CourtItem.FavoritesToggle courtId={courtId} />
         <ShareMaker
-          option={{
-            type: "COURT",
-            props: { id: courtId, latitude, longitude, name: courtName },
-          }}
-          component={IconButton.Share}
+          court={{ id: courtId, latitude, longitude, name: courtName }}
+          bind={(handler) => <IconButton.Share onClick={handler} />}
         />
         <CourtItem.ChatLink courtId={courtId} />
         <CourtItem.KakaoMapLink
