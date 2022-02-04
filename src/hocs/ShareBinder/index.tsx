@@ -1,23 +1,14 @@
 import { positionType } from "@enums/positionType";
 import { proficiencyType } from "@enums/proficiencyType";
-import type { ComponentType, MouseEvent } from "react";
 import { sendKakaoLink } from "./sendKakaoLink";
-import type { Options } from "./types";
+import type { ShareProps } from "./types";
 
-const ClickShareMaker = (
-  options: Options,
-  component: ComponentType<{
-    onClick?: (event?: MouseEvent<HTMLElement>) => void;
-  }>
-) => {
-  const Component = component;
-
-  let handler = () => {};
-
-  switch (options.type) {
+const ShareBinder = (props: ShareProps) => {
+  let eventHandler = () => {};
+  switch (props.type) {
     case "court": {
-      const { id, name } = options.court;
-      handler = () =>
+      const { id, name } = props.court;
+      eventHandler = () =>
         sendKakaoLink({
           title: `${name}`,
           subtitle: `${name}에서 농구 한판 어때요?🏀`,
@@ -25,13 +16,12 @@ const ClickShareMaker = (
           alertText: `농구장 공유에 성공했어요🥳`,
           buttonText: `${name} 놀러가기`,
         });
-
-      return <Component onClick={handler} />;
+      break;
     }
 
     case "courtChatroom": {
-      const { id, court } = options.courtChatroom;
-      handler = () =>
+      const { id, court } = props.courtChatroom;
+      eventHandler = () =>
         sendKakaoLink({
           title: `${court.name}`,
           subtitle: `우리 ${court.name} 채팅방으로 놀러오세요🏀`,
@@ -39,13 +29,12 @@ const ClickShareMaker = (
           alertText: `농구장 채팅방 공유에 성공했어요🥳`,
           buttonText: `${court.name} 놀러가기`,
         });
-
-      return <Component onClick={handler} />;
+      break;
     }
 
     case "user": {
-      const { id, nickname, positions, proficiency } = options.user;
-      handler = () =>
+      const { id, nickname, positions, proficiency } = props.user;
+      eventHandler = () =>
         sendKakaoLink({
           title: `${nickname}`,
           subtitle: `${nickname}를 소개합니다🏀
@@ -59,14 +48,15 @@ const ClickShareMaker = (
           alertText: `사용자 공유에 성공했어요🥳`,
           buttonText: `${nickname}를 만나러 가기`,
         });
-
-      return <Component onClick={handler} />;
+      break;
     }
 
     default: {
-      return <Component onClick={handler} />;
+      eventHandler = () => {};
     }
   }
+
+  return props.bind(eventHandler);
 };
 
-export default ClickShareMaker;
+export default ShareBinder;

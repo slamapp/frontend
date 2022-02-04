@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { NextPage } from "next";
 import UtilRoute from "UtilRoute";
 import styled from "@emotion/styled";
-import { Button, IconButton, Spacer } from "@components/base";
+import { Button, Spacer } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import favoriteAPI from "@service/favoriteApi";
 import dynamic from "next/dynamic";

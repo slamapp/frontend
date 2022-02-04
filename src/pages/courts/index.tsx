@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 
 import { useLocalToken } from "@hooks/domain";
 import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
-import { Button, IconButton, ModalSheet, Spacer, Text } from "@components/base";
+import { Button, ModalSheet, Spacer, Text } from "@components/base";
 import type { SlotKeyUnion } from "@components/domain";
 import {
   DatePicker,
@@ -32,7 +32,6 @@ import {
   getTimezoneDateStringFromDate,
 } from "@utils/date";
 import type { Coord } from "@domainTypes/map";
-import ShareMaker from "@hocs/ClickShareMaker";
 
 declare global {
   interface Window {

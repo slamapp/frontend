@@ -1,5 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import type { ReactNode, CSSProperties } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
+import type {
+  ReactNode,
+  CSSProperties,
+  DOMAttributes,
+  HTMLAttributes,
+  AriaAttributes,
+} from "react";
 import { DEFAULT_POSITION } from "@utils/geolocation";
 import { useMapContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
