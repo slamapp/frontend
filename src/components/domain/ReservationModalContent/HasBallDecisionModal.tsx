@@ -76,12 +76,12 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
                 </Spacer>
               </Spacer>
               <Modal.BottomButtonContainer>
-                <ConfirmButton size="lg" secondary onClick={handleClose}>
+                <HalfButton size="lg" secondary onClick={handleClose}>
                   닫기
-                </ConfirmButton>
-                <ConfirmButton size="lg" onClick={handleClickNext}>
-                  다음
-                </ConfirmButton>
+                </HalfButton>
+                <HalfButton size="lg" onClick={handleClickNext}>
+                  예약하기
+                </HalfButton>
               </Modal.BottomButtonContainer>
             </Content>
           </>
@@ -90,20 +90,14 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
         {step === steps.DECIDE_BALL && (
           <>
             <Modal.Header strong>농구공을 가지고 참여하시나요?</Modal.Header>
-            <Content>
-              <Modal.BottomButtonContainer>
-                <ConfirmButton
-                  size="lg"
-                  secondary
-                  onClick={() => onDecideBall(false)}
-                >
-                  아니오
-                </ConfirmButton>
-                <ConfirmButton size="lg" onClick={() => onDecideBall(true)}>
-                  네, 농구공을 가져갑니다
-                </ConfirmButton>
-              </Modal.BottomButtonContainer>
-            </Content>
+            <Spacer gap="xs" type="vertical">
+              <Button size="lg" onClick={() => onDecideBall(true)}>
+                농구공을 가져가요
+              </Button>
+              <Button size="lg" onClick={() => onDecideBall(false)}>
+                농구공을 가져가지 않아요
+              </Button>
+            </Spacer>
           </>
         )}
       </Spacer>
@@ -113,7 +107,7 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
 
 export default HasBallDecisionModal;
 
-const ConfirmButton = styled(Button)`
+const HalfButton = styled(Button)`
   flex: 1;
   box-sizing: content-box;
   line-height: 1.3;
