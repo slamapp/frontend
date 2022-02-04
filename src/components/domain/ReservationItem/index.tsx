@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { IconButton, Spacer } from "@components/base";
-import ShareMaker from "@hocs/ShareMaker";
+import { Spacer } from "@components/base";
 import CourtItem from "../CourtItem";
 import Loudspeaker from "./Loudspeaker";
 import ReservationItemBottom from "./ReservationItemBottom";
@@ -46,9 +45,8 @@ const UpcomingReservations = ({
 
       <Actions gap="xs">
         <CourtItem.FavoritesToggle courtId={courtId} />
-        <ShareMaker
-          court={{ id: courtId, latitude, longitude, name: courtName }}
-          bind={(handler) => <IconButton.Share onClick={handler} />}
+        <CourtItem.Share
+          court={{ id: courtId, name: courtName, latitude, longitude }}
         />
         <CourtItem.ChatLink courtId={courtId} />
         <CourtItem.KakaoMapLink

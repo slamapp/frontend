@@ -7,7 +7,6 @@ import { Button, IconButton, Spacer } from "@components/base";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import favoriteAPI from "@service/favoriteApi";
 import dynamic from "next/dynamic";
-import ShareMaker from "@hocs/ShareMaker";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
 
@@ -112,9 +111,8 @@ const Favorites: NextPage = UtilRoute("private", () => {
 
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={courtId} />
-              <ShareMaker
+              <CourtItem.Share
                 court={{ id: courtId, latitude, longitude, name: courtName }}
-                bind={(handler) => <IconButton.Share onClick={handler} />}
               />
               <CourtItem.ChatLink courtId={courtId} />
               <CourtItem.KakaoMapLink

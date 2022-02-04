@@ -32,7 +32,7 @@ import {
   getTimezoneDateStringFromDate,
 } from "@utils/date";
 import type { Coord } from "@domainTypes/map";
-import ShareMaker from "@hocs/ShareMaker";
+import ShareMaker from "@hocs/ClickShareMaker";
 
 declare global {
   interface Window {
@@ -361,14 +361,13 @@ const Courts: NextPage = () => {
             </ReservationCount>
             <Actions gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
-              <ShareMaker
+              <CourtItem.Share
                 court={{
                   id: selectedCourt.courtId,
                   latitude: selectedCourt.latitude,
                   longitude: selectedCourt.longitude,
                   name: selectedCourt.courtName,
                 }}
-                bind={(handler) => <IconButton.Share onClick={handler} />}
               />
               <CourtItem.ChatLink courtId={selectedCourt.courtId} />
               <CourtItem.KakaoMapLink
