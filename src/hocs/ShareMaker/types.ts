@@ -1,4 +1,4 @@
-import type { MouseEvent, ReactElement } from "react";
+import type { ReactElement, UIEvent } from "react";
 import type {
   APICourt,
   APICourtChatroom,
@@ -27,5 +27,5 @@ interface UserProps extends DefaultProps {
 }
 
 interface DefaultProps {
-  bind: (handleClick: (event?: MouseEvent) => void) => ReactElement;
+  bind: (handler: (event?: UIEvent) => void) => ReactElement;
 }

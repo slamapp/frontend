@@ -1,5 +1,3 @@
-import React from "react";
-
 import { positionType } from "@enums/positionType";
 import { proficiencyType } from "@enums/proficiencyType";
 
@@ -7,11 +5,11 @@ import { sendKakaoLink } from "./sendKakaoLink";
 import type { Props } from "./types";
 
 const ShareMaker = (props: Props) => {
-  let handleClick = () => {};
+  let handler = () => {};
 
   if ("court" in props) {
     const { id, name } = props.court;
-    handleClick = () =>
+    handler = () =>
       sendKakaoLink({
         title: `${name}`,
         subtitle: `${name}에서 농구 한판 어때요?🏀`,
@@ -23,7 +21,7 @@ const ShareMaker = (props: Props) => {
 
   if ("courtChatroom" in props) {
     const { id, court } = props.courtChatroom;
-    handleClick = () =>
+    handler = () =>
       sendKakaoLink({
         title: `${court.name}`,
         subtitle: `우리 ${court.name} 채팅방으로 놀러오세요🏀`,
@@ -35,7 +33,7 @@ const ShareMaker = (props: Props) => {
 
   if ("user" in props) {
     const { id, nickname, positions, proficiency } = props.user;
-    handleClick = () =>
+    handler = () =>
       sendKakaoLink({
         title: `${nickname}`,
         subtitle: `${nickname}를 소개합니다🏀
@@ -49,11 +47,9 @@ const ShareMaker = (props: Props) => {
         alertText: `사용자 공유에 성공했어요🥳`,
         buttonText: `${nickname}를 만나러 가기`,
       });
-  } else {
-    console.error("ShareMaker HOC 패턴으로 option을 선택해 사용해주세요");
   }
 
-  return props.bind(handleClick);
+  return props.bind(handler);
 };
 
 export default ShareMaker;
