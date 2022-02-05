@@ -24,10 +24,15 @@ const ReservationProvider = ({ children }: Props) => {
   const { startIndex, endIndex, selectedReservationId } = reservation;
 
   const handleInitReservation = useCallback(
-    (reservations: any) => {
+    (reservations: any, courtName: string, date: any) => {
       dispatch({
         type: actionTypes.SET_TIMETABLE,
-        payload: { reservations, userId: currentUser.userId },
+        payload: {
+          reservations,
+          courtName,
+          date,
+          userId: currentUser.userId,
+        },
       });
     },
     [currentUser]
@@ -113,15 +118,15 @@ const ReservationProvider = ({ children }: Props) => {
 
   const handleChangeHasBall = useCallback((hasBall: boolean) => {
     dispatch({
-      type: "SET_HAS_BALL",
+      type: actionTypes.SET_HAS_BALL,
       payload: { hasBall },
     });
   }, []);
 
-  const handleClickReservationMarker = useCallback(
+  const handleSelectReservation = useCallback(
     (selectedReservationId: number) => {
       dispatch({
-        type: "CLICK_RESERVATION_MARKER",
+        type: actionTypes.CLICK_RESERVATION_MARKER,
         payload: { selectedReservationId },
       });
     },
@@ -130,7 +135,7 @@ const ReservationProvider = ({ children }: Props) => {
 
   const handleSetCurrentInput = useCallback((currentInput: string) => {
     dispatch({
-      type: "SET_CURRENT_INPUT",
+      type: actionTypes.SET_CURRENT_INPUT,
       payload: { currentInput },
     });
   }, []);
@@ -138,7 +143,7 @@ const ReservationProvider = ({ children }: Props) => {
   const handleSetTime = useCallback(
     (timeIndex: number) => {
       dispatch({
-        type: "SET_TIME_INDEX",
+        type: actionTypes.SET_TIME_INDEX,
         payload: {
           timeIndex,
           user: currentUser,
@@ -161,7 +166,7 @@ const ReservationProvider = ({ children }: Props) => {
         handleUpdateReservation,
         handleDeleteReservation,
         handleChangeHasBall,
-        handleClickReservationMarker,
+        handleSelectReservation,
         handleSetCurrentInput,
         handleSetTime,
       }}

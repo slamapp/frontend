@@ -121,7 +121,14 @@ const Reservation: NextPage = () => {
         date as string
       );
 
-      handleInitReservation(reservations);
+      const {
+        data: { courtName },
+      } = await courtApi.getCourtDetail(
+        +(courtId as string),
+        dayjs().format("YYYY-MM-DD"),
+        "dawn"
+      );
+      handleInitReservation(reservations, courtName, date);
     };
 
     if (router.isReady && currentUser.userId) {

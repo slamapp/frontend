@@ -35,7 +35,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
       existedReservations,
       selectedReservationId,
     },
-    handleClickReservationMarker,
+    handleSelectReservation,
     handleSetCurrentBlock,
     handleSetTime,
   } = useReservationContext();
@@ -62,6 +62,16 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
       }
     },
     [step, handleSetCurrentBlock, handleSetTime, onModalOpen]
+  );
+
+  const handleClickReservationMarker = useCallback(
+    (reservationId: number) => {
+      if (step === 1) {
+        onModalOpen();
+        handleSelectReservation(reservationId);
+      }
+    },
+    [step, onModalOpen, handleSelectReservation]
   );
 
   useIsomorphicLayoutEffect(() => {
@@ -108,7 +118,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
           disabled={isToday}
           onClose={onModalClose}
         />
-        {timeTable?.map((item: any, index: number) => (
+        {timeTable.map((item: any, index: number) => (
           <TimeBlockUnit
             key={index}
             height={height}
@@ -133,7 +143,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
             endIndex={endIndex}
           />
         )}
-        {existedReservations?.map(
+        {existedReservations.map(
           ({ reservationId, startIndex, endIndex }: any) => (
             <>
               {step === 2 && selectedReservationId === reservationId ? null : (
@@ -144,10 +154,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
                   top={height * (startIndex + 1)}
                   left={height}
                   selected={reservationId === selectedReservationId}
-                  onClick={() => {
-                    onModalOpen();
-                    handleClickReservationMarker(reservationId);
-                  }}
+                  onClick={() => handleClickReservationMarker(reservationId)}
                 >
                   <Spacer
                     gap="xxs"

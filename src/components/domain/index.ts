@@ -6,7 +6,6 @@ export { slotItems } from "./SlotPicker";
 export type { SlotKeyUnion } from "./SlotPicker/types";
 export { default as Favorites } from "./Favorites";
 export { default as TimeTable } from "./TimeTable";
-export { default as ReservationModalContent } from "./ReservationModalContent";
 export { default as Map } from "./KakaoMap";
 export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker";
 export { default as BottomFixedButton } from "./BottomFixedButton";
@@ -26,6 +25,7 @@ export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem"
 export { default as LeadToLoginModal } from "./LeadToLoginModal";
 export { default as ProfileAvatar } from "./ProfileAvatar";
 /* eslint-disable import/no-cycle */
+export { default as ReservationModalContent } from "./ReservationModalContent";
 export { default as TopNavigation } from "./TopNavigation";
 export { default as NotificationList } from "./NotificationList";
 export { default as ReservationItem } from "./ReservationItem";

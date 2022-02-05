@@ -46,8 +46,9 @@ export const getTimezoneIndexFromDatetime = (datetime: string) =>
 
 export const getTimezoneDateStringFromDate = (
   date: Dayjs,
-  timezone: Timezone = DEFAULT_TIMEZONE
-) => date.tz(timezone).format("YYYY-MM-DD");
+  timezone: Timezone = DEFAULT_TIMEZONE,
+  format = "YYYY-MM-DD"
+) => date.tz(timezone).format(format);
 
 export const getIsOneHourLeft = (datetime: string) =>
   Math.abs(dayjs().diff(datetime)) <= ONE_HOUR;
