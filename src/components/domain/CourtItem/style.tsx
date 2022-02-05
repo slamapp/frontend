@@ -16,7 +16,7 @@ const SubHeader = styled(Text)`
 `;
 
 const AddressText = styled(SubHeader)`
-  color: ${({ theme }) => theme.colors.gray500};
+  color: ${({ theme }) => theme.colors.gray700};
 `;
 
 const SUNDAY_INDEX = 0;

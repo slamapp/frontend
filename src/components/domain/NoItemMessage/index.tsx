@@ -1,8 +1,9 @@
-import { Button, Icon, Image, Spacer, Text } from "@components/base";
+import type { CSSProperties } from "react";
+import { Button, Icon, Spacer, Text } from "@components/base";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import React from "react";
+import Image from "next/image";
 
 interface Props {
   title: string;
@@ -26,13 +27,12 @@ const NoItemMessage = ({
         height={170}
         src={
           type === "favorite"
-            ? "assets/basketball/fire_off_favorited.gif"
+            ? "/assets/basketball/fire_off_favorited.gif"
             : type === "reservation"
-            ? "assets/basketball/fire_off_reservated.gif"
-            : "assets/basketball/animation_off_400.png"
+            ? "/assets/basketball/fire_off_reservated.gif"
+            : "/assets/basketball/animation_off_400.png"
         }
         alt="basketball"
-        style={{ marginBottom: -4 }}
       />
       <Spacer gap="xxs" type="vertical" style={{ textAlign: "center" }}>
         <Text size="md" block strong>
@@ -54,7 +54,7 @@ const NoItemMessage = ({
 export default NoItemMessage;
 
 const TextGray = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray500};
+  color: ${({ theme }) => theme.colors.gray700};
 `;
 
 const SearchButton = styled(Button)`
