@@ -121,12 +121,13 @@ const Reservation: NextPage = () => {
         date as string
       );
 
-      const { courtName } = await courtApi.getCourtDetail(
+      const {
+        data: { courtName },
+      } = await courtApi.getCourtDetail(
         +(courtId as string),
         dayjs().format("YYYY-MM-DD"),
         "dawn"
       );
-
       handleInitReservation(reservations, courtName, date);
     };
 
