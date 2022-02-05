@@ -89,13 +89,20 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
 
         {step === steps.DECIDE_BALL && (
           <>
-            <Modal.Header strong>농구공을 가지고 참여하시나요?</Modal.Header>
+            <Modal.Header>
+              <Text block strong>
+                농구공을 가져 가시나요?
+              </Text>
+              <SubText block size="xs">
+                * 농구공 유무 선택을 통해 예약이 확정됩니다.
+              </SubText>
+            </Modal.Header>
             <Spacer gap="xs" type="vertical">
               <Button size="lg" onClick={() => onDecideBall(true)}>
-                농구공을 가져가요
+                네 🏀
               </Button>
               <Button size="lg" onClick={() => onDecideBall(false)}>
-                농구공을 가져가지 않아요
+                아니오 ❌
               </Button>
             </Spacer>
           </>
@@ -116,6 +123,10 @@ const HalfButton = styled(Button)`
 const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.gray700};
   font-size: ${({ theme }) => theme.fontSizes.sm};
+`;
+
+const SubText = styled(Text)`
+  color: ${({ theme }) => theme.colors.gray600};
 `;
 
 const Content = styled.div`
