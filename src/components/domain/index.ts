@@ -1,10 +1,9 @@
 export { default as BottomNavigation } from "./BottomNavigtion";
-export { default as KakaoLogin } from "./KakaoLogin";
 export { default as DatePicker } from "./DatePicker";
 export { default as SlotPicker } from "./SlotPicker";
 export { slotItems } from "./SlotPicker";
 export type { SlotKeyUnion } from "./SlotPicker/types";
-export { default as Favorites } from "./Favorites";
+export { default as FavoriteList } from "./FavoriteList";
 export { default as TimeTable } from "./TimeTable";
 export { default as Map } from "./KakaoMap";
 export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker";
