@@ -13,7 +13,7 @@ class MyDocument extends Document {
 
   render(): ReactElement {
     return (
-      <Html>
+      <Html lang="ko">
         <Head>
           <script
             async
@@ -28,6 +28,10 @@ class MyDocument extends Document {
             rel="stylesheet"
             type="text/css"
             href="https://fonts.googleapis.com/css2?family=Righteous&display=swap"
+          />
+          <link
+            href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
+            rel="stylesheet"
           />
         </Head>
         <body>
