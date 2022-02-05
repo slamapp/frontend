@@ -3,12 +3,11 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { LinkStrong, Spacer } from "@components/base";
 import "dayjs/locale/ko";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
-import { CourtItem, LinkAvatar } from "@components/domain";
 
 import type { APINotification } from "@domainTypes/tobe";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { CourtItem, Profile } from "@components/domain";
 
 dayjs.extend(relativeTime);
 
@@ -66,9 +65,10 @@ const getNotificationMarkUp = ({
 
       return (
         <>
-          <LinkAvatar
+          <Profile
             userId={sender.id}
-            imageUrl={sender.profileImage || DEFAULT_PROFILE_IMAGE_URL}
+            profileImage={sender.profileImage}
+            nickname={sender.nickname}
           />
           <div>
             <LinkStrong href={`user/${sender.id}`}>

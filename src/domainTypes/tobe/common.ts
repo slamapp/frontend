@@ -1,7 +1,7 @@
 import type { APIUser } from "@domainTypes/tobe";
 
 export interface APISend<Id = string> extends APICommon<Id> {
-  sender: APIUser;
+  sender: OmitAt<APIUser>;
 }
 
 export interface APICommon<Id = number> {

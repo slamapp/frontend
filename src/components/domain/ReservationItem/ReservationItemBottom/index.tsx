@@ -5,8 +5,17 @@ import Link from "next/link";
 import { Button, Icon, Text } from "@components/base";
 import reservationAPI from "@service/reservationApi";
 import { useAuthContext } from "@contexts/hooks";
-import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
-import FollowListItem from "../../FollowListItem";
+import { UserListItem } from "@components/domain";
+import { APICourt } from "@domainTypes/tobe/court";
+import { APIReservation } from "@domainTypes/tobe/reservation";
+
+interface Props {
+  courtId: APICourt["id"];
+  startTime: APIReservation["startTime"];
+  endTime: APIReservation["endTime"];
+  numberOfReservations: number;
+  expired: any;
+}
 
 const ReservationItemBottom = ({
   courtId,
@@ -14,27 +23,25 @@ const ReservationItemBottom = ({
   endTime,
   numberOfReservations,
   expired,
-}: any) => {
+}: Props) => {
   const [visible, setVisible] = useState(false);
-  const [participants, setParticipants] = useState<any>([]);
+  const [participants, setParticipants] = useState<{ [prop: string]: any }[]>(
+    []
+  );
 
   const handleClick = useCallback(async () => {
     setVisible((prev) => !prev);
-    const {
-      data: { participants },
-    } = await reservationAPI.getMyReservationParticipants({
+    const { data } = await reservationAPI.getMyReservationParticipants({
       courtId,
       startTime,
       endTime,
     });
-
+    const { participants } = data;
     setParticipants(participants);
   }, [courtId, startTime, endTime]);
 
-  const {
-    authProps: { currentUser },
-  } = useAuthContext();
-  const { userId, profileImage, nickname } = currentUser;
+  const { authProps } = useAuthContext();
+  const { currentUser } = authProps;
 
   return (
     <>
@@ -54,24 +61,28 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          {userId && (
-            <FollowListItem
-              userId={userId}
-              src={profileImage || DEFAULT_PROFILE_IMAGE_URL}
-            >
-              {nickname}
-            </FollowListItem>
-          )}
+          {currentUser.userId &&
+            currentUser.nickname &&
+            currentUser.profileImage && (
+              <UserListItem
+                user={{
+                  id: currentUser.userId,
+                  nickname: currentUser.nickname,
+                  profileImage: currentUser.profileImage,
+                }}
+              >
+                {currentUser.nickname}
+              </UserListItem>
+            )}
           {participants.map(
-            ({ userId, nickname, profileImage, isFollowed }: any) => (
-              <FollowListItem
+            ({ userId, nickname, profileImage, isFollowed }) => (
+              <UserListItem
                 key={userId}
-                src={profileImage}
                 isFollowed={isFollowed}
-                userId={userId}
+                user={{ id: userId, nickname, profileImage }}
               >
                 {nickname}
-              </FollowListItem>
+              </UserListItem>
             )
           )}
         </ParticipantList>

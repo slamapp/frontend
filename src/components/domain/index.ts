@@ -1,4 +1,3 @@
-export { default as TopNavigation } from "./TopNavigation";
 export { default as BottomNavigation } from "./BottomNavigtion";
 export { default as KakaoLogin } from "./KakaoLogin";
 export { default as DatePicker } from "./DatePicker";
@@ -13,7 +12,6 @@ export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker";
 export { default as BottomFixedButton } from "./BottomFixedButton";
 export { default as Logo } from "./Logo";
 export { default as CourtItem } from "./CourtItem";
-export { default as LinkAvatar } from "./LinkAvatar";
 export { default as LoudSpeaker } from "./ReservationItem/Loudspeaker";
 export { default as Modal } from "./Modal";
 export { DayOfTheWeek } from "./CourtItem/style";
@@ -26,8 +24,10 @@ export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
 export { default as LeadToLoginModal } from "./LeadToLoginModal";
+export { default as ProfileAvatar } from "./ProfileAvatar";
 /* eslint-disable import/no-cycle */
+export { default as TopNavigation } from "./TopNavigation";
 export { default as NotificationList } from "./NotificationList";
 export { default as ReservationItem } from "./ReservationItem";
 export { default as Participants } from "./ReservationItem/ReservationItemBottom";
-export { default as FollowListItem } from "./FollowListItem";
+export { default as UserListItem } from "./UserListItem";
