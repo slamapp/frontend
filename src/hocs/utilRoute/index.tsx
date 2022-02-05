@@ -1,6 +1,7 @@
 import { useLocalToken } from "@hooks/domain";
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import type { ComponentType, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Fragment, useEffect } from "react";
 
 const routeOption = {
@@ -11,13 +12,10 @@ const routeOption = {
 type RouteOption = typeof routeOption;
 type RouteOptionUnion = RouteOption[keyof RouteOption];
 
-const UtilRoute = <P extends object>(
-  option: RouteOptionUnion,
-  Component: ComponentType<P>
-) => {
-  return ({ ...props }: any) => (
+const UtilRoute = (option: RouteOptionUnion, Page: NextPage) => {
+  return () => (
     <UtilRouteHOCWrapper option={option}>
-      <Component {...props} />
+      <Page />
     </UtilRouteHOCWrapper>
   );
 };

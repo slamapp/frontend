@@ -1,3 +1,5 @@
+import { Toast } from "@components/base";
+
 const DEFAULT_MESSAGE_TEMPLATE_ID = 69947;
 const DEFAULT_REQUEST_URL = "https://slams.app";
 
@@ -11,7 +13,7 @@ type SendKakaoLink = (templateArgs: {
   title: string;
   subtitle: string;
   path: string;
-  alertText: string;
+  callbackText: string;
   buttonText: string;
 }) => void;
 
@@ -19,12 +21,12 @@ export const sendKakaoLink: SendKakaoLink = ({
   title,
   subtitle,
   path,
-  alertText,
+  callbackText,
   buttonText,
 }) => {
   const settings = {
     callback: () => {
-      alert(alertText);
+      Toast.show(callbackText);
     },
     templateArgs: { title, subtitle, path, buttonText },
   };
