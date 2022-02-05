@@ -24,7 +24,7 @@ export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
 export { default as LeadToLoginModal } from "./LeadToLoginModal";
-export { default as Profile } from "./Profile";
+export { default as ProfileAvatar } from "./ProfileAvatar";
 /* eslint-disable import/no-cycle */
 export { default as TopNavigation } from "./TopNavigation";
 export { default as NotificationList } from "./NotificationList";

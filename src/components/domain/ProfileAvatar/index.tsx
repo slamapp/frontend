@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { APIUser } from "@domainTypes/tobe/user";
+import type { APIUser } from "@domainTypes/tobe/user";
 import { Avatar } from "@components/base";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
-import { FC } from "react";
+import type { FC } from "react";
 
 type Size = "lg" | "md" | "sm";
 
@@ -13,7 +13,7 @@ type Props = {
   size?: Size;
 };
 
-const Profile: FC<Props> = ({
+const ProfileAvatar: FC<Props> = ({
   userId,
   nickname,
   profileImage,
@@ -31,4 +31,4 @@ const Profile: FC<Props> = ({
   </Link>
 );
 
-export default Profile;
+export default ProfileAvatar;

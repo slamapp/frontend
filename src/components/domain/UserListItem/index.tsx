@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import type { CSSProperties } from "react";
 import { Button, Spacer, Text } from "@components/base";
-import { Profile } from "@components/domain";
+import { ProfileAvatar } from "@components/domain";
 import type { APIUser } from "@domainTypes/tobe";
 import { useSocketContext } from "@contexts/hooks";
 
@@ -32,7 +32,11 @@ const UserListItem: React.FC<Props> = ({
           alignItems: "center",
         }}
       >
-        <Profile profileImage={profileImage} userId={id} nickname={nickname} />
+        <ProfileAvatar
+          profileImage={profileImage}
+          userId={id}
+          nickname={nickname}
+        />
         <Text size="base" strong>
           {nickname}
         </Text>
