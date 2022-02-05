@@ -9,7 +9,7 @@ const shareClickBinder = (...args: ShareArgs) => {
   return (
     WrappedComponent: ComponentType<{ onClick?: (e?: UIEvent) => void }>
   ) => {
-    useKakao();
+    const [isKakaoLoading] = useKakao();
 
     let eventHandler = () => {};
     switch (args[0]) {
@@ -65,7 +65,11 @@ const shareClickBinder = (...args: ShareArgs) => {
       }
     }
 
-    return <WrappedComponent onClick={eventHandler} />;
+    if (isKakaoLoading) {
+      return <></>;
+    } else {
+      return <WrappedComponent onClick={eventHandler} />;
+    }
   };
 };
 
