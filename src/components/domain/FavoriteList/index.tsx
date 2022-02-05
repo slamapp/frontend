@@ -1,70 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import type { NextPage } from "next";
-import UtilRoute from "UtilRoute";
 import styled from "@emotion/styled";
 import { Button, Spacer } from "@components/base";
-import { useAuthContext, useNavigationContext } from "@contexts/hooks";
-import favoriteAPI from "@service/favoriteApi";
 import dynamic from "next/dynamic";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
+import type { APICourt, APIFavorite } from "@domainTypes/tobe";
 
 const SkeletonParagraph = dynamic(
   () => import("../../base/Skeleton/Paragraph"),
-  {
-    ssr: false,
-  }
+  {ssr: false}
 );
 
-declare global {
-  interface Window {
-    Kakao: any;
-  }
+interface Props {
+  isLoading: boolean;
+  favorites: {
+    favoriteId: APIFavorite["id"];
+    courtId: APICourt["id"];
+    courtName: APICourt["name"];
+    latitude: APICourt["latitude"];
+    longitude: APICourt["longitude"];
+  }[];
 }
-
-const Favorites: NextPage = UtilRoute("private", () => {
-  const { authProps } = useAuthContext();
-  const { userId } = authProps.currentUser;
-
-  const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.FAVORITES);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [favorites, setFavorites] = useState<
-    {
-      favoriteId: string;
-      courtName: string;
-      courtId: number;
-      latitude: number;
-      longitude: number;
-    }[]
-  >([]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
-    }
-  }, []);
-
-  const getPageFavorites = async () => {
-    try {
-      const {
-        data: { favorites },
-      } = await favoriteAPI.getMyFavorites();
-      setFavorites(favorites);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (userId) {
-      getPageFavorites();
-    }
-  }, [userId]);
-
+const FavoriteList = ({ isLoading, favorites }: Props) => {
   if (isLoading) {
     return (
       <Spacer gap="base" type="vertical">
@@ -133,7 +91,7 @@ const Favorites: NextPage = UtilRoute("private", () => {
       )}
     </Spacer>
   );
-});
+};
 
 const Actions = styled(Spacer)`
   margin-top: 40px;
@@ -145,4 +103,4 @@ const FavoriteItem = styled.div`
   padding: 20px;
 `;
 
-export default Favorites;
+export default FavoriteList;
