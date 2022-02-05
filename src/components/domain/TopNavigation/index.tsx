@@ -5,7 +5,7 @@ import { Icon, Badge } from "@components/base";
 import { useRouter } from "next/router";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { useIntersectionObserver } from "@hooks/.";
-import { Profile } from "@components/domain";
+import { ProfileAvatar } from "@components/domain";
 
 const TopNavigation = () => {
   const sensorRef = useRef<HTMLDivElement>(null);
@@ -71,7 +71,7 @@ const TopNavigation = () => {
               </Badge>
             )}
             {isProfile && userId && profileImage && nickname && (
-              <Profile
+              <ProfileAvatar
                 nickname={nickname}
                 profileImage={profileImage}
                 userId={userId}
