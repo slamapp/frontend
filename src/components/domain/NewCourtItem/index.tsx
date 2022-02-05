@@ -23,13 +23,10 @@ const NewCourtItem = ({
 }: Props) => {
   const router = useRouter();
 
-  const handleDeny = async (
-    e: MouseEvent<HTMLButtonElement>,
-    newCourtId: number
-  ) => {
+  const handleDeny = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      await managementApi.denyNewCourt(newCourtId);
+      await managementApi.denyNewCourt(data.newCourtId);
       setIsOpenDenyModal(true);
       setTimeout(() => {
         setIsOpenDenyModal(false);
@@ -40,13 +37,10 @@ const NewCourtItem = ({
     }
   };
 
-  const handleAccept = async (
-    e: MouseEvent<HTMLButtonElement>,
-    newCourtId: number
-  ) => {
+  const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      await managementApi.acceptNewCourt(newCourtId);
+      await managementApi.acceptNewCourt(data.newCourtId);
       setIsOpenAcceptModal(true);
       setTimeout(() => {
         setIsOpenAcceptModal(false);
@@ -65,14 +59,10 @@ const NewCourtItem = ({
         </CourtName>
         {state === "READY" ? (
           <ButtonContainer>
-            <Button
-              fullWidth
-              tertiary
-              onClick={(e) => handleDeny(e, data.newCourtId)}
-            >
+            <Button fullWidth tertiary onClick={handleDeny}>
               거절하기
             </Button>
-            <Button fullWidth onClick={(e) => handleAccept(e, data.newCourtId)}>
+            <Button fullWidth onClick={handleAccept}>
               승인하기
             </Button>
           </ButtonContainer>

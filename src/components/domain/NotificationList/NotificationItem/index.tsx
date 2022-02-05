@@ -7,7 +7,7 @@ import "dayjs/locale/ko";
 import type { APINotification } from "@domainTypes/tobe";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { CourtItem, Profile } from "@components/domain";
+import { CourtItem, ProfileAvatar } from "@components/domain";
 
 dayjs.extend(relativeTime);
 
@@ -65,7 +65,7 @@ const getNotificationMarkUp = ({
 
       return (
         <>
-          <Profile
+          <ProfileAvatar
             userId={sender.id}
             profileImage={sender.profileImage}
             nickname={sender.nickname}

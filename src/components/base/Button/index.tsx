@@ -15,7 +15,7 @@ interface Props {
   block?: boolean;
   disabled?: boolean;
   style?: CSSProperties;
-  onClick?: (e?: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button: React.FC<Props> = ({
