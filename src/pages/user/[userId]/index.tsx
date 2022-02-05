@@ -6,7 +6,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import userApi from "@service/userApi";
-import UtilRoute from "UtilRoute";
+import { utilRoute } from "@hocs/.";
 import { Avatar, Button, Label, Spacer, Chip, Text } from "@components/base";
 import {
   useNavigationContext,
@@ -36,7 +36,7 @@ interface ResponseUserProfile
   followingCount: number;
 }
 
-const User: NextPage = UtilRoute("private", () => {
+const User: NextPage = utilRoute("private", () => {
   const {
     navigationProps,
     useMountPage,

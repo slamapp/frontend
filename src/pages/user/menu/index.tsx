@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
-import UtilRoute from "UtilRoute";
+import { utilRoute } from "@hocs/.";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import { Button, Icon } from "@components/base";
 import { Modal } from "@components/domain";
 
-const Menu: NextPage = UtilRoute("private", () => {
+const Menu: NextPage = utilRoute("private", () => {
   const { logout } = useAuthContext();
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_MENU);

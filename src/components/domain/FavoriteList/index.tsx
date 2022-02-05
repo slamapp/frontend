@@ -3,13 +3,13 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import { Button, Spacer } from "@components/base";
 import dynamic from "next/dynamic";
+import type { APICourt, APIFavorite } from "@domainTypes/tobe";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
-import type { APICourt, APIFavorite } from "@domainTypes/tobe";
 
 const SkeletonParagraph = dynamic(
   () => import("../../base/Skeleton/Paragraph"),
-  {ssr: false}
+  { ssr: false }
 );
 
 interface Props {

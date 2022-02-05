@@ -2,7 +2,7 @@ import type { ChangeEvent } from "react";
 import { useState, useCallback, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import UtilRoute from "UtilRoute";
+import { utilRoute } from "@hocs/.";
 import userApi from "@service/userApi";
 import { useNavigationContext, useAuthContext } from "@contexts/hooks";
 import { BasketballLoading } from "@components/domain";
@@ -10,7 +10,7 @@ import ProfileForm from "@components/domain/ProfileForm/index";
 import type { PositionKey, ProficiencyKey } from "@enums/.";
 import type { APIUser } from "@domainTypes/tobe";
 
-const UserEditPage: NextPage = UtilRoute("private", () => {
+const UserEditPage: NextPage = utilRoute("private", () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_EDIT);
 

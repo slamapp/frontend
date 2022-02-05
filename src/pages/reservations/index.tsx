@@ -6,9 +6,9 @@ import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { reservationApi } from "@service/.";
 import { Spacer, Text } from "@components/base";
 import { NoItemMessage, ReservationItem } from "@components/domain";
-import UtilRoute from "UtilRoute";
+import { utilRoute } from "@hocs/.";
 
-const Reservations: NextPage = UtilRoute("private", () => {
+const Reservations: NextPage = utilRoute("private", () => {
   const { authProps, getMyReservations } = useAuthContext();
   const { reservations: upcomingReservations } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
