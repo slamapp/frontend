@@ -41,10 +41,12 @@ const NoItemMessage = ({
         <TextGray size="xs">{description}</TextGray>
       </Spacer>
       <Link href="/courts" passHref>
-        <SearchButton fullWidth>
-          <SearchIcon name="map" size="sm" color="white" />
-          {buttonTitle}
-        </SearchButton>
+        <a>
+          <SearchButton fullWidth>
+            <SearchIcon name="map" size="sm" color="white" />
+            {buttonTitle}
+          </SearchButton>
+        </a>
       </Link>
       <div style={{ height: 40 }}></div>
     </WrapperSpacer>
