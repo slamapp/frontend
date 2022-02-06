@@ -6,8 +6,7 @@ import { Button, Icon, Text } from "@components/base";
 import reservationAPI from "@service/reservationApi";
 import { useAuthContext } from "@contexts/hooks";
 import { UserListItem } from "@components/domain";
-import { APICourt } from "@domainTypes/tobe/court";
-import { APIReservation } from "@domainTypes/tobe/reservation";
+import type { APICourt, APIReservation } from "@domainTypes/tobe";
 
 interface Props {
   courtId: APICourt["id"];

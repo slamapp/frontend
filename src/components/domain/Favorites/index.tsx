@@ -111,9 +111,11 @@ const Favorites: NextPage = UtilRoute("private", () => {
                 courtName={courtName}
               />
               <Link href={`/courts?courtId=${courtId}`} passHref>
-                <Button size="lg" style={{ flex: 1 }}>
-                  예약하기
-                </Button>
+                <a>
+                  <Button size="lg" style={{ flex: 1 }}>
+                    예약하기
+                  </Button>
+                </a>
               </Link>
             </Actions>
           </FavoriteItem>
