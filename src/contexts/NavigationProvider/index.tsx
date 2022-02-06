@@ -38,7 +38,7 @@ const NavigationProvider: FC = ({ children }) => {
 
   const setCustomButtonEvent: ContextProps["setCustomButtonEvent"] =
     useCallback(
-      (title: string, handleClick: any) =>
+      (title, handleClick) =>
         dispatch({
           type: "EVENT_BIND_CUSTOM_BUTTON",
           payload: { title, handleClick },
