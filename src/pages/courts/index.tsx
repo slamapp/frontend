@@ -381,15 +381,19 @@ const Courts: NextPage = () => {
                   }/${getTimezoneDateStringFromDate(selectedDate)}`}
                   passHref
                 >
-                  <Button style={{ flex: 1 }} size="lg">
-                    예약하기
-                  </Button>
+                  <a style={{ flex: 1, display: "flex" }}>
+                    <Button size="lg" style={{ flex: 1 }}>
+                      예약하기
+                    </Button>
+                  </a>
                 </Link>
               ) : (
                 <Link href={"/login"} passHref>
-                  <Button style={{ flex: 1 }} size="lg">
-                    로그인하고 예약하기
-                  </Button>
+                  <a style={{ flex: 1, display: "flex" }}>
+                    <Button size="lg" style={{ flex: 1 }}>
+                      로그인하고 예약하기
+                    </Button>
+                  </a>
                 </Link>
               )}
             </Actions>
