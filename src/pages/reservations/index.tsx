@@ -12,7 +12,7 @@ const Reservations: NextPage = () => {
   const { authProps, getMyReservations } = useAuthContext();
   const { reservations: upcomingReservations } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.RESERVATIONS);
+  useMountPage("PAGE_RESERVATIONS");
   useEffect(() => {
     getMyReservations();
   }, []);

@@ -1,13 +1,13 @@
 import { Icon } from "@components/base";
 import type { FeatherIconNameType } from "@components/base/Icon";
 import { useNavigationContext } from "@contexts/hooks";
-import type { PageTypeUnion } from "@contexts/NavigationProvider/actionTypes";
+import type { PageType } from "@contexts/NavigationProvider/actionTypes";
 import Link from "next/link";
 
 interface Props {
   href: string;
   iconName: FeatherIconNameType;
-  pageType: PageTypeUnion;
+  pageType: PageType;
 }
 
 const NavIcon = ({ href, iconName, pageType }: Props) => {

@@ -86,7 +86,7 @@ const Courts: NextPage = () => {
   const { isTopTransparent } = navigationProps;
   const [localToken] = useLocalToken();
 
-  useMountPage((page) => page.MAP);
+  useMountPage("PAGE_MAP");
   useDisableTopTransparent();
 
   const { map } = useMapContext();

@@ -10,7 +10,7 @@ import { Spacer } from "@components/base";
 const Login: NextPage = () => {
   const router = useRouter();
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.LOGIN);
+  useMountPage("PAGE_LOGIN");
 
   const endpoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string;
   const kakaoUrl = `${endpoint}/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`;

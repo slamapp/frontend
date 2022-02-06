@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { useAuthContext } from "@contexts/hooks";
-import { pageType } from "@contexts/NavigationProvider/actionTypes";
 import NavIcon from "./NavIcon";
 
 const BottomNavigation = () => {
@@ -13,33 +12,21 @@ const BottomNavigation = () => {
       <Wrapper>
         {role ? (
           <>
-            <NavIcon
-              href={"/"}
-              iconName={"star"}
-              pageType={pageType.FAVORITES}
-            />
-            <NavIcon
-              href={"/courts"}
-              iconName={"map"}
-              pageType={pageType.MAP}
-            />
+            <NavIcon href={"/"} iconName={"star"} pageType={"PAGE_FAVORITES"} />
+            <NavIcon href={"/courts"} iconName={"map"} pageType={"PAGE_MAP"} />
             <NavIcon
               href={"/reservations"}
               iconName={"calendar"}
-              pageType={pageType.RESERVATIONS}
+              pageType={"PAGE_RESERVATIONS"}
             />
           </>
         ) : (
           <>
-            <NavIcon
-              href={"/courts"}
-              iconName={"map"}
-              pageType={pageType.MAP}
-            />
+            <NavIcon href={"/courts"} iconName={"map"} pageType={"PAGE_MAP"} />
             <NavIcon
               href={"/login"}
               iconName={"log-in"}
-              pageType={pageType.LOGIN}
+              pageType={"PAGE_LOGIN"}
             />
           </>
         )}
@@ -47,13 +34,13 @@ const BottomNavigation = () => {
         {/* <NavIcon
           href={"/activity"}
           iconName={"users"}
-          pageType={pageType.ACTIVITY}
+          pageType={"PAGE_ACTIVITY"}
         /> */}
         {role === "ADMIN" && (
           <NavIcon
             href={"/admin/newcourts"}
             iconName={"check-square"}
-            pageType={pageType.ADMIN_NEWCOURTS}
+            pageType={"PAGE_ADMIN_NEWCOURTS"}
           />
         )}
       </Wrapper>

@@ -12,7 +12,7 @@ import type { APIUser } from "@domainTypes/tobe";
 
 const UserEditPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.USER_EDIT);
+  useMountPage("PAGE_USER_EDIT");
 
   const { updateMyProfile, updateMyProfileImage, deleteMyProfileImage } =
     useAuthContext();

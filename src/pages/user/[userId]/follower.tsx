@@ -5,7 +5,7 @@ import { useNavigationContext } from "@contexts/hooks";
 
 const FollowerPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.USER_FOLLOWER);
+  useMountPage("PAGE_USER_FOLLOWER");
 
   return <div>Follower Page</div>;
 };

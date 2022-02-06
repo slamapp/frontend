@@ -1,38 +1,35 @@
-import type { ReactChild } from "react";
+import type { ReactNode } from "react";
 import { createContext } from "react";
 import type { PageType } from "./actionTypes";
-import { pageType } from "./actionTypes";
 import type { DataProps } from "./reducer";
 import { initialData } from "./reducer";
-import type { Events, GetPageType } from "./types";
+import type { Events } from "./types";
 
 export interface ContextProps {
   navigationProps: DataProps;
-  pageType: PageType;
-  useMountPage: (getPageType: GetPageType) => void;
-  setNavigationTitle: (title: ReactChild) => void;
+  useMountPage: (pageType: PageType) => void;
   setNavigationEvent: (events: Events) => void;
   setCustomButtonEvent: (title: string, handleClick: any) => void;
-  clearNavigationEvent: () => void;
-  setIsTopTransparent: (nextIsTopTransparent: boolean) => void;
+  setIsTopTransparent: (issTopTransparent: boolean) => void;
   useDisableTopTransparent: () => void;
   useMountCustomButtonEvent: (
     customButtonName: string,
     handleClick: (...args: any[]) => void
   ) => void;
+  clearNavigationEvent: () => void;
+  setNavigationTitle: (title: ReactNode) => void;
 }
 
 const initialContext = {
   navigationProps: initialData,
-  pageType,
   useMountPage: () => {},
-  setNavigationTitle: () => {},
   setNavigationEvent: () => {},
   setCustomButtonEvent: () => {},
-  clearNavigationEvent: () => {},
   setIsTopTransparent: () => {},
   useDisableTopTransparent: () => {},
   useMountCustomButtonEvent: () => {},
+  clearNavigationEvent: () => {},
+  setNavigationTitle: () => {},
 };
 
 const Context = createContext<ContextProps>(initialContext);

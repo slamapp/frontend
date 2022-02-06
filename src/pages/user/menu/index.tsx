@@ -9,7 +9,7 @@ import { Modal } from "@components/domain";
 const Menu: NextPage = () => {
   const { logout } = useAuthContext();
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.USER_MENU);
+  useMountPage("PAGE_USER_MENU");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

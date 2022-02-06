@@ -11,7 +11,7 @@ type Status = "READY" | "DONE";
 
 const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.ADMIN_NEWCOURTS);
+  useMountPage("PAGE_ADMIN_NEWCOURTS");
 
   const [readyData, setReadyData] = useState<NewCourt[]>([]);
   const [doneData, setDoneData] = useState<NewCourt[]>([]);
