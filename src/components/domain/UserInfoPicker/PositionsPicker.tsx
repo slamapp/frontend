@@ -44,7 +44,7 @@ const PositionsPicker: React.FC<Props> = ({ selectedValue, onChange }) => {
         <Radio.Item
           key={value}
           text={text}
-          value={value as string}
+          value={value}
           checked={selectedValue.includes(value)}
         />
       ))}

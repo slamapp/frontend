@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 
 interface Props {
   errors: any;
-  value?: string;
+  value?: string | null;
   limit?: number;
   hasCount?: boolean;
 }

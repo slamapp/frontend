@@ -1,4 +1,4 @@
-import type { HTMLAttributes, FocusEvent } from "react";
+import type { HTMLAttributes, FocusEvent, ChangeEvent } from "react";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
@@ -14,6 +14,8 @@ interface Props extends HTMLAttributes<HTMLInputElement> {
   min?: number;
   max?: number;
   required?: boolean;
+  onChange?(e: ChangeEvent<HTMLInputElement>): void;
+  autoFocus?: boolean;
 }
 
 const Input = ({ label, isRequired, type, visibleError, ...props }: Props) => {

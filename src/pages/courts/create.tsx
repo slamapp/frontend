@@ -122,7 +122,7 @@ const CreateCourt: NextPage = () => {
     handleGetCurrentLocation();
   }, [handleGetCurrentLocation]);
 
-  const { values, errors, isLoading, handleChange, handleSubmit } =
+  const { values, errors, isLoading, setValues, handleSubmit } =
     useForm<Values>({
       initialValues: {
         image: null,
@@ -166,10 +166,6 @@ const CreateCourt: NextPage = () => {
         }
 
         return errors;
-      },
-      confirmModal: {
-        isOpenConfirmModal,
-        setIsOpenConfirmModal,
       },
     });
 
@@ -251,7 +247,12 @@ const CreateCourt: NextPage = () => {
                 label="농구장 이름"
                 type="text"
                 name="name"
-                onChange={handleChange}
+                onChange={({ target }) =>
+                  setValues((prev) => ({
+                    ...prev,
+                    [target.name]: target.value,
+                  }))
+                }
                 value={values.name}
                 placeholder="ex) 슬램대학교 상경대 앞 농구장"
                 isRequired
@@ -304,7 +305,12 @@ const CreateCourt: NextPage = () => {
                 label="골대 개수"
                 type="number"
                 name="basketCount"
-                onChange={handleChange}
+                onChange={({ target }) =>
+                  setValues((prev) => ({
+                    ...prev,
+                    [target.name]: target.value,
+                  }))
+                }
                 isRequired
                 value={validatedBasketCount}
                 visibleError={!!errors.basketCount}

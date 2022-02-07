@@ -8,6 +8,7 @@ interface Props {
   accept?: any;
   value?: File;
   onChange?: (file: File) => void;
+  onChangeFileSrc?: (fileSrc: string) => void;
   [x: string]: any;
 }
 
@@ -18,12 +19,12 @@ const Upload = ({
   accept,
   value,
   onChange,
+  onChangeFileSrc,
   inputRef,
   ...props
 }: Props) => {
   const [file, setFile] = useState(value);
   const [dragging, setDragging] = useState(false);
-  const [fileSrc, setFileSrc] = useState<string | ArrayBuffer | null>(null);
 
   const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const changedFile: File = (target.files as FileList)[0];
@@ -37,7 +38,9 @@ const Upload = ({
 
       const onFileLoadEnd = () => {
         reader.removeEventListener("loadend", onFileLoadEnd, false);
-        setFileSrc(reader.result);
+        if (typeof reader.result === "string") {
+          onChangeFileSrc?.(reader.result);
+        }
       };
 
       reader.addEventListener("loadend", onFileLoadEnd, false);
@@ -112,9 +115,7 @@ const Upload = ({
         accept={accept}
         onChange={handleFileChange}
       />
-      {typeof children === "function"
-        ? children(file, fileSrc, dragging)
-        : children}
+      {typeof children === "function" ? children(file, dragging) : children}
     </div>
   );
 };

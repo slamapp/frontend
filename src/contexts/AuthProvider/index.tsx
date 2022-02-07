@@ -58,12 +58,12 @@ const AuthProvider = ({ children }: Props) => {
     async (editedUserProfile) => {
       dispatch({ type: "LOADING_ON" });
       try {
-        const { data: userProfile } = await userApi.updateMyProfile(
-          editedUserProfile
-        );
+        const { data } = await userApi.updateMyProfile(editedUserProfile);
+        const { description, nickname, positions, proficiency } = data.user;
+
         dispatch({
           type: "UPDATE_MY_PROFILE",
-          payload: userProfile,
+          payload: { description, nickname, positions, proficiency },
         });
         router.replace(`/user/${authProps.currentUser.userId}`);
       } catch (error) {
@@ -94,12 +94,13 @@ const AuthProvider = ({ children }: Props) => {
     useCallback(async () => {
       dispatch({ type: "LOADING_ON" });
       try {
-        await userApi.deleteMyProfileImage();
+        const { data } = await userApi.deleteMyProfileImage();
+        const { profileImage } = data;
         dispatch({
           type: "SET_MY_PROFILE_IMAGE",
-          payload: { profileImage: null },
+          payload: { profileImage },
         });
-        router.reload();
+        // router.reload();
       } catch (error) {
         console.error(error);
       } finally {
