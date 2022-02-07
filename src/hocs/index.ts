@@ -1,2 +1,2 @@
-export { default as shareClickBinder } from "./shareClickBinder";
+export { default as withShareClick } from "./withShareClick";
 export { default as utilRoute } from "./utilRoute";

@@ -9,13 +9,15 @@ const defaultSettings = {
   installTalk: true,
 };
 
-type SendKakaoLink = (templateArgs: {
+export interface TemplateArgs {
   title: string;
   subtitle: string;
   path: string;
   callbackText: string;
   buttonText: string;
-}) => void;
+}
+
+type SendKakaoLink = (templateArgs: TemplateArgs) => void;
 
 export const sendKakaoLink: SendKakaoLink = ({
   title,
