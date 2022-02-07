@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import React, { useState, useRef } from "react";
 import type { APIFollow, APIUser } from "@domainTypes/tobe";
-import { utilRoute } from "@hocs/.";
+import { withRouteGuard } from "@hocs/.";
 import { useNavigationContext } from "@contexts/hooks";
 import { UserListItem } from "@components/domain";
 import { useInfiniteScroll } from "@hooks/.";
@@ -27,7 +27,7 @@ const dummyFollowings: Following[] = [
   },
 ];
 
-const FollowingPage: NextPage = utilRoute("private", () => {
+const FollowingPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_FOLLOWING);
 
@@ -56,6 +56,6 @@ const FollowingPage: NextPage = utilRoute("private", () => {
       <div ref={ref} style={{ height: 10 }}></div>
     </div>
   );
-});
+};
 
-export default FollowingPage;
+export default withRouteGuard("private", FollowingPage);

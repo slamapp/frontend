@@ -6,9 +6,9 @@ import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { reservationApi } from "@service/.";
 import { Spacer, Text } from "@components/base";
 import { NoItemMessage, ReservationItem } from "@components/domain";
-import { utilRoute } from "@hocs/.";
+import { withRouteGuard } from "@hocs/.";
 
-const Reservations: NextPage = utilRoute("private", () => {
+const Reservations: NextPage = () => {
   const { authProps, getMyReservations } = useAuthContext();
   const { reservations: upcomingReservations } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
@@ -133,7 +133,7 @@ const Reservations: NextPage = utilRoute("private", () => {
       <div ref={ref} style={{ height: 20 }} />
     </PageContainer>
   );
-});
+};
 
 const TabContainer = styled.div`
   display: flex;
@@ -155,4 +155,4 @@ const TabContentsWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export default Reservations;
+export default withRouteGuard("private", Reservations);

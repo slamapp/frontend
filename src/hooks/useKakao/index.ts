@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useKakao = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !window.Kakao.isInitialized()) {
@@ -10,10 +10,10 @@ const useKakao = () => {
   }, []);
 
   useEffect(() => {
-    setIsLoading(!window.Kakao.isInitialized());
+    setIsInitialized(window.Kakao.isInitialized());
   }, []);
 
-  return [isLoading];
+  return [isInitialized];
 };
 
 export default useKakao;

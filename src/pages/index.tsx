@@ -3,12 +3,12 @@ import Head from "next/head";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import { FavoriteList } from "@components/domain";
 import styled from "@emotion/styled";
-import { utilRoute } from "@hocs/.";
+import { withRouteGuard } from "@hocs/.";
 import { useEffect, useState } from "react";
 import favoriteAPI from "@service/favoriteApi";
 import type { APIFavorite } from "@domainTypes/tobe";
 
-const Home: NextPage = utilRoute("private", () => {
+const Home: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.FAVORITES);
 
@@ -52,9 +52,9 @@ const Home: NextPage = utilRoute("private", () => {
       <FavoriteList isLoading={isLoading} favorites={favorites} />
     </PageContainer>
   );
-});
+};
 
-export default Home;
+export default withRouteGuard("private", Home);
 
 const PageContainer = styled.div`
   flex: 1;
