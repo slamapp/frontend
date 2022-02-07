@@ -368,7 +368,12 @@ const Courts: NextPage = () => {
                   name: selectedCourt.courtName,
                 }}
               />
-              <CourtItem.ChatLink courtId={selectedCourt.courtId} />
+              <CourtItem.ChatLink
+                chatroomId={
+                  // TODO: Court에 chatroomId 포함시키기
+                  "1"
+                }
+              />
               <CourtItem.KakaoMapLink
                 latitude={selectedCourt.latitude}
                 longitude={selectedCourt.longitude}

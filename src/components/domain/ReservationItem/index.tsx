@@ -48,7 +48,12 @@ const UpcomingReservations = ({
         <CourtItem.Share
           court={{ id: courtId, name: courtName, latitude, longitude }}
         />
-        <CourtItem.ChatLink courtId={courtId} />
+        <CourtItem.ChatLink
+          chatroomId={
+            // TODO: Court에 chatroomId 포함시키기
+            "1"
+          }
+        />
         <CourtItem.KakaoMapLink
           latitude={latitude}
           longitude={longitude}
