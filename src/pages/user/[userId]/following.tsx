@@ -1,13 +1,10 @@
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import React, { useState, useRef } from "react";
-
 import UtilRoute from "UtilRoute";
 import { useNavigationContext } from "@contexts/hooks";
 import { UserListItem } from "@components/domain";
 import { useInfiniteScroll } from "@hooks/.";
-import { APIFollow } from "@domainTypes/tobe/follow";
-import { APIUser } from "@domainTypes/tobe/user";
+import type { APIFollow, APIUser } from "@domainTypes/tobe";
 
 type Following = {
   id: APIFollow["id"];
