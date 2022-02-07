@@ -1,7 +1,11 @@
 export type { APICommon, APISend, OmitAt, ISOString } from "./common";
 
 export type { APIChat } from "./chat";
-export type { APIChatroom } from "./chatroom";
+export type {
+  APIChatroom,
+  APICourtChatroom,
+  APIUsersChatroom,
+} from "./chatroom";
 export type { APICourt } from "./court";
 export type { APIFavorite } from "./favorite";
 export type { APIFollow } from "./follow";

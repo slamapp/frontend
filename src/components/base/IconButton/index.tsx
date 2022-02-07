@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import type { MouseEvent } from "react";
 import type { FeatherIconNameType } from "../Icon";
 import Icon from "../Icon";
+import { Share } from "./icons";
 
 interface Props {
   name: FeatherIconNameType;
@@ -10,7 +11,7 @@ interface Props {
   iconSize?: "sm" | "md" | "lg" | number;
   type?: "button" | "submit";
   iconColor?: string;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e?: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const IconButton = ({
@@ -33,6 +34,8 @@ const IconButton = ({
     </StyledIconButton>
   );
 };
+
+IconButton.Share = Share;
 
 export default IconButton;
 

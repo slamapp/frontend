@@ -1,13 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import UtilRoute from "UtilRoute";
+import { withRouteGuard } from "@hocs/.";
 import { useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { BottomFixedButton, Logo } from "@components/domain";
 import styled from "@emotion/styled";
 import { Spacer } from "@components/base";
 
-const Login: NextPage = UtilRoute("prevented", () => {
+const Login: NextPage = () => {
   const router = useRouter();
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.LOGIN);
@@ -41,9 +41,9 @@ const Login: NextPage = UtilRoute("prevented", () => {
       </KaKaoLoginButton>
     </PageContainer>
   );
-});
+};
 
-export default Login;
+export default withRouteGuard("prevented", Login);
 
 const PageContainer = styled.div`
   display: flex;

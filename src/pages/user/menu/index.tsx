@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
-import UtilRoute from "UtilRoute";
+import { withRouteGuard } from "@hocs/.";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import { Button, Icon } from "@components/base";
 import { Modal } from "@components/domain";
 
-const Menu: NextPage = UtilRoute("private", () => {
+const Menu: NextPage = () => {
   const { logout } = useAuthContext();
   const { useMountPage } = useNavigationContext();
   useMountPage((page) => page.USER_MENU);
@@ -67,9 +67,9 @@ const Menu: NextPage = UtilRoute("private", () => {
       </Modal>
     </div>
   );
-});
+};
 
-export default Menu;
+export default withRouteGuard("private", Menu);
 
 const MenuList = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.gray100};

@@ -29,7 +29,8 @@
       "@service/*": ["service/*"],
       "@domainTypes/*": ["domainTypes/*"],
       "@enums/*": ["enums/*"],
-      "@constants/*":["constants/*"]
+      "@constants/*":["constants/*"],
+      "@hocs/*":["hocs/*"]
     },
     "types": ["kakao.maps.d.ts", "jest"]
   },

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import React, { useRef, useEffect, useMemo } from "react";
-import UtilRoute from "UtilRoute";
+import { withRouteGuard } from "@hocs/.";
 import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import NotificationList from "@components/domain/NotificationList";
@@ -8,7 +8,7 @@ import { useIntersectionObserver } from "@hooks/.";
 import { Skeleton } from "@components/base";
 import { NoItemMessage } from "@components/domain";
 
-const NotificationsPage: NextPage = UtilRoute("private", () => {
+const NotificationsPage: NextPage = () => {
   const { authProps, getMoreNotifications, readAllNotifications } =
     useAuthContext();
   const { notificationLastId, notifications } = authProps.currentUser;
@@ -58,9 +58,9 @@ const NotificationsPage: NextPage = UtilRoute("private", () => {
       </div>
     </PageConainer>
   );
-});
+};
 
-export default NotificationsPage;
+export default withRouteGuard("private", NotificationsPage);
 
 const PageConainer = styled.div`
   flex: 1;
