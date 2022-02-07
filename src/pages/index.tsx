@@ -10,7 +10,7 @@ import type { APIFavorite } from "@domainTypes/tobe";
 
 const Home: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.FAVORITES);
+  useMountPage("PAGE_FAVORITES");
 
   const { authProps } = useAuthContext();
   const { userId } = authProps.currentUser;

@@ -48,7 +48,7 @@ const CreateCourt: NextPage = () => {
   const router = useRouter();
 
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.COURT_CREATE);
+  useMountPage("PAGE_COURT_CREATE");
 
   const [isOpen, setOpen] = useState(false);
   const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);

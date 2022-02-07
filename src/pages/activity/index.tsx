@@ -5,7 +5,7 @@ import { useNavigationContext } from "@contexts/hooks";
 
 const Activity: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.ACTIVITY);
+  useMountPage("PAGE_ACTIVITY");
 
   return (
     <div>

@@ -45,7 +45,7 @@ const Reservation: NextPage = () => {
     handleCreateReservation,
   } = useReservationContext();
 
-  useMountPage((page) => page.COURT_RESERVATIONS);
+  useMountPage("PAGE_COURT_RESERVATIONS");
 
   const {
     startIndex,

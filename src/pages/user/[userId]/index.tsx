@@ -48,7 +48,7 @@ const User: NextPage = () => {
 
   const { userId, favorites: myFavorites } = authProps.currentUser;
 
-  useMountPage((page) => page.USER);
+  useMountPage("PAGE_USER");
   useDisableTopTransparent();
 
   const { query } = useRouter();

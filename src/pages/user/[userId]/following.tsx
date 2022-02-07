@@ -29,7 +29,7 @@ const dummyFollowings: Following[] = [
 
 const FollowingPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.USER_FOLLOWING);
+  useMountPage("PAGE_USER_FOLLOWING");
 
   const [followings, setFollowings] = useState<Following[]>([]);
   const ref = useRef<HTMLDivElement>(null);

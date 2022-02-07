@@ -4,7 +4,7 @@ import { ErrorMessage } from "../components/domain";
 
 export default function Custom500() {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.ERROR);
+  useMountPage("PAGE_ERROR");
 
   return (
     <PageContainer>

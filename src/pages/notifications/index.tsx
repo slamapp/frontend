@@ -13,7 +13,7 @@ const NotificationsPage: NextPage = () => {
     useAuthContext();
   const { notificationLastId, notifications } = authProps.currentUser;
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.NOTIFICATIONS);
+  useMountPage("PAGE_NOTIFICATIONS");
 
   const ref = useRef<HTMLDivElement>(null);
   const entry = useIntersectionObserver(ref, {});

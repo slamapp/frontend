@@ -5,7 +5,7 @@ import { withRouteGuard } from "@hocs/.";
 
 const UserChatroomPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
-  useMountPage((page) => page.USER_CHATROOM);
+  useMountPage("PAGE_USER_CHATROOM");
 
   return <div>User Chatroom Page</div>;
 };
