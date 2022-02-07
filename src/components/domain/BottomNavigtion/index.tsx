@@ -12,37 +12,18 @@ const BottomNavigation = () => {
       <Wrapper>
         {role ? (
           <>
-            <NavIcon href={"/"} iconName={"star"} pageType={"PAGE_FAVORITES"} />
-            <NavIcon href={"/courts"} iconName={"map"} pageType={"PAGE_MAP"} />
-            <NavIcon
-              href={"/reservations"}
-              iconName={"calendar"}
-              pageType={"PAGE_RESERVATIONS"}
-            />
+            <NavIcon.Favorites />
+            <NavIcon.Map />
+            <NavIcon.Chat />
+            <NavIcon.Reservations />
           </>
         ) : (
           <>
-            <NavIcon href={"/courts"} iconName={"map"} pageType={"PAGE_MAP"} />
-            <NavIcon
-              href={"/login"}
-              iconName={"log-in"}
-              pageType={"PAGE_LOGIN"}
-            />
+            <NavIcon.Map />
+            <NavIcon.Login />
           </>
         )}
-
-        {/* <NavIcon
-          href={"/activity"}
-          iconName={"users"}
-          pageType={"PAGE_ACTIVITY"}
-        /> */}
-        {role === "ADMIN" && (
-          <NavIcon
-            href={"/admin/newcourts"}
-            iconName={"check-square"}
-            pageType={"PAGE_ADMIN_NEWCOURTS"}
-          />
-        )}
+        {role === "ADMIN" && <NavIcon.newCourt />}
       </Wrapper>
     </Container>
   );
