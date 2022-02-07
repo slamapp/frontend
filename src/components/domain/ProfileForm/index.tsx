@@ -1,10 +1,18 @@
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent } from "react";
 import { useCallback, useRef, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import type { Error } from "@hooks/useForm";
 import useForm from "@hooks/useForm";
-import { Avatar, Spacer, Upload, Button, Label, Input } from "@components/base";
+import {
+  Avatar,
+  Spacer,
+  Upload,
+  Button,
+  Label,
+  Input,
+  Toast,
+} from "@components/base";
 import {
   BottomFixedButton,
   PositionsPicker,
@@ -27,8 +35,14 @@ const lengthLimit = {
 };
 
 const ProfileForm = () => {
-  const { deleteMyProfileImage, updateMyProfileImage, updateMyProfile } =
-    useAuthContext();
+  const {
+    authProps,
+    deleteMyProfileImage,
+    updateMyProfileImage,
+    updateMyProfile,
+  } = useAuthContext();
+
+  const { userId } = authProps.currentUser;
 
   const router = useRouter();
 
@@ -66,6 +80,8 @@ const ProfileForm = () => {
           await updateMyProfileImage(editedProfileImage);
         }
         await updateMyProfile(values);
+        router.replace(`/user/${userId}`);
+        Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳", 3000);
       } catch (error) {
         console.error(error);
       }
