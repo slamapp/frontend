@@ -25,6 +25,7 @@ import Custom404 from "@pages/404";
 import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
 import type { APIUser } from "@domainTypes/tobe";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
+import type { AxiosError } from "axios";
 
 interface ResponseUserProfile
   extends Pick<
@@ -101,9 +102,9 @@ const User: NextPage = () => {
       setIsFollowing(data.isFollowing);
       // TODO: 즐겨찾기 API수정시 주석 풀고 디버깅 필요!
       // setPageFavorites([...data.favorites]);
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      const { message } = error.response.data;
+      const { message } = error as AxiosError;
       if (message === "Entity Not Found") {
         setIsError(true);
       }

@@ -113,7 +113,7 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
         ...prevState,
         currentUser: {
           ...prevState.currentUser,
-          profileImageUrl: profileImage,
+          profileImage,
         },
       };
     }

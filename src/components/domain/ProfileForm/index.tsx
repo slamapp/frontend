@@ -1,86 +1,71 @@
-import type { FormEvent } from "react";
-import { useRef, useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useCallback, useRef, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import type { Error } from "@hooks/useForm";
 import useForm from "@hooks/useForm";
-import { Avatar, Spacer, Upload, Button, Label, Input } from "@components/base";
+import {
+  Avatar,
+  Spacer,
+  Upload,
+  Button,
+  Label,
+  Input,
+  Toast,
+  Text,
+} from "@components/base";
 import {
   BottomFixedButton,
   PositionsPicker,
   ProficiencyPicker,
-  ValidationNoticeBar,
 } from "@components/domain";
 import type { APIUser } from "@domainTypes/tobe";
 import { appendImageFileToFormData } from "@utils/.";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
+import { useAuthContext } from "@contexts/hooks";
+import type { ProficiencyKey } from "@enums/proficiencyType";
+import type { PositionKey } from "@enums/positionType";
+import { userApi } from "@service/.";
+import { css } from "@emotion/react";
 import LeadToLoginModal from "../LeadToLoginModal";
+import BasketballLoading from "../BasketballLoading";
 
-interface Props
-  extends Pick<
-    APIUser,
-    "nickname" | "profileImage" | "description" | "proficiency" | "positions"
-  > {
-  onSubmit: any;
-  handleDeleteProfileImage: any;
-  lengthLimit: any;
-  selectedProficiency: any;
-  selectedPositions: any;
-  setSelectedProficiency: any;
-  setSelectedPositions: any;
-  handleChangePositions: any;
-  handleChangeProficiency: any;
-}
+const LENGTH_LIMIT_NICKNAME = 15;
+const LENGTH_LIMIT_DESCRIPTION = 25;
 
-const ProfileForm = ({
-  nickname,
-  profileImage,
-  description,
-  proficiency,
-  positions,
-  onSubmit,
-  handleDeleteProfileImage,
-  lengthLimit,
-  selectedProficiency,
-  selectedPositions,
-  setSelectedProficiency,
-  setSelectedPositions,
-  handleChangePositions,
-  handleChangeProficiency,
-}: Props) => {
-  // TODO: 리팩토링
+const ProfileForm = () => {
+  const {
+    authProps,
+    deleteMyProfileImage,
+    updateMyProfileImage,
+    updateMyProfile,
+  } = useAuthContext();
+
+  const { userId } = authProps.currentUser;
 
   const router = useRouter();
 
-  const [isOpenDeleteImageConfirmModal, setIsOpenDeleteImageConfirmModal] =
-    useState<boolean>(false);
-  const [isOpenEditConfirmModal, setIsOpenEditConfirmModal] =
-    useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState(true);
+
+  const [profileImage, setProfileImage] = useState<string | null>(
+    DEFAULT_PROFILE_IMAGE_URL
+  );
+  const [isOpenDefaultImageModal, setIsOpenDefaultImageModal] = useState(false);
+  const [isOpenEditConfirmModal, setIsOpenEditConfirmModal] = useState(false);
 
   const profileImageRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setSelectedProficiency(proficiency);
-    setSelectedPositions(positions);
-  }, []);
-
-  const { values, errors, isLoading, handleChange, handleSubmit } = useForm<
+  const { values, errors, isLoading, setValues, handleSubmit } = useForm<
     Pick<APIUser, "nickname" | "description" | "proficiency" | "positions">,
     HTMLButtonElement
   >({
     initialValues: {
-      nickname,
-      description: description ?? "",
-      proficiency,
-      positions,
+      nickname: "",
+      description: "",
+      proficiency: null,
+      positions: [],
     },
-    onSubmit: (values) => {
-      const filledUserProfile = {
-        ...values,
-        proficiency: selectedProficiency,
-        positions: selectedPositions,
-      };
-
+    onSubmit: async (values) => {
       const profileImageInputRef = profileImageRef?.current ?? null;
       const editedProfileImageFiles = profileImageInputRef?.files ?? null;
       const editedProfileImage = editedProfileImageFiles
@@ -88,12 +73,17 @@ const ProfileForm = ({
         : null;
 
       try {
-        onSubmit(filledUserProfile, editedProfileImage);
+        if (editedProfileImage) {
+          await updateMyProfileImage(editedProfileImage);
+        }
+        await updateMyProfile(values);
+        router.replace(`/user/${userId}`);
+        Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳", 3000);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
-    validate: ({ nickname, description }) => {
+    validate: ({ nickname, description, positions, proficiency }) => {
       const errors: Error<
         Pick<APIUser, "nickname" | "description" | "proficiency" | "positions">
       > = {};
@@ -101,128 +91,223 @@ const ProfileForm = ({
       if (!nickname) {
         errors.nickname = "닉네임은 비워둘 수 없습니다.";
       }
-      if (nickname.length > lengthLimit.nickname) {
-        errors.nickname = "15자 이내로 입력해주세요.";
+      if (nickname.length > LENGTH_LIMIT_NICKNAME) {
+        errors.nickname = `${LENGTH_LIMIT_NICKNAME}자 이내로 입력해주세요.`;
       }
-      if (description!.length > lengthLimit.description) {
-        errors.description = "25자 이내로 입력해주세요.";
+      if (description !== null) {
+        if (description.length > LENGTH_LIMIT_DESCRIPTION) {
+          errors.description = `${LENGTH_LIMIT_DESCRIPTION}자 이내로 입력해주세요.`;
+        }
       }
-      if (!selectedProficiency) {
+      if (!proficiency) {
         errors.proficiency = "숙련도를 선택해주세요.";
       }
-      if (selectedPositions.length < 1) {
+      if (positions.length < 1) {
         errors.positions = "포지션 2개 혹은 미정을 선택해주세요.";
       }
 
-      return errors;
-    },
-    confirmModal: {
-      isOpenConfirmModal: isOpenEditConfirmModal,
-      setIsOpenConfirmModal: setIsOpenEditConfirmModal,
+      return { ...errors };
     },
   });
+
+  const getMyProfile = useCallback(async () => {
+    try {
+      const { data } = await userApi.getMyProfile();
+      const { description, nickname, positions, proficiency, profileImage } =
+        data.user;
+
+      setValues({
+        description,
+        nickname,
+        positions,
+        proficiency,
+      });
+
+      setProfileImage(profileImage);
+
+      setIsFetching(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [setValues]);
+
+  useEffect(() => {
+    getMyProfile();
+  }, [getMyProfile]);
+
+  const handleChangeProficiency = useCallback(
+    ({ target }: ChangeEvent<HTMLInputElement>) => {
+      const proficiency = target.value as ProficiencyKey;
+      setValues((prev) => ({ ...prev, proficiency }));
+    },
+    []
+  );
+
+  const handleChangePositions = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const selectedPosition = e.target.value as PositionKey;
+
+      setValues((prev) => {
+        switch (selectedPosition) {
+          case "C":
+          case "PF":
+          case "PG":
+          case "SF":
+          case "SG":
+            return {
+              ...prev,
+              positions: [prev.positions[1], selectedPosition],
+            };
+          case "TBD":
+            return { ...prev, positions: [selectedPosition] };
+          default:
+            return { ...prev };
+        }
+      });
+    },
+    []
+  );
+
+  if (isFetching || isLoading) {
+    return (
+      <div style={{ height: "90vh" }}>
+        <BasketballLoading />
+      </div>
+    );
+  }
 
   return (
     <div>
       <form>
         <Center>
           <Spacer gap="xs" type="vertical">
-            <UploadableArea inputRef={profileImageRef}>
-              {(file: File, fileSrc: string) => (
-                <Avatar
-                  isEdit
-                  src={(fileSrc || profileImage) ?? DEFAULT_PROFILE_IMAGE_URL}
-                  shape="circle"
-                  __TYPE="Avatar"
-                />
-              )}
-            </UploadableArea>
-            <Button
-              onClick={() => setIsOpenDeleteImageConfirmModal(true)}
-              type="button"
-              secondary
+            <UploadableArea
+              inputRef={profileImageRef}
+              onChangeFileSrc={(fileSrc) => setProfileImage(fileSrc)}
             >
-              기본 프로필 이미지로 변경하기
-            </Button>
+              <Avatar
+                isEdit
+                src={profileImage || DEFAULT_PROFILE_IMAGE_URL}
+                shape="circle"
+                __TYPE="Avatar"
+              />
+            </UploadableArea>
+            {profileImage && (
+              <Button
+                onClick={() => setIsOpenDefaultImageModal(true)}
+                type="button"
+                secondary
+              >
+                기본 프로필 이미지로 변경하기
+              </Button>
+            )}
           </Spacer>
         </Center>
         <Container gap="md" type="vertical">
           <div>
             <Input
+              autoFocus
               label="닉네임"
               type="text"
               name="nickname"
-              onChange={handleChange}
+              onChange={(e) =>
+                setValues((prev) => ({
+                  ...prev,
+                  [e.target.name]: e.target.value,
+                }))
+              }
               value={values.nickname}
               isRequired
               placeholder="15자 이내의 닉네임을 입력해주세요"
+              max={LENGTH_LIMIT_NICKNAME + 1}
             />
-            <ValidationNoticeBar
-              hasCount
-              value={values.nickname}
-              limit={lengthLimit.nickname}
-              errors={errors.nickname}
-            />
+            <LetterCount>
+              {values.nickname.length}/{LENGTH_LIMIT_NICKNAME}
+            </LetterCount>
+            <div>
+              <ErrorMessage size="sm">{errors.nickname}</ErrorMessage>
+            </div>
           </div>
           <div>
             <Input
               label="나를 한마디로 표현해주세요"
               type="text"
               name="description"
-              onChange={handleChange}
-              value={values.description!}
+              onChange={(e) =>
+                setValues((prev) => ({
+                  ...prev,
+                  [e.target.name]: e.target.value,
+                }))
+              }
+              value={values.description ?? ""}
               placeholder="ex) 저는 주로 파워포워드로 뛰고, 당산 주변에서 게임해요. 언제든 연락주세요."
+              max={LENGTH_LIMIT_DESCRIPTION + 1}
             />
-            <ValidationNoticeBar
-              hasCount
-              value={values.description!}
-              limit={lengthLimit.description}
-              errors={errors.description}
-            />
+            <LetterCount>
+              {values.description ? values.description.length : 0}/
+              {LENGTH_LIMIT_DESCRIPTION}
+            </LetterCount>
+            <div>
+              <ErrorMessage size="sm">{errors.description}</ErrorMessage>
+            </div>
           </div>
           <div>
             <Label isRequired>포지션</Label>
             <PositionsPicker
-              selectedValue={selectedPositions}
+              selectedValue={values.positions}
               onChange={handleChangePositions}
             />
-            <ValidationNoticeBar errors={errors.positions} />
+            <div>
+              <ErrorMessage size="sm">{errors.positions}</ErrorMessage>
+            </div>
           </div>
           <div>
             <Label isRequired>숙련도</Label>
             <ProficiencyPicker
-              selectedValue={selectedProficiency}
+              selectedValue={values.proficiency}
               onChange={handleChangeProficiency}
             />
-            <ValidationNoticeBar errors={errors.proficiency} />
+            <div>
+              <ErrorMessage size="sm">{errors.proficiency}</ErrorMessage>
+            </div>
           </div>
         </Container>
         <BottomFixedButton
+          disabled={!!Object.keys(errors).length}
           type="submit"
-          onClick={(e: FormEvent<HTMLButtonElement>) => {
-            handleSubmit(e);
-          }}
+          onClick={() => setIsOpenEditConfirmModal(true)}
         >
           프로필 편집 완료하기
         </BottomFixedButton>
       </form>
 
       <LeadToLoginModal
-        headerContent={`기본 프로필 이미지로 변경하시겠어요?`}
-        isOpen={isOpenDeleteImageConfirmModal}
+        headerContent={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 100,
+            }}
+          >
+            기본 프로필 이미지로 변경하시겠어요?
+          </div>
+        }
+        isOpen={isOpenDefaultImageModal}
         cancel={{
           content: "닫기",
           handle: () => {
-            setIsOpenDeleteImageConfirmModal(false);
+            setIsOpenDefaultImageModal(false);
           },
         }}
         confirm={{
           content: "변경하기",
-          handle: (e) => {
+          handle: async () => {
             try {
-              handleDeleteProfileImage();
-              setIsOpenDeleteImageConfirmModal(false);
-              router.replace("/user/edit");
+              await deleteMyProfileImage();
+              setIsOpenDefaultImageModal(false);
+              setProfileImage(null);
             } catch (error) {
               console.error(error);
             }
@@ -231,7 +316,18 @@ const ProfileForm = ({
       />
 
       <LeadToLoginModal
-        headerContent={`프로필을 수정하시겠어요?`}
+        headerContent={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 100,
+            }}
+          >
+            프로필을 수정하시겠어요?
+          </div>
+        }
         isOpen={isOpenEditConfirmModal}
         cancel={{
           content: "닫기",
@@ -240,10 +336,11 @@ const ProfileForm = ({
           },
         }}
         confirm={{
-          content: "수정하기",
+          content: "수정 완료하기",
           handle: (e) => {
             try {
               handleSubmit(e);
+              setIsOpenEditConfirmModal(false);
               router.replace("/user/edit");
             } catch (error) {
               console.error(error);
@@ -270,4 +367,20 @@ const Container = styled(Spacer)`
 
 const UploadableArea = styled(Upload)`
   text-align: center;
+`;
+
+const LetterCount = styled(Text)`
+  ${({ theme }) => css`
+    &.error {
+      color: ${theme.colors.red.strong};
+    }
+  `}
+`;
+
+const ErrorMessage = styled(Text)`
+  ${({ theme }) => css`
+    text-align: right;
+    flex-grow: 1;
+    color: ${theme.colors.red.strong};
+  `}
 `;

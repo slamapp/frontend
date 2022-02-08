@@ -22,7 +22,7 @@ export interface ContextProps {
       "nickname" | "description" | "proficiency" | "positions"
     >
   ) => Promise<void>;
-  updateMyProfileImage: (editedProfileImageFile: File) => Promise<void>;
+  updateMyProfileImage: (editedProfileImageFile: FormData) => Promise<void>;
   deleteMyProfileImage: () => Promise<void>;
   createFavorite: (courtId: APICourt["id"]) => Promise<void>;
   deleteFavorite: (favoriteId: APIFavorite["id"]) => Promise<void>;

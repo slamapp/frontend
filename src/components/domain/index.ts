@@ -16,14 +16,13 @@ export { DayOfTheWeek } from "./CourtItem/style";
 export { default as BasketballLoading } from "./BasketballLoading";
 export { default as ErrorMessage } from "./ErrorMessage";
 export { default as NewCourtItem } from "./NewCourtItem";
-export type { NewCourt } from "./NewCourtItem/types";
 export { PositionsPicker, ProficiencyPicker } from "./UserInfoPicker";
-export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
 export { default as LeadToLoginModal } from "./LeadToLoginModal";
 export { default as ProfileAvatar } from "./ProfileAvatar";
 /* eslint-disable import/no-cycle */
+export { default as ProfileForm } from "./ProfileForm";
 export { default as ReservationModalContent } from "./ReservationModalContent";
 export { default as TopNavigation } from "./TopNavigation";
 export { default as NotificationList } from "./NotificationList";

@@ -1,4 +1,9 @@
-import type { APINotification, APIUser } from "@domainTypes/tobe";
+import type {
+  APICourt,
+  APIFavorite,
+  APINotification,
+  APIUser,
+} from "@domainTypes/tobe";
 import type { ApiPromise } from "@service/type";
 
 export interface UserApi {
@@ -11,8 +16,29 @@ export interface UserApi {
     followingCount: number;
     user: APIUser;
   }>;
-  getUserProfile: (userId: APIUser["id"]) => ApiPromise;
-  updateMyProfile: (...params: any[]) => ApiPromise;
-  updateMyProfileImage: (editedProfileImageFile: File) => ApiPromise;
-  deleteMyProfileImage: () => ApiPromise;
+  getUserProfile: (userId: APIUser["id"]) => ApiPromise<
+    Pick<
+      APIUser,
+      "nickname" | "description" | "profileImage" | "proficiency" | "positions"
+    > & {
+      userId: number;
+      followerCount: number;
+      followingCount: number;
+      isFollowing: boolean;
+    }
+  >;
+  updateMyProfile: (
+    data: Pick<
+      APIUser,
+      "nickname" | "description" | "proficiency" | "positions"
+    >
+  ) => ApiPromise<{
+    user: Omit<APIUser, "id"> & { id: number };
+  }>;
+  updateMyProfileImage: (
+    editedProfileImageFile: FormData
+  ) => ApiPromise<{ profileImage: APIUser["profileImage"] }>;
+  deleteMyProfileImage: () => ApiPromise<{
+    profileImage: null;
+  }>;
 }

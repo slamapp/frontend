@@ -1,13 +1,11 @@
 import type { MouseEvent } from "react";
-import { useState } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { css } from "@emotion/react";
 import { Text, Button } from "@components/base";
 import managementApi from "@service/managementApi";
 import { useRouter } from "next/router";
-
-import type { NewCourt } from "./types";
+import type { NewCourt } from "@domainTypes/newCourts";
 
 interface Props {
   data: NewCourt;

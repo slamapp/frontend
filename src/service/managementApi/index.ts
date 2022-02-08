@@ -2,11 +2,7 @@ import { request, authRequest, authFileRequest } from "../fetcher";
 import type { ManagementApi } from "./type";
 
 const managementAPI: ManagementApi = {
-  getNewCourts: (
-    status: "READY" | "DONE",
-    isFirst: boolean,
-    lastId?: number | null
-  ) =>
+  getNewCourts: (status, isFirst, lastId) =>
     authRequest.get("/management/newCourts", {
       params: {
         status,

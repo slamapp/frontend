@@ -10,7 +10,6 @@ import {
   Map,
   GeneralMarker,
   BottomFixedButton,
-  ValidationNoticeBar,
   LeadToLoginModal,
   BasketballLoading,
 } from "@components/domain";
@@ -122,7 +121,7 @@ const CreateCourt: NextPage = () => {
     handleGetCurrentLocation();
   }, [handleGetCurrentLocation]);
 
-  const { values, errors, isLoading, handleChange, handleSubmit } =
+  const { values, errors, isLoading, setValues, handleSubmit } =
     useForm<Values>({
       initialValues: {
         image: null,
@@ -166,10 +165,6 @@ const CreateCourt: NextPage = () => {
         }
 
         return errors;
-      },
-      confirmModal: {
-        isOpenConfirmModal,
-        setIsOpenConfirmModal,
       },
     });
 
@@ -251,13 +246,18 @@ const CreateCourt: NextPage = () => {
                 label="농구장 이름"
                 type="text"
                 name="name"
-                onChange={handleChange}
+                onChange={({ target }) =>
+                  setValues((prev) => ({
+                    ...prev,
+                    [target.name]: target.value,
+                  }))
+                }
                 value={values.name}
                 placeholder="ex) 슬램대학교 상경대 앞 농구장"
                 isRequired
                 visibleError={!!errors.name}
               />
-              <ValidationNoticeBar errors={errors.name} />
+              <div>{errors.name}</div>
             </div>
             <div>
               <Label isRequired>위치</Label>
@@ -297,19 +297,24 @@ const CreateCourt: NextPage = () => {
                   </PreviewBanner>
                 )}
               </PreviewContainer>
-              <ValidationNoticeBar errors={errors.longitude} />
+              <div>{errors.longitude}</div>
             </div>
             <div>
               <Input
                 label="골대 개수"
                 type="number"
                 name="basketCount"
-                onChange={handleChange}
+                onChange={({ target }) =>
+                  setValues((prev) => ({
+                    ...prev,
+                    [target.name]: target.value,
+                  }))
+                }
                 isRequired
                 value={validatedBasketCount}
                 visibleError={!!errors.basketCount}
               />
-              <ValidationNoticeBar errors={errors.basketCount} />
+              <div>{errors.basketCount}</div>
             </div>
           </Spacer>
         </MainContainer>
