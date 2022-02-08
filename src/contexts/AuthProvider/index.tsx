@@ -100,7 +100,6 @@ const AuthProvider = ({ children }: Props) => {
           type: "SET_MY_PROFILE_IMAGE",
           payload: { profileImage },
         });
-        // router.reload();
       } catch (error) {
         console.error(error);
       } finally {
