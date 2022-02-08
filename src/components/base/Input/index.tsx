@@ -18,7 +18,14 @@ interface Props extends HTMLAttributes<HTMLInputElement> {
   autoFocus?: boolean;
 }
 
-const Input = ({ label, isRequired, type, visibleError, ...props }: Props) => {
+const Input = ({
+  label,
+  isRequired,
+  type,
+  visibleError,
+  max,
+  ...props
+}: Props) => {
   const [isFocus, setFocus] = useState(false);
 
   const handleToggle = () => {
@@ -40,6 +47,7 @@ const Input = ({ label, isRequired, type, visibleError, ...props }: Props) => {
         >
           <InputContent
             {...props}
+            maxLength={max}
             type={type}
             onFocus={handleFocus}
             onBlur={handleToggle}

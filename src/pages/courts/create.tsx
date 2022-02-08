@@ -10,7 +10,6 @@ import {
   Map,
   GeneralMarker,
   BottomFixedButton,
-  ValidationNoticeBar,
   LeadToLoginModal,
   BasketballLoading,
 } from "@components/domain";
@@ -258,7 +257,7 @@ const CreateCourt: NextPage = () => {
                 isRequired
                 visibleError={!!errors.name}
               />
-              <ValidationNoticeBar errors={errors.name} />
+              <div>{errors.name}</div>
             </div>
             <div>
               <Label isRequired>위치</Label>
@@ -298,7 +297,7 @@ const CreateCourt: NextPage = () => {
                   </PreviewBanner>
                 )}
               </PreviewContainer>
-              <ValidationNoticeBar errors={errors.longitude} />
+              <div>{errors.longitude}</div>
             </div>
             <div>
               <Input
@@ -315,7 +314,7 @@ const CreateCourt: NextPage = () => {
                 value={validatedBasketCount}
                 visibleError={!!errors.basketCount}
               />
-              <ValidationNoticeBar errors={errors.basketCount} />
+              <div>{errors.basketCount}</div>
             </div>
           </Spacer>
         </MainContainer>

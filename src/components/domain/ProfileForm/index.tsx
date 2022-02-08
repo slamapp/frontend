@@ -12,12 +12,12 @@ import {
   Label,
   Input,
   Toast,
+  Text,
 } from "@components/base";
 import {
   BottomFixedButton,
   PositionsPicker,
   ProficiencyPicker,
-  ValidationNoticeBar,
 } from "@components/domain";
 import type { APIUser } from "@domainTypes/tobe";
 import { appendImageFileToFormData } from "@utils/.";
@@ -26,13 +26,12 @@ import { useAuthContext } from "@contexts/hooks";
 import type { ProficiencyKey } from "@enums/proficiencyType";
 import type { PositionKey } from "@enums/positionType";
 import { userApi } from "@service/.";
+import { css } from "@emotion/react";
 import LeadToLoginModal from "../LeadToLoginModal";
 import BasketballLoading from "../BasketballLoading";
 
-const lengthLimit = {
-  nickname: 15,
-  description: 25,
-};
+const LENGTH_LIMIT_NICKNAME = 15;
+const LENGTH_LIMIT_DESCRIPTION = 25;
 
 const ProfileForm = () => {
   const {
@@ -75,8 +74,6 @@ const ProfileForm = () => {
 
       try {
         if (editedProfileImage) {
-          console.log(editedProfileImage);
-
           await updateMyProfileImage(editedProfileImage);
         }
         await updateMyProfile(values);
@@ -94,12 +91,12 @@ const ProfileForm = () => {
       if (!nickname) {
         errors.nickname = "닉네임은 비워둘 수 없습니다.";
       }
-      if (nickname.length > lengthLimit.nickname) {
-        errors.nickname = "15자 이내로 입력해주세요.";
+      if (nickname.length > LENGTH_LIMIT_NICKNAME) {
+        errors.nickname = `${LENGTH_LIMIT_NICKNAME}자 이내로 입력해주세요.`;
       }
       if (description !== null) {
-        if (description.length > lengthLimit.description) {
-          errors.description = "25자 이내로 입력해주세요.";
+        if (description.length > LENGTH_LIMIT_DESCRIPTION) {
+          errors.description = `${LENGTH_LIMIT_DESCRIPTION}자 이내로 입력해주세요.`;
         }
       }
       if (!proficiency) {
@@ -209,6 +206,7 @@ const ProfileForm = () => {
         <Container gap="md" type="vertical">
           <div>
             <Input
+              autoFocus
               label="닉네임"
               type="text"
               name="nickname"
@@ -221,13 +219,14 @@ const ProfileForm = () => {
               value={values.nickname}
               isRequired
               placeholder="15자 이내의 닉네임을 입력해주세요"
+              max={LENGTH_LIMIT_NICKNAME + 1}
             />
-            <ValidationNoticeBar
-              hasCount
-              value={values.nickname}
-              limit={lengthLimit.nickname}
-              errors={errors.nickname}
-            />
+            <LetterCount>
+              {values.nickname.length}/{LENGTH_LIMIT_NICKNAME}
+            </LetterCount>
+            <div>
+              <ErrorMessage size="sm">{errors.nickname}</ErrorMessage>
+            </div>
           </div>
           <div>
             <Input
@@ -242,13 +241,15 @@ const ProfileForm = () => {
               }
               value={values.description ?? ""}
               placeholder="ex) 저는 주로 파워포워드로 뛰고, 당산 주변에서 게임해요. 언제든 연락주세요."
+              max={LENGTH_LIMIT_DESCRIPTION + 1}
             />
-            <ValidationNoticeBar
-              hasCount
-              value={values.description}
-              limit={lengthLimit.description}
-              errors={errors.description}
-            />
+            <LetterCount>
+              {values.description ? values.description.length : 0}/
+              {LENGTH_LIMIT_DESCRIPTION}
+            </LetterCount>
+            <div>
+              <ErrorMessage size="sm">{errors.description}</ErrorMessage>
+            </div>
           </div>
           <div>
             <Label isRequired>포지션</Label>
@@ -256,7 +257,9 @@ const ProfileForm = () => {
               selectedValue={values.positions}
               onChange={handleChangePositions}
             />
-            <ValidationNoticeBar errors={errors.positions} />
+            <div>
+              <ErrorMessage size="sm">{errors.positions}</ErrorMessage>
+            </div>
           </div>
           <div>
             <Label isRequired>숙련도</Label>
@@ -264,7 +267,9 @@ const ProfileForm = () => {
               selectedValue={values.proficiency}
               onChange={handleChangeProficiency}
             />
-            <ValidationNoticeBar errors={errors.proficiency} />
+            <div>
+              <ErrorMessage size="sm">{errors.proficiency}</ErrorMessage>
+            </div>
           </div>
         </Container>
         <BottomFixedButton
@@ -362,4 +367,20 @@ const Container = styled(Spacer)`
 
 const UploadableArea = styled(Upload)`
   text-align: center;
+`;
+
+const LetterCount = styled(Text)`
+  ${({ theme }) => css`
+    &.error {
+      color: ${theme.colors.red.strong};
+    }
+  `}
+`;
+
+const ErrorMessage = styled(Text)`
+  ${({ theme }) => css`
+    text-align: right;
+    flex-grow: 1;
+    color: ${theme.colors.red.strong};
+  `}
 `;

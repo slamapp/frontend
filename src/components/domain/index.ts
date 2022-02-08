@@ -17,7 +17,6 @@ export { default as BasketballLoading } from "./BasketballLoading";
 export { default as ErrorMessage } from "./ErrorMessage";
 export { default as NewCourtItem } from "./NewCourtItem";
 export { PositionsPicker, ProficiencyPicker } from "./UserInfoPicker";
-export { default as ValidationNoticeBar } from "./ValidationNoticeBar";
 export { default as NoItemMessage } from "./NoItemMessage";
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem";
 export { default as LeadToLoginModal } from "./LeadToLoginModal";

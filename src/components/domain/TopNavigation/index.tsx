@@ -70,7 +70,7 @@ const TopNavigation = () => {
                 </Link>
               </Badge>
             )}
-            {isProfile && userId && profileImage && nickname && (
+            {isProfile && userId && nickname && (
               <ProfileAvatar
                 nickname={nickname}
                 profileImage={profileImage}
