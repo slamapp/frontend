@@ -225,7 +225,9 @@ const ProfileForm = () => {
               {values.nickname.length}/{LENGTH_LIMIT_NICKNAME}
             </LetterCount>
             <div>
-              <ErrorMessage size="sm">{errors.nickname}</ErrorMessage>
+              <ErrorMessage size="sm" block>
+                {errors.nickname}
+              </ErrorMessage>
             </div>
           </div>
           <div>
@@ -248,7 +250,9 @@ const ProfileForm = () => {
               {LENGTH_LIMIT_DESCRIPTION}
             </LetterCount>
             <div>
-              <ErrorMessage size="sm">{errors.description}</ErrorMessage>
+              <ErrorMessage size="sm" block>
+                {errors.description}
+              </ErrorMessage>
             </div>
           </div>
           <div>
@@ -258,7 +262,9 @@ const ProfileForm = () => {
               onChange={handleChangePositions}
             />
             <div>
-              <ErrorMessage size="sm">{errors.positions}</ErrorMessage>
+              <ErrorMessage size="sm" block>
+                {errors.positions}
+              </ErrorMessage>
             </div>
           </div>
           <div>
@@ -268,7 +274,9 @@ const ProfileForm = () => {
               onChange={handleChangeProficiency}
             />
             <div>
-              <ErrorMessage size="sm">{errors.proficiency}</ErrorMessage>
+              <ErrorMessage size="sm" block>
+                {errors.proficiency}
+              </ErrorMessage>
             </div>
           </div>
         </Container>
