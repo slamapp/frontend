@@ -84,7 +84,7 @@ const CreateCourt: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const onClick = (
+  const handleClickKakaoMap = (
     _: kakao.maps.Map,
     mouseEvent: kakao.maps.event.MouseEvent
   ) => {
@@ -110,7 +110,7 @@ const CreateCourt: NextPage = () => {
     setLevel((level) => level + 1);
   }, []);
 
-  const savedLocation = () => {
+  const handleClickSaveLocationButton = () => {
     setOpen(false);
     if (position) {
       const [latitude, longitude] = position;
@@ -199,7 +199,7 @@ const CreateCourt: NextPage = () => {
                 center={center!}
                 draggable={true}
                 zoomable={true}
-                onClick={onClick}
+                onClick={handleClickKakaoMap}
               >
                 <Map.ZoomButton
                   onZoomIn={handleZoomIn}
@@ -218,7 +218,7 @@ const CreateCourt: NextPage = () => {
             <BottomFixedButton
               type="button"
               disabled={!center}
-              onClick={savedLocation}
+              onClick={handleClickSaveLocationButton}
               containerStyle={{ zIndex: 10000000 }}
             >
               농구장 위치 저장하기
