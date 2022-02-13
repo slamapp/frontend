@@ -1,5 +1,5 @@
 import GA from "react-ga4";
-import { ContextProps } from "./context";
+import type { ContextProps } from "./context";
 
 export const sendPageview: ContextProps["sendPageview"] = (
   pathname: string

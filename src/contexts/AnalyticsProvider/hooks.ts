@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GA from "react-ga4";
 import { sendPageview } from "./handle";
 
