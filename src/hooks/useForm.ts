@@ -22,6 +22,7 @@ const useForm = <T, H extends HTMLElement = HTMLFormElement>({
     const newError = validate(values);
     setErrors(newError);
   }, [values]);
+
   const handleSubmit = async (e: FormEvent<H>) => {
     setIsLoading(true);
     e.preventDefault();

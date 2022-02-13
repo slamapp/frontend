@@ -3,13 +3,13 @@ import type { ApiPromise } from "@service/type";
 
 export interface ManagementApi {
   getNewCourts: (
-    status: "READY" | "DONE",
+    status: NewCourt["status"],
     isFirst: boolean,
-    lastId?: number | null
+    lastId?: NewCourt["newCourtId"] | null
   ) => ApiPromise<{
     contents: NewCourt[];
-    lastId: number;
+    lastId: NewCourt["newCourtId"] | null;
   }>;
-  acceptNewCourt: (...params: any[]) => ApiPromise;
-  denyNewCourt: (...params: any[]) => ApiPromise;
+  acceptNewCourt: (newCourtId: NewCourt["newCourtId"]) => ApiPromise<NewCourt>;
+  denyNewCourt: (newCourtId: NewCourt["newCourtId"]) => ApiPromise<NewCourt>;
 }

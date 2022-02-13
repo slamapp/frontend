@@ -54,7 +54,6 @@ const CreateCourt: NextPage = () => {
   const [level, setLevel] = useState<number>(3);
   const [center, setCenter] = useState<Coord>();
   const [position, setPosition] = useState<Coord>();
-  const [savedPosition, setSavedPosition] = useState<Coord>();
   const [address, setAddress] = useState<string>();
   const [validatedBasketCount, setValidatedBasketCount] = useState(1);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
@@ -85,7 +84,7 @@ const CreateCourt: NextPage = () => {
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
   };
 
-  const onClick = (
+  const handleClickKakaoMap = (
     _: kakao.maps.Map,
     mouseEvent: kakao.maps.event.MouseEvent
   ) => {
@@ -111,10 +110,13 @@ const CreateCourt: NextPage = () => {
     setLevel((level) => level + 1);
   }, []);
 
-  const savedLocation = () => {
+  const handleClickSaveLocationButton = () => {
     setOpen(false);
-    setSavedPosition(position);
-    setCenter(position);
+    if (position) {
+      const [latitude, longitude] = position;
+      setValues((prev) => ({ ...prev, latitude, longitude }));
+      setCenter(position);
+    }
   };
 
   useEffect(() => {
@@ -124,34 +126,22 @@ const CreateCourt: NextPage = () => {
   const { values, errors, isLoading, setValues, handleSubmit } =
     useForm<Values>({
       initialValues: {
+        longitude: 0,
+        latitude: 0,
         image: null,
         texture: null,
         basketCount: 1,
         name: "",
       },
       onSubmit: async (values) => {
-        if (position) {
-          const [longitude, latitude] = position;
-          const valuesWithPosition = {
-            longitude,
-            latitude,
-            name: values.name,
-            basketCount: values.basketCount,
-            texture: values.texture,
-            image: values.image,
-          };
-
-          setIsOpenConfirmModal(true);
-
-          try {
-            await courtApi.createNewCourt(valuesWithPosition);
-            router.push("/courts");
-          } catch (error) {
-            console.log(error);
-          }
+        try {
+          await courtApi.createNewCourt(values);
+          router.push("/courts");
+        } catch (error) {
+          console.error(error);
         }
       },
-      validate: ({ basketCount, name }) => {
+      validate: ({ basketCount, name, longitude, latitude }) => {
         const errors: Error<Values> = {};
 
         if (!name) {
@@ -160,7 +150,7 @@ const CreateCourt: NextPage = () => {
         if (basketCount < 1) {
           errors.basketCount = "골대 개수를 입력해주세요.";
         }
-        if (!savedPosition) {
+        if (!longitude || !latitude) {
           errors.longitude = "위치를 지정해주세요.";
         }
 
@@ -209,7 +199,7 @@ const CreateCourt: NextPage = () => {
                 center={center!}
                 draggable={true}
                 zoomable={true}
-                onClick={onClick}
+                onClick={handleClickKakaoMap}
               >
                 <Map.ZoomButton
                   onZoomIn={handleZoomIn}
@@ -228,7 +218,7 @@ const CreateCourt: NextPage = () => {
             <BottomFixedButton
               type="button"
               disabled={!center}
-              onClick={savedLocation}
+              onClick={handleClickSaveLocationButton}
               containerStyle={{ zIndex: 10000000 }}
             >
               농구장 위치 저장하기
@@ -257,12 +247,14 @@ const CreateCourt: NextPage = () => {
                 isRequired
                 visibleError={!!errors.name}
               />
-              <div>{errors.name}</div>
+              <ErrorMessage size="sm" block>
+                {errors.name}
+              </ErrorMessage>
             </div>
             <div>
               <Label isRequired>위치</Label>
               <PreviewContainer>
-                {savedPosition && !isOpen ? (
+                {values.latitude && values.longitude && !isOpen ? (
                   <div>
                     <AddressGuide>
                       <DecoIcon name="map-pin" color="#FE6D04" size="sm" />
@@ -271,7 +263,7 @@ const CreateCourt: NextPage = () => {
                     <div style={{ position: "relative" }}>
                       <Map.KakaoMap
                         level={level}
-                        center={savedPosition}
+                        center={[values.latitude, values.longitude]}
                         draggable={false}
                         zoomable={false}
                         style={{
@@ -279,7 +271,10 @@ const CreateCourt: NextPage = () => {
                           height: "150px",
                         }}
                       >
-                        <GeneralMarker map={map!} position={savedPosition} />
+                        <GeneralMarker
+                          map={map!}
+                          position={[values.latitude, values.longitude]}
+                        />
                       </Map.KakaoMap>
                       <MoveToMap onClick={() => setOpen(true)} />
                     </div>
@@ -297,7 +292,9 @@ const CreateCourt: NextPage = () => {
                   </PreviewBanner>
                 )}
               </PreviewContainer>
-              <div>{errors.longitude}</div>
+              <ErrorMessage size="sm" block>
+                {errors.longitude}
+              </ErrorMessage>
             </div>
             <div>
               <Input
@@ -314,25 +311,40 @@ const CreateCourt: NextPage = () => {
                 value={validatedBasketCount}
                 visibleError={!!errors.basketCount}
               />
-              <div>{errors.basketCount}</div>
+              <ErrorMessage size="sm" block>
+                {errors.basketCount}
+              </ErrorMessage>
             </div>
           </Spacer>
         </MainContainer>
-        <BottomFixedButton type="submit" onClick={(e) => handleSubmit(e)}>
+        <BottomFixedButton
+          type="submit"
+          onClick={() => setIsOpenConfirmModal(true)}
+          disabled={!!Object.keys(errors).length}
+        >
           {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
         </BottomFixedButton>
       </form>
 
       <LeadToLoginModal
         headerContent={
-          <Spacer gap={4} type="vertical">
-            <Text size="md" strong block>
-              새 농구장 추가를 제안하시겠습니까?
-            </Text>
-            <SubText size="xs" block>
-              제출한 코트 정보는 관리자의 승인을 거쳐 반영됩니다.
-            </SubText>
-          </Spacer>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 100,
+            }}
+          >
+            <Spacer gap={4} type="vertical">
+              <Text size="md" strong block>
+                새 농구장 추가를 제안하시겠습니까?
+              </Text>
+              <SubText size="xs" block>
+                제출한 코트 정보는 관리자의 승인을 거쳐 반영됩니다.
+              </SubText>
+            </Spacer>
+          </div>
         }
         isOpen={isOpenConfirmModal}
         cancel={{
@@ -426,4 +438,11 @@ const MoveToMap = styled.a`
 
 const SubText = styled(Text)`
   color: ${({ theme }) => theme.colors.gray500};
+`;
+
+const ErrorMessage = styled(Text)`
+  text-align: right;
+  flex-grow: 1;
+  margin: 4px 0;
+  color: ${({ theme }) => theme.colors.red.strong};
 `;

@@ -1,9 +1,4 @@
-import type {
-  APICourt,
-  APIFavorite,
-  APINotification,
-  APIUser,
-} from "@domainTypes/tobe";
+import type { APINotification, APIUser } from "@domainTypes/tobe";
 import type { ApiPromise } from "@service/type";
 
 export interface UserApi {
