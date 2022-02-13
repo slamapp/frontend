@@ -45,7 +45,7 @@ NavIcon.Reservations = () => (
 NavIcon.Chat = () => (
   <NavIcon
     href={"/chat/list"}
-    iconName={"message-square"}
+    iconName={"message-circle"}
     pageTypes={[
       "PAGE_USER_CHATROOM",
       "PAGE_COURT_CHATROOM",
