@@ -5,10 +5,10 @@ export interface ManagementApi {
   getNewCourts: (
     status: NewCourt["status"],
     isFirst: boolean,
-    lastId?: number | null
+    lastId?: NewCourt["newCourtId"] | null
   ) => ApiPromise<{
     contents: NewCourt[];
-    lastId: number;
+    lastId: NewCourt["newCourtId"] | null;
   }>;
   acceptNewCourt: (newCourtId: NewCourt["newCourtId"]) => ApiPromise<NewCourt>;
   denyNewCourt: (newCourtId: NewCourt["newCourtId"]) => ApiPromise<NewCourt>;
