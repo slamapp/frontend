@@ -224,11 +224,9 @@ const ProfileForm = () => {
             <LetterCount>
               {values.nickname.length}/{LENGTH_LIMIT_NICKNAME}
             </LetterCount>
-            <div>
-              <ErrorMessage size="sm" block>
-                {errors.nickname}
-              </ErrorMessage>
-            </div>
+            <ErrorMessage size="sm" block>
+              {errors.nickname}
+            </ErrorMessage>
           </div>
           <div>
             <Input
@@ -249,11 +247,9 @@ const ProfileForm = () => {
               {values.description ? values.description.length : 0}/
               {LENGTH_LIMIT_DESCRIPTION}
             </LetterCount>
-            <div>
-              <ErrorMessage size="sm" block>
-                {errors.description}
-              </ErrorMessage>
-            </div>
+            <ErrorMessage size="sm" block>
+              {errors.description}
+            </ErrorMessage>
           </div>
           <div>
             <Label isRequired>포지션</Label>
@@ -261,11 +257,9 @@ const ProfileForm = () => {
               selectedValue={values.positions}
               onChange={handleChangePositions}
             />
-            <div>
-              <ErrorMessage size="sm" block>
-                {errors.positions}
-              </ErrorMessage>
-            </div>
+            <ErrorMessage size="sm" block>
+              {errors.positions}
+            </ErrorMessage>
           </div>
           <div>
             <Label isRequired>숙련도</Label>
@@ -273,11 +267,9 @@ const ProfileForm = () => {
               selectedValue={values.proficiency}
               onChange={handleChangeProficiency}
             />
-            <div>
-              <ErrorMessage size="sm" block>
-                {errors.proficiency}
-              </ErrorMessage>
-            </div>
+            <ErrorMessage size="sm" block>
+              {errors.proficiency}
+            </ErrorMessage>
           </div>
         </Container>
         <BottomFixedButton
