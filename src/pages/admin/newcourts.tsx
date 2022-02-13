@@ -8,8 +8,6 @@ import { NewCourtItem, Modal } from "@components/domain";
 import managementApi from "@service/managementApi";
 import type { NewCourt } from "@domainTypes/newCourts";
 
-type Status = "READY" | "DONE";
-
 const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage("PAGE_ADMIN_NEWCOURTS");
@@ -17,13 +15,13 @@ const NewCourtsPage: NextPage = () => {
   const [readyData, setReadyData] = useState<NewCourt[]>([]);
   const [doneData, setDoneData] = useState<NewCourt[]>([]);
   const [currentLastId, setCurrentLastId] = useState<number | null>(0);
-  const [activeStatus, setActiveStatus] = useState<Status>("READY");
+  const [activeStatus, setActiveStatus] = useState<NewCourt["status"]>("READY");
   const [isFetching, setIsFetching] = useState(false);
   const [isOpenDenyModal, setIsOpenDenyModal] = useState(false);
   const [isOpenAcceptModal, setIsOpenAcceptModal] = useState(false);
 
   const loadMore = useCallback(
-    async (status: Status) => {
+    async (status: NewCourt["status"]) => {
       if (readyData.length === 0 || isFetching || currentLastId === null) {
         return;
       }
@@ -53,7 +51,7 @@ const NewCourtsPage: NextPage = () => {
   );
 
   const getNewCourts = useCallback(
-    async (status: Status) => {
+    async (status: NewCourt["status"]) => {
       try {
         setIsFetching(true);
         const {
@@ -78,7 +76,7 @@ const NewCourtsPage: NextPage = () => {
     [currentLastId, isFetching, readyData.length]
   );
 
-  const handleClick = (status: Status) => {
+  const handleClick = (status: NewCourt["status"]) => {
     if (activeStatus === status) {
       return;
     }
