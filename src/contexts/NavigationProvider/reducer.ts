@@ -178,6 +178,20 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         title: "프로필 편집",
       };
     }
+    case "PAGE_CHATROOM_LIST": {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: true,
+        currentPage: action.type,
+        isBack: false,
+        isNotifications: true,
+        isProfile: true,
+        isNext: false,
+        isMenu: false,
+        title: "채팅방 목록",
+      };
+    }
     case "PAGE_ADMIN_NEWCOURTS": {
       return {
         ...prevState,
