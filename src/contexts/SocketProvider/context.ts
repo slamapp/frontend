@@ -1,16 +1,13 @@
 import { createContext } from "react";
 
-export type SendFollow = (body: { receiverId: number }) => void;
-export type SendFollowCancel = (body: { receiverId: number }) => void;
-export type SendLoudSpeaker = (body: {
-  courtId: number;
-  startTime: string;
-  reservationId: number;
-}) => void;
 export interface ContextProps {
-  sendFollow: SendFollow;
-  sendFollowCancel: SendFollowCancel;
-  sendLoudSpeaker: SendLoudSpeaker;
+  sendFollow: (body: { receiverId: number }) => void;
+  sendFollowCancel: (body: { receiverId: number }) => void;
+  sendLoudSpeaker: (body: {
+    courtId: number;
+    startTime: string;
+    reservationId: number;
+  }) => void;
 }
 
 export const Context = createContext<ContextProps>({} as ContextProps);
