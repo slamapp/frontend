@@ -1,5 +1,5 @@
-import type { Favorite, Reservation } from "@domainTypes/.";
-import type { APINotification, APIUser } from "@domainTypes/tobe";
+import type { Reservation } from "@domainTypes/.";
+import type { APINotification, APIUser, APIFavorite } from "@domainTypes/tobe";
 import type { Reducer } from "react";
 import type { ActionUnion } from "./actionTypes";
 
@@ -11,7 +11,13 @@ export interface DataProps {
     role: APIUser["role"] | null;
     description: APIUser["description"] | null;
     nickname: APIUser["nickname"] | null;
-    favorites: Favorite[];
+    favorites: (Pick<APIFavorite, "createdAt" | "updatedAt"> & {
+      favoriteId: number;
+      courtId: APIFavorite["court"]["id"];
+      courtName: APIFavorite["court"]["name"];
+      latitude: APIFavorite["court"]["latitude"];
+      longitude: APIFavorite["court"]["longitude"];
+    })[];
     notifications: APINotification[];
     notificationLastId?: APINotification["id"] | null;
     reservations: Reservation[];
