@@ -4,10 +4,9 @@ import type { FavoriteApi } from "./type";
 const favoriteAPI: FavoriteApi = {
   getMyFavorites: () => authRequest.get("/favorites"),
 
-  createMyFavorite: (courtId: number) =>
-    authRequest.post("/favorites", { courtId }),
+  createMyFavorite: (courtId) => authRequest.post("/favorites", { courtId }),
 
-  deleteMyFavorite: (favoriteId: number) =>
+  deleteMyFavorite: (favoriteId) =>
     authRequest.delete(`/favorites/${favoriteId}`),
 };
 
