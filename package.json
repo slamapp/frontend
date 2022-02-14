@@ -8,7 +8,8 @@
     "test": "jest",
     "lint:fix": "eslint --fix 'src/**'",
     "lint:css": "stylelint 'src/**/*.{ts, tsx}'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "type": "tsc --noEmit"
   },
   "dependencies": {
     "@egjs/react-flicking": "^4.4.2",
