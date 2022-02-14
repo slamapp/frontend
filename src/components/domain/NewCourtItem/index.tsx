@@ -5,10 +5,20 @@ import { css } from "@emotion/react";
 import { Text, Button } from "@components/base";
 import managementApi from "@service/managementApi";
 import { useRouter } from "next/router";
-import type { NewCourt } from "@domainTypes/newCourts";
+import type { APINewCourt } from "@domainTypes/tobe";
 
 interface Props {
-  data: NewCourt;
+  data: Pick<
+    APINewCourt,
+    | "basketCount"
+    | "createdAt"
+    | "updatedAt"
+    | "longitude"
+    | "latitude"
+    | "texture"
+    | "status"
+    | "image"
+  > & { newCourtId: number; courtName: string };
   state: "READY" | "DONE";
   [x: string]: any;
 }

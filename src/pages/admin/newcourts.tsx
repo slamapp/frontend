@@ -6,22 +6,35 @@ import styled from "@emotion/styled";
 
 import { NewCourtItem, Modal } from "@components/domain";
 import managementApi from "@service/managementApi";
-import type { NewCourt } from "@domainTypes/newCourts";
+import type { APINewCourt } from "@domainTypes/tobe";
+
+type OldNewCourt = Pick<
+  APINewCourt,
+  | "basketCount"
+  | "createdAt"
+  | "updatedAt"
+  | "longitude"
+  | "latitude"
+  | "texture"
+  | "status"
+  | "image"
+> & { newCourtId: number; courtName: string };
 
 const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();
   useMountPage("PAGE_ADMIN_NEWCOURTS");
 
-  const [readyData, setReadyData] = useState<NewCourt[]>([]);
-  const [doneData, setDoneData] = useState<NewCourt[]>([]);
+  const [readyData, setReadyData] = useState<OldNewCourt[]>([]);
+  const [doneData, setDoneData] = useState<OldNewCourt[]>([]);
   const [currentLastId, setCurrentLastId] = useState<number | null>(0);
-  const [activeStatus, setActiveStatus] = useState<NewCourt["status"]>("READY");
+  const [activeStatus, setActiveStatus] =
+    useState<OldNewCourt["status"]>("READY");
   const [isFetching, setIsFetching] = useState(false);
   const [isOpenDenyModal, setIsOpenDenyModal] = useState(false);
   const [isOpenAcceptModal, setIsOpenAcceptModal] = useState(false);
 
   const loadMore = useCallback(
-    async (status: NewCourt["status"]) => {
+    async (status: OldNewCourt["status"]) => {
       if (readyData.length === 0 || isFetching || currentLastId === null) {
         return;
       }
@@ -51,7 +64,7 @@ const NewCourtsPage: NextPage = () => {
   );
 
   const getNewCourts = useCallback(
-    async (status: NewCourt["status"]) => {
+    async (status: OldNewCourt["status"]) => {
       try {
         setIsFetching(true);
         const {
@@ -76,7 +89,7 @@ const NewCourtsPage: NextPage = () => {
     [currentLastId, isFetching, readyData.length]
   );
 
-  const handleClick = (status: NewCourt["status"]) => {
+  const handleClick = (status: OldNewCourt["status"]) => {
     if (activeStatus === status) {
       return;
     }
