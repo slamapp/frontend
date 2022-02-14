@@ -31,7 +31,7 @@ const useInfiniteScroll = (
     const el = target.current;
 
     if (el && intersectionObserver) {
-      intersectionObserver.observe(target.current);
+      intersectionObserver.observe(el);
     }
 
     return () => {
