@@ -18,7 +18,7 @@ import { useForm } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { courtApi } from "@service/.";
-import type { Coord } from "@domainTypes/.";
+import type { Coord } from "@domainTypes/tobe";
 
 interface Values {
   longitude?: number;

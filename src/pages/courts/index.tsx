@@ -31,7 +31,7 @@ import {
   getTimezoneCurrentDate,
   getTimezoneDateStringFromDate,
 } from "@utils/date";
-import type { Coord } from "@domainTypes/map";
+import type { Coord } from "@domainTypes/tobe";
 
 declare global {
   interface Window {

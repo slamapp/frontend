@@ -1,5 +1,5 @@
 export type { APICommon, APISend, OmitAt, ISOString } from "./common";
-
+export type { Coord } from "./map";
 export type { APIChat } from "./chat";
 export type {
   APIChatroom,
