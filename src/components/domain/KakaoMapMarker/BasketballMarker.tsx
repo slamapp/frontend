@@ -19,6 +19,7 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
       new kakao.maps.Marker({
         position: new kakao.maps.LatLng(0, 0),
         clickable: true,
+        title: court.courtName,
       }),
     []
   );
@@ -71,7 +72,7 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
 
       const imageSize = new kakao.maps.Size(80, 150);
       const imageOption = {
-        offset: new kakao.maps.Point(27, 69),
+        offset: new kakao.maps.Point(35, 115),
       };
 
       const markerImage = new kakao.maps.MarkerImage(
