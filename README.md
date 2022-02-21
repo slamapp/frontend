@@ -11,7 +11,6 @@
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
 <img src="https://img.shields.io/badge/emotion-C43BAD?style=for-the-badge&logoColor=white">
 <img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"></div>
-  
 
 </div>
 
@@ -38,6 +37,7 @@
 ## 🧾 기능 요약
 
 ### 사용자
+
 - 지도 뷰에서 가려는 농구장을 찾아 원하는 시간대에 해당 농구장을 방문할 거라고 약속을 하고, 약속한 시간대에 본인 외에 몇 명이 더 예약했는지 이미지로 구분하여 현황을 알 수 있습니다.
 - 사용자는 지도에 자주 가는 농구장 정보가 없다면 직접 새 농구장 정보를 추가할 수 있습니다.
 - 자주 가는 농구장을 즐겨찾기에 등록할 수 있습니다.
@@ -45,6 +45,7 @@
 - 내 프로필에서 간단한 정보(숙련도, 선호 포지션 등)를 기입하여 자신을 나타낼 수 있습니다.
 
 ### 관리자
+
 - 관리자는 사용자가 추가 제안한 새 농구장 목록 중 처리 대기 중인 항목, 처리 완료된 항목별로 편하고 빠르게 조회하고, 승인과 거절을 할 수 있습니다.
 
 <br>
@@ -62,10 +63,19 @@
 
 # 👨‍👩‍👧‍👧 팀원 소개
 
-|                            종현(마누)                             |                             정희(한나)                             |                            세림(앤)                            |                            경희(노체)                             |
-| :-----------------------------------------------------------: | :------------------------------------------------------------: | :----------------------------------------------------------: | :-----------------------------------------------------------: |
-| ![Manu](https://avatars.githubusercontent.com/u/61593290?v=4) | ![Hanna](https://avatars.githubusercontent.com/u/68159627?v=4) | ![Ann](https://avatars.githubusercontent.com/u/33405125?v=4) | ![koby](https://avatars.githubusercontent.com/u/84858773?v=4) |
-|            [manudeli](https://github.com/manudeli)            |           [grighth12](https://github.com/grighth12)            |          [Parkserim](https://github.com/Parkserim)           |              [limkhl](https://github.com/limkhl)              |
+|                          종현(마누)                           |                           영주(리키)                           |
+| :-----------------------------------------------------------: | :------------------------------------------------------------: |
+| ![Manu](https://avatars.githubusercontent.com/u/61593290?v=4) | ![Ricky](https://avatars.githubusercontent.com/u/15336672?v=4) |
+|            [manudeli](https://github.com/manudeli)            |          [yungjurick](https://github.com/yungjurick)           |
+
+<br>
+
+# 👨‍👩‍👧‍👧 전 팀원
+
+|                           정희(한나)                           |                           세림(앤)                           |                          경희(노체)                           |
+| :------------------------------------------------------------: | :----------------------------------------------------------: | :-----------------------------------------------------------: |
+| ![Hanna](https://avatars.githubusercontent.com/u/68159627?v=4) | ![Ann](https://avatars.githubusercontent.com/u/33405125?v=4) | ![koby](https://avatars.githubusercontent.com/u/84858773?v=4) |
+|           [grighth12](https://github.com/grighth12)            |          [Parkserim](https://github.com/Parkserim)           |              [limkhl](https://github.com/limkhl)              |
 
 <br>
 
@@ -119,4 +129,5 @@ yarn dev
 <br>
 
 # 🔗 Server Git Repo
+
 [Slam Server](https://github.com/prgrms-web-devcourse/slam-server)
