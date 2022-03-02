@@ -1,19 +1,35 @@
 import { createContext } from "react";
 
+import type { CurrentInputType, ReservationState } from "./reducer";
+
 interface ContextProps {
-  reservation: any;
-  handleInitReservation: any;
-  handleSetCurrentBlock: any;
-  handleStartCreate: any;
-  handleStartUpdate: any;
-  handleDecreaseStep: any;
-  handleCreateReservation: any;
-  handleUpdateReservation: any;
-  handleDeleteReservation: any;
-  handleChangeHasBall: any;
-  handleSelectReservation: any;
-  handleSetCurrentInput: any;
-  handleSetTime: any;
+  reservation: ReservationState;
+  handleInitReservation: (
+    rservations: any,
+    courtName: string,
+    date: any
+  ) => void;
+  handleSetCurrentBlock: (startIndex: number) => void;
+  handleStartCreate: () => void;
+  handleStartUpdate: () => void;
+  handleDecreaseStep: () => void;
+  handleCreateReservation: (
+    date: string,
+    courtId: string,
+    hasBall: boolean
+  ) => Promise<void>;
+  handleUpdateReservation: (
+    date: string,
+    courtId: string,
+    hasBall: boolean
+  ) => Promise<void>;
+  handleDeleteReservation: (
+    selectedReservationId: number | string
+  ) => Promise<void>;
+  handleChangeHasBall: (hasBall: boolean) => void;
+  handleSelectReservation: (selectedReservationId: number) => void;
+  handleSetCurrentInput: (currentInput: CurrentInputType) => void;
+  handleSetTime: (timeIndex: number) => void;
 }
 
 const ReservationContext = createContext<ContextProps>({} as ContextProps);

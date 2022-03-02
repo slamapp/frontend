@@ -4,7 +4,6 @@ import { getISOString } from "@utils/date";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useCallback, useReducer } from "react";
-import { actionTypes } from "./actionTypes";
 
 import ReservationContext from "./context";
 import { reducer, initialState } from "./reducer";
@@ -24,40 +23,42 @@ const ReservationProvider = ({ children }: Props) => {
   const { startIndex, endIndex, selectedReservationId } = reservation;
 
   const handleInitReservation = useCallback(
-    (reservations: any, courtName: string, date: any) => {
-      dispatch({
-        type: actionTypes.SET_TIMETABLE,
-        payload: {
-          reservations,
-          courtName,
-          date,
-          userId: currentUser.userId,
-        },
-      });
+    (reservations, courtName, date) => {
+      if (currentUser.userId) {
+        dispatch({
+          type: "SET_TIMETABLE",
+          payload: {
+            reservations,
+            courtName,
+            date,
+            userId: currentUser.userId,
+          },
+        });
+      }
     },
     [currentUser]
   );
 
-  const handleSetCurrentBlock = useCallback((startIndex: number) => {
-    dispatch({ type: actionTypes.CLICK_BLOCK, payload: { startIndex } });
+  const handleSetCurrentBlock = useCallback((startIndex) => {
+    dispatch({ type: "CLICK_BLOCK", payload: { startIndex } });
   }, []);
 
   const handleStartCreate = useCallback(() => {
     // setIsOpen(false);
-    dispatch({ type: actionTypes.START_CREATE });
+    dispatch({ type: "START_CREATE" });
   }, []);
 
   const handleDecreaseStep = useCallback(() => {
-    dispatch({ type: actionTypes.DECREASE_STEP });
+    dispatch({ type: "DECREASE_STEP" });
   }, []);
 
   const handleStartUpdate = useCallback(() => {
-    dispatch({ type: actionTypes.START_UPDATE });
+    dispatch({ type: "START_UPDATE" });
   }, []);
 
   const handleCreateReservation = useCallback(
-    async (date: string, courtId: string, hasBall: boolean) => {
-      if (!date || !courtId) {
+    async (date, courtId, hasBall) => {
+      if (!date || !courtId || !startIndex || !endIndex) {
         return;
       }
 
@@ -80,8 +81,8 @@ const ReservationProvider = ({ children }: Props) => {
   );
 
   const handleUpdateReservation = useCallback(
-    async (date: string, courtId: string, hasBall: boolean) => {
-      if (!date || !courtId) {
+    async (date, courtId, hasBall) => {
+      if (!date || !courtId || !startIndex || !endIndex) {
         return;
       }
 
@@ -116,34 +117,31 @@ const ReservationProvider = ({ children }: Props) => {
     [router]
   );
 
-  const handleChangeHasBall = useCallback((hasBall: boolean) => {
+  const handleChangeHasBall = useCallback((hasBall) => {
     dispatch({
-      type: actionTypes.SET_HAS_BALL,
+      type: "SET_HAS_BALL",
       payload: { hasBall },
     });
   }, []);
 
-  const handleSelectReservation = useCallback(
-    (selectedReservationId: number) => {
-      dispatch({
-        type: actionTypes.CLICK_RESERVATION_MARKER,
-        payload: { selectedReservationId },
-      });
-    },
-    []
-  );
-
-  const handleSetCurrentInput = useCallback((currentInput: string) => {
+  const handleSelectReservation = useCallback((selectedReservationId) => {
     dispatch({
-      type: actionTypes.SET_CURRENT_INPUT,
+      type: "CLICK_RESERVATION_MARKER",
+      payload: { selectedReservationId },
+    });
+  }, []);
+
+  const handleSetCurrentInput = useCallback((currentInput) => {
+    dispatch({
+      type: "SET_CURRENT_INPUT",
       payload: { currentInput },
     });
   }, []);
 
   const handleSetTime = useCallback(
-    (timeIndex: number) => {
+    (timeIndex) => {
       dispatch({
-        type: actionTypes.SET_TIME_INDEX,
+        type: "SET_TIME_INDEX",
         payload: {
           timeIndex,
           user: currentUser,

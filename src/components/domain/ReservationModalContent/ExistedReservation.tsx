@@ -12,7 +12,7 @@ import * as S from "./style";
 interface Props {
   timeSlot: string;
   participantsPerBlock: any[];
-  reservationId: number;
+  reservationId: number | string;
   requestDisabled: boolean;
 }
 

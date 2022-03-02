@@ -1,14 +1,26 @@
-export const actionTypes = {
-  SET_TIMETABLE: "SET_TIMETABLE",
-  START_CREATE: "START_CREATE",
-  START_UPDATE: "START_UPDATE",
-  DECREASE_STEP: "DECREASE_STEP",
-  CLICK_BLOCK: "CLICK_BLOCK",
-  SET_HAS_BALL: "SET_HAS_BALL",
-  CLICK_RESERVATION_MARKER: "CLICK_RESERVATION_MARKER",
-  SET_CURRENT_INPUT: "SET_CURRENT_INPUT",
-  SET_TIME_INDEX: "SET_TIME_INDEX",
-};
+import type { ActionWithoutPayload, ActionWithPayload } from "@contexts/type";
+import type { APIReservation, APIUser, OmitAt } from "@domainTypes/tobe";
+import type { CurrentInputType } from "./reducer";
 
-export type ActionType = typeof actionTypes;
-export type ActionTypeUnion = ActionType[keyof ActionType];
+export type Action =
+  | ActionWithPayload<
+      "SET_TIMETABLE",
+      {
+        reservations: (Omit<OmitAt<APIReservation>, "court"> &
+          Pick<APIUser, "profileImage">)[];
+        userId: APIUser["id"];
+        courtName: string;
+        date: string;
+      }
+    >
+  | ActionWithoutPayload<"START_CREATE">
+  | ActionWithoutPayload<"START_UPDATE">
+  | ActionWithoutPayload<"DECREASE_STEP">
+  | ActionWithPayload<"CLICK_BLOCK", { startIndex: any }>
+  | ActionWithPayload<"SET_HAS_BALL", { hasBall: boolean }>
+  | ActionWithPayload<
+      "CLICK_RESERVATION_MARKER",
+      { selectedReservationId: string | number }
+    >
+  | ActionWithPayload<"SET_CURRENT_INPUT", { currentInput: CurrentInputType }>
+  | ActionWithPayload<"SET_TIME_INDEX", { timeIndex: any; user: any }>;

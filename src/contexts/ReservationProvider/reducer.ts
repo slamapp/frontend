@@ -5,15 +5,14 @@ import {
   MAX_RESERVATION_TIME_BLOCK_UNIT,
 } from "@utils/date";
 import dayjs from "dayjs";
-import type { ActionTypeUnion } from "./actionTypes";
-import { actionTypes } from "./actionTypes";
+import type { APIReservation, APIUser, OmitAt } from "@domainTypes/tobe";
+import type { Action } from "./actionTypes";
 
-export type ReducerAction = {
-  type: ActionTypeUnion;
-  payload?: any;
-};
-
-const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
+const getTimeTableInfoFromReservations = (
+  reservations: (Omit<OmitAt<APIReservation>, "court"> &
+    Pick<APIUser, "profileImage">)[],
+  userId: any
+) => {
   const timeTable = Array.from({ length: TIME_TABLE_ROWS }, () => ({
     peopleCount: 0,
     ballCount: 0,
@@ -62,7 +61,26 @@ const getTimeTableInfoFromReservations = (reservations: any, userId: any) => {
   );
 };
 
-export const initialState = {
+export type CurrentInputType = "START" | "END";
+
+export type ReservationState = {
+  step: number;
+  mode: "create" | "update";
+  startIndex: null | number;
+  endIndex: null | number;
+  timeTable: any[];
+  originalTimeTable: any[];
+  modalContentData: any;
+  hasBall: boolean;
+  existedReservations: any[];
+  selectedReservationId: null | number | string;
+  requestDisabled: boolean;
+  currentInput: CurrentInputType;
+  courtName: string;
+  selectedReservation: null | any;
+};
+
+export const initialState: ReservationState = {
   step: 1,
   mode: "create",
   startIndex: null,
@@ -76,15 +94,16 @@ export const initialState = {
   requestDisabled: false,
   currentInput: "START",
   courtName: "",
+  selectedReservation: null,
 };
 
-export const reducer: Reducer<any, ReducerAction> = (
+export const reducer: Reducer<typeof initialState, Action> = (
   state,
-  { type, payload }
+  action
 ) => {
-  switch (type) {
-    case actionTypes.SET_TIMETABLE: {
-      const { reservations, userId, courtName, date } = payload;
+  switch (action.type) {
+    case "SET_TIMETABLE": {
+      const { reservations, userId, courtName, date } = action.payload;
 
       const { timeTable, existedReservations } =
         getTimeTableInfoFromReservations(reservations, userId);
@@ -98,7 +117,7 @@ export const reducer: Reducer<any, ReducerAction> = (
         date,
       };
     }
-    case actionTypes.START_CREATE: {
+    case "START_CREATE": {
       return {
         ...state,
         modalContentData: [],
@@ -107,25 +126,31 @@ export const reducer: Reducer<any, ReducerAction> = (
         currentInput: "END",
       };
     }
-    case actionTypes.START_UPDATE: {
+    case "START_UPDATE": {
       const { existedReservations, selectedReservationId } = state;
       const selectedReservation = existedReservations.find(
         ({ reservationId }: any) => reservationId === selectedReservationId
       );
 
-      const { startIndex, endIndex, hasBall } = selectedReservation;
+      if (selectedReservation) {
+        const { startIndex, endIndex, hasBall } = selectedReservation;
+
+        return {
+          ...state,
+          step: state.step + 1,
+          mode: "update",
+          startIndex,
+          endIndex,
+          hasBall,
+          selectedReservation,
+        };
+      }
 
       return {
         ...state,
-        step: state.step + 1,
-        mode: "update",
-        startIndex,
-        endIndex,
-        hasBall,
-        selectedReservation,
       };
     }
-    case actionTypes.DECREASE_STEP: {
+    case "DECREASE_STEP": {
       return {
         ...state,
         step: state.step - 1,
@@ -136,8 +161,8 @@ export const reducer: Reducer<any, ReducerAction> = (
         hasBall: false,
       };
     }
-    case actionTypes.CLICK_BLOCK: {
-      const { startIndex } = payload;
+    case "CLICK_BLOCK": {
+      const { startIndex } = action.payload;
 
       return {
         ...state,
@@ -148,48 +173,52 @@ export const reducer: Reducer<any, ReducerAction> = (
         modalContentData: state.timeTable[startIndex].users,
       };
     }
-    case actionTypes.SET_HAS_BALL: {
-      const { hasBall } = payload;
+    case "SET_HAS_BALL": {
+      const { hasBall } = action.payload;
 
       return {
         ...state,
         hasBall,
       };
     }
-    case actionTypes.CLICK_RESERVATION_MARKER: {
+    case "CLICK_RESERVATION_MARKER": {
       const { existedReservations, timeTable } = state;
-      const { selectedReservationId } = payload;
+      const { selectedReservationId } = action.payload;
 
       const selectedReservation = existedReservations.find(
         ({ reservationId }: any) => reservationId === selectedReservationId
       );
 
-      const { startIndex, endIndex } = selectedReservation;
-      const modalContentData = [];
-      for (let i = startIndex; i <= endIndex; i += 1) {
-        const { users } = timeTable[i];
-        modalContentData.push({ index: i, users });
+      if (selectedReservation) {
+        const { startIndex, endIndex } = selectedReservation;
+        const modalContentData = [];
+        for (let i = startIndex; i <= endIndex; i += 1) {
+          const { users } = timeTable[i];
+          modalContentData.push({ index: i, users });
+        }
+
+        return {
+          ...state,
+          selectedReservationId,
+          modalContentData,
+          selectedReservation,
+          startIndex: null,
+        };
       }
 
-      return {
-        ...state,
-        selectedReservationId,
-        modalContentData,
-        selectedReservation,
-        startIndex: null,
-      };
+      return state;
     }
-    case actionTypes.SET_CURRENT_INPUT: {
-      const { currentInput } = payload;
+    case "SET_CURRENT_INPUT": {
+      const { currentInput } = action.payload;
 
       return {
         ...state,
         currentInput,
       };
     }
-    case actionTypes.SET_TIME_INDEX: {
-      const { user } = payload;
-      let { timeIndex } = payload;
+    case "SET_TIME_INDEX": {
+      const { user } = action.payload;
+      let { timeIndex } = action.payload;
 
       const {
         mode,
@@ -356,13 +385,16 @@ export const reducer: Reducer<any, ReducerAction> = (
           };
         }
       } else {
-        if (timeIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT) {
+        if (
+          startIndex &&
+          timeIndex - startIndex >= MAX_RESERVATION_TIME_BLOCK_UNIT
+        ) {
           console.log("3시간을 초과하여 예약할 수 없습니다.");
           timeIndex = startIndex + MAX_RESERVATION_TIME_BLOCK_UNIT - 1;
         }
 
         if (mode === "create") {
-          if (timeIndex < startIndex) {
+          if (startIndex && timeIndex < startIndex) {
             return {
               ...state,
               startIndex: timeIndex,
@@ -371,32 +403,8 @@ export const reducer: Reducer<any, ReducerAction> = (
               timeTable: [...originalTimeTable],
             };
           }
-
-          for (let i = startIndex; i <= timeIndex; i += 1) {
-            const { users, peopleCount, hasReservation } = timeTable[i];
-
-            timeTable[i] = {
-              ...timeTable[i],
-              users: hasReservation ? users : [...users, user],
-              peopleCount: hasReservation ? peopleCount : peopleCount + 1,
-            };
-
-            modalContentData.push({ index: i, users: timeTable[i].users });
-
-            if (hasReservation) {
-              requestDisabled = true;
-            }
-          }
-
-          return {
-            ...state,
-            endIndex: timeIndex,
-            timeTable,
-            modalContentData,
-            requestDisabled,
-          };
         } else {
-          if (timeIndex < startIndex) {
+          if (startIndex && timeIndex < startIndex) {
             for (
               let i = selectedReservation.startIndex;
               i <= selectedReservation.endIndex;
@@ -425,7 +433,7 @@ export const reducer: Reducer<any, ReducerAction> = (
             };
           }
 
-          if (selectedReservation.startIndex < startIndex) {
+          if (startIndex && selectedReservation.startIndex < startIndex) {
             for (
               let i = selectedReservation.startIndex;
               i < startIndex;
@@ -461,30 +469,32 @@ export const reducer: Reducer<any, ReducerAction> = (
             }
           }
 
-          for (let i = startIndex; i <= timeIndex; i += 1) {
-            const { users, peopleCount, hasReservation, ballCount } =
-              timeTable[i];
+          if (startIndex) {
+            for (let i = startIndex; i <= timeIndex; i += 1) {
+              const { users, peopleCount, hasReservation, ballCount } =
+                timeTable[i];
 
-            if (
-              i < selectedReservation.startIndex ||
-              i > selectedReservation.endIndex
-            ) {
-              timeTable[i] = {
-                ...timeTable[i],
-                users: [...users, user],
-                peopleCount: peopleCount + 1,
-                ballCount: hasBall ? ballCount + 1 : ballCount,
-              };
-            }
+              if (
+                i < selectedReservation.startIndex ||
+                i > selectedReservation.endIndex
+              ) {
+                timeTable[i] = {
+                  ...timeTable[i],
+                  users: [...users, user],
+                  peopleCount: peopleCount + 1,
+                  ballCount: hasBall ? ballCount + 1 : ballCount,
+                };
+              }
 
-            modalContentData.push({ index: i, users: timeTable[i].users });
+              modalContentData.push({ index: i, users: timeTable[i].users });
 
-            if (
-              (i < selectedReservation.startIndex ||
-                i > selectedReservation.endIndex) &&
-              hasReservation
-            ) {
-              requestDisabled = true;
+              if (
+                (i < selectedReservation.startIndex ||
+                  i > selectedReservation.endIndex) &&
+                hasReservation
+              ) {
+                requestDisabled = true;
+              }
             }
           }
 
@@ -497,6 +507,8 @@ export const reducer: Reducer<any, ReducerAction> = (
           };
         }
       }
+
+      return state;
     }
 
     default:

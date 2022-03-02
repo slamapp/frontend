@@ -179,7 +179,7 @@ const Reservation: NextPage = () => {
               )}
             />
           )}
-        {step === 2 && modalContentData && (
+        {step === 2 && startIndex && modalContentData && (
           <ModalContent.SelectedRange
             startTime={getTimeFromIndex(startIndex)}
             endTime={endIndex ? getTimeFromIndex(endIndex + 1) : null}
@@ -189,8 +189,16 @@ const Reservation: NextPage = () => {
             requestDisabled={requestDisabled}
             onSubmit={() =>
               mode === "create"
-                ? handleCreateReservation(date, courtId, hasBall)
-                : handleUpdateReservation(date, courtId, hasBall)
+                ? handleCreateReservation(
+                    date as string,
+                    courtId as string,
+                    hasBall
+                  )
+                : handleUpdateReservation(
+                    date as string,
+                    courtId as string,
+                    hasBall
+                  )
             }
             buttonText={
               mode === "create" ? "에 예약하기" : "으로 예약 수정하기"
