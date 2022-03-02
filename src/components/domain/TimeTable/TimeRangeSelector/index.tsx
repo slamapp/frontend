@@ -3,7 +3,7 @@ import * as S from "./style";
 interface Props {
   unit: number;
   startIndex: number;
-  endIndex: number;
+  endIndex: number | null;
 }
 
 const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {

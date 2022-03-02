@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
-import type { CurrentInputType, ReservationState } from "./reducer";
+import type { CurrentInputType } from "./reducer";
 
 interface ContextProps {
-  reservation: ReservationState;
+  reservation: any;
   handleInitReservation: (
     rservations: any,
     courtName: string,

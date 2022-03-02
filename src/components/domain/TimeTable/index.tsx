@@ -136,7 +136,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
             }
           />
         ))}
-        {step === 2 && (
+        {step === 2 && startIndex && (
           <TimeRangeSelector
             unit={height}
             startIndex={startIndex}

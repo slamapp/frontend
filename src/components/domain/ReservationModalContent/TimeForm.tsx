@@ -1,4 +1,5 @@
 import { Text } from "@components/base";
+import type { CurrentInputType } from "@contexts/ReservationProvider/reducer";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
@@ -49,7 +50,7 @@ interface TimeFormProps {
   currentInput: "START" | "END";
   startTime: string;
   endTime: string | null;
-  onSetCurrentInput: (currentInput: string) => void;
+  onSetCurrentInput: (currentInput: CurrentInputType) => void;
 }
 
 const TimeForm: React.FC<TimeFormProps> = ({
