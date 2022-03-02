@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import { useLocalToken } from "@hooks/domain";
 import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
 import { Button, ModalSheet, Spacer, Text } from "@components/base";
-import type { SlotKeyUnion } from "@components/domain";
+import type { SlotKeyUnion } from "@enums/timeSlotType";
 import {
   DatePicker,
   SlotPicker,
@@ -20,18 +20,14 @@ import {
   LeadToLoginModal,
   BasketballLoading,
 } from "@components/domain";
-import {
-  useMapContext,
-  useNavigationContext,
-  useReservationContext,
-} from "@contexts/hooks";
+import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { courtApi } from "@service/.";
 import {
   getTimezoneCurrentDate,
   getTimezoneDateStringFromDate,
 } from "@utils/date";
-import type { Coord } from "@domainTypes/tobe";
+import type { APICourt, Coord } from "@domainTypes/tobe";
 
 declare global {
   interface Window {
@@ -93,9 +89,10 @@ const Courts: NextPage = () => {
 
   const currentDate = useMemo(() => getTimezoneCurrentDate(), []);
 
-  const [courts, setCourts] = useState<any>();
+  const [courts, setCourts] =
+    useState<{ court: APICourt; reservationMaxCount: number }[]>();
 
-  const [level, setLevel] = useState<number>(5);
+  const [level, setLevel] = useState(5);
   const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
 
   const [selectedDate, setSelectedDate] = useState<Dayjs>(currentDate);
@@ -105,7 +102,11 @@ const Courts: NextPage = () => {
 
   // TODO: API 명세 나올 경우 any 수정해주기
   const [isInitialized, setIsInitialized] = useState(false);
-  const [selectedCourt, setSelectedCourt] = useState<any>(null);
+  const [selectedCourt, setSelectedCourt] = useState<{
+    court: APICourt;
+    reservationMaxCount: number;
+    address?: string;
+  } | null>(null);
   const [isAddressLoading, setIsAddressLoading] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -176,7 +177,7 @@ const Courts: NextPage = () => {
       const endLongitude = neLatLng.getLng();
 
       const {
-        data: { courts },
+        data: { contents },
       } = await courtApi.getCourtsByCoordsAndDate({
         date: getTimezoneDateStringFromDate(selectedDate),
         startLatitude,
@@ -186,7 +187,7 @@ const Courts: NextPage = () => {
         time: selectedSlot,
       });
 
-      setCourts(courts);
+      setCourts(contents);
     },
     [selectedDate, selectedSlot]
   );
@@ -254,7 +255,9 @@ const Courts: NextPage = () => {
   useEffect(() => {
     const restoreCourts = async (courtId: number) => {
       try {
-        const { data: court } = await courtApi.getCourtDetail(
+        const {
+          data: { court, reservationMaxCount },
+        } = await courtApi.getCourtDetail(
           courtId,
           getTimezoneDateStringFromDate(selectedDate),
           selectedSlot
@@ -266,7 +269,7 @@ const Courts: NextPage = () => {
           setCenter([latitude, longitude]);
           setIsOpen(true);
           searchAddrFromCoords(latitude, longitude);
-          setSelectedCourt({ ...court, courtId });
+          setSelectedCourt({ court, reservationMaxCount });
           setIsInitialized(true);
         }
       } catch (error) {
@@ -287,13 +290,23 @@ const Courts: NextPage = () => {
 
   useEffect(() => {
     const updateSelectedCourtDetail = async () => {
-      const { data: court } = await courtApi.getCourtDetail(
-        selectedCourt.courtId,
-        getTimezoneDateStringFromDate(selectedDate),
-        selectedSlot
-      );
+      if (selectedCourt) {
+        const {
+          data: { court, reservationMaxCount },
+        } = await courtApi.getCourtDetail(
+          selectedCourt.court.id,
+          getTimezoneDateStringFromDate(selectedDate),
+          selectedSlot
+        );
 
-      setSelectedCourt((prev: any) => ({ ...prev, ...court }));
+        setSelectedCourt((prev) => ({
+          court: {
+            ...prev,
+            ...court,
+          },
+          reservationMaxCount,
+        }));
+      }
     };
 
     if (map) {
@@ -352,20 +365,20 @@ const Courts: NextPage = () => {
         {selectedCourt && (
           <ModalContentContainer>
             <Spacer gap="xs" type="vertical">
-              <CourtItem.Header>{selectedCourt.courtName}</CourtItem.Header>
+              <CourtItem.Header>{selectedCourt.court.name}</CourtItem.Header>
               <CourtItem.Address>{selectedCourt.address}</CourtItem.Address>
             </Spacer>
             <ReservationCount block strong size="lg">
-              {selectedCourt.courtReservation} 명
+              {selectedCourt.reservationMaxCount} 명
             </ReservationCount>
             <Actions gap="xs">
-              <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
+              <CourtItem.FavoritesToggle courtId={selectedCourt.court.id} />
               <CourtItem.Share
                 court={{
-                  id: selectedCourt.courtId,
-                  latitude: selectedCourt.latitude,
-                  longitude: selectedCourt.longitude,
-                  name: selectedCourt.courtName,
+                  id: selectedCourt.court.id,
+                  latitude: selectedCourt.court.latitude,
+                  longitude: selectedCourt.court.longitude,
+                  name: selectedCourt.court.name,
                 }}
               />
               <CourtItem.ChatLink
@@ -375,9 +388,9 @@ const Courts: NextPage = () => {
                 }
               />
               <CourtItem.KakaoMapLink
-                latitude={selectedCourt.latitude}
-                longitude={selectedCourt.longitude}
-                courtName={selectedCourt.courtName}
+                latitude={selectedCourt.court.latitude}
+                longitude={selectedCourt.court.longitude}
+                courtName={selectedCourt.court.name}
               />
 
               {localToken ? (
@@ -389,7 +402,7 @@ const Courts: NextPage = () => {
                     },
                   }}
                   as={`/courts/${
-                    selectedCourt.courtId
+                    selectedCourt.court.id
                   }/${getTimezoneDateStringFromDate(selectedDate)}`}
                   passHref
                 >

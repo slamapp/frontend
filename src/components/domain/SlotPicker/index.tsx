@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import { Radio } from "@components/base";
-import type { SlotValueUnion, SlotKeyUnion } from "./types";
+import type { SlotValueUnion, SlotKeyUnion } from "@enums/timeSlotType";
 
 export const slotItems: {
   value: SlotKeyUnion;

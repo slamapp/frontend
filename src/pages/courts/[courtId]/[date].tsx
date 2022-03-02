@@ -115,20 +115,22 @@ const Reservation: NextPage = () => {
   useEffect(() => {
     const initReservations = async () => {
       const {
-        data: { reservations },
+        data: { contents },
       } = await courtApi.getAllCourtReservationsByDate(
-        courtId as string,
+        Number(courtId) as number,
         date as string
       );
 
       const {
-        data: { courtName },
+        data: {
+          court: { name },
+        },
       } = await courtApi.getCourtDetail(
         +(courtId as string),
         dayjs().format("YYYY-MM-DD"),
         "dawn"
       );
-      handleInitReservation(reservations, courtName, date);
+      handleInitReservation(contents, name, date);
     };
 
     if (router.isReady && currentUser.userId) {
