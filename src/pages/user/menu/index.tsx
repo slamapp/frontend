@@ -14,14 +14,12 @@ const Menu: NextPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const list = [
+    // {
+    //   title: "다크 모드",
+    //   onClick: () => console.log("dark Mode clicked"),
+    //   icon: "moon",
+    // },
     {
-      id: "1",
-      title: "다크 모드",
-      onClick: () => console.log("dark Mode clicked"),
-      icon: "moon",
-    },
-    {
-      id: "2",
       title: "로그아웃",
       onClick: () => setIsModalOpen(true),
       icon: "log-out",
@@ -39,8 +37,8 @@ const Menu: NextPage = () => {
   return (
     <div>
       <MenuList>
-        {list.map(({ title, onClick, icon, id }) => (
-          <MenuItem key={id} onClick={onClick}>
+        {list.map(({ title, onClick, icon }) => (
+          <MenuItem key={title} onClick={onClick}>
             <Icon name={icon} /> {title}
           </MenuItem>
         ))}
