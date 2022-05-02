@@ -16,7 +16,7 @@ export interface UserApi {
       APIUser,
       "nickname" | "description" | "profileImage" | "proficiency" | "positions"
     > & {
-      userId: number;
+      userId: APIUser["id"];
       followerCount: number;
       followingCount: number;
       isFollowing: boolean;

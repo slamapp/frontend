@@ -32,7 +32,7 @@ interface ResponseUserProfile
     APIUser,
     "nickname" | "description" | "profileImage" | "proficiency" | "positions"
   > {
-  userId: number;
+  userId: APIUser["id"];
   followerCount: number;
   followingCount: number;
 }
@@ -54,7 +54,6 @@ const User: NextPage = () => {
 
   const { query } = useRouter();
   const { userId: stringQueryUserId } = query;
-  const queryUserId = Number(stringQueryUserId);
 
   const [isMe, setIsMe] = useState(false);
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
@@ -97,7 +96,7 @@ const User: NextPage = () => {
 
   const getOtherProfile = useCallback(async () => {
     try {
-      const { data } = await userApi.getUserProfile(queryUserId);
+      const { data } = await userApi.getUserProfile(`${stringQueryUserId}`);
       setPageUserInfo(data);
       setIsFollowing(data.isFollowing);
       // TODO: 즐겨찾기 API수정시 주석 풀고 디버깅 필요!
@@ -109,7 +108,7 @@ const User: NextPage = () => {
         setIsError(true);
       }
     }
-  }, [queryUserId]);
+  }, [stringQueryUserId]);
 
   const handleClickFollow = (prevIsFollowing: boolean) => {
     if (pageUserInfo) {
@@ -137,15 +136,15 @@ const User: NextPage = () => {
   }, [pageUserInfo?.nickname, setNavigationTitle]);
 
   useEffect(() => {
-    if (queryUserId && userId) {
-      if (queryUserId === userId) {
+    if (stringQueryUserId && userId) {
+      if (stringQueryUserId === userId) {
         setIsMe(true);
         getMyProfile();
       } else {
         getOtherProfile();
       }
     }
-  }, [userId, getMyProfile, getOtherProfile, queryUserId]);
+  }, [userId, getMyProfile, getOtherProfile, stringQueryUserId]);
 
   if (pageUserInfo === null) {
     if (isError) {

@@ -1,8 +1,9 @@
+import type { APIUser } from "@domainTypes/tobe";
 import { createContext } from "react";
 
 export interface ContextProps {
-  sendFollow: (body: { receiverId: number }) => void;
-  sendFollowCancel: (body: { receiverId: number }) => void;
+  sendFollow: (body: { receiverId: APIUser["id"] }) => void;
+  sendFollowCancel: (body: { receiverId: APIUser["id"] }) => void;
   sendLoudSpeaker: (body: {
     courtId: number;
     startTime: string;
