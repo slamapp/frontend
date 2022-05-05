@@ -25,6 +25,7 @@ const NoItemMessage = ({
       <Image
         width={90}
         height={170}
+        unoptimized
         src={
           type === "favorite"
             ? "/assets/basketball/fire_off_favorited.gif"
