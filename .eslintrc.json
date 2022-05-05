@@ -29,6 +29,7 @@
     "react/display-name": "off",
     "camelcase": "off",
     "curly": ["error", "all"],
+    "import/no-import-module-exports": "off",
     "newline-before-return": "error",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/consistent-type-imports": "error",

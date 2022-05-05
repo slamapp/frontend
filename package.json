@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
+    "commit": "npx cz-customizable",
     "lint:fix": "eslint --fix 'src/**'",
     "lint:css": "stylelint 'src/**/*.{ts, tsx}'",
     "prepare": "husky install",
@@ -32,6 +33,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.2.4",
+    "@commitlint/config-conventional": "^16.2.4",
     "@netlify/plugin-nextjs": "^4.2.2",
     "@types/feather-icons": "^4.7.0",
     "@types/jest": "^27.4.0",
@@ -43,8 +46,6 @@
     "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
-    "commitlint": "^15.0.0",
-    "commitlint-config-gitmoji": "^2.2.5",
     "eslint": "<8.0.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^16.1.0",
@@ -57,9 +58,5 @@
     "lint-staged": ">=10",
     "prettier": "^2.5.1",
     "typescript": "4.5.2"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js}": "eslint --cache --fix",
-    "*.{ts,tsx,js,css,md}": "prettier --write"
   }
 }
