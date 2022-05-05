@@ -165,6 +165,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
                   >
                     <ImageWrapper>
                       <Image
+                        unoptimized
                         src="/assets/basketball/only_ball_500.gif"
                         alt="basketball"
                       />
