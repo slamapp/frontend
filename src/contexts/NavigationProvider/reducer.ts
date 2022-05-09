@@ -27,7 +27,7 @@ export const initialData: DataProps = {
   isNotifications: true,
   isProfile: true,
   isMenu: false,
-  title: "커스텀",
+  title: "",
   handleClickBack: null,
   customButton: null,
 };
