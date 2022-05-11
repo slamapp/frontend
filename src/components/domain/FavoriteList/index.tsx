@@ -68,21 +68,23 @@ const FavoriteList = ({ isLoading, favorites }: Props) => {
             </Spacer>
 
             <Actions gap="xs">
-              <CourtItem.FavoritesToggle courtId={courtId} />
-              <CourtItem.Share
-                court={{ id: courtId, latitude, longitude, name: courtName }}
-              />
-              <CourtItem.ChatLink
-                chatroomId={
-                  // TODO: Court에 chatroomId 포함시키기
-                  "1"
-                }
-              />
-              <CourtItem.KakaoMapLink
-                latitude={latitude}
-                longitude={longitude}
-                courtName={courtName}
-              />
+              <ActionsLeftButtons gap="xs">
+                <CourtItem.FavoritesToggle courtId={courtId} />
+                <CourtItem.Share
+                  court={{ id: courtId, latitude, longitude, name: courtName }}
+                />
+                <CourtItem.ChatLink
+                  chatroomId={
+                    // TODO: Court에 chatroomId 포함시키기
+                    "1"
+                  }
+                />
+                <CourtItem.KakaoMapLink
+                  latitude={latitude}
+                  longitude={longitude}
+                  courtName={courtName}
+                />
+              </ActionsLeftButtons>
               <Link href={`/courts?courtId=${courtId}`} passHref>
                 <a style={{ flex: 1, display: "flex" }}>
                   <Button size="lg" style={{ flex: 1 }}>
@@ -100,7 +102,10 @@ const FavoriteList = ({ isLoading, favorites }: Props) => {
 
 const Actions = styled(Spacer)`
   margin-top: 40px;
+  flex-flow: row wrap;
 `;
+
+const ActionsLeftButtons = styled(Spacer)``;
 
 const FavoriteItem = styled.div`
   background-color: ${({ theme }) => theme.colors.white};

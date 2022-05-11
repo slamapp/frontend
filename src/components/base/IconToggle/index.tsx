@@ -40,6 +40,8 @@ const StyledIconToggleLabel = styled.label<Required<Pick<Props, "size">>>`
   border-radius: ${({ theme }) => theme.borderRadiuses.lg};
   min-width: ${({ theme, size }) => theme.buttonHeights[size]};
   min-height: ${({ theme, size }) => theme.buttonHeights[size]};
+  width: ${({ theme, size }) => theme.buttonHeights[size]};
+  height: ${({ theme, size }) => theme.buttonHeights[size]};
   cursor: pointer;
   input {
     display: none;
