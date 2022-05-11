@@ -47,7 +47,7 @@ const StyledIconButton = styled.button<Required<Pick<Props, "size">>>`
   background-color: ${({ theme }) => theme.colors.white};
   border: 2px solid ${({ theme }) => theme.colors.gray100};
   border-radius: ${({ theme }) => theme.borderRadiuses.lg};
-  width: ${({ theme, size }) => theme.buttonHeights[size]};
-  height: ${({ theme, size }) => theme.buttonHeights[size]};
+  min-width: ${({ theme, size }) => theme.buttonHeights[size]};
+  min-height: ${({ theme, size }) => theme.buttonHeights[size]};
   cursor: pointer;
 `;
