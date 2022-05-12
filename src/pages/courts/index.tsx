@@ -320,8 +320,13 @@ const Courts: NextPage = () => {
       <Map.KakaoMap
         level={level}
         center={center}
+        onClick={onClose}
+        onDragStart={onClose}
         onDragEnd={fetchCourtsByBoundsAndDatetime}
-        onZoomChanged={fetchCourtsByBoundsAndDatetime}
+        onZoomChanged={(map: kakao.maps.Map) => {
+          fetchCourtsByBoundsAndDatetime(map);
+          onClose();
+        }}
       >
         <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
         <Map.CurrentLocationButton
