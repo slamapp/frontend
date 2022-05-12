@@ -5,14 +5,8 @@ import Modal from "../Modal";
 interface Props {
   headerContent: ReactNode;
   isOpen: boolean;
-  cancel: {
-    content: ReactNode;
-    handle: (e?: any) => void;
-  };
-  confirm: {
-    content: ReactNode;
-    handle: (e?: any) => void;
-  };
+  cancel: { content: ReactNode; handle: (e?: any) => void };
+  confirm: { content: ReactNode; handle: (e?: any) => void };
 }
 
 const LeadToLoginModal = ({

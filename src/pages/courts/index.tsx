@@ -5,7 +5,6 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-
 import { useLocalToken } from "@hooks/domain";
 import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
 import { Button, ModalSheet, Spacer, Text } from "@components/base";
@@ -21,9 +20,9 @@ import {
   BasketballLoading,
 } from "@components/domain";
 import {
+  useAuthContext,
   useMapContext,
   useNavigationContext,
-  useReservationContext,
 } from "@contexts/hooks";
 import { useRouter } from "next/router";
 import { courtApi } from "@service/.";
@@ -76,6 +75,8 @@ const getSlotFromDate = (
 const Courts: NextPage = () => {
   const router = useRouter();
 
+  const { authProps } = useAuthContext();
+
   const {
     navigationProps,
     useMountPage,
@@ -106,7 +107,6 @@ const Courts: NextPage = () => {
   // TODO: API 명세 나올 경우 any 수정해주기
   const [isInitialized, setIsInitialized] = useState(false);
   const [selectedCourt, setSelectedCourt] = useState<any>(null);
-  const [isAddressLoading, setIsAddressLoading] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] = useState(false);
@@ -126,11 +126,8 @@ const Courts: NextPage = () => {
     setSelectedCourt(null);
   }, []);
 
-  // TODO: 노체 코드와 동일한 부분 중복 줄이기, hooks로 빼기
   const searchAddrFromCoords = (latitude: number, longitude: number) => {
     const geocoder = new kakao.maps.services.Geocoder();
-
-    setIsAddressLoading(true);
 
     const callback = (result: any, status: any) => {
       if (status === kakao.maps.services.Status.OK) {
@@ -156,8 +153,6 @@ const Courts: NextPage = () => {
           }));
         }
       }
-
-      setIsAddressLoading(false);
     };
 
     (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
@@ -303,7 +298,12 @@ const Courts: NextPage = () => {
         updateSelectedCourtDetail();
       }
     }
-  }, [map, fetchCourtsByBoundsAndDatetime, center]);
+  }, [
+    map,
+    fetchCourtsByBoundsAndDatetime,
+    center,
+    authProps.currentUser.favorites,
+  ]);
 
   return (
     <>

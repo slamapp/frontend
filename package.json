@@ -2,7 +2,7 @@
   "name": "slam-client",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev & open http://localhost:3000",
     "build": "next build",
     "start": "next start",
     "test": "jest",
