@@ -130,7 +130,7 @@ const AuthProvider = ({ children }: Props) => {
     }, []);
 
   const createFavorite: ContextProps["createFavorite"] = useCallback(
-    async (courtId: number) => {
+    async (courtId) => {
       try {
         const { data: favorite } = await favoriteApi.createMyFavorite(courtId);
         dispatch({ type: "CREATE_FAVORITE", payload: { favorite } });

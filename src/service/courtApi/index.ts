@@ -19,9 +19,9 @@ const courtApi: CourtApi = {
       },
     }),
   createNewCourt: (data) => authRequest.post(`/courts/new`, data),
-  getCourtDetail: (courtId: number, date: string, time: string) =>
+  getCourtDetail: (courtId, date, time) =>
     request.get(`/courts/detail/${courtId}/${date}/${time}`),
-  getAllCourtReservationsByDate: (courtId: string, date: string) =>
+  getAllCourtReservationsByDate: (courtId, date) =>
     authRequest.get(`/courts/${courtId}/reservations/${date}`),
 };
 

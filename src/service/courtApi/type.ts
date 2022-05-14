@@ -1,8 +1,29 @@
+import type { SlotKeyUnion } from "@components/domain";
+import type { APICourt, APINewCourt } from "@domainTypes/tobe";
 import type { ApiPromise } from "@service/type";
 
 export interface CourtApi {
-  getCourtsByCoordsAndDate: (...params: any[]) => ApiPromise;
-  createNewCourt: (...params: any[]) => ApiPromise;
-  getCourtDetail: (...params: any[]) => ApiPromise;
-  getAllCourtReservationsByDate: (...params: any[]) => ApiPromise;
+  getCourtsByCoordsAndDate: (coordsAndDate: {
+    date: string;
+    startLatitude: APICourt["latitude"];
+    startLongitude: APICourt["longitude"];
+    endLatitude: APICourt["latitude"];
+    endLongitude: APICourt["longitude"];
+    time: SlotKeyUnion;
+  }) => ApiPromise;
+  createNewCourt: (
+    courtData: Pick<
+      APINewCourt,
+      "longitude" | "latitude" | "image" | "texture" | "basketCount" | "name"
+    >
+  ) => ApiPromise<APINewCourt>;
+  getCourtDetail: (
+    courtId: APICourt["id"],
+    date: string,
+    time: string
+  ) => ApiPromise;
+  getAllCourtReservationsByDate: (
+    courtId: APICourt["id"],
+    date: string
+  ) => ApiPromise;
 }

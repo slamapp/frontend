@@ -3,7 +3,7 @@ import type { ChatroomAdminType, ChatroomType } from "@enums/.";
 
 export type APIChatroom = APICourtChatroom | APIUsersChatroom;
 
-export interface APICourtChatroom extends APICommon<string> {
+export interface APICourtChatroom extends APICommon {
   admins: Admin[];
   type: ChatroomType;
   court: APICourt;
@@ -11,7 +11,7 @@ export interface APICourtChatroom extends APICommon<string> {
   lastChat: APIChat;
 }
 
-export interface APIUsersChatroom extends APICommon<string> {
+export interface APIUsersChatroom extends APICommon {
   admins: Admin[];
   type: ChatroomType;
   participants: APIUser[];

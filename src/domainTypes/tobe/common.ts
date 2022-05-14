@@ -1,15 +1,14 @@
 import type { APIUser } from "@domainTypes/tobe";
 
-export interface APISend<Id = string> extends APICommon<Id> {
+export interface APISend extends APICommon {
   sender: OmitAt<APIUser>;
 }
 
-export interface APICommon<Id = number> {
-  id: Id;
+export interface APICommon {
+  id: string;
   createdAt: ISOString;
   updatedAt: ISOString;
 }
 
-export type ISOString = string; // TODO: regex로 ISOString 타입 좁히기
-
+export type ISOString = string;
 export type OmitAt<T> = Omit<T, "createdAt" | "updatedAt">;

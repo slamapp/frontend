@@ -23,7 +23,7 @@ import {
 } from "@utils/userInfo";
 import Custom404 from "@pages/404";
 import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
-import type { APIUser } from "@domainTypes/tobe";
+import type { APIFavorite, APIUser, APICourt } from "@domainTypes/tobe";
 import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
 import type { AxiosError } from "axios";
 
@@ -60,7 +60,7 @@ const User: NextPage = () => {
     null
   );
   const [pageFavorites, setPageFavorites] = useState<
-    { id: number; court: { id: number; name: string } }[]
+    { id: APIFavorite["id"]; court: Pick<APICourt, "id" | "name"> }[]
   >([]);
   const [isFollowing, setIsFollowing] = useState(false);
 

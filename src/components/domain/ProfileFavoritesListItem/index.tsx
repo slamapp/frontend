@@ -3,11 +3,12 @@ import styled from "@emotion/styled";
 import type { ReactNode, HTMLAttributes } from "react";
 import { Icon, Button, Spacer, Text } from "@components/base";
 import Link from "next/link";
+import type { APIFavorite } from "@domainTypes/tobe";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
-  courtId: number;
+  courtId: APIFavorite["court"]["id"];
 }
 
 const ProfileFavoritesListItem: React.FC<Props> = ({

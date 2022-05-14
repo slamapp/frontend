@@ -3,7 +3,6 @@ export { default as useAsyncFn } from "./useAsyncFn";
 export { default as useClickAway } from "./useClickAway";
 export { default as useDebounce } from "./useDebounce";
 export { default as useForm } from "./useForm";
-export type { Error } from "./useForm";
 export { default as useHotKey } from "./useHotKey";
 export { default as useHover } from "./useHover";
 export { default as useInterval } from "./useInterval";

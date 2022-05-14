@@ -1,6 +1,6 @@
 import type { APICommon, OmitAt, APICourt } from "@domainTypes/tobe";
 
-export interface APIReservation extends APICommon<string> {
+export interface APIReservation extends APICommon {
   numberOfReservations: number;
   startTime: string;
   endTime: string;

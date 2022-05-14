@@ -18,7 +18,7 @@ interface APINotificationLoudspeaker extends DefaultNotification {
   type: "LOUDSPEAKER";
   loudspeaker: OmitAt<APILoudspeaker>;
 }
-interface DefaultNotification extends APICommon<string> {
+interface DefaultNotification extends APICommon {
   isRead: boolean;
   isClicked: boolean;
 }

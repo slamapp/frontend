@@ -3,7 +3,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import { Button, Spacer } from "@components/base";
 import dynamic from "next/dynamic";
-import type { APICourt, APIFavorite } from "@domainTypes/tobe";
+import type { APIFavorite } from "@domainTypes/tobe";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
 
@@ -16,10 +16,10 @@ interface Props {
   isLoading: boolean;
   favorites: {
     favoriteId: APIFavorite["id"];
-    courtId: APICourt["id"];
-    courtName: APICourt["name"];
-    latitude: APICourt["latitude"];
-    longitude: APICourt["longitude"];
+    courtId: APIFavorite["court"]["id"];
+    courtName: APIFavorite["court"]["name"];
+    latitude: APIFavorite["court"]["latitude"];
+    longitude: APIFavorite["court"]["longitude"];
   }[];
 }
 const FavoriteList = ({ isLoading, favorites }: Props) => {

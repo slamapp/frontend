@@ -30,25 +30,14 @@ import {
   getTimezoneCurrentDate,
   getTimezoneDateStringFromDate,
 } from "@utils/date";
-import type { Coord } from "@domainTypes/tobe";
+import type { APICourt, Coord } from "@domainTypes/tobe";
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
-// TODO: 노체와 중복되는 타입 공통화해서 중복 줄이기
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (
     latitude: number,
     longitude: number,
     callback?: (result: any, status: any) => void
   ) => string;
-  addressSearch: (
-    address: string,
-    callback?: (result: any, status: any) => void
-  ) => void;
 }
 
 const getSlotFromDate = (
@@ -247,7 +236,7 @@ const Courts: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    const restoreCourts = async (courtId: number) => {
+    const restoreCourts = async (courtId: APICourt["id"]) => {
       try {
         const { data: court } = await courtApi.getCourtDetail(
           courtId,
@@ -273,7 +262,7 @@ const Courts: NextPage = () => {
       const { courtId } = router.query;
 
       if (courtId) {
-        restoreCourts(+courtId);
+        restoreCourts(`${courtId}`);
       } else {
         handleGetCurrentLocation();
       }

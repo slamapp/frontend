@@ -116,15 +116,12 @@ const Reservation: NextPage = () => {
     const initReservations = async () => {
       const {
         data: { reservations },
-      } = await courtApi.getAllCourtReservationsByDate(
-        courtId as string,
-        date as string
-      );
+      } = await courtApi.getAllCourtReservationsByDate(`${courtId}`, `${date}`);
 
       const {
         data: { courtName },
       } = await courtApi.getCourtDetail(
-        +(courtId as string),
+        `${courtId}`,
         dayjs().format("YYYY-MM-DD"),
         "dawn"
       );

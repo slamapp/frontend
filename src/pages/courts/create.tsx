@@ -13,32 +13,18 @@ import {
   LeadToLoginModal,
   BasketballLoading,
 } from "@components/domain";
-import type { Error } from "@hooks/.";
 import { useForm } from "@hooks/.";
 import { getCurrentLocation } from "@utils/geolocation";
 import { useMapContext, useNavigationContext } from "@contexts/hooks";
 import { courtApi } from "@service/.";
-import type { Coord } from "@domainTypes/tobe";
-
-interface Values {
-  longitude?: number;
-  latitude?: number;
-  image: string | null;
-  texture: string | null;
-  basketCount: number;
-  name: string;
-}
+import type { APICourt, APINewCourt, Coord } from "@domainTypes/tobe";
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (
-    latitude: number,
-    longitude: number,
-    callback?: (result: any, status: any) => void
+    latitude: APICourt["latitude"],
+    longitude: APICourt["longitude"],
+    callback?: (result: any, status: kakao.maps.services.Status) => void
   ) => string;
-  addressSearch: (
-    address: string,
-    callback?: (result: any, status: any) => void
-  ) => void;
 }
 
 const CreateCourt: NextPage = () => {
@@ -50,46 +36,42 @@ const CreateCourt: NextPage = () => {
   useMountPage("PAGE_COURT_CREATE");
 
   const [isOpen, setOpen] = useState(false);
-  const [isAddressLoading, setIsAddressLoading] = useState<boolean>(false);
-  const [level, setLevel] = useState<number>(3);
+  const [level, setLevel] = useState(3);
   const [center, setCenter] = useState<Coord>();
   const [position, setPosition] = useState<Coord>();
   const [address, setAddress] = useState<string>();
   const [validatedBasketCount, setValidatedBasketCount] = useState(1);
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
 
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
     const geocoder = new kakao.maps.services.Geocoder();
 
-    setIsAddressLoading(true);
-    const callback = (result: any, status: any) => {
-      if (status === kakao.maps.services.Status.OK) {
-        // 도로명 주소
-        if (result[0].road_address) {
-          setAddress(result[0].road_address.address_name);
-        }
-        // 법정 주소
-        else if (result[0].address.address_name) {
-          setAddress(result[0].address.address_name);
-        }
-        // 주소가 없는 경우
-        else {
-          setAddress("주소가 존재하지 않습니다.");
+    (geocoder as Geocoder).coord2Address(
+      longitude,
+      latitude,
+      (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          // 도로명 주소
+          if (result[0].road_address) {
+            setAddress(result[0].road_address.address_name);
+          }
+          // 법정 주소
+          else if (result[0].address.address_name) {
+            setAddress(result[0].address.address_name);
+          }
+          // 주소가 없는 경우
+          else {
+            setAddress("주소가 존재하지 않습니다.");
+          }
         }
       }
-
-      setIsAddressLoading(false);
-    };
-
-    (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
+    );
   };
 
   const handleClickKakaoMap = (
     _: kakao.maps.Map,
-    mouseEvent: kakao.maps.event.MouseEvent
+    { latLng }: kakao.maps.event.MouseEvent
   ) => {
-    const { latLng } = mouseEvent;
-
     if (latLng) {
       setPosition([latLng.getLat(), latLng.getLng()]);
       searchAddrFromCoords([latLng.getLat(), latLng.getLng()]);
@@ -123,40 +105,45 @@ const CreateCourt: NextPage = () => {
     handleGetCurrentLocation();
   }, [handleGetCurrentLocation]);
 
-  const { values, errors, isLoading, setValues, handleSubmit } =
-    useForm<Values>({
-      initialValues: {
-        longitude: 0,
-        latitude: 0,
-        image: null,
-        texture: null,
-        basketCount: 1,
-        name: "",
-      },
-      onSubmit: async (values) => {
-        try {
-          await courtApi.createNewCourt(values);
-          router.push("/courts");
-        } catch (error) {
-          console.error(error);
-        }
-      },
-      validate: ({ basketCount, name, longitude, latitude }) => {
-        const errors: Error<Values> = {};
+  const { values, errors, isLoading, setValues, handleSubmit } = useForm<
+    Pick<
+      APINewCourt,
+      "longitude" | "latitude" | "image" | "texture" | "basketCount" | "name"
+    >
+  >({
+    initialValues: {
+      longitude: 0,
+      latitude: 0,
+      image: null,
+      texture: "ETC",
+      basketCount: 1,
+      name: "",
+    },
+    onSubmit: async (values) => {
+      try {
+        await courtApi.createNewCourt(values);
+        router.push("/courts");
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    validate: (values) => {
+      const errors: { [key in keyof typeof values]?: string } = {};
+      const { basketCount, name, longitude, latitude } = values;
 
-        if (!name) {
-          errors.name = "농구장 이름을 입력해주세요.";
-        }
-        if (basketCount < 1) {
-          errors.basketCount = "골대 개수를 입력해주세요.";
-        }
-        if (!longitude || !latitude) {
-          errors.longitude = "위치를 지정해주세요.";
-        }
+      if (!name) {
+        errors.name = "농구장 이름을 입력해주세요.";
+      }
+      if (basketCount < 1) {
+        errors.basketCount = "골대 개수를 입력해주세요.";
+      }
+      if (!longitude || !latitude) {
+        errors.longitude = "위치를 지정해주세요.";
+      }
 
-        return errors;
-      },
-    });
+      return errors;
+    },
+  });
 
   useEffect(() => {
     if (values.basketCount > 99) {

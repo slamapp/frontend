@@ -1,24 +1,27 @@
 import type { ApiPromise } from "@service/type";
+import type { APICourt, APIFavorite, APIUser } from "@domainTypes/tobe";
 
 export interface FavoriteApi {
   getMyFavorites: () => ApiPromise<{
     favorites: {
-      courtId: number;
-      courtName: string;
+      courtId: APIFavorite["court"]["id"];
+      courtName: APIFavorite["court"]["name"];
       createdAt: string;
       updatedAt: string;
-      favoriteId: number;
-      latitude: number;
-      longitude: number;
+      favoriteId: APIFavorite["id"];
+      latitude: APIFavorite["court"]["latitude"];
+      longitude: APIFavorite["court"]["longitude"];
     }[];
   }>;
-  createMyFavorite: (courtId: number) => ApiPromise<{
-    favoriteId: number;
-    courtId: number;
-    courtName: string;
+  createMyFavorite: (courtId: APICourt["id"]) => ApiPromise<{
+    favoriteId: APIFavorite["id"];
+    courtId: APIFavorite["court"]["id"];
+    courtName: APIFavorite["court"]["name"];
     createdAt: string;
     updatedAt: string;
-    userId: number;
+    userId: APIUser["id"];
   }>;
-  deleteMyFavorite: (favoriteId: number) => ApiPromise<{ favoriteId: number }>;
+  deleteMyFavorite: (
+    favoriteId: APIFavorite["id"]
+  ) => ApiPromise<{ favoriteId: APIFavorite["id"] }>;
 }

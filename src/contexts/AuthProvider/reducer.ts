@@ -12,7 +12,7 @@ export interface DataProps {
     description: APIUser["description"] | null;
     nickname: APIUser["nickname"] | null;
     favorites: (Pick<APIFavorite, "createdAt" | "updatedAt"> & {
-      favoriteId: number;
+      favoriteId: APIFavorite["id"];
       courtId: APIFavorite["court"]["id"];
       courtName: APIFavorite["court"]["name"];
       latitude: APIFavorite["court"]["latitude"];

@@ -5,7 +5,7 @@ export interface APICourt extends APICommon {
   name: string;
   latitude: number;
   longitude: number;
-  image: string;
+  image: string | null;
   basketCount: number;
   texture: TextureKey;
 }
