@@ -66,14 +66,9 @@ const Courts: NextPage = () => {
 
   const { authProps } = useAuthContext();
 
-  const {
-    navigationProps,
-    useMountPage,
-    useDisableTopTransparent,
-    useMountCustomButtonEvent,
-  } = useNavigationContext();
+  const { useMountPage, useDisableTopTransparent, useMountCustomButtonEvent } =
+    useNavigationContext();
 
-  const { isTopTransparent } = navigationProps;
   const [localToken] = useLocalToken();
 
   useMountPage("PAGE_MAP");
@@ -300,7 +295,6 @@ const Courts: NextPage = () => {
         <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
       <DatePicker
-        isBackgroundTransparent={isTopTransparent}
         startDate={currentDate}
         selectedDate={selectedDate}
         onClick={handleDateClick}
