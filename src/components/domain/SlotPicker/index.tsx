@@ -43,15 +43,17 @@ const SlotPicker: React.FC<SlotPickerProps> = ({
 
   return (
     <Radio.Group onChange={onChange} className={className}>
-      {slotItems.map(({ text, value }, index) => (
-        <Radio.Item
-          key={value}
-          text={text}
-          value={value}
-          checked={selectedSlot === value}
-          disabled={index < limit}
-        />
-      ))}
+      {slotItems.map(
+        ({ text, value }, index) =>
+          !(index < limit) && (
+            <Radio.Item
+              key={value}
+              text={text}
+              value={value}
+              checked={selectedSlot === value}
+            />
+          )
+      )}
     </Radio.Group>
   );
 };
