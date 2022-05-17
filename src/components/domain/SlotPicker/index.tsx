@@ -1,33 +1,17 @@
 import type { ChangeEvent } from "react";
 import { Radio } from "@components/base";
-import type { SlotValueUnion, SlotKeyUnion } from "./types";
 
-export const slotItems: {
-  value: SlotKeyUnion;
-  text: SlotValueUnion;
-}[] = [
-  {
-    value: "dawn",
-    text: "새벽",
-  },
-  {
-    value: "morning",
-    text: "아침",
-  },
-  {
-    value: "afternoon",
-    text: "낮",
-  },
-  {
-    value: "night",
-    text: "밤",
-  },
-];
+export const slotItems = [
+  { value: "dawn", text: "새벽" },
+  { value: "morning", text: "아침" },
+  { value: "afternoon", text: "낮" },
+  { value: "night", text: "밤" },
+] as const;
 
 interface SlotPickerProps {
-  selectedSlot: SlotKeyUnion;
+  selectedSlot: typeof slotItems[number]["value"];
   className?: string;
-  currentDateTimeSlot: SlotKeyUnion | null;
+  currentDateTimeSlot: typeof slotItems[number]["value"] | null;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
