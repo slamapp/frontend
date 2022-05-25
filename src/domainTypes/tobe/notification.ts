@@ -3,7 +3,7 @@ import type {
   OmitAt,
   APIFollow,
   APILoudspeaker,
-} from "@domainTypes/tobe";
+} from "~/domainTypes/tobe";
 
 export type APINotification =
   | APINotificationFollow

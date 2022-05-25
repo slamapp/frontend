@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { Text } from "@components/base";
+import { Text } from "~/components/base";
 
 const SubHeaderArea = styled.div`
   height: 50px;

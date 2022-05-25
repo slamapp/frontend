@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
-import { Button, Spacer } from "@components/base";
 import dynamic from "next/dynamic";
-import type { APIFavorite } from "@domainTypes/tobe";
+import type { APIFavorite } from "~/domainTypes/tobe";
+import { Button, Spacer } from "~/components/base";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
 

@@ -1,5 +1,5 @@
-import getLocalToken from "@utils/getLocalToken";
 import type { AxiosRequestConfig } from "axios";
+import getLocalToken from "~/utils/getLocalToken";
 
 const defaultHeaders = {
   "Content-Type": "application/json",

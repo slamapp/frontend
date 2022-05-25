@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { Icon, Badge } from "@components/base";
 import { useRouter } from "next/router";
-import { useAuthContext, useNavigationContext } from "@contexts/hooks";
-import { useIntersectionObserver } from "@hooks/.";
-import { ProfileAvatar } from "@components/domain";
+import { Icon, Badge } from "~/components/base";
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
+import { useIntersectionObserver } from "~/hooks";
+import { ProfileAvatar } from "~/components/domain";
 
 const TopNavigation = () => {
   const sensorRef = useRef<HTMLDivElement>(null);

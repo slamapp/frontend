@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
-import { Radio } from "@components/base";
-import type { ProficiencyKey, ProficiencyValue } from "@enums/proficiencyType";
+import { Radio } from "~/components/base";
+import type { ProficiencyKey, ProficiencyValue } from "~/enums/proficiencyType";
 
 const proficiencyItems: {
   value: ProficiencyKey;

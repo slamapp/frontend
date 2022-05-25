@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Header, Spinner } from "@components/base";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useLocalToken } from "@hooks/domain";
-import { useAuthContext } from "@contexts/hooks";
+import { useLocalToken } from "~/hooks/domain";
+import { useAuthContext } from "~/contexts/hooks";
+import { Header, Spinner } from "~/components/base";
 
 const RedirectPage = () => {
   const [isNeedReLogin, setIsNeedReLogin] = useState(false);

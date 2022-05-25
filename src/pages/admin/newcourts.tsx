@@ -1,12 +1,12 @@
-import { useNavigationContext } from "@contexts/hooks";
 import type { NextPage } from "next";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Spacer, Tab } from "@components/base";
 import styled from "@emotion/styled";
 
-import { NewCourtItem, Modal } from "@components/domain";
-import managementApi from "@service/managementApi";
-import type { APINewCourt } from "@domainTypes/tobe";
+import type { APINewCourt } from "~/domainTypes/tobe";
+import managementApi from "~/service/managementApi";
+import { useNavigationContext } from "~/contexts/hooks";
+import { NewCourtItem, Modal } from "~/components/domain";
+import { Spacer, Tab } from "~/components/base";
 
 type OldNewCourt = Pick<
   APINewCourt,

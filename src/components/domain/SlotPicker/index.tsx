@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { Radio } from "@components/base";
+import { Radio } from "~/components/base";
 
 export const slotItems = [
   { value: "dawn", text: "새벽" },

@@ -1,9 +1,9 @@
 import type { ComponentType, UIEvent } from "react";
-import { positionType } from "@enums/positionType";
-import { proficiencyType } from "@enums/proficiencyType";
-import useKakao from "@hooks/useKakao";
 import copy from "copy-to-clipboard";
-import { Toast } from "@components/base";
+import { positionType } from "~/enums/positionType";
+import { proficiencyType } from "~/enums/proficiencyType";
+import useKakao from "~/hooks/useKakao";
+import { Toast } from "~/components/base";
 import type { TemplateArgs } from "./sendKakaoLink";
 import { sendKakaoLink } from "./sendKakaoLink";
 import type { ShareArgs } from "./types";

@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
-import { withRouteGuard } from "@hocs/.";
-import { useAuthContext, useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
-import { Button, Icon } from "@components/base";
-import { Modal } from "@components/domain";
+import { withRouteGuard } from "~/hocs";
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
+import { Button, Icon } from "~/components/base";
+import { Modal } from "~/components/domain";
 
 const Menu: NextPage = () => {
   const { logout } = useAuthContext();

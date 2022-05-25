@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import { useReducer, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
-import { useLocalToken } from "@hooks/domain";
 import {
   reservationApi,
   favoriteApi,
   userApi,
   notificationApi,
-} from "@service/.";
-import { Toast } from "@components/base";
+} from "~/service";
+import { useLocalToken } from "~/hooks/domain";
+import { Toast } from "~/components/base";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import AuthLoading from "./AuthLoading";

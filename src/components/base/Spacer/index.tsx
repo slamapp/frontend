@@ -1,6 +1,6 @@
-import styled from "@emotion/styled";
-import type { ITheme } from "@styles/theme";
 import type { CSSProperties } from "react";
+import styled from "@emotion/styled";
+import type { ITheme } from "~/styles/theme";
 
 interface Props {
   gap: keyof ITheme["gaps"] | number;

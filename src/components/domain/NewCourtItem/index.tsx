@@ -2,10 +2,10 @@ import type { MouseEvent } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { css } from "@emotion/react";
-import { Text, Button } from "@components/base";
-import managementApi from "@service/managementApi";
 import { useRouter } from "next/router";
-import type { APINewCourt } from "@domainTypes/tobe";
+import type { APINewCourt } from "~/domainTypes/tobe";
+import { Text, Button } from "~/components/base";
+import managementApi from "~/service/managementApi";
 
 interface Props {
   data: Pick<

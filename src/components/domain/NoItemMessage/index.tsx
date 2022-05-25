@@ -1,9 +1,9 @@
 import type { CSSProperties } from "react";
-import { Button, Icon, Spacer, Text } from "@components/base";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import { Button, Icon, Spacer, Text } from "~/components/base";
 
 interface Props {
   title: string;

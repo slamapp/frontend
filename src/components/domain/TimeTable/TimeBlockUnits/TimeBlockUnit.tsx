@@ -1,11 +1,11 @@
 import { useCallback } from "react";
-import { Text } from "@components/base";
+import { useReservationContext } from "~/contexts/hooks";
+import { Text } from "~/components/base";
 import {
   MAJOR_TIME_BLOCK_UNIT,
   ACTIVE_RESERVATION_COUNT,
   getTimeFromIndex,
-} from "@utils/date";
-import { useReservationContext } from "@contexts/hooks";
+} from "~/utils/date";
 import * as S from "./style";
 import type { TimeBlockUnitProps, Status } from "../type";
 import Hour from "./Hour";

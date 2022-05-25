@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import type { NextPage } from "next";
-import { useNavigationContext } from "@contexts/hooks";
+import { useNavigationContext } from "~/contexts/hooks";
 
 const Activity: NextPage = () => {
   const { useMountPage } = useNavigationContext();

@@ -2,13 +2,13 @@ import { useCallback, useState } from "react";
 import styled from "@emotion/styled";
 import dayjs from "dayjs";
 
-import { Button, Text, Spacer } from "@components/base";
-import { useReservationContext } from "@contexts/hooks";
+import { useReservationContext } from "~/contexts/hooks";
+import { Button, Text, Spacer } from "~/components/base";
 import {
   getTimeFromIndex,
   getTimezoneDateStringFromDate,
   week,
-} from "@utils/date";
+} from "~/utils/date";
 import Modal from "../Modal";
 import { DayOfTheWeek } from "..";
 

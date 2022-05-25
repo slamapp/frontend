@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { useAuthContext } from "@contexts/hooks";
+import { useAuthContext } from "~/contexts/hooks";
 import NavIcon from "./NavIcon";
 
 const BottomNavigation = () => {

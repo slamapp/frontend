@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 
-import { Spacer, Text } from "@components/base";
-import { useReservationContext } from "@contexts/hooks";
+import { Spacer, Text } from "~/components/base";
+import { useReservationContext } from "~/contexts/hooks";
 import * as S from "./style";
 import BottomFixedButton from "../BottomFixedButton";
 import HasBallDecisionModal from "./HasBallDecisionModal";

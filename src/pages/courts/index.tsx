@@ -5,10 +5,20 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import { useLocalToken } from "@hooks/domain";
-import { DEFAULT_POSITION, getCurrentLocation } from "@utils/geolocation";
-import { Button, ModalSheet, Spacer, Text } from "@components/base";
-import type { SlotKeyUnion } from "@components/domain";
+import { useRouter } from "next/router";
+import { courtApi } from "~/service";
+import type { APICourt, Coord } from "~/domainTypes/tobe";
+import { useLocalToken } from "~/hooks/domain";
+import { DEFAULT_POSITION, getCurrentLocation } from "~/utils/geolocation";
+import {
+  useAuthContext,
+  useMapContext,
+  useNavigationContext,
+} from "~/contexts/hooks";
+import {
+  getTimezoneCurrentDate,
+  getTimezoneDateStringFromDate,
+} from "~/utils/date";
 import {
   DatePicker,
   SlotPicker,
@@ -18,19 +28,9 @@ import {
   CourtItem,
   LeadToLoginModal,
   BasketballLoading,
-} from "@components/domain";
-import {
-  useAuthContext,
-  useMapContext,
-  useNavigationContext,
-} from "@contexts/hooks";
-import { useRouter } from "next/router";
-import { courtApi } from "@service/.";
-import {
-  getTimezoneCurrentDate,
-  getTimezoneDateStringFromDate,
-} from "@utils/date";
-import type { APICourt, Coord } from "@domainTypes/tobe";
+} from "~/components/domain";
+import type { SlotKeyUnion } from "~/components/domain";
+import { Button, ModalSheet, Spacer, Text } from "~/components/base";
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (

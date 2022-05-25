@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants";
 import ImageComponent from "../Image";
 import AvatarGroup from "./AvatarGroup";
 import type { AvatarShape } from "./types";

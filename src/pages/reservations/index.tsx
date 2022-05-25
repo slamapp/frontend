@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
-
-import { useAuthContext, useNavigationContext } from "@contexts/hooks";
-import { reservationApi } from "@service/.";
-import { Spacer, Text } from "@components/base";
-import { NoItemMessage, ReservationItem } from "@components/domain";
-import { withRouteGuard } from "@hocs/.";
+import { withRouteGuard } from "~/hocs";
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
+import { reservationApi } from "~/service";
+import { Spacer, Text } from "~/components/base";
+import { NoItemMessage, ReservationItem } from "~/components/domain";
 
 const Reservations: NextPage = () => {
   const { authProps, getMyReservations } = useAuthContext();

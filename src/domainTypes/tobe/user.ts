@@ -1,5 +1,5 @@
-import type { Role, PositionKey, ProficiencyKey } from "@enums/.";
-import type { APICommon } from "@domainTypes/tobe";
+import type { APICommon } from "~/domainTypes/tobe";
+import type { Role, PositionKey, ProficiencyKey } from "~/enums";
 
 export interface APIUser extends APICommon {
   description: string | null;

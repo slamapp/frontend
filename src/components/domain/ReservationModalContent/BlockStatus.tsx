@@ -1,6 +1,6 @@
-import { Avatar, Text } from "@components/base";
-import { useReservationContext } from "@contexts/hooks";
 import Link from "next/link";
+import { Avatar, Text } from "~/components/base";
+import { useReservationContext } from "~/contexts/hooks";
 import BottomFixedButton from "../BottomFixedButton";
 import * as S from "./style";
 

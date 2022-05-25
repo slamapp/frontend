@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
-import { Radio } from "@components/base";
-import type { PositionKey, PositionValue } from "@enums/positionType";
+import { Radio } from "~/components/base";
+import type { PositionKey, PositionValue } from "~/enums/positionType";
 
 const positionItems: {
   value: PositionKey;

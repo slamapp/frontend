@@ -2,11 +2,11 @@ import { useCallback, useState } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 
-import { Button, Icon, Text } from "@components/base";
-import reservationAPI from "@service/reservationApi";
-import { useAuthContext } from "@contexts/hooks";
-import { UserListItem } from "@components/domain";
-import type { APICourt, APIReservation } from "@domainTypes/tobe";
+import type { APICourt, APIReservation } from "~/domainTypes/tobe";
+import { Button, Icon, Text } from "~/components/base";
+import reservationAPI from "~/service/reservationApi";
+import { useAuthContext } from "~/contexts/hooks";
+import { UserListItem } from "~/components/domain";
 
 interface Props {
   courtId: APICourt["id"];

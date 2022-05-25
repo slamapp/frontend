@@ -2,8 +2,21 @@ import type { ChangeEvent } from "react";
 import { useCallback, useRef, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import type { Error } from "@hooks/useForm";
-import useForm from "@hooks/useForm";
+import { css } from "@emotion/react";
+import type { APIUser } from "~/domainTypes/tobe";
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants";
+import type { ProficiencyKey } from "~/enums/proficiencyType";
+import type { PositionKey } from "~/enums/positionType";
+import { userApi } from "~/service";
+import { useAuthContext } from "~/contexts/hooks";
+import useForm from "~/hooks/useForm";
+import type { Error } from "~/hooks/useForm";
+import { appendImageFileToFormData } from "~/utils";
+import {
+  BottomFixedButton,
+  PositionsPicker,
+  ProficiencyPicker,
+} from "~/components/domain";
 import {
   Avatar,
   Spacer,
@@ -13,20 +26,7 @@ import {
   Input,
   Toast,
   Text,
-} from "@components/base";
-import {
-  BottomFixedButton,
-  PositionsPicker,
-  ProficiencyPicker,
-} from "@components/domain";
-import type { APIUser } from "@domainTypes/tobe";
-import { appendImageFileToFormData } from "@utils/.";
-import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
-import { useAuthContext } from "@contexts/hooks";
-import type { ProficiencyKey } from "@enums/proficiencyType";
-import type { PositionKey } from "@enums/positionType";
-import { userApi } from "@service/.";
-import { css } from "@emotion/react";
+} from "~/components/base";
 import LeadToLoginModal from "../LeadToLoginModal";
 import BasketballLoading from "../BasketballLoading";
 

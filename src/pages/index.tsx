@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useAuthContext, useNavigationContext } from "@contexts/hooks";
-import { FavoriteList } from "@components/domain";
 import styled from "@emotion/styled";
-import { withRouteGuard } from "@hocs/.";
 import { useEffect, useState } from "react";
-import favoriteAPI from "@service/favoriteApi";
-import type { APIFavorite } from "@domainTypes/tobe";
+import type { APIFavorite } from "~/domainTypes/tobe";
+import { withRouteGuard } from "~/hocs";
+import favoriteAPI from "~/service/favoriteApi";
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
+import { FavoriteList } from "~/components/domain";
 
 const Home: NextPage = () => {
   const { useMountPage } = useNavigationContext();

@@ -1,4 +1,4 @@
-import type { APIUser } from "@domainTypes/tobe";
+import type { APIUser } from "~/domainTypes/tobe";
 
 export interface APISend extends APICommon {
   sender: OmitAt<APIUser>;

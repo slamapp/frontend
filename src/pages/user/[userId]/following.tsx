@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import React, { useState, useRef } from "react";
-import type { APIFollow, APIUser } from "@domainTypes/tobe";
-import { withRouteGuard } from "@hocs/.";
-import { useNavigationContext } from "@contexts/hooks";
-import { UserListItem } from "@components/domain";
-import { useInfiniteScroll } from "@hooks/.";
+import type { APIFollow, APIUser } from "~/domainTypes/tobe";
+import { withRouteGuard } from "~/hocs";
+import { useInfiniteScroll } from "~/hooks";
+import { useNavigationContext } from "~/contexts/hooks";
+import { UserListItem } from "~/components/domain";
 
 type Following = {
   id: APIFollow["id"];
