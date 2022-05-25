@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import dayjs from "dayjs";
-
-import { useResize } from "@hooks/.";
-import { Image, Spacer, Text } from "@components/base";
-import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
-import { getTimezoneIndexFromDate } from "@utils/date";
-import { useReservationContext } from "@contexts/hooks";
+import { useResize } from "~/hooks";
+import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect";
+import { useReservationContext } from "~/contexts/hooks";
+import { Image, Spacer, Text } from "~/components/base";
+import { getTimezoneIndexFromDate } from "~/utils/date";
 import { TimeBlockUnit, ActionTimeBlockUnit, Header } from "./TimeBlockUnits";
 import TimeRangeSelector from "./TimeRangeSelector";
 import * as S from "./style";

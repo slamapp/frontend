@@ -1,4 +1,4 @@
-import type { ApiPromise } from "@service/type";
+import type { ApiPromise } from "~/service/type";
 import type { APINewCourt } from "../../domainTypes/tobe/newCourt";
 
 type OldNewCourt = Pick<

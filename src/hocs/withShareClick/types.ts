@@ -3,7 +3,7 @@ import type {
   APICourtChatroom,
   APIUser,
   OmitAt,
-} from "@domainTypes/tobe";
+} from "~/domainTypes/tobe";
 
 export type ShareArgs = CourtArgs | CourtChatroomArgs | UserArgs;
 

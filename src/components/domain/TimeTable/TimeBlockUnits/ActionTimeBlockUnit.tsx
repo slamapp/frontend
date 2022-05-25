@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
 
-import { getTimezoneDateStringFromDate } from "@utils/date";
+import { getTimezoneDateStringFromDate } from "~/utils/date";
 import * as S from "./style";
 import type { ActionTimeBlockUnitProps } from "../type";
 import Hour from "./Hour";

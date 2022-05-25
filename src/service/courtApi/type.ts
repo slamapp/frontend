@@ -1,6 +1,6 @@
-import type { SlotKeyUnion } from "@components/domain";
-import type { APICourt, APINewCourt } from "@domainTypes/tobe";
-import type { ApiPromise } from "@service/type";
+import type { APICourt, APINewCourt } from "~/domainTypes/tobe";
+import type { ApiPromise } from "~/service/type";
+import type { SlotKeyUnion } from "~/components/domain";
 
 export interface CourtApi {
   getCourtsByCoordsAndDate: (coordsAndDate: {

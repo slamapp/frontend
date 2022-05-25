@@ -4,20 +4,20 @@ import Head from "next/head";
 import Sheet from "react-modal-sheet";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import { withRouteGuard } from "@hocs/.";
-import { Input, Text, Button, Label, Icon, Spacer } from "@components/base";
+import type { APICourt, APINewCourt, Coord } from "~/domainTypes/tobe";
+import { withRouteGuard } from "~/hocs";
+import { courtApi } from "~/service";
+import { useForm } from "~/hooks";
+import { useMapContext, useNavigationContext } from "~/contexts/hooks";
+import { getCurrentLocation } from "~/utils/geolocation";
 import {
   Map,
   GeneralMarker,
   BottomFixedButton,
   LeadToLoginModal,
   BasketballLoading,
-} from "@components/domain";
-import { useForm } from "@hooks/.";
-import { getCurrentLocation } from "@utils/geolocation";
-import { useMapContext, useNavigationContext } from "@contexts/hooks";
-import { courtApi } from "@service/.";
-import type { APICourt, APINewCourt, Coord } from "@domainTypes/tobe";
+} from "~/components/domain";
+import { Input, Text, Button, Label, Icon, Spacer } from "~/components/base";
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (

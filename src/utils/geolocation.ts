@@ -1,4 +1,4 @@
-import type { Coord } from "@domainTypes/tobe";
+import type { Coord } from "~/domainTypes/tobe";
 
 // 서울의 경도, 위도
 export const DEFAULT_POSITION: Coord = [37.5665, 126.978];

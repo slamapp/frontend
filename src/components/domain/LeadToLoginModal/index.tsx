@@ -1,5 +1,5 @@
-import { Button } from "@components/base";
 import type { ReactNode } from "react";
+import { Button } from "~/components/base";
 import Modal from "../Modal";
 
 interface Props {

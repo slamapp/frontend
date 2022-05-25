@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Text } from "@components/base";
+import { Text } from "~/components/base";
 
 const Header = styled(Text)`
   padding: 40px 0;

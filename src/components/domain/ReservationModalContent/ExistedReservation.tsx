@@ -1,8 +1,7 @@
-import { Button, Text } from "@components/base";
-import { useReservationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import React, { useCallback, useState } from "react";
-
+import { Button, Text } from "~/components/base";
+import { useReservationContext } from "~/contexts/hooks";
 import { BottomFixedContainer } from "../BottomFixedButton";
 import Modal from "../Modal";
 import ParticipantsPerTime from "./ParticipantsPerTime";

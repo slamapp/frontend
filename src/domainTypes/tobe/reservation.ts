@@ -1,4 +1,4 @@
-import type { APICommon, OmitAt, APICourt } from "@domainTypes/tobe";
+import type { APICommon, OmitAt, APICourt } from "~/domainTypes/tobe";
 
 export interface APIReservation extends APICommon {
   numberOfReservations: number;

@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import React, { useRef } from "react";
 import styled from "@emotion/styled";
-import { BottomNavigation, TopNavigation } from "@components/domain";
-import { useNavigationContext } from "@contexts/hooks";
 import { css } from "@emotion/react";
+import { BottomNavigation, TopNavigation } from "~/components/domain";
+import { useNavigationContext } from "~/contexts/hooks";
 import Container from "./Container";
 
 interface Props {

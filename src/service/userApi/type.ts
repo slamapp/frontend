@@ -1,5 +1,5 @@
-import type { APINotification, APIUser } from "@domainTypes/tobe";
-import type { ApiPromise } from "@service/type";
+import type { APINotification, APIUser } from "~/domainTypes/tobe";
+import type { ApiPromise } from "~/service/type";
 
 export interface UserApi {
   getUserData: () => ApiPromise<{

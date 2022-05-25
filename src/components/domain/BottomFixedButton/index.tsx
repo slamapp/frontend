@@ -1,11 +1,11 @@
 import React from "react";
 import type { ReactNode, CSSProperties } from "react";
-import { Button, IconButton } from "@components/base";
 import styled from "@emotion/styled";
 import ReactDOM from "react-dom";
 import { css } from "@emotion/react";
 import Link from "next/link";
-import type { FeatherIconNameType } from "@components/base/Icon";
+import { Button, IconButton } from "~/components/base";
+import type { FeatherIconNameType } from "~/components/base/Icon";
 
 interface Props {
   children: ReactNode;

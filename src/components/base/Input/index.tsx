@@ -2,7 +2,7 @@ import type { HTMLAttributes, FocusEvent, ChangeEvent } from "react";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { Label, Text } from "@components/base";
+import { Label, Text } from "~/components/base";
 
 interface Props extends HTMLAttributes<HTMLInputElement> {
   label: string;

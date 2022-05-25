@@ -1,5 +1,5 @@
-import type { APICommon, APICourt, APIUser, APIChat } from "@domainTypes/tobe";
-import type { ChatroomAdminType, ChatroomType } from "@enums/.";
+import type { APICommon, APICourt, APIUser, APIChat } from "~/domainTypes/tobe";
+import type { ChatroomAdminType, ChatroomType } from "~/enums";
 
 export type APIChatroom = APICourtChatroom | APIUsersChatroom;
 

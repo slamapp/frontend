@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
-import Text from "@components/base/Text";
-import useTimeout from "@hooks/useTimeout";
+import Text from "~/components/base/Text";
+import useTimeout from "~/hooks/useTimeout";
 
 interface Props {
   message: string;

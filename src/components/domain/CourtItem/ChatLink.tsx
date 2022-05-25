@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { IconButton } from "@components/base";
-import type { APIChatroom } from "@domainTypes/tobe";
+import type { APIChatroom } from "~/domainTypes/tobe";
+import { IconButton } from "~/components/base";
 
 interface Props {
   chatroomId: APIChatroom["id"];

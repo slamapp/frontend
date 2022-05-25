@@ -1,4 +1,9 @@
-import type { ISOString, OmitAt, APICommon, APICourt } from "@domainTypes/tobe";
+import type {
+  ISOString,
+  OmitAt,
+  APICommon,
+  APICourt,
+} from "~/domainTypes/tobe";
 
 export interface APILoudspeaker extends APICommon {
   startTime: ISOString;

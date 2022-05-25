@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Spacer } from "@components/base";
+import { Spacer } from "~/components/base";
 import CourtItem from "../CourtItem";
 import Loudspeaker from "./Loudspeaker";
 import ReservationItemBottom from "./ReservationItemBottom";

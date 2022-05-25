@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import styled from "@emotion/styled";
 import type { Dayjs } from "dayjs";
 
-import { Text } from "@components/base";
-import { week } from "@utils/date";
+import { Text } from "~/components/base";
+import { week } from "~/utils/date";
 
 interface Props {
   date: Dayjs;

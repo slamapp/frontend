@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import React from "react";
-import { withRouteGuard } from "@hocs/.";
-import { useNavigationContext } from "@contexts/hooks";
+import { withRouteGuard } from "~/hocs";
+import { useNavigationContext } from "~/contexts/hooks";
 
 const FollowerPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();

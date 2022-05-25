@@ -2,21 +2,20 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
-
-import { ModalSheet, Text } from "@components/base";
-import {
-  TimeTable,
-  ReservationModalContent as ModalContent,
-  DayOfTheWeek,
-} from "@components/domain";
+import { courtApi } from "~/service";
 import {
   useAuthContext,
   useNavigationContext,
   useReservationContext,
-} from "@contexts/hooks";
+} from "~/contexts/hooks";
 
-import { week, getTimeFromIndex, getIsOneHourLeft } from "@utils/date";
-import { courtApi } from "@service/.";
+import { week, getTimeFromIndex, getIsOneHourLeft } from "~/utils/date";
+import {
+  TimeTable,
+  ReservationModalContent as ModalContent,
+  DayOfTheWeek,
+} from "~/components/domain";
+import { ModalSheet, Text } from "~/components/base";
 
 const getIsPast = (date: string) => dayjs().isAfter(date, "day");
 

@@ -1,4 +1,4 @@
-import { Toast } from "@components/base";
+import { Toast } from "~/components/base";
 
 const DEFAULT_MESSAGE_TEMPLATE_ID = 69947;
 const DEFAULT_REQUEST_URL = "https://slams.app";

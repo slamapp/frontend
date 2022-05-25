@@ -1,5 +1,5 @@
-import type { ActionWithoutPayload, ActionWithPayload } from "@contexts/type";
-import type { APINotification, APIUser } from "@domainTypes/tobe";
+import type { ActionWithoutPayload, ActionWithPayload } from "~/contexts/type";
+import type { APINotification, APIUser } from "~/domainTypes/tobe";
 
 export type ActionUnion =
   | ActionWithPayload<

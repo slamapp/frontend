@@ -1,7 +1,7 @@
-import { useLocalToken } from "@hooks/domain";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useLocalToken } from "~/hooks/domain";
 
 // TODO: Version2에서 private / prevented RedirectPath Props로 받아오도록 변경하기
 const privateRedirectPath = "/courts";

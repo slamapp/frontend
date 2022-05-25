@@ -1,5 +1,5 @@
-import { useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
+import { useNavigationContext } from "~/contexts/hooks";
 import { ErrorMessage } from "../components/domain";
 
 export default function Custom500() {

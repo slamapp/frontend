@@ -1,5 +1,5 @@
-import type { APIUser } from "@domainTypes/tobe";
 import { createContext } from "react";
+import type { APIUser } from "~/domainTypes/tobe";
 
 export interface ContextProps {
   sendFollow: (body: { receiverId: APIUser["id"] }) => void;

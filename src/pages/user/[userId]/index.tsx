@@ -5,27 +5,27 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import userApi from "@service/userApi";
-import { withRouteGuard } from "@hocs/.";
-import { Avatar, Button, Label, Spacer, Chip, Text } from "@components/base";
+import type { AxiosError } from "axios";
+import { withRouteGuard } from "~/hocs";
+import type { APIFavorite, APIUser, APICourt } from "~/domainTypes/tobe";
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants";
+import userApi from "~/service/userApi";
 import {
   useNavigationContext,
   useAuthContext,
   useSocketContext,
-} from "@contexts/hooks";
-import {
-  ProfileFavoritesListItem,
-  BasketballLoading,
-} from "@components/domain";
+} from "~/contexts/hooks";
+import Custom404 from "~/pages/404";
+import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect";
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
-} from "@utils/userInfo";
-import Custom404 from "@pages/404";
-import useIsomorphicLayoutEffect from "@hooks/useIsomorphicLayoutEffect";
-import type { APIFavorite, APIUser, APICourt } from "@domainTypes/tobe";
-import { DEFAULT_PROFILE_IMAGE_URL } from "@constants/.";
-import type { AxiosError } from "axios";
+} from "~/utils/userInfo";
+import {
+  ProfileFavoritesListItem,
+  BasketballLoading,
+} from "~/components/domain";
+import { Avatar, Button, Label, Spacer, Chip, Text } from "~/components/base";
 
 interface ResponseUserProfile
   extends Pick<

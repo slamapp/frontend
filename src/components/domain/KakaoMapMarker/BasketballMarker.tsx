@@ -1,5 +1,5 @@
-import { useAuthContext } from "@contexts/hooks";
 import { useCallback, useEffect, useMemo } from "react";
+import { useAuthContext } from "~/contexts/hooks";
 
 interface Props {
   map: kakao.maps.Map;

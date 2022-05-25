@@ -1,9 +1,9 @@
 import React from "react";
-import styled from "@emotion/styled";
 import type { ReactNode, HTMLAttributes } from "react";
-import { Icon, Button, Spacer, Text } from "@components/base";
+import styled from "@emotion/styled";
 import Link from "next/link";
-import type { APIFavorite } from "@domainTypes/tobe";
+import { Icon, Button, Spacer, Text } from "~/components/base";
+import type { APIFavorite } from "~/domainTypes/tobe";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;

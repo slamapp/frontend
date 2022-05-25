@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import React from "react";
-import { useNavigationContext } from "@contexts/hooks";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { withRouteGuard } from "@hocs/.";
+import { useNavigationContext } from "~/contexts/hooks";
+import { withRouteGuard } from "~/hocs";
 
 const ChatroomListPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();

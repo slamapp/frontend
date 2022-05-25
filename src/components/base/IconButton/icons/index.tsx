@@ -1,5 +1,5 @@
-import { IconButton } from "@components/base";
 import type { MouseEvent } from "react";
+import { IconButton } from "~/components/base";
 
 interface Props {
   onClick?: (e?: MouseEvent<HTMLButtonElement>) => void;

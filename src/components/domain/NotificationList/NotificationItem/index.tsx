@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { LinkStrong, Spacer } from "@components/base";
-import "dayjs/locale/ko";
-
-import type { APINotification } from "@domainTypes/tobe";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { CourtItem, ProfileAvatar } from "@components/domain";
+import "dayjs/locale/ko";
+import { LinkStrong, Spacer } from "~/components/base";
+import type { APINotification } from "~/domainTypes/tobe";
+import { CourtItem, ProfileAvatar } from "~/components/domain";
 
 dayjs.extend(relativeTime);
 

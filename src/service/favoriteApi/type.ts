@@ -1,5 +1,5 @@
-import type { ApiPromise } from "@service/type";
-import type { APICourt, APIFavorite, APIUser } from "@domainTypes/tobe";
+import type { APICourt, APIFavorite, APIUser } from "~/domainTypes/tobe";
+import type { ApiPromise } from "~/service/type";
 
 export interface FavoriteApi {
   getMyFavorites: () => ApiPromise<{

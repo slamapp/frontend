@@ -1,5 +1,5 @@
-import type { ApiPromise } from "@service/type";
-import type { APIReservation, APICourt } from "@domainTypes/tobe";
+import type { APIReservation, APICourt } from "~/domainTypes/tobe";
+import type { ApiPromise } from "~/service/type";
 
 export interface ReservationApi {
   getMyReservations: () => ApiPromise;

@@ -1,8 +1,8 @@
-import { useAuthContext } from "@contexts/hooks";
-import type { APINotification } from "@domainTypes/tobe";
 import type { CompatClient } from "@stomp/stompjs";
 import { useCallback, useEffect, useState } from "react";
 import { socketApi } from "service";
+import type { APINotification } from "~/domainTypes/tobe";
+import { useAuthContext } from "~/contexts/hooks";
 import type { SendAuth, UseStomp } from "./type";
 import { subscribe } from "./utils";
 
