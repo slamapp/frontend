@@ -62,7 +62,7 @@ const ReservationProvider = ({ children }: Props) => {
       }
 
       const data = {
-        courtId: Number(courtId),
+        courtId,
         startTime: getISOString(date as string, startIndex),
         endTime: getISOString(date as string, endIndex + 1),
         hasBall,

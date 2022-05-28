@@ -1,13 +1,6 @@
 import { request, authRequest, authFileRequest } from "../fetcher";
 import type { ReservationApi } from "./type";
 
-interface IReservation {
-  courtId: number;
-  startTime: string;
-  endTime: string;
-  hasBall: boolean;
-}
-
 const reservationApi: ReservationApi = {
   getMyReservations: () => authRequest.get("/reservations/upcoming"),
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
@@ -27,15 +20,12 @@ const reservationApi: ReservationApi = {
           params: { isFirst, lastId: "0", size: 5 },
         });
   },
-  getMyReservationParticipants: ({ courtId, startTime, endTime }: any) =>
+  getMyReservationParticipants: ({ courtId, startTime, endTime }) =>
     authRequest.get(`/reservations/${courtId}/${startTime}/${endTime}`),
-  createReservation: (data: IReservation) =>
-    authRequest.post("/reservations", data),
-  updateReservation: (
-    reservationId: number | string,
-    data: Omit<IReservation, "courtId">
-  ) => authRequest.patch(`/reservations/${reservationId}`, data),
-  deleteReservation: (reservationId: number | string) =>
+  createReservation: (data) => authRequest.post("/reservations", data),
+  updateReservation: (reservationId, data) =>
+    authRequest.patch(`/reservations/${reservationId}`, data),
+  deleteReservation: (reservationId) =>
     authRequest.delete(`/reservations/${reservationId}`),
 };
 
