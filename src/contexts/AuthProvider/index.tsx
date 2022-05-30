@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useReducer, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
+import type { AxiosError } from "axios";
 import {
   reservationApi,
   favoriteApi,
@@ -47,8 +48,10 @@ const AuthProvider = ({ children }: Props) => {
         const { data } = await userApi.getUserData();
         setCurrentUser(data);
       } catch (error) {
-        console.error(error);
+        Toast.show("유저 정보를 받아오는 데에 실패했어요");
+
         logout();
+        throw error as AxiosError;
       } finally {
         dispatch({ type: "LOADING_OFF" });
       }
@@ -114,7 +117,7 @@ const AuthProvider = ({ children }: Props) => {
         const { reservations } = data;
         dispatch({ type: "SET_MY_RESERVATIONS", payload: { reservations } });
       } catch (error) {
-        console.error(error);
+        throw error as AxiosError;
       }
     }, []);
 
@@ -125,7 +128,7 @@ const AuthProvider = ({ children }: Props) => {
         const { favorites } = data;
         dispatch({ type: "GET_MY_FAVORITES", payload: { favorites } });
       } catch (error) {
-        console.error(error);
+        throw error as AxiosError;
       }
     }, []);
 
@@ -192,6 +195,7 @@ const AuthProvider = ({ children }: Props) => {
       await Promise.all([getMyReservations(), getMyFavorites()]);
     } catch (error) {
       Toast.show("사용자 정보를 받아오는 도중에 문제가 생겼습니다.");
+      throw error as AxiosError;
     }
   };
 
