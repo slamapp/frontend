@@ -1,6 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/87c0390f-8dbe-4a17-bfc3-966c79692a93/deploy-status)](https://app.netlify.com/sites/slamsapp/deploys)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # 📼 슬램 발표 영상 (아래를 클릭하세요)
@@ -103,6 +103,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/limkhl"><img src="https://avatars.githubusercontent.com/u/84858773?v=4?s=100" width="100px;" alt=""/><br /><sub><b>limkhl</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=limkhl" title="Code">💻</a> <a href="https://github.com/slamapp/client/commits?author=limkhl" title="Documentation">📖</a> <a href="#design-limkhl" title="Design">🎨</a> <a href="#ideas-limkhl" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/client/pulls?q=is%3Apr+reviewed-by%3Alimkhl" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/Parkserim"><img src="https://avatars.githubusercontent.com/u/33405125?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Parkserim</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=Parkserim" title="Code">💻</a> <a href="https://github.com/slamapp/client/commits?author=Parkserim" title="Documentation">📖</a> <a href="#design-Parkserim" title="Design">🎨</a> <a href="#ideas-Parkserim" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/client/pulls?q=is%3Apr+reviewed-by%3AParkserim" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/locodingve"><img src="https://avatars.githubusercontent.com/u/88185304?v=4?s=100" width="100px;" alt=""/><br /><sub><b>yun</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=locodingve" title="Code">💻</a> <a href="#maintenance-locodingve" title="Maintenance">🚧</a> <a href="#infra-locodingve" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/KwonYeKyeong"><img src="https://avatars.githubusercontent.com/u/65434196?v=4?s=100" width="100px;" alt=""/><br /><sub><b>KwonYeKyeong</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=KwonYeKyeong" title="Code">💻</a> <a href="#maintenance-KwonYeKyeong" title="Maintenance">🚧</a> <a href="#infra-KwonYeKyeong" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 
