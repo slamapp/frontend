@@ -1,0 +1,31 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "manudeli",
+      "name": "Jonghyeon Ko",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61593290?v=4",
+      "profile": "http://bit.ly/jonghyeon",
+      "contributions": [
+        "bug",
+        "code",
+        "design",
+        "ideas",
+        "maintenance",
+        "review",
+        "video",
+        "infra"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "client",
+  "projectOwner": "slamapp",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

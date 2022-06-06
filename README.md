@@ -1,4 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/87c0390f-8dbe-4a17-bfc3-966c79692a93/deploy-status)](https://app.netlify.com/sites/slamsapp/deploys)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Node.js CI](https://github.com/slamapp/client/actions/workflows/publish.yml/badge.svg)](https://github.com/slamapp/client/actions/workflows/publish.yml)
 
 <div align="center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
@@ -82,5 +85,24 @@
 <br>
 
 # 🔗 Server repo
-
 [Slam Server](https://github.com/slamapp/server)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://bit.ly/jonghyeon"><img src="https://avatars.githubusercontent.com/u/61593290?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jonghyeon Ko</b></sub></a><br /><a href="https://github.com/slamapp/client/issues?q=author%3Amanudeli" title="Bug reports">🐛</a> <a href="https://github.com/slamapp/client/commits?author=manudeli" title="Code">💻</a> <a href="#design-manudeli" title="Design">🎨</a> <a href="#ideas-manudeli" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-manudeli" title="Maintenance">🚧</a> <a href="https://github.com/slamapp/client/pulls?q=is%3Apr+reviewed-by%3Amanudeli" title="Reviewed Pull Requests">👀</a> <a href="#video-manudeli" title="Videos">📹</a> <a href="#infra-manudeli" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
