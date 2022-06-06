@@ -61,6 +61,17 @@
         "ideas",
         "review"
       ]
+    },
+    {
+      "login": "KwonYeKyeong",
+      "name": "KwonYeKyeong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65434196?v=4",
+      "profile": "https://github.com/KwonYeKyeong",
+      "contributions": [
+        "code",
+        "maintenance",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
