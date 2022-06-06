@@ -36,23 +36,6 @@
 
 💁‍ [요구사항 명세 보러가기](https://github.com/slamapp/client/wiki/%EC%8A%AC%EB%9E%A8-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%AA%85%EC%84%B8)
 
-<br>
-
-## 🧾 기능 요약
-
-### 사용자
-
-- 지도 뷰에서 가려는 농구장을 찾아 원하는 시간대에 해당 농구장을 방문할 거라고 약속을 하고, 약속한 시간대에 본인 외에 몇 명이 더 예약했는지 이미지로 구분하여 현황을 알 수 있습니다.
-- 사용자는 지도에 자주 가는 농구장 정보가 없다면 직접 새 농구장 정보를 추가할 수 있습니다.
-- 자주 가는 농구장을 즐겨찾기에 등록할 수 있습니다.
-- 슬램에서 만난 다른 유저들의 프로필을 확인할 수 있고, 팔로우해 친목을 다질 수 있습니다.
-- 내 프로필에서 간단한 정보(숙련도, 선호 포지션 등)를 기입하여 자신을 나타낼 수 있습니다.
-
-### 관리자
-
-- 관리자는 사용자가 추가 제안한 새 농구장 목록 중 처리 대기 중인 항목, 처리 완료된 항목별로 편하고 빠르게 조회하고, 승인과 거절을 할 수 있습니다.
-
-<br>
 
 ## 🎯 타겟 유저
 
@@ -62,15 +45,6 @@
 <br>
 
 그럼 우리 다같이 슬램 하러 가볼까요? 🏃‍♂️
-
-<br>
-
-# 👨‍👩‍👧‍👧 팀원 소개
-
-|                          종현(마누)                           |                           영주(리키)                           |
-| :-----------------------------------------------------------: | :------------------------------------------------------------: |
-| ![Manu](https://avatars.githubusercontent.com/u/61593290?v=4) | ![Ricky](https://avatars.githubusercontent.com/u/15336672?v=4) |
-|            [manudeli](https://github.com/manudeli)            |          [yungjurick](https://github.com/yungjurick)           |
 
 
 # ✨ 주요 기능 및 페이지 소개
@@ -107,24 +81,11 @@
 | <p align="center"><img src="https://user-images.githubusercontent.com/84858773/147078821-289bad97-815b-4657-ab3d-ba6abdec289f.gif" width="300px" /></p> | <p align="center"><img src="https://user-images.githubusercontent.com/84858773/147082497-922b3e48-4180-4b4b-bac4-a913a0853b8d.jpg" width="300px" /></p> |
 | <li>사용자가 추가한 새 농구장 목록 관리</li><li>목록 조회(무한 스크롤)</li><li>새 농구장 승인 및 거절</li>                                              | <li>알림 목록 조회</li> <li>상단 네비게이션 뱃지로 갯수 확인</li>                                                                                       |
 
-<br>
-
-# ⚡ 프로젝트 실행 방법
-
-node v16.13.0
-yarn
-
-```bash
-yarn cache clean
-yarn
-yarn dev
-```
 
 <br>
 
-# 🔗 Server Git Repo
-
-[Slam Server](https://github.com/prgrms-web-devcourse/slam-server)
+# 🔗 Server repo
+[Slam Server](https://github.com/slamapp/server)
 
 ## Contributors ✨
 
