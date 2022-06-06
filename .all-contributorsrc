@@ -35,6 +35,19 @@
         "review",
         "test"
       ]
+    },
+    {
+      "login": "limkhl",
+      "name": "limkhl",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84858773?v=4",
+      "profile": "https://github.com/limkhl",
+      "contributions": [
+        "code",
+        "doc",
+        "design",
+        "ideas",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
