@@ -61,6 +61,17 @@
         "ideas",
         "review"
       ]
+    },
+    {
+      "login": "locodingve",
+      "name": "yun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/88185304?v=4",
+      "profile": "https://github.com/locodingve",
+      "contributions": [
+        "code",
+        "maintenance",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
