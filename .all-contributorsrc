@@ -18,7 +18,8 @@
         "maintenance",
         "review",
         "video",
-        "infra"
+        "infra",
+        "doc"
       ]
     },
     {
