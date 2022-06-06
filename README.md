@@ -1,6 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/87c0390f-8dbe-4a17-bfc3-966c79692a93/deploy-status)](https://app.netlify.com/sites/slamsapp/deploys)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Node.js CI](https://github.com/slamapp/client/actions/workflows/publish.yml/badge.svg)](https://github.com/slamapp/client/actions/workflows/publish.yml)
 
