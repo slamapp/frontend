@@ -2,7 +2,9 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-[![Node.js CI](https://github.com/slamapp/client/actions/workflows/publish.yml/badge.svg)](https://github.com/slamapp/client/actions/workflows/publish.yml)
+
+# 📼 슬램 발표 영상 (아래를 클릭하세요)
+[![Slam 슬램 발표](http://img.youtube.com/vi/V5akCEYSyGQ/0.jpg)](https://youtu.be/V5akCEYSyGQ)
 
 <div align="center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
 
