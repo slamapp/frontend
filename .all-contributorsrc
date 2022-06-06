@@ -83,6 +83,16 @@
         "maintenance",
         "infra"
       ]
+    },
+    {
+      "login": "sds1vrk",
+      "name": "SEO DONGSUNG",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51287886?v=4",
+      "profile": "https://velog.io/@sds1vrk",
+      "contributions": [
+        "code",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
