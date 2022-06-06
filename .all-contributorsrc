@@ -48,6 +48,19 @@
         "ideas",
         "review"
       ]
+    },
+    {
+      "login": "Parkserim",
+      "name": "Parkserim",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33405125?v=4",
+      "profile": "https://github.com/Parkserim",
+      "contributions": [
+        "code",
+        "doc",
+        "design",
+        "ideas",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
