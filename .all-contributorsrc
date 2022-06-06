@@ -20,6 +20,21 @@
         "video",
         "infra"
       ]
+    },
+    {
+      "login": "grighth12",
+      "name": "grighth12",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68159627?v=4",
+      "profile": "https://github.com/grighth12",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "design",
+        "ideas",
+        "review",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
