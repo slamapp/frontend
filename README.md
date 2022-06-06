@@ -69,16 +69,6 @@
 | ![Manu](https://avatars.githubusercontent.com/u/61593290?v=4) | ![Ricky](https://avatars.githubusercontent.com/u/15336672?v=4) |
 |            [manudeli](https://github.com/manudeli)            |          [yungjurick](https://github.com/yungjurick)           |
 
-<br>
-
-# 👨‍👩‍👧‍👧 전 팀원
-
-|                           정희(한나)                           |                           세림(앤)                           |                          경희(노체)                           |
-| :------------------------------------------------------------: | :----------------------------------------------------------: | :-----------------------------------------------------------: |
-| ![Hanna](https://avatars.githubusercontent.com/u/68159627?v=4) | ![Ann](https://avatars.githubusercontent.com/u/33405125?v=4) | ![koby](https://avatars.githubusercontent.com/u/84858773?v=4) |
-|           [grighth12](https://github.com/grighth12)            |          [Parkserim](https://github.com/Parkserim)           |              [limkhl](https://github.com/limkhl)              |
-
-<br>
 
 # ✨ 주요 기능 및 페이지 소개
 
