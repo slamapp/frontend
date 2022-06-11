@@ -79,43 +79,6 @@ const ReservationProvider = ({ children }: Props) => {
     [endIndex, startIndex, router]
   );
 
-  const handleUpdateReservation = useCallback(
-    async (date: string, courtId: string, hasBall: boolean) => {
-      if (!date || !courtId) {
-        return;
-      }
-
-      const data = {
-        courtId: Number(courtId),
-        startTime: getISOString(date as string, startIndex),
-        endTime: getISOString(date as string, endIndex + 1),
-        hasBall,
-      };
-
-      try {
-        await reservationApi.updateReservation(selectedReservationId, data);
-      } catch (error) {
-        console.error(error);
-      }
-
-      router.push("/reservations");
-    },
-    [endIndex, startIndex, selectedReservationId, router]
-  );
-
-  const handleDeleteReservation = useCallback(
-    async (selectedReservationId) => {
-      try {
-        await reservationApi.deleteReservation(selectedReservationId);
-      } catch (error) {
-        console.error(error);
-      }
-
-      router.push("/reservations");
-    },
-    [router]
-  );
-
   const handleChangeHasBall = useCallback((hasBall: boolean) => {
     dispatch({
       type: actionTypes.SET_HAS_BALL,
@@ -163,8 +126,6 @@ const ReservationProvider = ({ children }: Props) => {
         handleStartUpdate,
         handleDecreaseStep,
         handleCreateReservation,
-        handleUpdateReservation,
-        handleDeleteReservation,
         handleChangeHasBall,
         handleSelectReservation,
         handleSetCurrentInput,

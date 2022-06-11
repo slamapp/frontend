@@ -113,7 +113,7 @@ const AuthProvider = ({ children }: Props) => {
   const getMyReservations: ContextProps["getMyReservations"] =
     useCallback(async () => {
       try {
-        const { data } = await reservationApi.getMyReservations();
+        const { data } = await reservationApi.getMyUpcomingReservations();
         const { reservations } = data;
         dispatch({ type: "SET_MY_RESERVATIONS", payload: { reservations } });
       } catch (error) {

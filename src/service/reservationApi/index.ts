@@ -2,12 +2,8 @@ import { request, authRequest, authFileRequest } from "../fetcher";
 import type { ReservationApi } from "./type";
 
 const reservationApi: ReservationApi = {
-  getMyReservations: () => authRequest.get("/reservations/upcoming"),
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
-  getMyExpiredReservations: (
-    isFirst: boolean,
-    lastId: number | undefined | null
-  ) => {
+  getMyExpiredReservations: (isFirst, lastId) => {
     return lastId
       ? authRequest.get("/reservations/expired", {
           params: {
@@ -23,10 +19,6 @@ const reservationApi: ReservationApi = {
   getMyReservationParticipants: ({ courtId, startTime, endTime }) =>
     authRequest.get(`/reservations/${courtId}/${startTime}/${endTime}`),
   createReservation: (data) => authRequest.post("/reservations", data),
-  updateReservation: (reservationId, data) =>
-    authRequest.patch(`/reservations/${reservationId}`, data),
-  deleteReservation: (reservationId) =>
-    authRequest.delete(`/reservations/${reservationId}`),
 };
 
 export default reservationApi;

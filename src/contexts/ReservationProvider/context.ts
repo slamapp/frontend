@@ -8,8 +8,6 @@ interface ContextProps {
   handleStartUpdate: any;
   handleDecreaseStep: any;
   handleCreateReservation: any;
-  handleUpdateReservation: any;
-  handleDeleteReservation: any;
   handleChangeHasBall: any;
   handleSelectReservation: any;
   handleSetCurrentInput: any;

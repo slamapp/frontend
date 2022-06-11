@@ -7,6 +7,7 @@ import { Button, Icon, Text } from "~/components/base";
 import reservationAPI from "~/service/reservationApi";
 import { useAuthContext } from "~/contexts/hooks";
 import { UserListItem } from "~/components/domain";
+import type { ReservationApi } from "~/service/reservationApi/type";
 
 interface Props {
   courtId: APICourt["id"];
@@ -24,9 +25,11 @@ const ReservationItemBottom = ({
   expired,
 }: Props) => {
   const [visible, setVisible] = useState(false);
-  const [participants, setParticipants] = useState<{ [prop: string]: any }[]>(
-    []
-  );
+  const [participants, setParticipants] = useState<
+    Awaited<
+      ReturnType<ReservationApi["getMyReservationParticipants"]>
+    >["data"]["participants"]
+  >([]);
 
   const handleClick = useCallback(async () => {
     setVisible((prev) => !prev);

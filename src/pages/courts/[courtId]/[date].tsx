@@ -40,7 +40,6 @@ const Reservation: NextPage = () => {
     reservation,
     handleDecreaseStep,
     handleInitReservation,
-    handleUpdateReservation,
     handleCreateReservation,
   } = useReservationContext();
 
@@ -132,6 +131,8 @@ const Reservation: NextPage = () => {
     }
   }, [courtId, date, currentUser.userId, router, handleInitReservation]);
 
+  console.log(mode);
+
   return (
     <div>
       <TimeTable
@@ -157,22 +158,6 @@ const Reservation: NextPage = () => {
           />
         )}
 
-        {isOpen &&
-          step === 1 &&
-          selectedReservationId !== null &&
-          modalContentData && (
-            <ModalContent.ExistedReservation
-              timeSlot={`${getTimeFromIndex(
-                selectedReservation.startIndex
-              )} - ${getTimeFromIndex(selectedReservation.endIndex + 1)}
-              `}
-              reservationId={selectedReservationId}
-              participantsPerBlock={modalContentData}
-              requestDisabled={getIsOneHourLeft(
-                `${date} ${getTimeFromIndex(selectedReservation.startIndex)}`
-              )}
-            />
-          )}
         {step === 2 && modalContentData && (
           <ModalContent.SelectedRange
             startTime={getTimeFromIndex(startIndex)}
@@ -181,11 +166,11 @@ const Reservation: NextPage = () => {
             participantsPerBlock={modalContentData}
             hasBall={hasBall}
             requestDisabled={requestDisabled}
-            onSubmit={() =>
-              mode === "create"
-                ? handleCreateReservation(date, courtId, hasBall)
-                : handleUpdateReservation(date, courtId, hasBall)
-            }
+            onSubmit={() => {
+              if (mode === "create") {
+                handleCreateReservation(date, courtId, hasBall);
+              }
+            }}
             buttonText={
               mode === "create" ? "에 예약하기" : "으로 예약 수정하기"
             }
