@@ -1,4 +1,9 @@
-import type { APICourt, APINewCourt } from "~/domainTypes/tobe";
+import type {
+  APICourt,
+  APINewCourt,
+  APIUser,
+  APIReservation,
+} from "~/domainTypes/tobe";
 import type { ApiPromise } from "~/service/type";
 import type { SlotKeyUnion } from "~/components/domain";
 
@@ -10,20 +15,54 @@ export interface CourtApi {
     endLatitude: APICourt["latitude"];
     endLongitude: APICourt["longitude"];
     time: SlotKeyUnion;
-  }) => ApiPromise;
+  }) => ApiPromise<{
+    courts: {
+      courtId: number;
+      courtName: APICourt["name"];
+      courtReservation: number;
+      createdAt: APICourt["createdAt"];
+      latitude: APICourt["latitude"];
+      longitude: APICourt["longitude"];
+      updatedAt: APICourt["updatedAt"];
+    }[];
+  }>;
+
   createNewCourt: (
     courtData: Pick<
       APINewCourt,
       "longitude" | "latitude" | "image" | "texture" | "basketCount" | "name"
     >
   ) => ApiPromise<APINewCourt>;
+
   getCourtDetail: (
     courtId: APICourt["id"],
     date: string,
     time: string
-  ) => ApiPromise;
+  ) => ApiPromise<{
+    basketCount: APICourt["basketCount"];
+    courtName: APICourt["name"];
+    courtReservation: number;
+    image: APICourt["image"];
+    latitude: APICourt["latitude"];
+    longitude: APICourt["longitude"];
+    texture: APICourt["texture"];
+    createdAt: APICourt["createdAt"];
+    updatedAt: APICourt["updatedAt"];
+  }>;
+
   getAllCourtReservationsByDate: (
     courtId: APICourt["id"],
     date: string
-  ) => ApiPromise;
+  ) => ApiPromise<{
+    courtId: number;
+    date: string;
+    reservations: {
+      userId: number;
+      avatarImgSrc: APIUser["profileImage"];
+      courtId: number;
+      reservationId: number;
+      startTime: APIReservation["startTime"];
+      endTime: APIReservation["endTime"];
+    }[];
+  }>;
 }

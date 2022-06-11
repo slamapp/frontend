@@ -31,6 +31,7 @@ import {
 } from "~/components/domain";
 import type { SlotKeyUnion } from "~/components/domain";
 import { Button, ModalSheet, Spacer, Text } from "~/components/base";
+import type { CourtApi } from "~/service/courtApi/type";
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (
@@ -78,7 +79,9 @@ const Courts: NextPage = () => {
 
   const currentDate = useMemo(() => getTimezoneCurrentDate(), []);
 
-  const [courts, setCourts] = useState<any>();
+  const [courts, setCourts] = useState<
+    Awaited<ReturnType<CourtApi["getCourtsByCoordsAndDate"]>>["data"]["courts"]
+  >([]);
 
   const [level, setLevel] = useState<number>(5);
   const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
