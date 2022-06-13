@@ -24,8 +24,9 @@ import {
 import {
   ProfileFavoritesListItem,
   BasketballLoading,
-} from "~/components/domain";
-import { Avatar, Button, Label, Spacer, Chip, Text } from "~/components/base";
+} from "~/components/domains";
+import { Label, Chip, Avatar } from "~/components/uis/molecules";
+import { Text, Button, Spacer } from "~/components/uis/atoms";
 
 interface ResponseUserProfile
   extends Pick<

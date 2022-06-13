@@ -5,7 +5,7 @@ import type {
   APIReservation,
 } from "~/domainTypes/tobe";
 import type { ApiPromise } from "~/service/type";
-import type { SlotKeyUnion } from "~/components/domain";
+import type { SlotKeyUnion } from "~/components/domains";
 
 export interface CourtApi {
   getCourtsByCoordsAndDate: (coordsAndDate: {

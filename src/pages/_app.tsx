@@ -3,7 +3,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@emotion/react";
 import theme from "~/styles/theme";
 import Providers from "~/contexts/Providers";
-import { DefaultLayout } from "~/components/layout";
+import { DefaultLayout } from "~/components/domains/layout";
 import "~/styles/global.css";
 
 function MyApp({ Component, pageProps }: AppProps) {

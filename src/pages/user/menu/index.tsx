@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { withRouteGuard } from "~/hocs";
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
-import { Button, Icon } from "~/components/base";
-import { Modal } from "~/components/domain";
+import { Icon, Button } from "~/components/uis/atoms";
+import { Modal } from "~/components/domains";
 
 const Menu: NextPage = () => {
   const { logout } = useAuthContext();

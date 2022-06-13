@@ -4,9 +4,9 @@ import styled from "@emotion/styled";
 import { withRouteGuard } from "~/hocs";
 import { useIntersectionObserver } from "~/hooks";
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
-import NotificationList from "~/components/domain/NotificationList";
-import { Skeleton } from "~/components/base";
-import { NoItemMessage } from "~/components/domain";
+import NotificationList from "~/components/domains/NotificationList";
+import { Skeleton } from "~/components/uis/atoms";
+import { NoItemMessage } from "~/components/domains";
 
 const NotificationsPage: NextPage = () => {
   const { authProps, getMoreNotifications, readAllNotifications } =

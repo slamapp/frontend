@@ -4,8 +4,8 @@ import styled from "@emotion/styled";
 import { withRouteGuard } from "~/hocs";
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
 import { reservationApi } from "~/service";
-import { Spacer, Text } from "~/components/base";
-import { NoItemMessage, ReservationItem } from "~/components/domain";
+import { Text, Spacer } from "~/components/uis/atoms";
+import { NoItemMessage, ReservationItem } from "~/components/domains";
 
 const Reservations: NextPage = () => {
   const { authProps, getMyReservations } = useAuthContext();

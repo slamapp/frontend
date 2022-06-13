@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { withRouteGuard } from "~/hocs";
 import { useNavigationContext } from "~/contexts/hooks";
-import { ProfileForm } from "~/components/domain";
+import { ProfileForm } from "~/components/domains";
 
 const UserEditPage: NextPage = () => {
   const { useMountPage } = useNavigationContext();

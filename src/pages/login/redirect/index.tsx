@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useLocalToken } from "~/hooks/domain";
 import { useAuthContext } from "~/contexts/hooks";
-import { Header, Spinner } from "~/components/base";
+import { Spinner, Header } from "~/components/uis/atoms";
 
 const RedirectPage = () => {
   const [isNeedReLogin, setIsNeedReLogin] = useState(false);

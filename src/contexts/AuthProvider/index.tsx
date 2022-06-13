@@ -9,7 +9,7 @@ import {
   notificationApi,
 } from "~/service";
 import { useLocalToken } from "~/hooks/domain";
-import { Toast } from "~/components/base";
+import { Toast } from "~/components/uis/molecules";
 import Context from "./context";
 import { initialData, reducer } from "./reducer";
 import AuthLoading from "./AuthLoading";

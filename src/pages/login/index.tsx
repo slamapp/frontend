@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import { withRouteGuard } from "~/hocs";
 import { useNavigationContext } from "~/contexts/hooks";
-import { BottomFixedButton, Logo } from "~/components/domain";
-import { Spacer } from "~/components/base";
+import { BottomFixedButton, Logo } from "~/components/domains";
+import { Spacer } from "~/components/uis/atoms";
 
 const Login: NextPage = () => {
   const router = useRouter();

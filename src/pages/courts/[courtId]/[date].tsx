@@ -14,8 +14,9 @@ import {
   TimeTable,
   ReservationModalContent as ModalContent,
   DayOfTheWeek,
-} from "~/components/domain";
-import { ModalSheet, Text } from "~/components/base";
+} from "~/components/domains";
+import { ModalSheet } from "~/components/uis/templates";
+import { Text } from "~/components/uis/atoms";
 
 const getIsPast = (date: string) => dayjs().isAfter(date, "day");
 

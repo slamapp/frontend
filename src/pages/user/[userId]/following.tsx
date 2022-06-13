@@ -4,7 +4,7 @@ import type { APIFollow, APIUser } from "~/domainTypes/tobe";
 import { withRouteGuard } from "~/hocs";
 import { useInfiniteScroll } from "~/hooks";
 import { useNavigationContext } from "~/contexts/hooks";
-import { UserListItem } from "~/components/domain";
+import { UserListItem } from "~/components/domains";
 
 type Following = {
   id: APIFollow["id"];

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useNavigationContext } from "~/contexts/hooks";
-import { ErrorMessage } from "../components/domain";
+import { ErrorMessage } from "../components/domains";
 
 export default function Custom404() {
   const { useMountPage } = useNavigationContext();

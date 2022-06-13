@@ -16,8 +16,10 @@ import {
   BottomFixedButton,
   LeadToLoginModal,
   BasketballLoading,
-} from "~/components/domain";
-import { Input, Text, Button, Label, Icon, Spacer } from "~/components/base";
+} from "~/components/domains";
+import { Label } from "~/components/uis/molecules";
+import { Input } from "~/components/uis/organisms";
+import { Text, Icon, Button, Spacer } from "~/components/uis/atoms";
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (

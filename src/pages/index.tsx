@@ -6,7 +6,7 @@ import type { APIFavorite } from "~/domainTypes/tobe";
 import { withRouteGuard } from "~/hocs";
 import favoriteAPI from "~/service/favoriteApi";
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
-import { FavoriteList } from "~/components/domain";
+import { FavoriteList } from "~/components/domains";
 
 const Home: NextPage = () => {
   const { useMountPage } = useNavigationContext();

@@ -28,9 +28,10 @@ import {
   CourtItem,
   LeadToLoginModal,
   BasketballLoading,
-} from "~/components/domain";
-import type { SlotKeyUnion } from "~/components/domain";
-import { Button, ModalSheet, Spacer, Text } from "~/components/base";
+} from "~/components/domains";
+import type { SlotKeyUnion } from "~/components/domains";
+import { Text, Button, Spacer } from "~/components/uis/atoms";
+import { ModalSheet } from "~/components/uis/templates";
 import type { CourtApi } from "~/service/courtApi/type";
 
 interface Geocoder extends kakao.maps.services.Geocoder {
