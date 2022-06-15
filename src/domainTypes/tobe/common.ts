@@ -4,10 +4,13 @@ export interface APISend extends APICommon {
   sender: OmitAt<APIUser>;
 }
 
-export interface APICommon {
-  id: string;
+export interface APICommon extends APIIdObject {
   createdAt: ISOString;
   updatedAt: ISOString;
+}
+
+export interface APIIdObject {
+  id: string;
 }
 
 export type ISOString = string;

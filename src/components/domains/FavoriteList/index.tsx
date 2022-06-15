@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import dynamic from "next/dynamic";
@@ -6,23 +6,39 @@ import type { APIFavorite } from "~/domainTypes/tobe";
 import { Button, Spacer } from "~/components/uis/atoms";
 import CourtItem from "../CourtItem";
 import NoItemMessage from "../NoItemMessage";
+import { useAuthContext } from "~/contexts/hooks";
+import favoriteAPI from "~/service/favoriteApi";
 
 const SkeletonParagraph = dynamic(
   () => import("~/components/uis/atoms/Skeleton/Paragraph"),
   { ssr: false }
 );
 
-interface Props {
-  isLoading: boolean;
-  favorites: {
-    favoriteId: APIFavorite["id"];
-    courtId: APIFavorite["court"]["id"];
-    courtName: APIFavorite["court"]["name"];
-    latitude: APIFavorite["court"]["latitude"];
-    longitude: APIFavorite["court"]["longitude"];
-  }[];
-}
-const FavoriteList = ({ isLoading, favorites }: Props) => {
+const FavoriteList = () => {
+  const { authProps } = useAuthContext();
+  const { userId } = authProps.currentUser;
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [favorites, setFavorites] = useState<
+    Awaited<ReturnType<typeof favoriteAPI["getMyFavorites"]>>["data"]
+  >([]);
+
+  const getPageFavorites = async () => {
+    try {
+      const { data } = await favoriteAPI.getMyFavorites();
+      setFavorites(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      getPageFavorites();
+    }
+  }, [userId]);
+
   if (isLoading) {
     return (
       <Spacer gap="base" type="vertical">
@@ -59,43 +75,46 @@ const FavoriteList = ({ isLoading, favorites }: Props) => {
         marginTop: 56,
       }}
     >
-      {favorites.map(
-        ({ favoriteId, courtName, courtId, latitude, longitude }) => (
-          <FavoriteItem key={favoriteId}>
-            <Spacer gap="xs" type="vertical">
-              <CourtItem.Header>{courtName}</CourtItem.Header>
-              {/* <CourtItem.Address>{"주소 넣기"}</CourtItem.Address> */}
-            </Spacer>
+      {favorites.map(({ id, court }) => (
+        <FavoriteItem key={id}>
+          <Spacer gap="xs" type="vertical">
+            <CourtItem.Header>{court.name}</CourtItem.Header>
+            {/* <CourtItem.Address>{"주소 넣기"}</CourtItem.Address> */}
+          </Spacer>
 
-            <Actions gap="xs">
-              <ActionsLeftButtons gap="xs">
-                <CourtItem.FavoritesToggle courtId={courtId} />
-                <CourtItem.Share
-                  court={{ id: courtId, latitude, longitude, name: courtName }}
-                />
-                <CourtItem.ChatLink
-                  chatroomId={
-                    // TODO: Court에 chatroomId 포함시키기
-                    "1"
-                  }
-                />
-                <CourtItem.KakaoMapLink
-                  latitude={latitude}
-                  longitude={longitude}
-                  courtName={courtName}
-                />
-              </ActionsLeftButtons>
-              <Link href={`/courts?courtId=${courtId}`} passHref>
-                <a style={{ flex: 1, display: "flex" }}>
-                  <Button size="lg" style={{ flex: 1 }}>
-                    예약하기
-                  </Button>
-                </a>
-              </Link>
-            </Actions>
-          </FavoriteItem>
-        )
-      )}
+          <Actions gap="xs">
+            <ActionsLeftButtons gap="xs">
+              <CourtItem.FavoritesToggle courtId={court.id} />
+              <CourtItem.Share
+                court={{
+                  id: court.id,
+                  latitude: court.latitude,
+                  longitude: court.longitude,
+                  name: court.name,
+                }}
+              />
+              <CourtItem.ChatLink
+                chatroomId={
+                  // TODO: Court에 chatroomId 포함시키기
+                  "1"
+                }
+              />
+              <CourtItem.KakaoMapLink
+                latitude={court.latitude}
+                longitude={court.longitude}
+                courtName={court.name}
+              />
+            </ActionsLeftButtons>
+            <Link href={`/courts?courtId=${court.id}`} passHref>
+              <a style={{ flex: 1, display: "flex" }}>
+                <Button size="lg" style={{ flex: 1 }}>
+                  예약하기
+                </Button>
+              </a>
+            </Link>
+          </Actions>
+        </FavoriteItem>
+      ))}
     </Spacer>
   );
 };

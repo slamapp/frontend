@@ -1,5 +1,5 @@
 import type { ActionWithoutPayload, ActionWithPayload } from "~/contexts/type";
-import type { APINotification, APIUser } from "~/domainTypes/tobe";
+import type { APIFavorite, APINotification, APIUser } from "~/domainTypes/tobe";
 
 export type ActionUnion =
   | ActionWithPayload<
@@ -14,7 +14,7 @@ export type ActionUnion =
       Pick<APIUser, "nickname" | "positions" | "proficiency" | "description">
     >
   | ActionWithPayload<"SET_MY_PROFILE_IMAGE", Pick<APIUser, "profileImage">>
-  | ActionWithPayload<"GET_MY_FAVORITES", any>
+  | ActionWithPayload<"GET_MY_FAVORITES", { favorites: APIFavorite[] }>
   | ActionWithPayload<"SET_MY_FAVORITES", any>
   | ActionWithPayload<"CREATE_FAVORITE", any>
   | ActionWithPayload<"DELETE_FAVORITE", any>

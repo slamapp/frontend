@@ -125,8 +125,8 @@ const AuthProvider = ({ children }: Props) => {
     useCallback(async () => {
       try {
         const { data } = await favoriteApi.getMyFavorites();
-        const { favorites } = data;
-        dispatch({ type: "GET_MY_FAVORITES", payload: { favorites } });
+
+        dispatch({ type: "GET_MY_FAVORITES", payload: { favorites: data } });
       } catch (error) {
         throw error as AxiosError;
       }

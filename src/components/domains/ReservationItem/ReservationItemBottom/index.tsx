@@ -13,7 +13,6 @@ interface Props {
   startTime: APIReservation["startTime"];
   endTime: APIReservation["endTime"];
   numberOfReservations: number;
-  expired: any;
 }
 
 const ReservationItemBottom = ({
@@ -21,7 +20,6 @@ const ReservationItemBottom = ({
   startTime,
   endTime,
   numberOfReservations,
-  expired,
 }: Props) => {
   const [visible, setVisible] = useState(false);
   const [participants, setParticipants] = useState<
@@ -51,14 +49,9 @@ const ReservationItemBottom = ({
           <Icon name="users" size="sm" />
           <Text>{numberOfReservations}</Text>
         </ParticipantsToggle>
-        {!expired && (
-          <Link
-            href={`courts/${courtId}/${startTime.substring(0, 10)}`}
-            passHref
-          >
-            <Button>예약 확인하기</Button>
-          </Link>
-        )}
+        <Link href={`courts/${courtId}/${startTime.substring(0, 10)}`} passHref>
+          <Button>예약 확인하기</Button>
+        </Link>
       </Container>
       {visible && (
         <ParticipantList>

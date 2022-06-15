@@ -1,28 +1,33 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useAuthContext } from "~/contexts/hooks";
+import type { APICourt } from "~/domainTypes/tobe";
 
 interface Props {
   map: kakao.maps.Map;
-  court: any; // 추후 API 명세 나오면 수정 예정
+  court: APICourt;
+  reservationMaxCourt: number;
   onClick: (court: any) => void;
 }
 
 const PAUSE_COURT_NUMBER = 0;
 const FIRE_COURT_NUMBER = 6;
 
-const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
+const BasketballMarker = ({
+  map,
+  court,
+  reservationMaxCourt,
+  onClick,
+}: Props): JSX.Element => {
   const { authProps } = useAuthContext();
   const { favorites, reservations } = authProps.currentUser;
 
-  const marker = useMemo(
-    () =>
-      new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(0, 0),
-        clickable: true,
-        title: court.courtName,
-      }),
-    []
-  );
+  const marker = useMemo(() => {
+    return new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(0, 0),
+      clickable: true,
+      title: court.name,
+    });
+  }, []);
 
   const handleClick = useCallback(() => {
     onClick(court);
@@ -33,10 +38,10 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
       let imageSrc = "/assets/basketball/animation_off_400.png";
 
       const isReservatedCourt = reservations.some(
-        ({ courtId }) => courtId === court.courtId
+        ({ court: { id } }) => id === court.id
       );
       const isFavoritedCourt = favorites.some(
-        ({ courtId }) => courtId === court.courtId
+        ({ court: { id } }) => id === court.id
       );
 
       if (isFavoritedCourt) {
@@ -44,8 +49,8 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
       }
 
       if (
-        court.courtReservation > PAUSE_COURT_NUMBER &&
-        court.courtReservation < FIRE_COURT_NUMBER
+        reservationMaxCourt > PAUSE_COURT_NUMBER &&
+        reservationMaxCourt < FIRE_COURT_NUMBER
       ) {
         if (isReservatedCourt && isFavoritedCourt) {
           imageSrc = "/assets/basketball/fire_off_all_tagged.gif";
@@ -58,7 +63,7 @@ const BasketballMarker = ({ map, court, onClick }: Props): JSX.Element => {
         }
       }
 
-      if (court.courtReservation >= FIRE_COURT_NUMBER) {
+      if (reservationMaxCourt >= FIRE_COURT_NUMBER) {
         if (isReservatedCourt && isFavoritedCourt) {
           imageSrc = "/assets/basketball/fire_on_all_tagged.gif";
         } else if (isReservatedCourt) {

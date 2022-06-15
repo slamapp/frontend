@@ -1,6 +1,11 @@
 import type { Reducer } from "react";
 import type { Reservation } from "~/domainTypes";
-import type { APINotification, APIUser, APIFavorite } from "~/domainTypes/tobe";
+import type {
+  APINotification,
+  APIUser,
+  APIFavorite,
+  APIReservation,
+} from "~/domainTypes/tobe";
 import type { ActionUnion } from "./actionTypes";
 
 export interface DataProps {
@@ -11,16 +16,10 @@ export interface DataProps {
     role: APIUser["role"] | null;
     description: APIUser["description"] | null;
     nickname: APIUser["nickname"] | null;
-    favorites: (Pick<APIFavorite, "createdAt" | "updatedAt"> & {
-      favoriteId: APIFavorite["id"];
-      courtId: APIFavorite["court"]["id"];
-      courtName: APIFavorite["court"]["name"];
-      latitude: APIFavorite["court"]["latitude"];
-      longitude: APIFavorite["court"]["longitude"];
-    })[];
+    favorites: APIFavorite[];
     notifications: APINotification[];
     notificationLastId?: APINotification["id"] | null;
-    reservations: Reservation[];
+    reservations: APIReservation[];
   };
   isLoading: boolean;
 }
@@ -153,7 +152,7 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
         currentUser: {
           ...prevState.currentUser,
           favorites: prevState.currentUser.favorites.filter(
-            ({ favoriteId }) => favoriteId !== deletedFavoriteId
+            ({ id }) => id !== deletedFavoriteId
           ),
         },
       };

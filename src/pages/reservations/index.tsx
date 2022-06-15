@@ -102,8 +102,8 @@ const Reservations: NextPage = () => {
             <Spacer gap="md" type="vertical">
               {upcomingReservations.map((reservation) => (
                 <ReservationItem
-                  key={reservation.reservationId}
-                  {...reservation}
+                  key={reservation.id}
+                  reservation={reservation}
                 />
               ))}
             </Spacer>

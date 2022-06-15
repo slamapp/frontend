@@ -60,21 +60,14 @@ const User: NextPage = () => {
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   );
-  const [pageFavorites, setPageFavorites] = useState<
-    { id: APIFavorite["id"]; court: Pick<APICourt, "id" | "name"> }[]
-  >([]);
+  const [pageFavorites, setPageFavorites] = useState<APIFavorite[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const [isError, setIsError] = useState(false);
 
   const getMyProfile = useCallback(async () => {
     try {
-      setPageFavorites([
-        ...myFavorites.map(({ favoriteId, courtId, courtName }) => ({
-          id: favoriteId,
-          court: { id: courtId, name: courtName },
-        })),
-      ]);
+      setPageFavorites([...myFavorites]);
 
       const {
         data: { followerCount, followingCount, user },

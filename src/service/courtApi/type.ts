@@ -15,17 +15,7 @@ export interface CourtApi {
     endLatitude: APICourt["latitude"];
     endLongitude: APICourt["longitude"];
     time: SlotKeyUnion;
-  }) => ApiPromise<{
-    courts: {
-      courtId: number;
-      courtName: APICourt["name"];
-      courtReservation: number;
-      createdAt: APICourt["createdAt"];
-      latitude: APICourt["latitude"];
-      longitude: APICourt["longitude"];
-      updatedAt: APICourt["updatedAt"];
-    }[];
-  }>;
+  }) => ApiPromise<{ court: APICourt; reservationMaxCourt: number }[]>;
 
   createNewCourt: (
     courtData: Pick<

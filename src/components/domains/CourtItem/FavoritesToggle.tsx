@@ -16,15 +16,15 @@ const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
     deleteFavorite,
   } = useAuthContext();
 
-  const isChecked = favorites.some((favorite) => favorite.courtId === courtId);
+  const isChecked = favorites.some(({ court }) => court.id === courtId);
 
   const handleToggleFavorite = useCallback(() => {
     if (isChecked) {
       const deletingFavorite = favorites.find(
-        (favorite) => favorite.courtId === courtId
+        ({ court }) => court.id === courtId
       );
       if (deletingFavorite) {
-        deleteFavorite(deletingFavorite.favoriteId);
+        deleteFavorite(deletingFavorite.id);
       }
     } else {
       createFavorite(courtId);

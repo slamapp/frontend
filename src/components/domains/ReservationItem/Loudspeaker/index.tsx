@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button } from "~/components/uis/atoms";
 import { useSocketContext } from "~/contexts/hooks";
+import type { APICourt, APIReservation } from "~/domainTypes/tobe";
 
 const ONE_HOUR_SECONDS = 3600;
 
@@ -14,8 +15,8 @@ const getRestTimeBeforeActivate = (startTime: any) => {
 
 interface Props {
   startTime: string;
-  courtId: number;
-  reservationId: number;
+  courtId: APICourt["id"];
+  reservationId: APIReservation["id"];
 }
 
 const Loudspeaker = ({ startTime, courtId, reservationId }: Props) => {

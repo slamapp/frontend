@@ -81,7 +81,7 @@ const Courts: NextPage = () => {
   const currentDate = useMemo(() => getTimezoneCurrentDate(), []);
 
   const [courts, setCourts] = useState<
-    Awaited<ReturnType<CourtApi["getCourtsByCoordsAndDate"]>>["data"]["courts"]
+    Awaited<ReturnType<CourtApi["getCourtsByCoordsAndDate"]>>["data"]
   >([]);
 
   const [level, setLevel] = useState<number>(5);
@@ -158,9 +158,7 @@ const Courts: NextPage = () => {
       const endLatitude = neLatLng.getLat();
       const endLongitude = neLatLng.getLng();
 
-      const {
-        data: { courts },
-      } = await courtApi.getCourtsByCoordsAndDate({
+      const { data } = await courtApi.getCourtsByCoordsAndDate({
         date: getTimezoneDateStringFromDate(selectedDate),
         startLatitude,
         startLongitude,
@@ -169,7 +167,7 @@ const Courts: NextPage = () => {
         time: selectedSlot,
       });
 
-      setCourts(courts);
+      setCourts(data);
     },
     [selectedDate, selectedSlot]
   );
@@ -329,12 +327,12 @@ const Courts: NextPage = () => {
         {!isInitialized && <BasketballLoading />}
 
         {map &&
-          courts &&
-          courts.map((court: any) => (
+          courts.map((court) => (
             <BasketballMarker
-              key={court.courtId}
+              key={court.court.id}
               map={map}
-              court={court}
+              court={court.court}
+              reservationMaxCourt={court.reservationMaxCourt}
               onClick={handleMarkerClick}
             />
           ))}
