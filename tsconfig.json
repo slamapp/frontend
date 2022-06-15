@@ -33,6 +33,6 @@
     },
     "types": ["kakao.maps.d.ts", "jest"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.css"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.css", "next.config.js"],
   "exclude": ["node_modules"]
 }
