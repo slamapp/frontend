@@ -4,7 +4,6 @@ import Head from "next/head";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import type { Dayjs } from "dayjs";
-import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { courtApi } from "~/service";
 import type { APICourt, Coord } from "~/domainTypes/tobe";
@@ -21,18 +20,15 @@ import {
 } from "~/utils/date";
 import {
   DatePicker,
-  SlotPicker,
   BasketballMarker,
   Map,
-  slotItems,
   CourtItem,
   LeadToLoginModal,
-  BasketballLoading,
 } from "~/components/domains";
-import type { SlotKeyUnion } from "~/components/domains";
 import { Text, Button, Spacer } from "~/components/uis/atoms";
 import { ModalSheet } from "~/components/uis/templates";
 import type { CourtApi } from "~/service/courtApi/type";
+import { useLocalStorage } from "~/hooks";
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (
@@ -41,27 +37,6 @@ interface Geocoder extends kakao.maps.services.Geocoder {
     callback?: (result: any, status: any) => void
   ) => string;
 }
-
-const getSlotFromDate = (
-  date: Dayjs,
-  timezone = "Asia/Seoul"
-): SlotKeyUnion => {
-  date.tz(timezone);
-  const hour = date.hour();
-  let slot = "" as SlotKeyUnion;
-
-  if (hour < 6) {
-    slot = "dawn";
-  } else if (hour < 12) {
-    slot = "morning";
-  } else if (hour < 18) {
-    slot = "afternoon";
-  } else if (hour <= 23) {
-    slot = "night";
-  }
-
-  return slot;
-};
 
 const Courts: NextPage = () => {
   const router = useRouter();
@@ -85,16 +60,18 @@ const Courts: NextPage = () => {
   >([]);
 
   const [level, setLevel] = useState<number>(5);
-  const [center, setCenter] = useState<Coord>(DEFAULT_POSITION);
+  const [mapInitialCenter, setMapInitialCenter] = useLocalStorage(
+    "mapInitialCenter",
+    DEFAULT_POSITION
+  );
+  const [center, setCenter] = useState<Coord>(mapInitialCenter);
 
   const [selectedDate, setSelectedDate] = useState<Dayjs>(currentDate);
-  const [selectedSlot, setSelectedSlot] = useState<SlotKeyUnion>(() =>
-    getSlotFromDate(dayjs())
-  );
 
-  // TODO: API 명세 나올 경우 any 수정해주기
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [selectedCourt, setSelectedCourt] = useState<any>(null);
+  const [selectedMarker, setSelectedMarker] = useState<
+    Awaited<ReturnType<typeof courtApi.getCourtDetail>>["data"] | null
+  >(null);
+  const [address, setAddress] = useState<string | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] = useState(false);
@@ -111,40 +88,8 @@ const Courts: NextPage = () => {
 
   const onClose = useCallback(() => {
     setIsOpen(false);
-    setSelectedCourt(null);
+    setSelectedMarker(null);
   }, []);
-
-  const searchAddrFromCoords = (latitude: number, longitude: number) => {
-    const geocoder = new kakao.maps.services.Geocoder();
-
-    const callback = (result: any, status: any) => {
-      if (status === kakao.maps.services.Status.OK) {
-        // 도로명 주소
-        if (result[0].road_address) {
-          setSelectedCourt((prev: any) => ({
-            ...prev,
-            address: result[0].road_address.address_name,
-          }));
-        }
-        // 법정 주소
-        else if (result[0].address.address_name) {
-          setSelectedCourt((prev: any) => ({
-            ...prev,
-            address: result[0].address.address_name,
-          }));
-        }
-        // 주소가 없는 경우
-        else {
-          setSelectedCourt((prev: any) => ({
-            ...prev,
-            address: "주소가 존재하지 않습니다.",
-          }));
-        }
-      }
-    };
-
-    (geocoder as Geocoder).coord2Address(longitude, latitude, callback);
-  };
 
   const fetchCourtsByBoundsAndDatetime = useCallback(
     async (map: kakao.maps.Map) => {
@@ -164,12 +109,12 @@ const Courts: NextPage = () => {
         startLongitude,
         endLatitude,
         endLongitude,
-        time: selectedSlot,
+        time: "morning",
       });
 
       setCourts(data);
     },
-    [selectedDate, selectedSlot]
+    [selectedDate]
   );
 
   const handleZoomIn = useCallback(() => {
@@ -184,41 +129,46 @@ const Courts: NextPage = () => {
     }
   }, [map]);
 
-  const handleChangeSlot = useCallback((e) => {
-    setSelectedSlot(e.target.value);
-  }, []);
-
-  const handleDateClick = useCallback(
-    (selectedDate: Dayjs) => {
-      if (currentDate.isSame(selectedDate)) {
-        const currentSlot = getSlotFromDate(dayjs());
-        const selectedSlotIndex = slotItems.findIndex(
-          ({ value }) => value === selectedSlot
+  const restoreCourts = useCallback(
+    async (courtId: APICourt["id"], needCenter = false) => {
+      try {
+        const {
+          data: { court, reservationMaxCount },
+        } = await courtApi.getCourtDetail(
+          courtId,
+          getTimezoneDateStringFromDate(selectedDate),
+          "morning"
         );
-        const currentSlotIndex = slotItems.findIndex(
-          ({ value }) => value === currentSlot
-        );
+        setIsOpen(true);
 
-        if (selectedSlotIndex < currentSlotIndex) {
-          setSelectedSlot(currentSlot);
+        if (needCenter) {
+          setCenter([court.latitude, court.longitude]);
         }
+        setSelectedMarker({
+          court,
+          reservationMaxCount,
+        });
+      } catch (error) {
+        console.error(error);
       }
-
-      setSelectedDate(selectedDate);
     },
-    [currentDate, selectedSlot]
+    [selectedDate]
   );
 
+  const handleDateClick = useCallback((selectedDate: Dayjs) => {
+    setSelectedDate(selectedDate);
+  }, []);
+
   const handleMarkerClick = useCallback(
-    (court: any) => {
+    (court: APICourt) => {
       setIsOpen(true);
-      searchAddrFromCoords(court.latitude, court.longitude);
-      setSelectedCourt(court);
-      router.push(`/courts?courtId=${court.courtId}`, undefined, {
+      restoreCourts(court.id);
+      setMapInitialCenter([court.latitude, court.longitude]);
+      router.push(`/courts?courtId=${court.id}`, undefined, {
         shallow: true,
       });
     },
-    [router]
+    [restoreCourts, router]
   );
 
   const handleChangeSnap = useCallback((snap: number) => {
@@ -228,59 +178,74 @@ const Courts: NextPage = () => {
   const handleGetCurrentLocation = useCallback(async () => {
     getCurrentLocation(async ([latitude, longitude]) => {
       setCenter([latitude, longitude]);
-      setIsInitialized(true);
     });
   }, []);
 
   useEffect(() => {
-    const restoreCourts = async (courtId: APICourt["id"]) => {
-      try {
-        const { data: court } = await courtApi.getCourtDetail(
-          courtId,
-          getTimezoneDateStringFromDate(selectedDate),
-          selectedSlot
-        );
-
-        const { latitude, longitude } = court;
-
-        if (court) {
-          setCenter([latitude, longitude]);
-          setIsOpen(true);
-          searchAddrFromCoords(latitude, longitude);
-          setSelectedCourt({ ...court, courtId });
-          setIsInitialized(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     if (router.isReady) {
       const { courtId } = router.query;
 
       if (courtId) {
-        restoreCourts(`${courtId}`);
+        restoreCourts(`${courtId}`, true);
       } else {
-        handleGetCurrentLocation();
+        // handleGetCurrentLocation();
       }
     }
   }, [map]);
 
   useEffect(() => {
-    const updateSelectedCourtDetail = async () => {
-      const { data: court } = await courtApi.getCourtDetail(
-        selectedCourt.courtId,
-        getTimezoneDateStringFromDate(selectedDate),
-        selectedSlot
-      );
+    const searchAddressFromCoords = (latitude: number, longitude: number) => {
+      const geocoder = new kakao.maps.services.Geocoder();
 
-      setSelectedCourt((prev: any) => ({ ...prev, ...court }));
+      (geocoder as Geocoder).coord2Address(
+        longitude,
+        latitude,
+        (result, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            // 도로명 주소
+            if (result[0].road_address) {
+              setAddress(result[0].road_address.address_name);
+            }
+            // 법정 주소
+            else if (result[0].address.address_name) {
+              setAddress(result[0].address.address_name);
+            }
+            // 주소가 없는 경우
+            else {
+              setAddress("주소가 존재하지 않습니다.");
+            }
+          }
+        }
+      );
+    };
+
+    if (selectedMarker) {
+      searchAddressFromCoords(
+        selectedMarker.court.latitude,
+        selectedMarker.court.longitude
+      );
+    }
+  }, [selectedMarker]);
+
+  useEffect(() => {
+    const updateSelectedCourtDetail = async () => {
+      if (selectedMarker) {
+        const {
+          data: { court, reservationMaxCount },
+        } = await courtApi.getCourtDetail(
+          selectedMarker.court.id,
+          getTimezoneDateStringFromDate(selectedDate),
+          "morning"
+        );
+
+        setSelectedMarker((prev) => ({ ...prev, court, reservationMaxCount }));
+      }
     };
 
     if (map) {
       fetchCourtsByBoundsAndDatetime(map);
 
-      if (selectedCourt) {
+      if (selectedMarker) {
         updateSelectedCourtDetail();
       }
     }
@@ -290,6 +255,8 @@ const Courts: NextPage = () => {
     center,
     authProps.currentUser.favorites,
   ]);
+
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -313,18 +280,10 @@ const Courts: NextPage = () => {
           onClose();
         }}
       >
-        <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
+        {/* <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} /> */}
         <Map.CurrentLocationButton
           onGetCurrentLocation={handleGetCurrentLocation}
         />
-        <TopFixedSlotPicker
-          currentDateTimeSlot={
-            currentDate.isSame(selectedDate) ? getSlotFromDate(dayjs()) : null
-          }
-          selectedSlot={selectedSlot}
-          onChange={handleChangeSlot}
-        />
-        {!isInitialized && <BasketballLoading />}
 
         {map &&
           courts.map((court) => (
@@ -339,23 +298,23 @@ const Courts: NextPage = () => {
       </Map.KakaoMap>
 
       <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
-        {selectedCourt && (
+        {selectedMarker && (
           <ModalContentContainer>
             <Spacer gap="xs" type="vertical">
-              <CourtItem.Header>{selectedCourt.courtName}</CourtItem.Header>
-              <CourtItem.Address>{selectedCourt.address}</CourtItem.Address>
+              <CourtItem.Header>{selectedMarker.court.name}</CourtItem.Header>
+              <CourtItem.Address>{address}</CourtItem.Address>
             </Spacer>
             <ReservationCount block strong size="lg">
-              {selectedCourt.courtReservation} 명
+              {selectedMarker.reservationMaxCount} 명
             </ReservationCount>
             <Actions gap="xs">
-              <CourtItem.FavoritesToggle courtId={selectedCourt.courtId} />
+              <CourtItem.FavoritesToggle courtId={selectedMarker.court.id} />
               <CourtItem.Share
                 court={{
-                  id: selectedCourt.courtId,
-                  latitude: selectedCourt.latitude,
-                  longitude: selectedCourt.longitude,
-                  name: selectedCourt.courtName,
+                  id: selectedMarker.court.id,
+                  latitude: selectedMarker.court.latitude,
+                  longitude: selectedMarker.court.longitude,
+                  name: selectedMarker.court.name,
                 }}
               />
               <CourtItem.ChatLink
@@ -365,9 +324,9 @@ const Courts: NextPage = () => {
                 }
               />
               <CourtItem.KakaoMapLink
-                latitude={selectedCourt.latitude}
-                longitude={selectedCourt.longitude}
-                courtName={selectedCourt.courtName}
+                latitude={selectedMarker.court.latitude}
+                longitude={selectedMarker.court.longitude}
+                courtName={selectedMarker.court.name}
               />
 
               {localToken ? (
@@ -375,11 +334,11 @@ const Courts: NextPage = () => {
                   href={{
                     pathname: `/courts/[courtId]/[date]`,
                     query: {
-                      timeSlot: selectedSlot,
+                      timeSlot: "morning",
                     },
                   }}
                   as={`/courts/${
-                    selectedCourt.courtId
+                    selectedMarker.court.id
                   }/${getTimezoneDateStringFromDate(selectedDate)}`}
                   passHref
                 >
@@ -446,14 +405,6 @@ const Courts: NextPage = () => {
 };
 
 export default Courts;
-
-const TopFixedSlotPicker = styled(SlotPicker)`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 10;
-  filter: ${({ theme }) => theme.filter.dropShadow};
-`;
 
 const Actions = styled(Spacer)`
   margin-top: ${({ theme }) => theme.gaps.sm};

@@ -9,7 +9,7 @@ import {
   useReservationContext,
 } from "~/contexts/hooks";
 
-import { week, getTimeFromIndex, getIsOneHourLeft } from "~/utils/date";
+import { week, getTimeFromIndex } from "~/utils/date";
 import {
   TimeTable,
   ReservationModalContent as ModalContent,
@@ -118,13 +118,13 @@ const Reservation: NextPage = () => {
       } = await courtApi.getAllCourtReservationsByDate(`${courtId}`, `${date}`);
 
       const {
-        data: { courtName },
+        data: { court },
       } = await courtApi.getCourtDetail(
         `${courtId}`,
         dayjs().format("YYYY-MM-DD"),
         "dawn"
       );
-      handleInitReservation(reservations, courtName, date);
+      handleInitReservation(reservations, court.name, date);
     };
 
     if (router.isReady && currentUser.userId) {

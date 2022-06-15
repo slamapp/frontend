@@ -5,7 +5,6 @@ import type {
   APIReservation,
 } from "~/domainTypes/tobe";
 import type { ApiPromise } from "~/service/type";
-import type { SlotKeyUnion } from "~/components/domains";
 
 export interface CourtApi {
   getCourtsByCoordsAndDate: (coordsAndDate: {
@@ -14,7 +13,7 @@ export interface CourtApi {
     startLongitude: APICourt["longitude"];
     endLatitude: APICourt["latitude"];
     endLongitude: APICourt["longitude"];
-    time: SlotKeyUnion;
+    time: "dawn" | "morning" | "afternoon" | "night";
   }) => ApiPromise<{ court: APICourt; reservationMaxCourt: number }[]>;
 
   createNewCourt: (
@@ -27,17 +26,10 @@ export interface CourtApi {
   getCourtDetail: (
     courtId: APICourt["id"],
     date: string,
-    time: string
+    time: "dawn" | "morning" | "afternoon" | "night"
   ) => ApiPromise<{
-    basketCount: APICourt["basketCount"];
-    courtName: APICourt["name"];
-    courtReservation: number;
-    image: APICourt["image"];
-    latitude: APICourt["latitude"];
-    longitude: APICourt["longitude"];
-    texture: APICourt["texture"];
-    createdAt: APICourt["createdAt"];
-    updatedAt: APICourt["updatedAt"];
+    reservationMaxCount: number;
+    court: APICourt;
   }>;
 
   getAllCourtReservationsByDate: (

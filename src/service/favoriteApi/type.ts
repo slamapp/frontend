@@ -11,7 +11,5 @@ export interface FavoriteApi {
     updatedAt: string;
     userId: APIUser["id"];
   }>;
-  deleteMyFavorite: (
-    favoriteId: APIFavorite["id"]
-  ) => ApiPromise<{ favoriteId: APIFavorite["id"] }>;
+  deleteMyFavorite: (favoriteId: APIFavorite["id"]) => ApiPromise<void>;
 }

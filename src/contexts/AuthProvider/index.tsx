@@ -147,9 +147,11 @@ const AuthProvider = ({ children }: Props) => {
   const deleteFavorite: ContextProps["deleteFavorite"] = useCallback(
     async (favoriteId) => {
       try {
-        const { data } = await favoriteApi.deleteMyFavorite(favoriteId);
-        const { favoriteId: deletedFavoriteId } = data;
-        dispatch({ type: "DELETE_FAVORITE", payload: { deletedFavoriteId } });
+        await favoriteApi.deleteMyFavorite(favoriteId);
+        dispatch({
+          type: "DELETE_FAVORITE",
+          payload: { deletedFavoriteId: favoriteId },
+        });
       } catch (error) {
         console.error(error);
       }

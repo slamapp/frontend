@@ -1,23 +1,11 @@
-import type { ReactNode } from "react";
+import type { ComponentProps } from "react";
 import styled from "@emotion/styled";
 import Sheet from "react-modal-sheet";
 
-interface Props {
-  children: ReactNode;
-  onClose: () => void;
-  isOpen: boolean;
-  onSnap?: (snap: number) => void;
-  onCloseStart?: () => void;
-}
-
-const CustomSheet = styled(Sheet)`
-  z-index: 1000 !important;
-  .react-modal-sheet-container {
-    max-width: 640px;
-    right: 0;
-    margin: auto;
-  }
-`;
+type Props = Pick<
+  ComponentProps<typeof CustomSheet>,
+  "isOpen" | "onClose" | "onSnap" | "onCloseStart"
+>;
 
 const ModalSheet: React.FC<Props> = ({
   isOpen,
@@ -44,3 +32,12 @@ const ModalSheet: React.FC<Props> = ({
 };
 
 export default ModalSheet;
+
+const CustomSheet = styled(Sheet)`
+  z-index: 1000 !important;
+  .react-modal-sheet-container {
+    max-width: 640px;
+    right: 0;
+    margin: auto;
+  }
+`;

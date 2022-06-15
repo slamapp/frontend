@@ -20,7 +20,12 @@ const courtApi: CourtApi = {
     }),
   createNewCourt: (data) => authRequest.post(`/courts/new`, data),
   getCourtDetail: (courtId, date, time) =>
-    request.get(`/courts/detail/${courtId}/${date}/${time}`),
+    request.get(`/courts/${courtId}/detail`, {
+      params: {
+        date,
+        time,
+      },
+    }),
   getAllCourtReservationsByDate: (courtId, date) =>
     authRequest.get(`/courts/${courtId}/reservations/${date}`),
 };

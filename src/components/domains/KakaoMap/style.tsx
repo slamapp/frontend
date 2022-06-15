@@ -3,15 +3,15 @@ import { IconButton } from "~/components/uis/molecules";
 
 const PositionAction = styled.div<{ bottom?: number }>`
   position: absolute;
-  bottom: ${({ bottom }) => (bottom ? `${bottom + 110}px` : "110px")};
-  right: 12px;
+  top: ${({ bottom }) => (bottom ? `${bottom + 16}px` : "16px")};
+  left: 12px;
   z-index: 10;
 `;
 
 const MapIconButton = styled(IconButton)`
   padding: ${({ theme }) => theme.gaps.xs};
   border: none;
-  border-radius: 0;
+  border-radius: 12px;
 `;
 
 const ZoomActions = styled.div<{ bottom?: number }>`

@@ -50,9 +50,6 @@ export const getTimezoneDateStringFromDate = (
   format = "YYYY-MM-DD"
 ) => date.tz(timezone).format(format);
 
-export const getIsOneHourLeft = (datetime: string) =>
-  Math.abs(dayjs().diff(datetime)) <= ONE_HOUR;
-
 export const getTimezoneCurrentDate = (timezone: Timezone = DEFAULT_TIMEZONE) =>
   dayjs().tz(timezone).hour(0).minute(0).second(0).millisecond(0);
 
