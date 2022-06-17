@@ -19,7 +19,7 @@ const BasketballMarker = ({
   onClick,
 }: Props): JSX.Element => {
   const { authProps } = useAuthContext()
-  const { favorites, reservations } = authProps.currentUser
+  const { favorites, reservations } = authProps
 
   const marker = useMemo(() => {
     return new kakao.maps.Marker({

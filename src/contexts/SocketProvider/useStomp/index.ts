@@ -11,9 +11,6 @@ const useStomp: UseStomp = (token: string) => {
   const [isConnected, setIsConnected] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { authProps, unshiftNotification } = useAuthContext()
-  const {
-    currentUser: { userId },
-  } = authProps
 
   const handleError = useCallback((e) => {
     console.log(e)
@@ -21,17 +18,24 @@ const useStomp: UseStomp = (token: string) => {
   }, [])
 
   useEffect(() => {
-    if (userId) {
+    if (authProps.currentUser) {
       const newClient = socketApi.getCompatClient()
       newClient.connect(
         { Authorization: { token: `Bearer ${token}` } },
         () => {
+          if (!authProps.currentUser) {
+            return
+          }
           setIsConnected(true)
           setIsLoading(false)
-          subscribe(newClient, `/user/${userId}/notification`, (body) => {
-            console.log(body)
-            unshiftNotification(body as APINotification)
-          })
+          subscribe(
+            newClient,
+            `/user/${authProps.currentUser.id}/notification`,
+            (body) => {
+              console.log(body)
+              unshiftNotification(body as APINotification)
+            }
+          )
           subscribe(newClient, `/user/${`courtId`}/chat`, (body) => {
             console.log(body)
           })
@@ -43,7 +47,7 @@ const useStomp: UseStomp = (token: string) => {
 
       return () => newClient.disconnect()
     }
-  }, [userId])
+  }, [authProps.currentUser])
 
   const sendAuth: SendAuth = (destination, body) => {
     console.log("SEND,Token", "destination:", destination, "body:", body)

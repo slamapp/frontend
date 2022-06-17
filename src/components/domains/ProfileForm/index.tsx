@@ -34,8 +34,6 @@ const ProfileForm = () => {
     updateMyProfile,
   } = useAuthContext()
 
-  const { userId } = authProps.currentUser
-
   const router = useRouter()
 
   const [isFetching, setIsFetching] = useState(true)
@@ -59,21 +57,23 @@ const ProfileForm = () => {
       positions: [],
     },
     onSubmit: async (values) => {
-      const profileImageInputRef = profileImageRef?.current ?? null
-      const editedProfileImageFiles = profileImageInputRef?.files ?? null
-      const editedProfileImage = editedProfileImageFiles
-        ? appendImageFileToFormData(editedProfileImageFiles[0], "image")
-        : null
+      if (authProps.currentUser) {
+        const profileImageInputRef = profileImageRef?.current ?? null
+        const editedProfileImageFiles = profileImageInputRef?.files ?? null
+        const editedProfileImage = editedProfileImageFiles
+          ? appendImageFileToFormData(editedProfileImageFiles[0], "image")
+          : null
 
-      try {
-        if (editedProfileImage) {
-          await updateMyProfileImage(editedProfileImage)
+        try {
+          if (editedProfileImage) {
+            await updateMyProfileImage(editedProfileImage)
+          }
+          await updateMyProfile(values)
+          router.replace(`/user/${authProps.currentUser.id}`)
+          Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳", 3000)
+        } catch (error) {
+          console.error(error)
         }
-        await updateMyProfile(values)
-        router.replace(`/user/${userId}`)
-        Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳", 3000)
-      } catch (error) {
-        console.error(error)
       }
     },
     validate: ({ nickname, description, positions, proficiency }) => {

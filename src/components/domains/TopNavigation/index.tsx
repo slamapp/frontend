@@ -11,19 +11,17 @@ const TopNavigation = () => {
   const sensorRef = useRef<HTMLDivElement>(null)
 
   const { authProps } = useAuthContext()
-  const { userId, profileImage, notifications, nickname } =
-    authProps.currentUser
 
   const {
     navigationProps: {
       isBack,
       isNotifications,
-      isProfile,
       title,
       isMenu,
       handleClickBack,
       customButton,
       isTopTransparent,
+      isProfile,
     },
     setIsTopTransparent,
   } = useNavigationContext()
@@ -43,9 +41,17 @@ const TopNavigation = () => {
   }, [entry?.isIntersecting])
 
   const unreadNotificationsCount = useMemo(
-    () => notifications.reduce((acc, { isRead }) => acc + (isRead ? 0 : 1), 0),
-    [notifications]
+    () =>
+      authProps.notifications.reduce(
+        (acc, { isRead }) => acc + (isRead ? 0 : 1),
+        0
+      ),
+    [authProps.notifications]
   )
+
+  if (!authProps.currentUser) {
+    return null
+  }
 
   return (
     <>
@@ -70,13 +76,7 @@ const TopNavigation = () => {
                 </Link>
               </Badge>
             )}
-            {isProfile && userId && nickname && (
-              <ProfileAvatar
-                nickname={nickname}
-                profileImage={profileImage}
-                userId={userId}
-              />
-            )}
+            {isProfile && <ProfileAvatar.Mine />}
             {isMenu && (
               <Link href={`/user/menu`} passHref>
                 <a>

@@ -16,25 +16,27 @@ const ReservationProvider = ({ children }: Props) => {
   const [reservation, dispatch] = useReducer(reducer, initialState)
   const router = useRouter()
 
-  const {
-    authProps: { currentUser },
-  } = useAuthContext()
+  const { authProps } = useAuthContext()
 
-  const { startIndex, endIndex, selectedReservationId } = reservation
+  const { startIndex, endIndex } = reservation
 
   const handleInitReservation = useCallback(
     (reservations: any, courtName: string, date: any) => {
+      if (!authProps.currentUser) {
+        return
+      }
+
       dispatch({
         type: actionTypes.SET_TIMETABLE,
         payload: {
           reservations,
           courtName,
           date,
-          userId: currentUser.userId,
+          userId: authProps.currentUser.id,
         },
       })
     },
-    [currentUser]
+    [authProps.currentUser]
   )
 
   const handleSetCurrentBlock = useCallback((startIndex: number) => {
@@ -108,11 +110,11 @@ const ReservationProvider = ({ children }: Props) => {
         type: actionTypes.SET_TIME_INDEX,
         payload: {
           timeIndex,
-          user: currentUser,
+          user: authProps.currentUser,
         },
       })
     },
-    [currentUser]
+    [authProps.currentUser]
   )
 
   return (

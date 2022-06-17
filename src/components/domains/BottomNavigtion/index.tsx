@@ -5,6 +5,11 @@ import NavIcon from "./NavIcon"
 
 const BottomNavigation = () => {
   const { authProps } = useAuthContext()
+
+  if (!authProps.currentUser) {
+    return null
+  }
+
   const { role } = authProps.currentUser
 
   return (

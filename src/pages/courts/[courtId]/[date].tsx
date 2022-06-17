@@ -25,9 +25,7 @@ const Reservation: NextPage = () => {
     query: { courtId, date, timeSlot },
   } = router
 
-  const {
-    authProps: { currentUser },
-  } = useAuthContext()
+  const { authProps } = useAuthContext()
 
   const {
     useMountPage,
@@ -52,8 +50,6 @@ const Reservation: NextPage = () => {
     step,
     timeTable,
     requestDisabled,
-    selectedReservationId,
-    selectedReservation,
     modalContentData,
     hasBall,
     currentInput,
@@ -111,25 +107,30 @@ const Reservation: NextPage = () => {
   ])
 
   useEffect(() => {
-    const initReservations = async () => {
-      const {
-        data: { reservations },
-      } = await courtApi.getAllCourtReservationsByDate(`${courtId}`, `${date}`)
+    if (authProps.currentUser) {
+      const initReservations = async () => {
+        const {
+          data: { reservations },
+        } = await courtApi.getAllCourtReservationsByDate(
+          `${courtId}`,
+          `${date}`
+        )
 
-      const {
-        data: { court },
-      } = await courtApi.getCourtDetail(
-        `${courtId}`,
-        dayjs().format("YYYY-MM-DD"),
-        "dawn"
-      )
-      handleInitReservation(reservations, court.name, date)
-    }
+        const {
+          data: { court },
+        } = await courtApi.getCourtDetail(
+          `${courtId}`,
+          dayjs().format("YYYY-MM-DD"),
+          "dawn"
+        )
+        handleInitReservation(reservations, court.name, date)
+      }
 
-    if (router.isReady && currentUser.userId) {
-      initReservations()
+      if (router.isReady) {
+        initReservations()
+      }
     }
-  }, [courtId, date, currentUser.userId, router, handleInitReservation])
+  }, [courtId, date, authProps.currentUser, router, handleInitReservation])
 
   console.log(mode)
 

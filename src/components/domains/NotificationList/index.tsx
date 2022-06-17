@@ -6,11 +6,10 @@ import NotificationItem from "./NotificationItem"
 
 const NotificationList = () => {
   const { authProps } = useAuthContext()
-  const { notifications } = authProps.currentUser
 
   return (
     <NotificationListContainer>
-      {notifications.length === 0 && (
+      {authProps.notifications.length === 0 && (
         <NoItemMessage
           type="notification"
           title="알림이 없습니다"
@@ -19,7 +18,7 @@ const NotificationList = () => {
           style={{ height: "65vh" }}
         />
       )}
-      {notifications.map((notification) => (
+      {authProps.notifications.map((notification) => (
         <NotificationItem
           key={notification.createdAt}
           notification={notification}

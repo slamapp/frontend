@@ -48,8 +48,6 @@ const User: NextPage = () => {
   const { sendFollow, sendFollowCancel } = useSocketContext()
   const { authProps } = useAuthContext()
 
-  const { userId, favorites: myFavorites } = authProps.currentUser
-
   useMountPage("PAGE_USER")
   useDisableTopTransparent()
 
@@ -67,7 +65,7 @@ const User: NextPage = () => {
 
   const getMyProfile = useCallback(async () => {
     try {
-      setPageFavorites([...myFavorites])
+      setPageFavorites([...authProps.favorites])
 
       const {
         data: { followerCount, followingCount, user },
@@ -130,15 +128,15 @@ const User: NextPage = () => {
   }, [pageUserInfo?.nickname, setNavigationTitle])
 
   useEffect(() => {
-    if (stringQueryUserId && userId) {
-      if (stringQueryUserId === userId) {
+    if (stringQueryUserId && authProps.currentUser) {
+      if (stringQueryUserId === authProps.currentUser.id) {
         setIsMe(true)
         getMyProfile()
       } else {
         getOtherProfile()
       }
     }
-  }, [userId, getMyProfile, getOtherProfile, stringQueryUserId])
+  }, [authProps.currentUser, getMyProfile, getOtherProfile, stringQueryUserId])
 
   if (pageUserInfo === null) {
     if (isError) {
@@ -146,6 +144,10 @@ const User: NextPage = () => {
     }
 
     return <BasketballLoading />
+  }
+
+  if (!authProps.currentUser) {
+    return null
   }
 
   const {
@@ -175,7 +177,7 @@ const User: NextPage = () => {
           />
           <StatBar>
             <div>
-              <Link href={`/user/${userId}/following`}>
+              <Link href={`/user/${authProps.currentUser.id}/following`}>
                 <a>
                   <dt>팔로잉</dt>
                   <dd>
@@ -185,7 +187,7 @@ const User: NextPage = () => {
               </Link>
             </div>
             <div>
-              <Link href={`/user/${userId}/follower`}>
+              <Link href={`/user/${authProps.currentUser.id}/follower`}>
                 <a>
                   <dt>팔로워</dt>
                   <dd>
@@ -208,7 +210,7 @@ const User: NextPage = () => {
         <Description>{description}</Description>
         {!isMe ? (
           <ButtonContainer>
-            <Link href={`/chat/${userId}`} passHref>
+            <Link href={`/chat/${authProps.currentUser.id}`} passHref>
               <a style={{ width: "100%" }}>
                 <Button fullWidth secondary>
                   메시지

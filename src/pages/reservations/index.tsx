@@ -9,7 +9,7 @@ import { reservationApi } from "~/service"
 
 const Reservations: NextPage = () => {
   const { authProps, getMyReservations } = useAuthContext()
-  const { reservations: upcomingReservations } = authProps.currentUser
+  const { reservations: upcomingReservations } = authProps
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_RESERVATIONS")
   useEffect(() => {
@@ -68,6 +68,10 @@ const Reservations: NextPage = () => {
 
     return () => observer.disconnect()
   }, [ref, loadMore])
+
+  if (!authProps.currentUser) {
+    return null
+  }
 
   return (
     <PageContainer>

@@ -59,6 +59,10 @@ const AuthProvider = ({ children }: Props) => {
 
   const updateMyProfile: ContextProps["updateMyProfile"] = useCallback(
     async (editedUserProfile) => {
+      if (!authProps.currentUser) {
+        return
+      }
+
       dispatch({ type: "LOADING_ON" })
       try {
         const { data } = await userApi.updateMyProfile(editedUserProfile)
@@ -68,14 +72,14 @@ const AuthProvider = ({ children }: Props) => {
           type: "UPDATE_MY_PROFILE",
           payload: { description, nickname, positions, proficiency },
         })
-        router.replace(`/user/${authProps.currentUser.userId}`)
+        router.replace(`/user/${authProps.currentUser.id}`)
       } catch (error) {
         console.error(error)
       } finally {
         dispatch({ type: "LOADING_OFF" })
       }
     },
-    [authProps.currentUser.userId, router]
+    [authProps.currentUser, router]
   )
 
   const updateMyProfileImage: ContextProps["updateMyProfileImage"] =
@@ -171,13 +175,11 @@ const AuthProvider = ({ children }: Props) => {
 
   const getMoreNotifications: ContextProps["getMoreNotifications"] =
     async () => {
-      const { notificationLastId } = authProps.currentUser
-
-      if (notificationLastId) {
+      if (authProps.notificationLastId) {
         const {
           data: { contents, lastId: fetchedLastId },
         } = await notificationApi.getNotifications({
-          lastId: notificationLastId,
+          lastId: authProps.notificationLastId,
         })
 
         dispatch({

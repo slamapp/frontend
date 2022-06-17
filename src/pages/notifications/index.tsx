@@ -11,7 +11,6 @@ import { useIntersectionObserver } from "~/hooks"
 const NotificationsPage: NextPage = () => {
   const { authProps, getMoreNotifications, readAllNotifications } =
     useAuthContext()
-  const { notificationLastId, notifications } = authProps.currentUser
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_NOTIFICATIONS")
 
@@ -25,8 +24,8 @@ const NotificationsPage: NextPage = () => {
   }, [entry?.isIntersecting])
 
   const isNeedReadAllNotifications = useMemo(
-    () => notifications.some((notification) => !notification.isRead),
-    [notifications]
+    () => authProps.notifications.some((notification) => !notification.isRead),
+    [authProps.notifications]
   )
 
   useEffect(() => {
@@ -35,17 +34,21 @@ const NotificationsPage: NextPage = () => {
     }
   }, [])
 
+  if (!authProps.currentUser) {
+    return null
+  }
+
   return (
     <PageConainer>
       <NotificationList />
       <div ref={ref} style={{ minHeight: 200 }}>
-        {notificationLastId ? (
+        {authProps.notificationLastId ? (
           <div>
             <SkeletonNotification />
             <SkeletonNotification />
           </div>
         ) : (
-          notifications.length === 0 || (
+          authProps.notifications.length === 0 || (
             <NoItemMessage
               type="notification"
               title="더 받아올 알림이 없습니다"

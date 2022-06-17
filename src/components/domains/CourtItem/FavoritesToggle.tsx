@@ -8,19 +8,15 @@ interface Props {
 }
 
 const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
-  const {
-    authProps: {
-      currentUser: { favorites },
-    },
-    createFavorite,
-    deleteFavorite,
-  } = useAuthContext()
+  const { authProps, createFavorite, deleteFavorite } = useAuthContext()
 
-  const isChecked = favorites.some(({ court }) => court.id === courtId)
+  const isChecked = authProps.favorites.some(
+    ({ court }) => court.id === courtId
+  )
 
   const handleToggleFavorite = useCallback(() => {
     if (isChecked) {
-      const deletingFavorite = favorites.find(
+      const deletingFavorite = authProps.favorites.find(
         ({ court }) => court.id === courtId
       )
       if (deletingFavorite) {
@@ -29,7 +25,11 @@ const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
     } else {
       createFavorite(courtId)
     }
-  }, [isChecked, courtId, createFavorite, deleteFavorite, favorites])
+  }, [isChecked, courtId, createFavorite, deleteFavorite, authProps.favorites])
+
+  if (!authProps.currentUser) {
+    return null
+  }
 
   return (
     <Icon.Toggle

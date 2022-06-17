@@ -15,7 +15,6 @@ const SkeletonParagraph = dynamic(
 
 const FavoriteList = () => {
   const { authProps } = useAuthContext()
-  const { userId } = authProps.currentUser
 
   const [isLoading, setIsLoading] = useState(true)
   const [favorites, setFavorites] = useState<
@@ -33,10 +32,14 @@ const FavoriteList = () => {
   }
 
   useEffect(() => {
-    if (userId) {
+    if (authProps.currentUser) {
       getPageFavorites()
     }
-  }, [userId])
+  }, [authProps.currentUser])
+
+  if (!authProps.currentUser) {
+    return null
+  }
 
   if (isLoading) {
     return (

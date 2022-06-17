@@ -40,7 +40,10 @@ const ReservationItemBottom = ({
   }, [courtId, startTime, endTime])
 
   const { authProps } = useAuthContext()
-  const { currentUser } = authProps
+
+  if (!authProps.currentUser) {
+    return null
+  }
 
   return (
     <>
@@ -55,17 +58,17 @@ const ReservationItemBottom = ({
       </Container>
       {visible && (
         <ParticipantList>
-          {currentUser.userId &&
-            currentUser.nickname &&
-            currentUser.profileImage && (
+          {authProps.currentUser.id &&
+            authProps.currentUser.nickname &&
+            authProps.currentUser.profileImage && (
               <UserListItem
                 user={{
-                  id: currentUser.userId,
-                  nickname: currentUser.nickname,
-                  profileImage: currentUser.profileImage,
+                  id: authProps.currentUser.id,
+                  nickname: authProps.currentUser.nickname,
+                  profileImage: authProps.currentUser.profileImage,
                 }}
               >
-                {currentUser.nickname}
+                {authProps.currentUser.nickname}
               </UserListItem>
             )}
           {participants.map(

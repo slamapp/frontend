@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
+import { useAuthContext } from "~/contexts/hooks"
 import { useLocalToken } from "~/hooks/domain"
 
 // TODO: Version2에서 private / prevented RedirectPath Props로 받아오도록 변경하기
@@ -11,6 +12,7 @@ type RouteOption = "private" | "prevented"
 
 const withRouteGuard = (option: RouteOption, Page: NextPage) => {
   return () => {
+    const { authProps } = useAuthContext()
     const [localToken] = useLocalToken()
     const router = useRouter()
     const { pathname } = router
@@ -37,6 +39,8 @@ const withRouteGuard = (option: RouteOption, Page: NextPage) => {
         }
       }
     }, [localToken])
+
+    console.log(authProps.currentUser)
 
     return <Page />
   }

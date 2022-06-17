@@ -249,12 +249,7 @@ const Courts: NextPage = () => {
         updateSelectedCourtDetail()
       }
     }
-  }, [
-    map,
-    fetchCourtsByBoundsAndDatetime,
-    center,
-    authProps.currentUser.favorites,
-  ])
+  }, [map, fetchCourtsByBoundsAndDatetime, center, authProps.favorites])
 
   useEffect(() => {}, [])
 
