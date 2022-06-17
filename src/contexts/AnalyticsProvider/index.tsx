@@ -1,19 +1,19 @@
-import type { ReactNode } from "react";
-import Context from "./context";
-import { useInitialize, usePageSend } from "./hooks";
-import { sendPageview } from "./handle";
+import type { ReactNode } from "react"
+import Context from "./context"
+import { useInitialize, usePageSend } from "./hooks"
+import { sendPageview } from "./handle"
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const AnalyticsProvider = ({ children }: Props) => {
-  useInitialize();
-  usePageSend();
+  useInitialize()
+  usePageSend()
 
   return (
     <Context.Provider value={{ sendPageview }}>{children}</Context.Provider>
-  );
-};
+  )
+}
 
-export default AnalyticsProvider;
+export default AnalyticsProvider

@@ -1,16 +1,16 @@
-import React from "react";
-import styled from "@emotion/styled";
-import type { CSSProperties } from "react";
-import { Text, Button, Spacer } from "~/components/uis/atoms";
-import { ProfileAvatar } from "~/components/domains";
-import type { APIUser } from "~/domainTypes/tobe";
-import { useSocketContext } from "~/contexts/hooks";
+import React from "react"
+import styled from "@emotion/styled"
+import type { CSSProperties } from "react"
+import { Text, Button, Spacer } from "~/components/uis/atoms"
+import { ProfileAvatar } from "~/components/domains"
+import type { APIUser } from "~/domainTypes/tobe"
+import { useSocketContext } from "~/contexts/hooks"
 
 interface Props {
-  className?: string;
-  style?: CSSProperties;
-  isFollowed?: boolean;
-  user: Pick<APIUser, "id" | "nickname" | "profileImage">;
+  className?: string
+  style?: CSSProperties
+  isFollowed?: boolean
+  user: Pick<APIUser, "id" | "nickname" | "profileImage">
 }
 // 아바타 + 이름 + 버튼
 
@@ -20,9 +20,9 @@ const UserListItem: React.FC<Props> = ({
   isFollowed,
   user,
 }) => {
-  const { sendFollow, sendFollowCancel } = useSocketContext();
+  const { sendFollow, sendFollowCancel } = useSocketContext()
 
-  const { id, nickname, profileImage } = user;
+  const { id, nickname, profileImage } = user
 
   return (
     <ListItem className={className} style={style}>
@@ -58,14 +58,14 @@ const UserListItem: React.FC<Props> = ({
         )}
       </div>
     </ListItem>
-  );
-};
+  )
+}
 
 const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 8px 0px;
-`;
+`
 
-export default UserListItem;
+export default UserListItem

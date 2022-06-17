@@ -1,29 +1,29 @@
-import styled from "@emotion/styled";
-import type { ReactNode } from "react";
-import { forwardRef, useEffect, useState } from "react";
+import styled from "@emotion/styled"
+import type { ReactNode } from "react"
+import { forwardRef, useEffect, useState } from "react"
 
 const Container = forwardRef<HTMLDivElement, { children: ReactNode }>(
   ({ children }, ref) => {
-    const [height, setHeight] = useState<number>(0);
+    const [height, setHeight] = useState<number>(0)
 
-    const handleResize = () => setHeight(window.innerHeight);
+    const handleResize = () => setHeight(window.innerHeight)
 
     useEffect(() => {
-      handleResize();
-      window.addEventListener("resize", handleResize);
+      handleResize()
+      window.addEventListener("resize", handleResize)
 
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+      return () => window.removeEventListener("resize", handleResize)
+    }, [])
 
     return (
       <StyledContainer ref={ref} height={height} id="scrolled-container">
         {children}
       </StyledContainer>
-    );
+    )
   }
-);
+)
 
-export default Container;
+export default Container
 
 const StyledContainer = styled.div<{ height: number }>`
   display: flex;
@@ -38,4 +38,4 @@ const StyledContainer = styled.div<{ height: number }>`
   ::-webkit-scrollbar {
     width: 0px;
   }
-`;
+`

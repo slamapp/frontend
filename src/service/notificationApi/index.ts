@@ -1,5 +1,5 @@
-import { request, authRequest, authFileRequest } from "../fetcher";
-import type { NotificationApi } from "./type";
+import { request, authRequest, authFileRequest } from "../fetcher"
+import type { NotificationApi } from "./type"
 
 const notificationApi: NotificationApi = {
   getNotifications: ({ size = 3, lastId, isFirst = false }) =>
@@ -12,6 +12,6 @@ const notificationApi: NotificationApi = {
     }),
 
   readAllNotifications: () => authRequest.put("/notifications/read"),
-};
+}
 
-export default notificationApi;
+export default notificationApi

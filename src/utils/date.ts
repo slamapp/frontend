@@ -1,23 +1,23 @@
-import type { Dayjs } from "dayjs";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
+import type { Dayjs } from "dayjs"
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
-export const week = ["일", "월", "화", "수", "목", "금", "토"] as const;
-export const TIME_TABLE_ROWS = 24 * 2;
-export const MINUTES_PER_TIME_BLOCK = 30;
-export const MAX_RESERVATION_TIME_BLOCK_UNIT = 6;
-export const MAJOR_TIME_BLOCK_UNIT = 12;
-export const ACTIVE_RESERVATION_COUNT = 6;
+export const week = ["일", "월", "화", "수", "목", "금", "토"] as const
+export const TIME_TABLE_ROWS = 24 * 2
+export const MINUTES_PER_TIME_BLOCK = 30
+export const MAX_RESERVATION_TIME_BLOCK_UNIT = 6
+export const MAJOR_TIME_BLOCK_UNIT = 12
+export const ACTIVE_RESERVATION_COUNT = 6
 
-const ONE_HOUR = 60 * 60 * 1000;
+const ONE_HOUR = 60 * 60 * 1000
 
-const TIME_OFFSET = 9;
-const TIME_LENGTH = 2;
-const DEFAULT_TIMEZONE = "Asia/Seoul";
+const TIME_OFFSET = 9
+const TIME_LENGTH = 2
+const DEFAULT_TIMEZONE = "Asia/Seoul"
 
 export const getTimeFromIndex = (index: number): string => {
   const startHours =
@@ -25,54 +25,54 @@ export const getTimeFromIndex = (index: number): string => {
       ? "00"
       : Math.floor(index / 2)
           .toString()
-          .padStart(TIME_LENGTH, "0");
+          .padStart(TIME_LENGTH, "0")
 
-  return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`;
-};
+  return index % 2 === 0 ? `${startHours}:00` : `${startHours}:30`
+}
 
 export const getTimezoneIndexFromDate = (
   date: Dayjs,
   timezone: Timezone = DEFAULT_TIMEZONE
 ) => {
-  date.tz(timezone);
-  const hours = date.hour();
-  const minutes = date.minute();
+  date.tz(timezone)
+  const hours = date.hour()
+  const minutes = date.minute()
 
-  return hours * 2 + (minutes >= MINUTES_PER_TIME_BLOCK ? 1 : 0);
-};
+  return hours * 2 + (minutes >= MINUTES_PER_TIME_BLOCK ? 1 : 0)
+}
 
 export const getTimezoneIndexFromDatetime = (datetime: string) =>
-  getTimezoneIndexFromDate(dayjs(datetime));
+  getTimezoneIndexFromDate(dayjs(datetime))
 
 export const getTimezoneDateStringFromDate = (
   date: Dayjs,
   timezone: Timezone = DEFAULT_TIMEZONE,
   format = "YYYY-MM-DD"
-) => date.tz(timezone).format(format);
+) => date.tz(timezone).format(format)
 
 export const getTimezoneCurrentDate = (timezone: Timezone = DEFAULT_TIMEZONE) =>
-  dayjs().tz(timezone).hour(0).minute(0).second(0).millisecond(0);
+  dayjs().tz(timezone).hour(0).minute(0).second(0).millisecond(0)
 
 // TODO 추후 API 변경 시 dayjs utc 로 변경 예정
 // * 서버와 통신시 쓰이는 절대시간을 생성하는 함수로 변경 예정
 export const getISOString = (date: string, index: number) => {
-  let d = dayjs(`${date} ${getTimeFromIndex(index)}`);
+  let d = dayjs(`${date} ${getTimeFromIndex(index)}`)
 
-  d = d.add(TIME_OFFSET, "hour");
+  d = d.add(TIME_OFFSET, "hour")
 
   if (index === TIME_TABLE_ROWS) {
-    d = d.add(1, "day");
+    d = d.add(1, "day")
   }
 
-  const iso = d.utc().format();
+  const iso = d.utc().format()
 
-  return iso.slice(0, iso.length - 1);
-};
+  return iso.slice(0, iso.length - 1)
+}
 
 // * 위도, 경도를 통해 timezone을 받아오는 함수 나중에 구현
-export const getTimezone = (): Timezone => DEFAULT_TIMEZONE;
+export const getTimezone = (): Timezone => DEFAULT_TIMEZONE
 
-type Timezone = typeof IanaTimeZones[number];
+type Timezone = typeof IanaTimeZones[number]
 
 const IanaTimeZones = [
   "Europe/Andorra",
@@ -423,4 +423,4 @@ const IanaTimeZones = [
   "Pacific/Wallis",
   "Pacific/Apia",
   "Africa/Johannesburg",
-] as const;
+] as const

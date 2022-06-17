@@ -1,10 +1,10 @@
-import type { ChangeEvent } from "react";
-import { Radio } from "~/components/uis/atoms";
-import type { ProficiencyKey, ProficiencyValue } from "~/enums/proficiencyType";
+import type { ChangeEvent } from "react"
+import { Radio } from "~/components/uis/atoms"
+import type { ProficiencyKey, ProficiencyValue } from "~/enums/proficiencyType"
 
 const proficiencyItems: {
-  value: ProficiencyKey;
-  text: ProficiencyValue;
+  value: ProficiencyKey
+  text: ProficiencyValue
 }[] = [
   {
     value: "BEGINNER",
@@ -18,11 +18,11 @@ const proficiencyItems: {
     value: "MASTER",
     text: "고수",
   },
-];
+]
 
 interface Props {
-  selectedValue: ProficiencyKey;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  selectedValue: ProficiencyKey
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 const ProficiencyPicker: React.FC<Props> = ({ selectedValue, onChange }) => {
@@ -37,7 +37,7 @@ const ProficiencyPicker: React.FC<Props> = ({ selectedValue, onChange }) => {
         />
       ))}
     </Radio.Group>
-  );
-};
+  )
+}
 
-export default ProficiencyPicker;
+export default ProficiencyPicker

@@ -1,21 +1,21 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled"
 
 const Icon = styled.i`
   display: inline-block;
   vertical-align: middle;
-`;
+`
 
 interface Props {
-  size?: number;
-  color?: string;
-  loading?: boolean;
+  size?: number
+  color?: string
+  loading?: boolean
 }
 
 const Spinner = ({ size = 24, color = "#919EAB", loading = true }: Props) => {
   const sizeStyle = {
     width: size,
     heigth: size,
-  };
+  }
 
   return loading ? (
     <Icon>
@@ -80,7 +80,7 @@ const Spinner = ({ size = 24, color = "#919EAB", loading = true }: Props) => {
         </line>
       </svg>
     </Icon>
-  ) : null;
-};
+  ) : null
+}
 
-export default Spinner;
+export default Spinner

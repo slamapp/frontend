@@ -1,30 +1,30 @@
-import type { ChangeEvent } from "react";
-import { useCallback, useRef, useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import { useRouter } from "next/router";
-import { css } from "@emotion/react";
-import type { APIUser } from "~/domainTypes/tobe";
-import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants";
-import type { ProficiencyKey } from "~/enums/proficiencyType";
-import type { PositionKey } from "~/enums/positionType";
-import { userApi } from "~/service";
-import { useAuthContext } from "~/contexts/hooks";
-import useForm from "~/hooks/useForm";
-import type { Error } from "~/hooks/useForm";
-import { appendImageFileToFormData } from "~/utils";
+import type { ChangeEvent } from "react"
+import { useCallback, useRef, useEffect, useState } from "react"
+import styled from "@emotion/styled"
+import { useRouter } from "next/router"
+import { css } from "@emotion/react"
+import type { APIUser } from "~/domainTypes/tobe"
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
+import type { ProficiencyKey } from "~/enums/proficiencyType"
+import type { PositionKey } from "~/enums/positionType"
+import { userApi } from "~/service"
+import { useAuthContext } from "~/contexts/hooks"
+import useForm from "~/hooks/useForm"
+import type { Error } from "~/hooks/useForm"
+import { appendImageFileToFormData } from "~/utils"
 import {
   BottomFixedButton,
   PositionsPicker,
   ProficiencyPicker,
-} from "~/components/domains";
-import { Toast, Label, Avatar } from "~/components/uis/molecules";
-import { Input } from "~/components/uis/organisms";
-import { Text, Button, Spacer, Upload } from "~/components/uis/atoms";
-import LeadToLoginModal from "../LeadToLoginModal";
-import BasketballLoading from "../BasketballLoading";
+} from "~/components/domains"
+import { Toast, Label, Avatar } from "~/components/uis/molecules"
+import { Input } from "~/components/uis/organisms"
+import { Text, Button, Spacer, Upload } from "~/components/uis/atoms"
+import LeadToLoginModal from "../LeadToLoginModal"
+import BasketballLoading from "../BasketballLoading"
 
-const LENGTH_LIMIT_NICKNAME = 15;
-const LENGTH_LIMIT_DESCRIPTION = 25;
+const LENGTH_LIMIT_NICKNAME = 15
+const LENGTH_LIMIT_DESCRIPTION = 25
 
 const ProfileForm = () => {
   const {
@@ -32,21 +32,21 @@ const ProfileForm = () => {
     deleteMyProfileImage,
     updateMyProfileImage,
     updateMyProfile,
-  } = useAuthContext();
+  } = useAuthContext()
 
-  const { userId } = authProps.currentUser;
+  const { userId } = authProps.currentUser
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(true)
 
   const [profileImage, setProfileImage] = useState<string | null>(
     DEFAULT_PROFILE_IMAGE_URL
-  );
-  const [isOpenDefaultImageModal, setIsOpenDefaultImageModal] = useState(false);
-  const [isOpenEditConfirmModal, setIsOpenEditConfirmModal] = useState(false);
+  )
+  const [isOpenDefaultImageModal, setIsOpenDefaultImageModal] = useState(false)
+  const [isOpenEditConfirmModal, setIsOpenEditConfirmModal] = useState(false)
 
-  const profileImageRef = useRef<HTMLInputElement>(null);
+  const profileImageRef = useRef<HTMLInputElement>(null)
 
   const { values, errors, isLoading, setValues, handleSubmit } = useForm<
     Pick<APIUser, "nickname" | "description" | "proficiency" | "positions">,
@@ -59,86 +59,86 @@ const ProfileForm = () => {
       positions: [],
     },
     onSubmit: async (values) => {
-      const profileImageInputRef = profileImageRef?.current ?? null;
-      const editedProfileImageFiles = profileImageInputRef?.files ?? null;
+      const profileImageInputRef = profileImageRef?.current ?? null
+      const editedProfileImageFiles = profileImageInputRef?.files ?? null
       const editedProfileImage = editedProfileImageFiles
         ? appendImageFileToFormData(editedProfileImageFiles[0], "image")
-        : null;
+        : null
 
       try {
         if (editedProfileImage) {
-          await updateMyProfileImage(editedProfileImage);
+          await updateMyProfileImage(editedProfileImage)
         }
-        await updateMyProfile(values);
-        router.replace(`/user/${userId}`);
-        Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳", 3000);
+        await updateMyProfile(values)
+        router.replace(`/user/${userId}`)
+        Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳", 3000)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     },
     validate: ({ nickname, description, positions, proficiency }) => {
       const errors: Error<
         Pick<APIUser, "nickname" | "description" | "proficiency" | "positions">
-      > = {};
+      > = {}
 
       if (!nickname) {
-        errors.nickname = "닉네임은 비워둘 수 없습니다.";
+        errors.nickname = "닉네임은 비워둘 수 없습니다."
       }
       if (nickname.length > LENGTH_LIMIT_NICKNAME) {
-        errors.nickname = `${LENGTH_LIMIT_NICKNAME}자 이내로 입력해주세요.`;
+        errors.nickname = `${LENGTH_LIMIT_NICKNAME}자 이내로 입력해주세요.`
       }
       if (description !== null) {
         if (description.length > LENGTH_LIMIT_DESCRIPTION) {
-          errors.description = `${LENGTH_LIMIT_DESCRIPTION}자 이내로 입력해주세요.`;
+          errors.description = `${LENGTH_LIMIT_DESCRIPTION}자 이내로 입력해주세요.`
         }
       }
       if (!proficiency) {
-        errors.proficiency = "숙련도를 선택해주세요.";
+        errors.proficiency = "숙련도를 선택해주세요."
       }
       if (positions.length < 1) {
-        errors.positions = "포지션 2개 혹은 미정을 선택해주세요.";
+        errors.positions = "포지션 2개 혹은 미정을 선택해주세요."
       }
 
-      return { ...errors };
+      return { ...errors }
     },
-  });
+  })
 
   const getMyProfile = useCallback(async () => {
     try {
-      const { data } = await userApi.getMyProfile();
+      const { data } = await userApi.getMyProfile()
       const { description, nickname, positions, proficiency, profileImage } =
-        data.user;
+        data.user
 
       setValues({
         description,
         nickname,
         positions,
         proficiency,
-      });
+      })
 
-      setProfileImage(profileImage);
+      setProfileImage(profileImage)
 
-      setIsFetching(false);
+      setIsFetching(false)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  }, [setValues]);
+  }, [setValues])
 
   useEffect(() => {
-    getMyProfile();
-  }, [getMyProfile]);
+    getMyProfile()
+  }, [getMyProfile])
 
   const handleChangeProficiency = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
-      const proficiency = target.value as ProficiencyKey;
-      setValues((prev) => ({ ...prev, proficiency }));
+      const proficiency = target.value as ProficiencyKey
+      setValues((prev) => ({ ...prev, proficiency }))
     },
     []
-  );
+  )
 
   const handleChangePositions = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      const selectedPosition = e.target.value as PositionKey;
+      const selectedPosition = e.target.value as PositionKey
 
       setValues((prev) => {
         switch (selectedPosition) {
@@ -150,23 +150,23 @@ const ProfileForm = () => {
             return {
               ...prev,
               positions: [prev.positions[1], selectedPosition],
-            };
+            }
           case "TBD":
-            return { ...prev, positions: [selectedPosition] };
+            return { ...prev, positions: [selectedPosition] }
           default:
-            return { ...prev };
+            return { ...prev }
         }
-      });
+      })
     },
     []
-  );
+  )
 
   if (isFetching || isLoading) {
     return (
       <div style={{ height: "90vh" }}>
         <BasketballLoading />
       </div>
-    );
+    )
   }
 
   return (
@@ -291,18 +291,18 @@ const ProfileForm = () => {
         cancel={{
           content: "닫기",
           handle: () => {
-            setIsOpenDefaultImageModal(false);
+            setIsOpenDefaultImageModal(false)
           },
         }}
         confirm={{
           content: "변경하기",
           handle: async () => {
             try {
-              await deleteMyProfileImage();
-              setIsOpenDefaultImageModal(false);
-              setProfileImage(null);
+              await deleteMyProfileImage()
+              setIsOpenDefaultImageModal(false)
+              setProfileImage(null)
             } catch (error) {
-              console.error(error);
+              console.error(error)
             }
           },
         }}
@@ -325,42 +325,42 @@ const ProfileForm = () => {
         cancel={{
           content: "닫기",
           handle: () => {
-            setIsOpenEditConfirmModal(false);
+            setIsOpenEditConfirmModal(false)
           },
         }}
         confirm={{
           content: "수정 완료하기",
           handle: (e) => {
             try {
-              handleSubmit(e);
-              setIsOpenEditConfirmModal(false);
-              router.replace("/user/edit");
+              handleSubmit(e)
+              setIsOpenEditConfirmModal(false)
+              router.replace("/user/edit")
             } catch (error) {
-              console.error(error);
+              console.error(error)
             }
           },
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ProfileForm;
+export default ProfileForm
 
 const Center = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const Container = styled(Spacer)`
   padding: ${({ theme }) => `30px ${theme.gaps.base} 120px`};
-`;
+`
 
 const UploadableArea = styled(Upload)`
   text-align: center;
-`;
+`
 
 const LetterCount = styled(Text)`
   ${({ theme }) => css`
@@ -368,7 +368,7 @@ const LetterCount = styled(Text)`
       color: ${theme.colors.red.strong};
     }
   `}
-`;
+`
 
 const ErrorMessage = styled(Text)`
   ${({ theme }) => css`
@@ -376,4 +376,4 @@ const ErrorMessage = styled(Text)`
     flex-grow: 1;
     color: ${theme.colors.red.strong};
   `}
-`;
+`

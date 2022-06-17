@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const useSessionStorage = (
   key: string,
@@ -6,29 +6,29 @@ const useSessionStorage = (
 ): [storedValue: any, setValue: (value: any) => void] => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = sessionStorage.getItem(key);
+      const item = sessionStorage.getItem(key)
 
-      return item ? JSON.parse(item) : initialValue;
+      return item ? JSON.parse(item) : initialValue
     } catch (error) {
-      console.error(error);
+      console.error(error)
 
-      return initialValue;
+      return initialValue
     }
-  });
+  })
 
   const setValue = (value: any) => {
     try {
       const valueToStore =
-        typeof value === "function" ? value(storedValue) : value;
+        typeof value === "function" ? value(storedValue) : value
 
-      setStoredValue(valueToStore);
-      sessionStorage.setItem(key, JSON.stringify(value));
+      setStoredValue(valueToStore)
+      sessionStorage.setItem(key, JSON.stringify(value))
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
-  return [storedValue, setValue];
-};
+  return [storedValue, setValue]
+}
 
-export default useSessionStorage;
+export default useSessionStorage

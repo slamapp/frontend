@@ -1,22 +1,22 @@
-import styled from "@emotion/styled";
-import type { ComponentProps } from "react";
-import { useEffect, useState } from "react";
-import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants";
-import { Image as ImageComponent } from "~/components/uis/atoms";
-import AvatarGroup from "./AvatarGroup";
+import styled from "@emotion/styled"
+import type { ComponentProps } from "react"
+import { useEffect, useState } from "react"
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
+import { Image as ImageComponent } from "~/components/uis/atoms"
+import AvatarGroup from "./AvatarGroup"
 
 interface Props {
-  className?: ComponentProps<typeof AvatarWrapper>["className"];
-  size?: ComponentProps<typeof AvatarWrapper>["size"];
-  shape?: ComponentProps<typeof AvatarWrapper>["shape"];
-  lazy?: ComponentProps<typeof ImageComponent>["lazy"];
-  threshold?: ComponentProps<typeof ImageComponent>["threshold"];
-  src: ComponentProps<typeof ImageComponent>["src"];
-  placeholder?: ComponentProps<typeof ImageComponent>["placeholder"];
-  alt?: ComponentProps<typeof ImageComponent>["alt"];
-  mode?: ComponentProps<typeof ImageComponent>["mode"];
-  __TYPE: "Avatar";
-  isEdit?: boolean;
+  className?: ComponentProps<typeof AvatarWrapper>["className"]
+  size?: ComponentProps<typeof AvatarWrapper>["size"]
+  shape?: ComponentProps<typeof AvatarWrapper>["shape"]
+  lazy?: ComponentProps<typeof ImageComponent>["lazy"]
+  threshold?: ComponentProps<typeof ImageComponent>["threshold"]
+  src: ComponentProps<typeof ImageComponent>["src"]
+  placeholder?: ComponentProps<typeof ImageComponent>["placeholder"]
+  alt?: ComponentProps<typeof ImageComponent>["alt"]
+  mode?: ComponentProps<typeof ImageComponent>["mode"]
+  __TYPE: "Avatar"
+  isEdit?: boolean
 }
 
 const Avatar = ({
@@ -33,13 +33,13 @@ const Avatar = ({
   isEdit = false,
   ...props
 }: Props) => {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    const image = new Image();
-    image.src = src;
-    image.onload = () => setLoaded(true);
-  }, [src]);
+    const image = new Image()
+    image.src = src
+    image.onload = () => setLoaded(true)
+  }, [src])
 
   return (
     <AvatarWrapper className={className} shape={shape} size={size} {...props}>
@@ -61,18 +61,18 @@ const Avatar = ({
         </Filter>
       ) : null}
     </AvatarWrapper>
-  );
-};
+  )
+}
 
 const ShapeToCssValue = {
   circle: "50%",
   round: "4px",
   square: "0px",
-};
+}
 
 const AvatarWrapper = styled.div<{
-  shape: "circle" | "round" | "square";
-  size?: "sm" | "md" | "lg" | number;
+  shape: "circle" | "round" | "square"
+  size?: "sm" | "md" | "lg" | number
 }>`
   position: relative;
   display: inline-block;
@@ -94,7 +94,7 @@ const AvatarWrapper = styled.div<{
 
   > img {
   }
-`;
+`
 
 const Filter = styled.div`
   position: absolute;
@@ -112,12 +112,12 @@ const Filter = styled.div`
   span {
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
   }
-`;
+`
 
 Avatar.defaultProps = {
   __TYPE: "Avatar",
-};
+}
 
-Avatar.Group = AvatarGroup;
+Avatar.Group = AvatarGroup
 
-export default Avatar;
+export default Avatar

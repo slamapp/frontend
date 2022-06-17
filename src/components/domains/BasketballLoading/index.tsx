@@ -1,9 +1,9 @@
-import type { FC, ReactNode } from "react";
-import styled from "@emotion/styled";
-import LoaderBasketball from "./LoaderBasketball";
+import type { FC, ReactNode } from "react"
+import styled from "@emotion/styled"
+import LoaderBasketball from "./LoaderBasketball"
 
 interface Props {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 const BasketballLoading: FC<Props> = ({ children }) => {
@@ -21,8 +21,8 @@ const BasketballLoading: FC<Props> = ({ children }) => {
         {children}
       </div>
     </LoadingWrapper>
-  );
-};
+  )
+}
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -33,6 +33,6 @@ const LoadingWrapper = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.6);
-`;
+`
 
-export default BasketballLoading;
+export default BasketballLoading

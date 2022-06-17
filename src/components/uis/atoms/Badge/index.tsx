@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
-import styled from "@emotion/styled";
+import type { ReactNode } from "react"
+import styled from "@emotion/styled"
 
 interface Props {
-  children: ReactNode;
-  count: number;
-  maxCount?: number;
-  showZero?: boolean;
-  dot?: boolean;
-  backgroundColor?: string;
-  textColor?: string;
+  children: ReactNode
+  count: number
+  maxCount?: number
+  showZero?: boolean
+  dot?: boolean
+  backgroundColor?: string
+  textColor?: string
 }
 
 const Badge = ({
@@ -23,24 +23,24 @@ const Badge = ({
   const colorStyle = {
     backgroundColor,
     color: textColor,
-  };
+  }
 
-  let badge = null;
+  let badge = null
   if (count > 0) {
     if (dot) {
-      badge = <Super className="dot" style={colorStyle} />;
+      badge = <Super className="dot" style={colorStyle} />
     } else {
       badge = (
         <Super style={colorStyle}>
           {maxCount && count > maxCount ? `${maxCount}+` : count}
         </Super>
-      );
+      )
     }
   } else if (count === 0) {
     if (dot) {
-      badge = showZero ? <Super className="dot" style={colorStyle} /> : null;
+      badge = showZero ? <Super className="dot" style={colorStyle} /> : null
     } else {
-      badge = showZero ? <Super style={colorStyle}>0</Super> : null;
+      badge = showZero ? <Super style={colorStyle}>0</Super> : null
     }
   }
 
@@ -49,15 +49,15 @@ const Badge = ({
       {children}
       {badge}
     </BadgeContainer>
-  );
-};
+  )
+}
 
-export default Badge;
+export default Badge
 
 const BadgeContainer = styled.div`
   position: relative;
   display: inline-block;
-`;
+`
 
 const Super = styled.sup`
   position: absolute;
@@ -79,4 +79,4 @@ const Super = styled.sup`
     height: 6px;
     border-radius: 50%;
   }
-`;
+`

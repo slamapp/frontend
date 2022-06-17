@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
-import { Text } from "~/components/uis/atoms";
+import styled from "@emotion/styled"
+import { Text } from "~/components/uis/atoms"
 
 const Header = styled(Text)`
   padding: 40px 0;
   text-align: center;
-`;
+`
 
 const BottomButtonContainer = styled.div`
   width: 100%;
@@ -12,6 +12,6 @@ const BottomButtonContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 8px;
-`;
+`
 
-export { Header, BottomButtonContainer };
+export { Header, BottomButtonContainer }

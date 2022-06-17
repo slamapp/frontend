@@ -1,21 +1,21 @@
-import type { ReactNode, Reducer } from "react";
-import type { Action, PageType } from "./actionTypes";
+import type { ReactNode, Reducer } from "react"
+import type { Action, PageType } from "./actionTypes"
 
 export interface DataProps {
-  isTopTransparent: boolean;
-  isTopNavigation: boolean;
-  isBottomNavigation: boolean;
-  currentPage: PageType;
-  isBack: boolean;
-  isNotifications: boolean;
-  isProfile: boolean;
-  isMenu: boolean;
-  title: ReactNode;
-  handleClickBack: null | (() => void);
+  isTopTransparent: boolean
+  isTopNavigation: boolean
+  isBottomNavigation: boolean
+  currentPage: PageType
+  isBack: boolean
+  isNotifications: boolean
+  isProfile: boolean
+  isMenu: boolean
+  title: ReactNode
+  handleClickBack: null | (() => void)
   customButton: null | {
-    title: string;
-    handleClick: () => void;
-  };
+    title: string
+    handleClick: () => void
+  }
 }
 
 export const initialData: DataProps = {
@@ -30,7 +30,7 @@ export const initialData: DataProps = {
   title: "",
   handleClickBack: null,
   customButton: null,
-};
+}
 
 export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
   switch (action.type) {
@@ -45,7 +45,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isMenu: false,
         title: "",
-      };
+      }
     }
     case "PAGE_FAVORITES": {
       return {
@@ -58,7 +58,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isMenu: false,
         title: "즐겨찾는 농구장",
-      };
+      }
     }
     case "PAGE_NOTIFICATIONS": {
       return {
@@ -71,7 +71,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: false,
         isMenu: false,
         title: "알림",
-      };
+      }
     }
     case "PAGE_MAP": {
       return {
@@ -84,7 +84,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: false,
         isMenu: false,
         title: "농구장 찾기",
-      };
+      }
     }
     case "PAGE_COURT_RESERVATIONS": {
       return {
@@ -97,7 +97,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: false,
         isMenu: false,
         title: "년월일 넣기",
-      };
+      }
     }
     case "PAGE_RESERVATIONS": {
       return {
@@ -110,7 +110,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isMenu: false,
         title: "예약 목록",
-      };
+      }
     }
     case "PAGE_ACTIVITY": {
       return {
@@ -123,7 +123,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isMenu: false,
         title: "활동",
-      };
+      }
     }
     case "PAGE_LOGIN": {
       return {
@@ -136,7 +136,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: false,
         isMenu: false,
         title: "로그인",
-      };
+      }
     }
     case "PAGE_COURT_CREATE": {
       return {
@@ -149,7 +149,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isMenu: false,
         title: "새 농구장 추가",
-      };
+      }
     }
     case "PAGE_USER": {
       return {
@@ -162,7 +162,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: false,
         isMenu: true,
         title: "",
-      };
+      }
     }
     case "PAGE_USER_EDIT": {
       return {
@@ -176,7 +176,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNext: false,
         isMenu: false,
         title: "프로필 편집",
-      };
+      }
     }
     case "PAGE_CHATROOM_LIST": {
       return {
@@ -190,7 +190,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNext: false,
         isMenu: false,
         title: "채팅방 목록",
-      };
+      }
     }
     case "PAGE_ADMIN_NEWCOURTS": {
       return {
@@ -204,7 +204,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNext: false,
         isMenu: true,
         title: "새 농구장 리스트",
-      };
+      }
     }
     case "PAGE_USER_MENU": {
       return {
@@ -217,7 +217,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: false,
         isMenu: false,
         title: "사용자 메뉴",
-      };
+      }
     }
     case "PAGE_ERROR": {
       return {
@@ -230,35 +230,35 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isMenu: false,
         title: "",
-      };
+      }
     }
     case "NAVIGATION_SET_IS_TOP_TRANSPARENT": {
-      const { isTopTransparent } = action.payload;
+      const { isTopTransparent } = action.payload
 
       return {
         ...prevState,
         isTopTransparent,
-      };
+      }
     }
     case "NAVIGATION_SET_TITLE": {
-      const { title } = action.payload;
+      const { title } = action.payload
 
       return {
         ...prevState,
         title,
-      };
+      }
     }
     case "EVENT_BIND": {
-      const { back, customButton } = action.payload.events;
+      const { back, customButton } = action.payload.events
 
       return {
         ...prevState,
         back,
         customButton,
-      };
+      }
     }
     case "EVENT_BIND_CUSTOM_BUTTON": {
-      const { title, handleClick } = action.payload;
+      const { title, handleClick } = action.payload
 
       return {
         ...prevState,
@@ -266,17 +266,17 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
           title,
           handleClick,
         },
-      };
+      }
     }
     case "EVENT_CLEAR": {
       return {
         ...prevState,
         handleClickBack: null,
         customButton: null,
-      };
+      }
     }
     default: {
-      return { ...prevState };
+      return { ...prevState }
     }
   }
-};
+}

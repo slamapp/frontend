@@ -1,6 +1,6 @@
-import styled from "@emotion/styled";
-import { Image, Icon, Text } from "~/components/uis/atoms";
-import * as S from "./style";
+import styled from "@emotion/styled"
+import { Image, Icon, Text } from "~/components/uis/atoms"
+import * as S from "./style"
 
 const Header: React.FC = () => {
   return (
@@ -18,10 +18,10 @@ const Header: React.FC = () => {
         </ImageWrapper>
       </S.OneSixthColumn>
     </TableHeader>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
 
 const TableHeader = styled(S.TimeBlockUnitWrapper)`
   background-color: ${({ theme }) => theme.colors.gray900};
@@ -29,11 +29,11 @@ const TableHeader = styled(S.TimeBlockUnitWrapper)`
   top: 56px;
   overflow-y: auto;
   z-index: 2000;
-`;
+`
 
 const TableHeaderText = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
-`;
+`
 
 const ImageWrapper = styled.div`
   width: 36px;
@@ -43,4 +43,4 @@ const ImageWrapper = styled.div`
     width: 100%;
     height: 100%;
   }
-`;
+`

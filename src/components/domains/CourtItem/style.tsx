@@ -1,9 +1,9 @@
-import styled from "@emotion/styled";
-import { Text } from "~/components/uis/atoms";
+import styled from "@emotion/styled"
+import { Text } from "~/components/uis/atoms"
 
 const SubHeaderArea = styled.div`
   height: 50px;
-`;
+`
 
 const SubHeader = styled(Text)`
   overflow: hidden;
@@ -12,26 +12,26 @@ const SubHeader = styled(Text)`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-`;
+`
 
 const AddressText = styled(SubHeader)`
   color: ${({ theme }) => theme.colors.gray700};
-`;
+`
 
-const SUNDAY_INDEX = 0;
-const SATURDAY_INDEX = 6;
+const SUNDAY_INDEX = 0
+const SATURDAY_INDEX = 6
 
 const DayOfTheWeek = styled(Text)<{ index: number }>`
   margin-bottom: 10px;
   color: ${({ index, theme }) => {
     if (index === SUNDAY_INDEX) {
-      return theme.colors.red.middle;
+      return theme.colors.red.middle
     } else if (index === SATURDAY_INDEX) {
-      return theme.colors.blue.middle;
+      return theme.colors.blue.middle
     } else {
-      return theme.colors.gray700;
+      return theme.colors.gray700
     }
   }};
-`;
+`
 
-export { SubHeaderArea, AddressText, DayOfTheWeek };
+export { SubHeaderArea, AddressText, DayOfTheWeek }

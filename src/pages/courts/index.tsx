@@ -1,107 +1,107 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import styled from "@emotion/styled";
-import type { Dayjs } from "dayjs";
-import { useRouter } from "next/router";
-import { courtApi } from "~/service";
-import type { APICourt, Coord } from "~/domainTypes/tobe";
-import { useLocalToken } from "~/hooks/domain";
-import { DEFAULT_POSITION, getCurrentLocation } from "~/utils/geolocation";
+import { useState, useCallback, useEffect, useMemo } from "react"
+import type { NextPage } from "next"
+import Head from "next/head"
+import Link from "next/link"
+import styled from "@emotion/styled"
+import type { Dayjs } from "dayjs"
+import { useRouter } from "next/router"
+import { courtApi } from "~/service"
+import type { APICourt, Coord } from "~/domainTypes/tobe"
+import { useLocalToken } from "~/hooks/domain"
+import { DEFAULT_POSITION, getCurrentLocation } from "~/utils/geolocation"
 import {
   useAuthContext,
   useMapContext,
   useNavigationContext,
-} from "~/contexts/hooks";
+} from "~/contexts/hooks"
 import {
   getTimezoneCurrentDate,
   getTimezoneDateStringFromDate,
-} from "~/utils/date";
+} from "~/utils/date"
 import {
   DatePicker,
   BasketballMarker,
   Map,
   CourtItem,
   LeadToLoginModal,
-} from "~/components/domains";
-import { Text, Button, Spacer } from "~/components/uis/atoms";
-import { ModalSheet } from "~/components/uis/templates";
-import type { CourtApi } from "~/service/courtApi/type";
-import { useLocalStorage } from "~/hooks";
+} from "~/components/domains"
+import { Text, Button, Spacer } from "~/components/uis/atoms"
+import { ModalSheet } from "~/components/uis/templates"
+import type { CourtApi } from "~/service/courtApi/type"
+import { useLocalStorage } from "~/hooks"
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (
     latitude: number,
     longitude: number,
     callback?: (result: any, status: any) => void
-  ) => string;
+  ) => string
 }
 
 const Courts: NextPage = () => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const { authProps } = useAuthContext();
+  const { authProps } = useAuthContext()
 
   const { useMountPage, useDisableTopTransparent, useMountCustomButtonEvent } =
-    useNavigationContext();
+    useNavigationContext()
 
-  const [localToken] = useLocalToken();
+  const [localToken] = useLocalToken()
 
-  useMountPage("PAGE_MAP");
-  useDisableTopTransparent();
+  useMountPage("PAGE_MAP")
+  useDisableTopTransparent()
 
-  const { map } = useMapContext();
+  const { map } = useMapContext()
 
-  const currentDate = useMemo(() => getTimezoneCurrentDate(), []);
+  const currentDate = useMemo(() => getTimezoneCurrentDate(), [])
 
   const [courts, setCourts] = useState<
     Awaited<ReturnType<CourtApi["getCourtsByCoordsAndDate"]>>["data"]
-  >([]);
+  >([])
 
-  const [level, setLevel] = useState<number>(5);
+  const [level, setLevel] = useState<number>(5)
   const [mapInitialCenter, setMapInitialCenter] = useLocalStorage(
     "mapInitialCenter",
     DEFAULT_POSITION
-  );
-  const [center, setCenter] = useState<Coord>(mapInitialCenter);
+  )
+  const [center, setCenter] = useState<Coord>(mapInitialCenter)
 
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(currentDate);
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(currentDate)
 
   const [selectedMarker, setSelectedMarker] = useState<
     Awaited<ReturnType<typeof courtApi.getCourtDetail>>["data"] | null
-  >(null);
-  const [address, setAddress] = useState<string | null>(null);
+  >(null)
+  const [address, setAddress] = useState<string | null>(null)
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] = useState(false)
 
   useMountCustomButtonEvent("추가", () => {
     if (localToken) {
-      router.push("/courts/create");
+      router.push("/courts/create")
     } else {
-      setIsOpenLeadToLoginModal(true);
+      setIsOpenLeadToLoginModal(true)
     }
-  });
+  })
 
-  const [snap, setSnap] = useState<number>(1);
+  const [snap, setSnap] = useState<number>(1)
 
   const onClose = useCallback(() => {
-    setIsOpen(false);
-    setSelectedMarker(null);
-  }, []);
+    setIsOpen(false)
+    setSelectedMarker(null)
+  }, [])
 
   const fetchCourtsByBoundsAndDatetime = useCallback(
     async (map: kakao.maps.Map) => {
-      const bounds = map.getBounds();
-      const swLatlng = bounds.getSouthWest();
-      const neLatLng = bounds.getNorthEast();
+      const bounds = map.getBounds()
+      const swLatlng = bounds.getSouthWest()
+      const neLatLng = bounds.getNorthEast()
 
-      const startLatitude = swLatlng.getLat();
-      const startLongitude = swLatlng.getLng();
+      const startLatitude = swLatlng.getLat()
+      const startLongitude = swLatlng.getLng()
 
-      const endLatitude = neLatLng.getLat();
-      const endLongitude = neLatLng.getLng();
+      const endLatitude = neLatLng.getLat()
+      const endLongitude = neLatLng.getLng()
 
       const { data } = await courtApi.getCourtsByCoordsAndDate({
         date: getTimezoneDateStringFromDate(selectedDate),
@@ -110,24 +110,24 @@ const Courts: NextPage = () => {
         endLatitude,
         endLongitude,
         time: "morning",
-      });
+      })
 
-      setCourts(data);
+      setCourts(data)
     },
     [selectedDate]
-  );
+  )
 
   const handleZoomIn = useCallback(() => {
     if (map) {
-      setLevel(map.getLevel() - 1);
+      setLevel(map.getLevel() - 1)
     }
-  }, [map]);
+  }, [map])
 
   const handleZoomOut = useCallback(() => {
     if (map) {
-      setLevel(map.getLevel() + 1);
+      setLevel(map.getLevel() + 1)
     }
-  }, [map]);
+  }, [map])
 
   const restoreCourts = useCallback(
     async (courtId: APICourt["id"], needCenter = false) => {
@@ -138,94 +138,94 @@ const Courts: NextPage = () => {
           courtId,
           getTimezoneDateStringFromDate(selectedDate),
           "morning"
-        );
-        setIsOpen(true);
+        )
+        setIsOpen(true)
 
         if (needCenter) {
-          setCenter([court.latitude, court.longitude]);
+          setCenter([court.latitude, court.longitude])
         }
         setSelectedMarker({
           court,
           reservationMaxCount,
-        });
+        })
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     },
     [selectedDate]
-  );
+  )
 
   const handleDateClick = useCallback((selectedDate: Dayjs) => {
-    setSelectedDate(selectedDate);
-  }, []);
+    setSelectedDate(selectedDate)
+  }, [])
 
   const handleMarkerClick = useCallback(
     (court: APICourt) => {
-      setIsOpen(true);
-      restoreCourts(court.id);
-      setMapInitialCenter([court.latitude, court.longitude]);
+      setIsOpen(true)
+      restoreCourts(court.id)
+      setMapInitialCenter([court.latitude, court.longitude])
       router.push(`/courts?courtId=${court.id}`, undefined, {
         shallow: true,
-      });
+      })
     },
     [restoreCourts, router]
-  );
+  )
 
   const handleChangeSnap = useCallback((snap: number) => {
-    setSnap(snap);
-  }, []);
+    setSnap(snap)
+  }, [])
 
   const handleGetCurrentLocation = useCallback(async () => {
     getCurrentLocation(async ([latitude, longitude]) => {
-      setCenter([latitude, longitude]);
-    });
-  }, []);
+      setCenter([latitude, longitude])
+    })
+  }, [])
 
   useEffect(() => {
     if (router.isReady) {
-      const { courtId } = router.query;
+      const { courtId } = router.query
 
       if (courtId) {
-        restoreCourts(`${courtId}`, true);
+        restoreCourts(`${courtId}`, true)
       } else {
         // handleGetCurrentLocation();
       }
     }
-  }, [map]);
+  }, [map])
 
   useEffect(() => {
     const searchAddressFromCoords = (latitude: number, longitude: number) => {
-      const geocoder = new kakao.maps.services.Geocoder();
+      const geocoder = new kakao.maps.services.Geocoder()
 
-      (geocoder as Geocoder).coord2Address(
+      ;(geocoder as Geocoder).coord2Address(
         longitude,
         latitude,
         (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
             // 도로명 주소
             if (result[0].road_address) {
-              setAddress(result[0].road_address.address_name);
+              setAddress(result[0].road_address.address_name)
             }
             // 법정 주소
             else if (result[0].address.address_name) {
-              setAddress(result[0].address.address_name);
+              setAddress(result[0].address.address_name)
             }
             // 주소가 없는 경우
             else {
-              setAddress("주소가 존재하지 않습니다.");
+              setAddress("주소가 존재하지 않습니다.")
             }
           }
         }
-      );
-    };
+      )
+    }
 
     if (selectedMarker) {
       searchAddressFromCoords(
         selectedMarker.court.latitude,
         selectedMarker.court.longitude
-      );
+      )
     }
-  }, [selectedMarker]);
+  }, [selectedMarker])
 
   useEffect(() => {
     const updateSelectedCourtDetail = async () => {
@@ -236,17 +236,17 @@ const Courts: NextPage = () => {
           selectedMarker.court.id,
           getTimezoneDateStringFromDate(selectedDate),
           "morning"
-        );
+        )
 
-        setSelectedMarker((prev) => ({ ...prev, court, reservationMaxCount }));
+        setSelectedMarker((prev) => ({ ...prev, court, reservationMaxCount }))
       }
-    };
+    }
 
     if (map) {
-      fetchCourtsByBoundsAndDatetime(map);
+      fetchCourtsByBoundsAndDatetime(map)
 
       if (selectedMarker) {
-        updateSelectedCourtDetail();
+        updateSelectedCourtDetail()
       }
     }
   }, [
@@ -254,9 +254,9 @@ const Courts: NextPage = () => {
     fetchCourtsByBoundsAndDatetime,
     center,
     authProps.currentUser.favorites,
-  ]);
+  ])
 
-  useEffect(() => {}, []);
+  useEffect(() => {}, [])
 
   return (
     <>
@@ -276,8 +276,8 @@ const Courts: NextPage = () => {
         onDragStart={onClose}
         onDragEnd={fetchCourtsByBoundsAndDatetime}
         onZoomChanged={(map: kakao.maps.Map) => {
-          fetchCourtsByBoundsAndDatetime(map);
-          onClose();
+          fetchCourtsByBoundsAndDatetime(map)
+          onClose()
         }}
       >
         {/* <Map.ZoomButton onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} /> */}
@@ -390,32 +390,32 @@ const Courts: NextPage = () => {
         cancel={{
           content: "닫기",
           handle: () => {
-            setIsOpenLeadToLoginModal(false);
+            setIsOpenLeadToLoginModal(false)
           },
         }}
         confirm={{
           content: "로그인하러 가기",
           handle: () => {
-            router.push("/login");
+            router.push("/login")
           },
         }}
       />
     </>
-  );
-};
+  )
+}
 
-export default Courts;
+export default Courts
 
 const Actions = styled(Spacer)`
   margin-top: ${({ theme }) => theme.gaps.sm};
-`;
+`
 
 const ModalContentContainer = styled.div`
   margin: 0 20px;
   margin-top: 10px;
-`;
+`
 
 const ReservationCount = styled(Text)`
   color: ${({ theme }) => theme.colors.gray800};
   margin-top: ${({ theme }) => theme.gaps.md};
-`;
+`

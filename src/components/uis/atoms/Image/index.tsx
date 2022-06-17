@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
 
-let observer: IntersectionObserver | null = null;
-const LOAD_IMG_EVENT_TYPE = "loadImage";
+let observer: IntersectionObserver | null = null
+const LOAD_IMG_EVENT_TYPE = "loadImage"
 
 const onIntersection = (
   entries: IntersectionObserverEntry[],
@@ -9,22 +9,22 @@ const onIntersection = (
 ) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      io.unobserve(entry.target);
-      entry.target.dispatchEvent(new CustomEvent(LOAD_IMG_EVENT_TYPE));
+      io.unobserve(entry.target)
+      entry.target.dispatchEvent(new CustomEvent(LOAD_IMG_EVENT_TYPE))
     }
-  });
-};
+  })
+}
 
 interface Props {
-  lazy?: boolean;
-  threshold?: number;
-  block?: boolean;
-  src: string;
-  width?: number | "auto";
-  height?: number;
-  alt?: string;
-  mode?: "cover" | "fill" | "contain";
-  [x: string]: any;
+  lazy?: boolean
+  threshold?: number
+  block?: boolean
+  src: string
+  width?: number | "auto"
+  height?: number
+  alt?: string
+  mode?: "cover" | "fill" | "contain"
+  [x: string]: any
 }
 
 const Image = ({
@@ -39,49 +39,49 @@ const Image = ({
   mode = "cover",
   ...props
 }: Props) => {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(false)
 
-  const imgRef = useRef<HTMLImageElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null)
 
   const imageStyle = {
     display: block ? "block" : undefined,
     width,
     height,
     objectFit: mode,
-  };
+  }
 
   useEffect(() => {
     if (!lazy) {
-      setLoaded(true);
+      setLoaded(true)
 
-      return;
+      return
     }
 
-    const handleLoadImage = () => setLoaded(true);
+    const handleLoadImage = () => setLoaded(true)
 
-    const imgElement = imgRef.current;
+    const imgElement = imgRef.current
     if (imgElement) {
-      imgElement.addEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
+      imgElement.addEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage)
     }
 
     return () => {
       if (imgElement) {
-        imgElement.removeEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
+        imgElement.removeEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage)
       }
-    };
-  }, [lazy]);
+    }
+  }, [lazy])
 
   useEffect(() => {
     if (!lazy) {
-      return;
+      return
     }
 
-    observer = new IntersectionObserver(onIntersection, { threshold });
+    observer = new IntersectionObserver(onIntersection, { threshold })
 
     if (imgRef.current) {
-      observer.observe(imgRef.current);
+      observer.observe(imgRef.current)
     }
-  }, [lazy, threshold]);
+  }, [lazy, threshold])
 
   return (
     <img
@@ -93,7 +93,7 @@ const Image = ({
         ...imageStyle,
       }}
     />
-  );
-};
+  )
+}
 
-export default Image;
+export default Image

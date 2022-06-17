@@ -1,18 +1,18 @@
-import { useCallback, useState } from "react";
-import styled from "@emotion/styled";
-import Link from "next/link";
-import type { APICourt, APIReservation } from "~/domainTypes/tobe";
-import { Text, Icon, Button } from "~/components/uis/atoms";
-import reservationAPI from "~/service/reservationApi";
-import { useAuthContext } from "~/contexts/hooks";
-import { UserListItem } from "~/components/domains";
-import type { ReservationApi } from "~/service/reservationApi/type";
+import { useCallback, useState } from "react"
+import styled from "@emotion/styled"
+import Link from "next/link"
+import type { APICourt, APIReservation } from "~/domainTypes/tobe"
+import { Text, Icon, Button } from "~/components/uis/atoms"
+import reservationAPI from "~/service/reservationApi"
+import { useAuthContext } from "~/contexts/hooks"
+import { UserListItem } from "~/components/domains"
+import type { ReservationApi } from "~/service/reservationApi/type"
 
 interface Props {
-  courtId: APICourt["id"];
-  startTime: APIReservation["startTime"];
-  endTime: APIReservation["endTime"];
-  numberOfReservations: number;
+  courtId: APICourt["id"]
+  startTime: APIReservation["startTime"]
+  endTime: APIReservation["endTime"]
+  numberOfReservations: number
 }
 
 const ReservationItemBottom = ({
@@ -21,26 +21,26 @@ const ReservationItemBottom = ({
   endTime,
   numberOfReservations,
 }: Props) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
   const [participants, setParticipants] = useState<
     Awaited<
       ReturnType<ReservationApi["getMyReservationParticipants"]>
     >["data"]["participants"]
-  >([]);
+  >([])
 
   const handleClick = useCallback(async () => {
-    setVisible((prev) => !prev);
+    setVisible((prev) => !prev)
     const { data } = await reservationAPI.getMyReservationParticipants({
       courtId,
       startTime,
       endTime,
-    });
-    const { participants } = data;
-    setParticipants(participants);
-  }, [courtId, startTime, endTime]);
+    })
+    const { participants } = data
+    setParticipants(participants)
+  }, [courtId, startTime, endTime])
 
-  const { authProps } = useAuthContext();
-  const { currentUser } = authProps;
+  const { authProps } = useAuthContext()
+  const { currentUser } = authProps
 
   return (
     <>
@@ -82,15 +82,15 @@ const ReservationItemBottom = ({
         </ParticipantList>
       )}
     </>
-  );
-};
+  )
+}
 
 const ParticipantsToggle = styled(Button)`
   display: flex;
   align-items: center;
   gap: 10px;
   border: 2px solid ${({ theme }) => theme.colors.gray200};
-`;
+`
 
 const ParticipantList = styled.div`
   width: 100%;
@@ -100,11 +100,11 @@ const ParticipantList = styled.div`
   border-radius: ${({ theme }) => theme.borderRadiuses.md};
 
   background-color: ${({ theme }) => theme.colors.gray200};
-`;
+`
 
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
-export default ReservationItemBottom;
+export default ReservationItemBottom

@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import styled from "@emotion/styled";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Icon, Badge } from "~/components/uis/atoms";
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
-import { useIntersectionObserver } from "~/hooks";
-import { ProfileAvatar } from "~/components/domains";
+import React, { useEffect, useMemo, useRef } from "react"
+import styled from "@emotion/styled"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { Icon, Badge } from "~/components/uis/atoms"
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { useIntersectionObserver } from "~/hooks"
+import { ProfileAvatar } from "~/components/domains"
 
 const TopNavigation = () => {
-  const sensorRef = useRef<HTMLDivElement>(null);
+  const sensorRef = useRef<HTMLDivElement>(null)
 
-  const { authProps } = useAuthContext();
+  const { authProps } = useAuthContext()
   const { userId, profileImage, notifications, nickname } =
-    authProps.currentUser;
+    authProps.currentUser
 
   const {
     navigationProps: {
@@ -26,26 +26,26 @@ const TopNavigation = () => {
       isTopTransparent,
     },
     setIsTopTransparent,
-  } = useNavigationContext();
+  } = useNavigationContext()
 
-  const router = useRouter();
+  const router = useRouter()
 
   const handleDefaultBack = () => {
-    router.back();
-  };
+    router.back()
+  }
 
-  const entry = useIntersectionObserver(sensorRef, {});
+  const entry = useIntersectionObserver(sensorRef, {})
 
   useEffect(() => {
     if (entry) {
-      setIsTopTransparent(entry.isIntersecting);
+      setIsTopTransparent(entry.isIntersecting)
     }
-  }, [entry?.isIntersecting]);
+  }, [entry?.isIntersecting])
 
   const unreadNotificationsCount = useMemo(
     () => notifications.reduce((acc, { isRead }) => acc + (isRead ? 0 : 1), 0),
     [notifications]
-  );
+  )
 
   return (
     <>
@@ -98,10 +98,10 @@ const TopNavigation = () => {
       </Container>
       <TopNavigationSensor ref={sensorRef} />
     </>
-  );
-};
+  )
+}
 
-export default TopNavigation;
+export default TopNavigation
 
 const Container = styled.nav<{ isTransparent: boolean }>`
   z-index: 1000;
@@ -121,7 +121,7 @@ const Container = styled.nav<{ isTransparent: boolean }>`
     transition: opacity 200ms;
     opacity: ${({ isTransparent }) => (isTransparent ? 0 : 1)};
   }
-`;
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -129,7 +129,7 @@ const Wrapper = styled.div`
   align-items: center;
   height: 56px;
   padding: 0 16px;
-`;
+`
 
 const TitleWrapper = styled.div`
   position: absolute;
@@ -140,7 +140,7 @@ const TitleWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const Title = styled.h1`
   display: block;
@@ -152,18 +152,18 @@ const Title = styled.h1`
   font-size: 16px;
   font-weight: 700;
   pointer-events: none;
-`;
+`
 
 const IconGroup = styled.div`
   z-index: 1000;
   display: flex;
   align-items: center;
   gap: 16px;
-`;
+`
 
 const CursorIcon = styled(Icon)`
   cursor: pointer;
-`;
+`
 
 const CustomButton = styled.div`
   padding: 12px;
@@ -172,10 +172,10 @@ const CustomButton = styled.div`
   :hover {
     cursor: pointer;
   }
-`;
+`
 
 const TopNavigationSensor = styled.div`
   position: absolute;
   min-height: 56px;
   width: 100%;
-`;
+`

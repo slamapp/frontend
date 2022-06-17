@@ -1,8 +1,8 @@
 export const notificationType = {
   FOLLOW: "FOLLOW",
   LOUDSPEAKER: "LOUDSPEAKER",
-} as const;
+} as const
 
-type NotificationTypeMap = typeof notificationType;
+type NotificationTypeMap = typeof notificationType
 
-export type NotificationType = NotificationTypeMap[keyof NotificationTypeMap];
+export type NotificationType = NotificationTypeMap[keyof NotificationTypeMap]

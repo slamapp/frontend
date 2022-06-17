@@ -1,5 +1,5 @@
-import { Text } from "~/components/uis/atoms";
-import * as S from "./style";
+import { Text } from "~/components/uis/atoms"
+import * as S from "./style"
 
 const SelectedTime: React.FC<{ timeSlot: string }> = ({ timeSlot }) => {
   return (
@@ -7,7 +7,7 @@ const SelectedTime: React.FC<{ timeSlot: string }> = ({ timeSlot }) => {
       <Text>선택한 시간</Text>
       <S.TimeSlotText>{timeSlot}</S.TimeSlotText>
     </S.ContentWrapper>
-  );
-};
+  )
+}
 
-export default SelectedTime;
+export default SelectedTime

@@ -1,7 +1,7 @@
-import Icons from "feather-icons";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import type { ComponentProps } from "react";
+import Icons from "feather-icons"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import type { ComponentProps } from "react"
 
 type FeatherIconNameType =
   | "arrow-down-left"
@@ -276,16 +276,16 @@ type FeatherIconNameType =
   | "zap-off"
   | "zap"
   | "zoom-in"
-  | "zoom-out";
+  | "zoom-out"
 
 interface Props {
-  name: FeatherIconNameType;
-  size?: "sm" | "md" | "lg" | number;
-  strokeWidth?: number;
-  rotate?: number;
-  color?: string;
-  fill?: boolean;
-  [prop: string]: any;
+  name: FeatherIconNameType
+  size?: "sm" | "md" | "lg" | number
+  strokeWidth?: number
+  rotate?: number
+  color?: string
+  fill?: boolean
+  [prop: string]: any
 }
 
 const Icon = ({
@@ -303,17 +303,17 @@ const Icon = ({
     width: size,
     height: size,
     fill: fill ? color : "transparent",
-  };
-  const icon = Icons.icons[name];
-  const svg = icon ? icon.toSvg(iconStyle) : "";
-  const base64 = Buffer.from(svg, "utf8").toString("base64");
+  }
+  const icon = Icons.icons[name]
+  const svg = icon ? icon.toSvg(iconStyle) : ""
+  const base64 = Buffer.from(svg, "utf8").toString("base64")
 
   return (
     <IconWrapper {...props} size={size} rotate={rotate}>
       <img src={`data:image/svg+xml;base64,${base64}`} alt={name} />
     </IconWrapper>
-  );
-};
+  )
+}
 
 const IconWrapper = styled.i<Pick<Props, "size" | "rotate">>`
   display: inline-block;
@@ -326,7 +326,7 @@ const IconWrapper = styled.i<Pick<Props, "size" | "rotate">>`
     width: 100%;
     height: 100%;
   }
-`;
+`
 
 Icon.Toggle = ({
   size = "lg",
@@ -335,17 +335,17 @@ Icon.Toggle = ({
   checked,
   onChange,
 }: {
-  name?: ComponentProps<typeof Icon>["name"];
-  size?: ComponentProps<typeof StyledIconToggleLabel>["size"];
-  iconSize?: ComponentProps<typeof Icon>["size"];
-  checked: ComponentProps<"input">["checked"];
-  onChange: ComponentProps<"input">["onChange"];
+  name?: ComponentProps<typeof Icon>["name"]
+  size?: ComponentProps<typeof StyledIconToggleLabel>["size"]
+  iconSize?: ComponentProps<typeof Icon>["size"]
+  checked: ComponentProps<"input">["checked"]
+  onChange: ComponentProps<"input">["onChange"]
 }) => (
   <StyledIconToggleLabel size={size}>
     <Icon color={"#FFC700"} name={name} fill={checked} size={iconSize} />
     <input type="checkbox" checked={checked} onChange={onChange} />
   </StyledIconToggleLabel>
-);
+)
 
 const StyledIconToggleLabel = styled.label<{ size: "sm" | "md" | "lg" }>`
   box-sizing: border-box;
@@ -363,6 +363,6 @@ const StyledIconToggleLabel = styled.label<{ size: "sm" | "md" | "lg" }>`
   input {
     display: none;
   }
-`;
+`
 
-export default Icon;
+export default Icon

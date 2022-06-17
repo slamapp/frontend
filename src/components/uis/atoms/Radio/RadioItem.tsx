@@ -1,12 +1,12 @@
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { Chip } from "~/components/uis/molecules";
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import { Chip } from "~/components/uis/molecules"
 
 interface RadioItemProps {
-  value: string;
-  text: string;
-  checked: boolean;
-  disabled?: boolean;
+  value: string
+  text: string
+  checked: boolean
+  disabled?: boolean
 }
 
 const RadioItem: React.FC<RadioItemProps> = ({
@@ -26,12 +26,12 @@ const RadioItem: React.FC<RadioItemProps> = ({
       />
       <Chip clickable>{text}</Chip>
     </StyledLabel>
-  );
-};
+  )
+}
 
 const StyledLabel = styled.label`
   margin-right: ${({ theme }) => theme.gaps.xs};
-`;
+`
 
 const StyledRadio = styled.input`
   display: none;
@@ -60,6 +60,6 @@ const StyledRadio = styled.input`
   &:disabled + span {
     pointer-events: none;
   }
-`;
+`
 
-export default RadioItem;
+export default RadioItem

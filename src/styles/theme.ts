@@ -106,8 +106,8 @@ const theme = {
   filter: {
     dropShadow: "drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.15))",
   },
-} as const;
+} as const
 
-export default theme;
+export default theme
 
-export type ITheme = typeof theme;
+export type ITheme = typeof theme

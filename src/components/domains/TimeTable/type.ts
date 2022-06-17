@@ -1,40 +1,40 @@
-import type { RefObject } from "react";
+import type { RefObject } from "react"
 
 interface TimeBlockUnitWrapperProps {
-  height: number;
-  previous?: boolean;
-  next?: boolean;
-  isEven?: boolean;
-  hasBlackTopBorder?: boolean;
-  hasBlackBottomBorder?: boolean;
-  disabled?: boolean;
+  height: number
+  previous?: boolean
+  next?: boolean
+  isEven?: boolean
+  hasBlackTopBorder?: boolean
+  hasBlackBottomBorder?: boolean
+  disabled?: boolean
 }
 
 interface TimeBlockUnitProps extends Pick<TimeBlockUnitWrapperProps, "height"> {
-  index: number;
-  reservationCount: number;
-  ballCount: number;
-  selected: boolean;
-  step: number;
-  hasReservation: boolean;
-  disabled?: boolean;
-  onClick: (index: number) => void;
+  index: number
+  reservationCount: number
+  ballCount: number
+  selected: boolean
+  step: number
+  hasReservation: boolean
+  disabled?: boolean
+  onClick: (index: number) => void
 }
 
 interface ActionTimeBlockUnitProps
   extends Pick<TimeBlockUnitWrapperProps, "height" | "previous" | "next"> {
-  rowRef?: RefObject<HTMLDivElement>;
-  disabled?: boolean;
-  onClose: () => void;
+  rowRef?: RefObject<HTMLDivElement>
+  disabled?: boolean
+  onClose: () => void
 }
 
 interface HourProps {
-  hour: number;
+  hour: number
 }
 
-type Status = "active" | "lack" | "none";
+type Status = "active" | "lack" | "none"
 interface StatusProps {
-  status: Status;
+  status: Status
 }
 
 export type {
@@ -44,4 +44,4 @@ export type {
   HourProps,
   StatusProps,
   Status,
-};
+}

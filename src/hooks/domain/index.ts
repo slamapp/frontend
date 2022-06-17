@@ -1,1 +1,1 @@
-export { default as useLocalToken } from "./useLocalToken";
+export { default as useLocalToken } from "./useLocalToken"

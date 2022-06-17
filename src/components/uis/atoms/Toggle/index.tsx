@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import useToggle from "~/hooks/useToggle";
+import styled from "@emotion/styled"
+import useToggle from "~/hooks/useToggle"
 
 interface Props {
-  name: string;
-  on: boolean;
-  disabled: boolean;
-  onChange: () => void;
+  name: string
+  on: boolean
+  disabled: boolean
+  onChange: () => void
 }
 
 const Toggle = ({
@@ -15,12 +15,12 @@ const Toggle = ({
   onChange,
   ...props
 }: Props) => {
-  const [checked, toggle] = useToggle(on);
+  const [checked, toggle] = useToggle(on)
 
   const handleChange = () => {
-    toggle();
-    onChange();
-  };
+    toggle()
+    onChange()
+  }
 
   return (
     <ToggleContainer {...props}>
@@ -33,16 +33,16 @@ const Toggle = ({
       />
       <ToggleSwitch />
     </ToggleContainer>
-  );
-};
+  )
+}
 
-export default Toggle;
+export default Toggle
 
 const ToggleContainer = styled.label`
   display: inline-block;
   cursor: pointer;
   user-select: none;
-`;
+`
 
 const ToggleSwitch = styled.div`
   width: 54px;
@@ -64,7 +64,7 @@ const ToggleSwitch = styled.div`
     background-color: white;
     transition: left 150ms;
   }
-`;
+`
 
 const ToggleInput = styled.input`
   display: none;
@@ -83,4 +83,4 @@ const ToggleInput = styled.input`
       opacity: 0.7;
     }
   }
-`;
+`

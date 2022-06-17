@@ -1,13 +1,13 @@
-import { useState } from "react";
-import styled from "@emotion/styled";
-import { Text } from "~/components/uis/atoms";
-import useTimeout from "~/hooks/useTimeout";
+import { useState } from "react"
+import styled from "@emotion/styled"
+import { Text } from "~/components/uis/atoms"
+import useTimeout from "~/hooks/useTimeout"
 
 interface Props {
-  message: string;
-  duration: number;
-  onDone?: () => void;
-  isProgressBar?: boolean;
+  message: string
+  duration: number
+  onDone?: () => void
+  isProgressBar?: boolean
 }
 
 const ToastItem = ({
@@ -16,14 +16,14 @@ const ToastItem = ({
   onDone,
   isProgressBar = false,
 }: Props) => {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(true)
 
   useTimeout(() => {
-    setShow(false);
+    setShow(false)
     if (onDone) {
-      setTimeout(() => onDone(), 400);
+      setTimeout(() => onDone(), 400)
     }
-  }, duration);
+  }, duration)
 
   return (
     <Container style={{ opacity: show ? 1 : 0 }}>
@@ -32,8 +32,8 @@ const ToastItem = ({
       )}
       <Text>{message}</Text>
     </Container>
-  );
-};
+  )
+}
 
 const Container = styled.div`
   position: relative;
@@ -73,7 +73,7 @@ const Container = styled.div`
       margin-top: 0;
     }
   }
-`;
+`
 
 const ProgressBar = styled.div`
   position: absolute;
@@ -93,6 +93,6 @@ const ProgressBar = styled.div`
       width: 100%;
     }
   }
-`;
+`
 
-export default ToastItem;
+export default ToastItem

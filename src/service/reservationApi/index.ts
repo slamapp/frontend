@@ -1,5 +1,5 @@
-import { request, authRequest, authFileRequest } from "../fetcher";
-import type { ReservationApi } from "./type";
+import { request, authRequest, authFileRequest } from "../fetcher"
+import type { ReservationApi } from "./type"
 
 const reservationApi: ReservationApi = {
   getMyUpcomingReservations: () => authRequest.get("/reservations/upcoming"),
@@ -14,11 +14,11 @@ const reservationApi: ReservationApi = {
         })
       : authRequest.get("/reservations/expired", {
           params: { isFirst, lastId: "0", size: 5 },
-        });
+        })
   },
   getMyReservationParticipants: ({ courtId, startTime, endTime }) =>
     authRequest.get(`/reservations/${courtId}/${startTime}/${endTime}`),
   createReservation: (data) => authRequest.post("/reservations", data),
-};
+}
 
-export default reservationApi;
+export default reservationApi

@@ -1,2 +1,2 @@
-export { default as BasketballMarker } from "./BasketballMarker";
-export { default as GeneralMarker } from "./GeneralMarker";
+export { default as BasketballMarker } from "./BasketballMarker"
+export { default as GeneralMarker } from "./GeneralMarker"

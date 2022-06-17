@@ -8,7 +8,7 @@ export const actionTypes = {
   CLICK_RESERVATION_MARKER: "CLICK_RESERVATION_MARKER",
   SET_CURRENT_INPUT: "SET_CURRENT_INPUT",
   SET_TIME_INDEX: "SET_TIME_INDEX",
-};
+}
 
-export type ActionType = typeof actionTypes;
-export type ActionTypeUnion = ActionType[keyof ActionType];
+export type ActionType = typeof actionTypes
+export type ActionTypeUnion = ActionType[keyof ActionType]

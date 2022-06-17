@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
-import { useNavigationContext } from "~/contexts/hooks";
-import { ErrorMessage } from "../components/domains";
+import styled from "@emotion/styled"
+import { useNavigationContext } from "~/contexts/hooks"
+import { ErrorMessage } from "../components/domains"
 
 export default function Custom404() {
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_ERROR");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_ERROR")
 
   return (
     <PageContainer>
@@ -14,7 +14,7 @@ export default function Custom404() {
         buttonTitle={"지도에서 내 주변 농구장 찾기"}
       />
     </PageContainer>
-  );
+  )
 }
 
 const PageContainer = styled.div`
@@ -24,4 +24,4 @@ const PageContainer = styled.div`
   align-items: center;
   flex: 1;
   margin: 0 ${({ theme }) => theme.gaps.base};
-`;
+`

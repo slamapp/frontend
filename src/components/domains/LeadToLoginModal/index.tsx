@@ -1,12 +1,12 @@
-import type { ReactNode } from "react";
-import { Button } from "~/components/uis/atoms";
-import Modal from "../Modal";
+import type { ReactNode } from "react"
+import { Button } from "~/components/uis/atoms"
+import Modal from "../Modal"
 
 interface Props {
-  headerContent: ReactNode;
-  isOpen: boolean;
-  cancel: { content: ReactNode; handle: (e?: any) => void };
-  confirm: { content: ReactNode; handle: (e?: any) => void };
+  headerContent: ReactNode
+  isOpen: boolean
+  cancel: { content: ReactNode; handle: (e?: any) => void }
+  confirm: { content: ReactNode; handle: (e?: any) => void }
 }
 
 const LeadToLoginModal = ({
@@ -26,6 +26,6 @@ const LeadToLoginModal = ({
       </Button>
     </Modal.BottomButtonContainer>
   </Modal>
-);
+)
 
-export default LeadToLoginModal;
+export default LeadToLoginModal

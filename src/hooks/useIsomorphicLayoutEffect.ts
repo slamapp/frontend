@@ -1,3 +1,3 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react"
 
-export default typeof document !== "undefined" ? useLayoutEffect : useEffect;
+export default typeof document !== "undefined" ? useLayoutEffect : useEffect

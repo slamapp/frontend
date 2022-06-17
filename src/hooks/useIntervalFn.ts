@@ -1,32 +1,32 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react"
 
 const useIntervalFn = (fn: () => void, ms: number) => {
-  const intervalId = useRef<NodeJS.Timeout>();
-  const callback = useRef(fn);
+  const intervalId = useRef<NodeJS.Timeout>()
+  const callback = useRef(fn)
 
   useEffect(() => {
-    callback.current = fn;
-  }, [fn]);
+    callback.current = fn
+  }, [fn])
 
   const run = useCallback(() => {
     if (intervalId.current) {
-      clearInterval(intervalId.current);
+      clearInterval(intervalId.current)
     }
 
     intervalId.current = setInterval(() => {
-      callback.current();
-    }, ms);
-  }, [ms]);
+      callback.current()
+    }, ms)
+  }, [ms])
 
   const clear = useCallback(() => {
     if (intervalId.current) {
-      clearInterval(intervalId.current);
+      clearInterval(intervalId.current)
     }
-  }, []);
+  }, [])
 
-  useEffect(() => clear, [clear]);
+  useEffect(() => clear, [clear])
 
-  return [run, clear];
-};
+  return [run, clear]
+}
 
-export default useIntervalFn;
+export default useIntervalFn

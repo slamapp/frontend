@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import ReservationContext from "./context";
+import { useContext } from "react"
+import ReservationContext from "./context"
 
-const useReservationContext = () => useContext(ReservationContext);
+const useReservationContext = () => useContext(ReservationContext)
 
-export default useReservationContext;
+export default useReservationContext

@@ -1,75 +1,73 @@
-import type { NextPage } from "next";
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import styled from "@emotion/styled";
-import { withRouteGuard } from "~/hocs";
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
-import { reservationApi } from "~/service";
-import { Text, Spacer } from "~/components/uis/atoms";
-import { NoItemMessage, ReservationItem } from "~/components/domains";
+import type { NextPage } from "next"
+import React, { useState, useCallback, useEffect, useRef } from "react"
+import styled from "@emotion/styled"
+import { withRouteGuard } from "~/hocs"
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { reservationApi } from "~/service"
+import { Text, Spacer } from "~/components/uis/atoms"
+import { NoItemMessage, ReservationItem } from "~/components/domains"
 
 const Reservations: NextPage = () => {
-  const { authProps, getMyReservations } = useAuthContext();
-  const { reservations: upcomingReservations } = authProps.currentUser;
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_RESERVATIONS");
+  const { authProps, getMyReservations } = useAuthContext()
+  const { reservations: upcomingReservations } = authProps.currentUser
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_RESERVATIONS")
   useEffect(() => {
-    getMyReservations();
-  }, []);
+    getMyReservations()
+  }, [])
 
-  const ref = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">(
-    "UPCOMING"
-  );
-  const [expiredReservations, setExpiredReservations] = useState<any[]>([]);
-  const [currentLastId, setCurrentLastId] = useState<any>();
-  const [isFetching, setIsFetching] = useState(false);
+  const ref = useRef<HTMLDivElement>(null)
+  const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">("UPCOMING")
+  const [expiredReservations, setExpiredReservations] = useState<any[]>([])
+  const [currentLastId, setCurrentLastId] = useState<any>()
+  const [isFetching, setIsFetching] = useState(false)
 
   const handleClickExpiredTab = useCallback(async () => {
-    setActiveTab("EXPIRED");
+    setActiveTab("EXPIRED")
 
     if (currentLastId !== null) {
       const { data } = await reservationApi.getMyExpiredReservations(
         !currentLastId,
         currentLastId
-      );
-      const { contents, lastId } = data;
-      setExpiredReservations((prev) => [...prev, ...contents]);
-      setCurrentLastId(lastId);
+      )
+      const { contents, lastId } = data
+      setExpiredReservations((prev) => [...prev, ...contents])
+      setCurrentLastId(lastId)
     }
-  }, [currentLastId]);
+  }, [currentLastId])
 
   const loadMore = useCallback(async () => {
     if (expiredReservations.length !== 0 && currentLastId !== null) {
       const { data } = await reservationApi.getMyExpiredReservations(
         !currentLastId,
         currentLastId
-      );
-      const { contents, lastId } = data;
-      setExpiredReservations((prev) => [...prev, ...contents]);
-      setCurrentLastId(lastId);
+      )
+      const { contents, lastId } = data
+      setExpiredReservations((prev) => [...prev, ...contents])
+      setCurrentLastId(lastId)
     }
-  }, [currentLastId, expiredReservations]);
+  }, [currentLastId, expiredReservations])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(async (entry) => {
           if (entry.isIntersecting) {
-            setIsFetching(false);
-            await loadMore();
-            setIsFetching(true);
+            setIsFetching(false)
+            await loadMore()
+            setIsFetching(true)
           }
-        });
+        })
       },
       { threshold: 1.0 }
-    );
+    )
 
     if (ref.current) {
-      observer.observe(ref.current);
+      observer.observe(ref.current)
     }
 
-    return () => observer.disconnect();
-  }, [ref, loadMore]);
+    return () => observer.disconnect()
+  }, [ref, loadMore])
 
   return (
     <PageContainer>
@@ -131,8 +129,8 @@ const Reservations: NextPage = () => {
 
       <div ref={ref} style={{ height: 20 }} />
     </PageContainer>
-  );
-};
+  )
+}
 
 const TabContainer = styled.div`
   display: flex;
@@ -140,18 +138,18 @@ const TabContainer = styled.div`
   align-items: center;
   height: 52px;
   border-bottom: 4px solid ${({ theme }) => theme.colors.gray100};
-`;
+`
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   margin: 0 ${({ theme }) => theme.gaps.base};
-`;
+`
 
 const TabContentsWrapper = styled.div`
   flex: 1;
   margin-top: 16px;
-`;
+`
 
-export default withRouteGuard("private", Reservations);
+export default withRouteGuard("private", Reservations)

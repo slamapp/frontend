@@ -1,52 +1,52 @@
-import type { DependencyList } from "react";
-import { useCallback, useRef, useState } from "react";
+import type { DependencyList } from "react"
+import { useCallback, useRef, useState } from "react"
 
-export type AsyncFn = (...args: any[]) => Promise<any>;
+export type AsyncFn = (...args: any[]) => Promise<any>
 
 interface StateProps {
-  isLoading: boolean;
-  value?: undefined;
-  error?: undefined;
+  isLoading: boolean
+  value?: undefined
+  error?: undefined
 }
 
 const useAsyncFn = (
   fn: AsyncFn,
   deps: DependencyList
 ): [state: StateProps, callback: AsyncFn] => {
-  const lastCallId = useRef(0);
+  const lastCallId = useRef(0)
   const [state, setState] = useState<StateProps>({
     isLoading: false,
     value: undefined,
     error: undefined,
-  });
+  })
 
   const callback = useCallback((...args) => {
-    const callId = lastCallId.current + 1;
+    const callId = lastCallId.current + 1
 
     if (!state.isLoading) {
-      setState({ ...state, isLoading: true });
+      setState({ ...state, isLoading: true })
     }
 
     return fn(...args).then(
       (value) => {
         if (callId === lastCallId.current) {
-          setState({ value, isLoading: false });
+          setState({ value, isLoading: false })
         }
 
-        return value;
+        return value
       },
       (error) => {
         if (callId === lastCallId.current) {
-          setState({ error, isLoading: false });
+          setState({ error, isLoading: false })
         }
 
-        return error;
+        return error
       }
-    );
+    )
     // eslint-disable-next-line
-  }, deps);
+  }, deps)
 
-  return [state, callback];
-};
+  return [state, callback]
+}
 
-export default useAsyncFn;
+export default useAsyncFn

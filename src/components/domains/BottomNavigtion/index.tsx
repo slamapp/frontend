@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import React from "react";
-import { useAuthContext } from "~/contexts/hooks";
-import NavIcon from "./NavIcon";
+import styled from "@emotion/styled"
+import React from "react"
+import { useAuthContext } from "~/contexts/hooks"
+import NavIcon from "./NavIcon"
 
 const BottomNavigation = () => {
-  const { authProps } = useAuthContext();
-  const { role } = authProps.currentUser;
+  const { authProps } = useAuthContext()
+  const { role } = authProps.currentUser
 
   return (
     <Container>
@@ -26,10 +26,10 @@ const BottomNavigation = () => {
         {role === "ADMIN" && <NavIcon.newCourt />}
       </Wrapper>
     </Container>
-  );
-};
+  )
+}
 
-export default BottomNavigation;
+export default BottomNavigation
 
 const Container = styled.nav`
   position: sticky;
@@ -40,7 +40,7 @@ const Container = styled.nav`
   left: 0;
   right: 0;
   z-index: 2000;
-`;
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,4 +48,4 @@ const Wrapper = styled.div`
   align-items: center;
   height: 56px;
   flex: 1;
-`;
+`

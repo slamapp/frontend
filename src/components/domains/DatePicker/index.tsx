@@ -1,20 +1,20 @@
-import React, { useMemo } from "react";
-import Flicking from "@egjs/react-flicking";
-import styled from "@emotion/styled";
-import type { Dayjs } from "dayjs";
-import { useNavigationContext } from "~/contexts/hooks";
-import DateItem from "./DateItem";
+import React, { useMemo } from "react"
+import Flicking from "@egjs/react-flicking"
+import styled from "@emotion/styled"
+import type { Dayjs } from "dayjs"
+import { useNavigationContext } from "~/contexts/hooks"
+import DateItem from "./DateItem"
 
-const DAY_RANGE = 14;
+const DAY_RANGE = 14
 
 interface Props {
-  onClick: (date: Dayjs) => void;
-  selectedDate: Dayjs;
-  startDate: Dayjs;
+  onClick: (date: Dayjs) => void
+  selectedDate: Dayjs
+  startDate: Dayjs
 }
 
 const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
-  const { navigationProps } = useNavigationContext();
+  const { navigationProps } = useNavigationContext()
 
   const twoWeekDates = useMemo(
     () =>
@@ -22,7 +22,7 @@ const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
         startDate.add(index, "day")
       ),
     [startDate]
-  );
+  )
 
   return (
     <StyledFlicking
@@ -45,10 +45,10 @@ const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
       ))}
       <span style={{ width: 10 }}></span>
     </StyledFlicking>
-  );
-};
+  )
+}
 
-export default DatePicker;
+export default DatePicker
 
 const StyledFlicking = styled(Flicking)`
   transition: background-color 200ms;
@@ -58,4 +58,4 @@ const StyledFlicking = styled(Flicking)`
     padding: 0 ${({ theme }) => theme.gaps.sm};
     filter: ${({ theme }) => theme.filter.dropShadow};
   }
-`;
+`

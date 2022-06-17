@@ -1,12 +1,12 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { withRouteGuard } from "~/hocs";
-import { useNavigationContext } from "~/contexts/hooks";
-import { ProfileForm } from "~/components/domains";
+import type { NextPage } from "next"
+import Head from "next/head"
+import { withRouteGuard } from "~/hocs"
+import { useNavigationContext } from "~/contexts/hooks"
+import { ProfileForm } from "~/components/domains"
 
 const UserEditPage: NextPage = () => {
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_USER_EDIT");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_USER_EDIT")
 
   return (
     <div>
@@ -17,7 +17,7 @@ const UserEditPage: NextPage = () => {
 
       <ProfileForm />
     </div>
-  );
-};
+  )
+}
 
-export default withRouteGuard("private", UserEditPage);
+export default withRouteGuard("private", UserEditPage)

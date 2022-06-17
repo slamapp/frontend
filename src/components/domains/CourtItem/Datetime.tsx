@@ -1,17 +1,17 @@
-import { useMemo } from "react";
-import dayjs from "dayjs";
-import { Spacer, Text } from "~/components/uis/atoms";
-import { week } from "~/utils/date";
-import * as S from "./style";
+import { useMemo } from "react"
+import dayjs from "dayjs"
+import { Spacer, Text } from "~/components/uis/atoms"
+import { week } from "~/utils/date"
+import * as S from "./style"
 
 interface Props {
-  startDatetime: string;
-  endDatetime: string;
+  startDatetime: string
+  endDatetime: string
 }
 
 const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
-  const startDate = useMemo(() => dayjs(startDatetime), [startDatetime]);
-  const endDate = useMemo(() => dayjs(endDatetime), [endDatetime]);
+  const startDate = useMemo(() => dayjs(startDatetime), [startDatetime])
+  const endDate = useMemo(() => dayjs(endDatetime), [endDatetime])
 
   return (
     <S.SubHeaderArea>
@@ -28,7 +28,7 @@ const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
         </Text>
       </Spacer>
     </S.SubHeaderArea>
-  );
-};
+  )
+}
 
-export default Datetime;
+export default Datetime

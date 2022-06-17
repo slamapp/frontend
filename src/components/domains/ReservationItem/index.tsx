@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { Spacer } from "~/components/uis/atoms";
-import CourtItem from "../CourtItem";
-import Loudspeaker from "./Loudspeaker";
-import ReservationItemBottom from "./ReservationItemBottom";
-import type { APIReservation } from "~/domainTypes/tobe";
+import React from "react"
+import styled from "@emotion/styled"
+import { Spacer } from "~/components/uis/atoms"
+import CourtItem from "../CourtItem"
+import Loudspeaker from "./Loudspeaker"
+import ReservationItemBottom from "./ReservationItemBottom"
+import type { APIReservation } from "~/domainTypes/tobe"
 
 interface Props {
-  reservation: APIReservation;
+  reservation: APIReservation
 }
 
 const UpcomingReservations = ({ reservation }: Props) => {
@@ -58,10 +58,10 @@ const UpcomingReservations = ({ reservation }: Props) => {
         numberOfReservations={reservation.numberOfReservations}
       />
     </ReservationItem>
-  );
-};
+  )
+}
 
-export default UpcomingReservations;
+export default UpcomingReservations
 
 const ReservationItem = styled.div`
   display: flex;
@@ -70,16 +70,16 @@ const ReservationItem = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadiuses.md};
   padding: 20px;
-`;
+`
 
 const Actions = styled(Spacer)`
   justify-content: flex-end;
   align-items: center;
   margin-top: ${({ theme }) => theme.gaps.sm};
   margin-bottom: ${({ theme }) => theme.gaps.base};
-`;
+`
 
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`

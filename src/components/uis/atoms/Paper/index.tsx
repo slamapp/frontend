@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import type { ComponentProps } from "react";
-import React from "react";
+import styled from "@emotion/styled"
+import type { ComponentProps } from "react"
+import React from "react"
 
 const Paper = (props: ComponentProps<typeof Container>) => {
-  return <Container {...props} />;
-};
+  return <Container {...props} />
+}
 
-export default Paper;
+export default Paper
 
-const Container = styled.div``;
+const Container = styled.div``

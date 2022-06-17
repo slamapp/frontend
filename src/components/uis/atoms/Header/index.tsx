@@ -1,11 +1,11 @@
-import type { FC } from "react";
+import type { FC } from "react"
 
 interface Props {
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
-  strong?: boolean;
-  underline?: boolean;
-  color?: string;
-  [x: string]: any;
+  level?: 1 | 2 | 3 | 4 | 5 | 6
+  strong?: boolean
+  underline?: boolean
+  color?: string
+  [x: string]: any
 }
 
 const Header: FC<Props> = ({
@@ -16,25 +16,25 @@ const Header: FC<Props> = ({
   color,
   ...props
 }) => {
-  let Tag = `h${level}` as keyof JSX.IntrinsicElements;
+  let Tag = `h${level}` as keyof JSX.IntrinsicElements
   if (level < 1 || level > 6) {
     console.warn(
       "Header only accept `1 | 2 | 3 | 4 | 5 | 6 |` as `level` value."
-    );
-    Tag = "h1";
+    )
+    Tag = "h1"
   }
 
   const fontStyle = {
     fontWeight: strong ? "bold" : "normal",
     textDecoration: underline ? "underline" : undefined,
     color,
-  };
+  }
 
   return (
     <Tag style={{ ...props.style, ...fontStyle }} {...props}>
       {children}
     </Tag>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

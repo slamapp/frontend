@@ -1,15 +1,15 @@
-import styled from "@emotion/styled";
-import type { ComponentProps } from "react";
-import { Icon } from "~/components/uis/atoms";
+import styled from "@emotion/styled"
+import type { ComponentProps } from "react"
+import { Icon } from "~/components/uis/atoms"
 
 interface Props {
-  name: ComponentProps<typeof Icon>["name"];
-  iconSize?: ComponentProps<typeof Icon>["size"];
-  iconColor?: ComponentProps<typeof Icon>["color"];
-  className?: ComponentProps<typeof StyledIconButton>["className"];
-  size?: ComponentProps<typeof StyledIconButton>["size"];
-  type?: ComponentProps<typeof StyledIconButton>["type"];
-  onClick?: ComponentProps<typeof StyledIconButton>["onClick"];
+  name: ComponentProps<typeof Icon>["name"]
+  iconSize?: ComponentProps<typeof Icon>["size"]
+  iconColor?: ComponentProps<typeof Icon>["color"]
+  className?: ComponentProps<typeof StyledIconButton>["className"]
+  size?: ComponentProps<typeof StyledIconButton>["size"]
+  type?: ComponentProps<typeof StyledIconButton>["type"]
+  onClick?: ComponentProps<typeof StyledIconButton>["onClick"]
 }
 
 const IconButton = ({
@@ -30,8 +30,8 @@ const IconButton = ({
     >
       <Icon name={name} color={iconColor} size={iconSize} />
     </StyledIconButton>
-  );
-};
+  )
+}
 
 const StyledIconButton = styled.button<{ size: "sm" | "md" | "lg" }>`
   box-sizing: border-box;
@@ -46,14 +46,14 @@ const StyledIconButton = styled.button<{ size: "sm" | "md" | "lg" }>`
   width: ${({ theme, size }) => theme.buttonHeights[size]};
   height: ${({ theme, size }) => theme.buttonHeights[size]};
   cursor: pointer;
-`;
+`
 
 IconButton.Share = ({
   onClick,
 }: {
-  onClick?: ComponentProps<typeof IconButton>["onClick"];
+  onClick?: ComponentProps<typeof IconButton>["onClick"]
 }) => {
-  return <IconButton name="share-2" onClick={onClick} />;
-};
+  return <IconButton name="share-2" onClick={onClick} />
+}
 
-export default IconButton;
+export default IconButton

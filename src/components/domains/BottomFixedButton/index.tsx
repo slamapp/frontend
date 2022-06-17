@@ -1,28 +1,28 @@
-import React from "react";
-import type { ReactNode, CSSProperties } from "react";
-import styled from "@emotion/styled";
-import ReactDOM from "react-dom";
-import { css } from "@emotion/react";
-import Link from "next/link";
-import { IconButton } from "~/components/uis/molecules";
-import { Button } from "~/components/uis/atoms";
-import type { Icon } from "~/components/uis/atoms";
+import React from "react"
+import type { ReactNode, CSSProperties } from "react"
+import styled from "@emotion/styled"
+import ReactDOM from "react-dom"
+import { css } from "@emotion/react"
+import Link from "next/link"
+import { IconButton } from "~/components/uis/molecules"
+import { Button } from "~/components/uis/atoms"
+import type { Icon } from "~/components/uis/atoms"
 
 interface Props {
-  children: ReactNode;
-  type?: "button" | "submit";
-  disabled?: boolean;
-  onClick: React.ComponentProps<typeof Button>["onClick"];
-  className?: string;
-  style?: CSSProperties;
-  bottom?: number;
+  children: ReactNode
+  type?: "button" | "submit"
+  disabled?: boolean
+  onClick: React.ComponentProps<typeof Button>["onClick"]
+  className?: string
+  style?: CSSProperties
+  bottom?: number
   iconButton?: {
-    icon: React.ComponentProps<typeof Icon>["name"];
-    href?: string;
-    onClick?: () => void;
-  };
-  custom?: boolean;
-  containerStyle?: CSSProperties;
+    icon: React.ComponentProps<typeof Icon>["name"]
+    href?: string
+    onClick?: () => void
+  }
+  custom?: boolean
+  containerStyle?: CSSProperties
 }
 
 const BottomFixedButton: React.FC<Props> = ({
@@ -64,8 +64,8 @@ const BottomFixedButton: React.FC<Props> = ({
     )
   ) : (
     <></>
-  );
-};
+  )
+}
 
 export const BottomFixedContainer: React.FC = ({
   custom,
@@ -81,7 +81,7 @@ export const BottomFixedContainer: React.FC = ({
     )
   ) : (
     <></>
-  );
+  )
 
 const Background = styled.div<Pick<Props, "bottom"> & { custom?: boolean }>`
   display: flex;
@@ -108,6 +108,6 @@ const Background = styled.div<Pick<Props, "bottom"> & { custom?: boolean }>`
         width: 100%;
       }
     `}
-`;
+`
 
-export default BottomFixedButton;
+export default BottomFixedButton

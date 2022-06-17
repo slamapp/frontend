@@ -1,11 +1,11 @@
-import React from "react";
-import Head from "next/head";
-import type { NextPage } from "next";
-import { useNavigationContext } from "~/contexts/hooks";
+import React from "react"
+import Head from "next/head"
+import type { NextPage } from "next"
+import { useNavigationContext } from "~/contexts/hooks"
 
 const Activity: NextPage = () => {
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_ACTIVITY");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_ACTIVITY")
 
   return (
     <div>
@@ -14,7 +14,7 @@ const Activity: NextPage = () => {
       </Head>
       Activity
     </div>
-  );
-};
+  )
+}
 
-export default Activity;
+export default Activity

@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled"
 
 const Base = styled.div`
   display: inline-block;
@@ -36,6 +36,6 @@ const Base = styled.div`
       background-position-x: -100%;
     }
   }
-`;
+`
 
-export default Base;
+export default Base

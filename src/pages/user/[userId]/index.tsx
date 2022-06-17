@@ -1,41 +1,41 @@
-import { useEffect, useState, useCallback } from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import type { AxiosError } from "axios";
-import { withRouteGuard } from "~/hocs";
-import type { APIFavorite, APIUser, APICourt } from "~/domainTypes/tobe";
-import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants";
-import userApi from "~/service/userApi";
+import { useEffect, useState, useCallback } from "react"
+import type { NextPage } from "next"
+import Head from "next/head"
+import { useRouter } from "next/router"
+import Link from "next/link"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import type { AxiosError } from "axios"
+import { withRouteGuard } from "~/hocs"
+import type { APIFavorite, APIUser, APICourt } from "~/domainTypes/tobe"
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
+import userApi from "~/service/userApi"
 import {
   useNavigationContext,
   useAuthContext,
   useSocketContext,
-} from "~/contexts/hooks";
-import Custom404 from "~/pages/404";
-import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect";
+} from "~/contexts/hooks"
+import Custom404 from "~/pages/404"
+import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
-} from "~/utils/userInfo";
+} from "~/utils/userInfo"
 import {
   ProfileFavoritesListItem,
   BasketballLoading,
-} from "~/components/domains";
-import { Label, Chip, Avatar } from "~/components/uis/molecules";
-import { Text, Button, Spacer } from "~/components/uis/atoms";
+} from "~/components/domains"
+import { Label, Chip, Avatar } from "~/components/uis/molecules"
+import { Text, Button, Spacer } from "~/components/uis/atoms"
 
 interface ResponseUserProfile
   extends Pick<
     APIUser,
     "nickname" | "description" | "profileImage" | "proficiency" | "positions"
   > {
-  userId: APIUser["id"];
-  followerCount: number;
-  followingCount: number;
+  userId: APIUser["id"]
+  followerCount: number
+  followingCount: number
 }
 
 const User: NextPage = () => {
@@ -44,34 +44,34 @@ const User: NextPage = () => {
     useMountPage,
     setNavigationTitle,
     useDisableTopTransparent,
-  } = useNavigationContext();
-  const { sendFollow, sendFollowCancel } = useSocketContext();
-  const { authProps } = useAuthContext();
+  } = useNavigationContext()
+  const { sendFollow, sendFollowCancel } = useSocketContext()
+  const { authProps } = useAuthContext()
 
-  const { userId, favorites: myFavorites } = authProps.currentUser;
+  const { userId, favorites: myFavorites } = authProps.currentUser
 
-  useMountPage("PAGE_USER");
-  useDisableTopTransparent();
+  useMountPage("PAGE_USER")
+  useDisableTopTransparent()
 
-  const { query } = useRouter();
-  const { userId: stringQueryUserId } = query;
+  const { query } = useRouter()
+  const { userId: stringQueryUserId } = query
 
-  const [isMe, setIsMe] = useState(false);
+  const [isMe, setIsMe] = useState(false)
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
-  );
-  const [pageFavorites, setPageFavorites] = useState<APIFavorite[]>([]);
-  const [isFollowing, setIsFollowing] = useState(false);
+  )
+  const [pageFavorites, setPageFavorites] = useState<APIFavorite[]>([])
+  const [isFollowing, setIsFollowing] = useState(false)
 
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(false)
 
   const getMyProfile = useCallback(async () => {
     try {
-      setPageFavorites([...myFavorites]);
+      setPageFavorites([...myFavorites])
 
       const {
         data: { followerCount, followingCount, user },
-      } = await userApi.getMyProfile();
+      } = await userApi.getMyProfile()
 
       setPageUserInfo({
         description: user.description,
@@ -82,34 +82,34 @@ const User: NextPage = () => {
         proficiency: user.proficiency,
         profileImage: user.profileImage,
         userId: user.id,
-      });
+      })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  }, []);
+  }, [])
 
   const getOtherProfile = useCallback(async () => {
     try {
-      const { data } = await userApi.getUserProfile(`${stringQueryUserId}`);
-      setPageUserInfo(data);
-      setIsFollowing(data.isFollowing);
+      const { data } = await userApi.getUserProfile(`${stringQueryUserId}`)
+      setPageUserInfo(data)
+      setIsFollowing(data.isFollowing)
       // TODO: 즐겨찾기 API수정시 주석 풀고 디버깅 필요!
       // setPageFavorites([...data.favorites]);
     } catch (error) {
-      console.error(error);
-      const { message } = error as AxiosError;
+      console.error(error)
+      const { message } = error as AxiosError
       if (message === "Entity Not Found") {
-        setIsError(true);
+        setIsError(true)
       }
     }
-  }, [stringQueryUserId]);
+  }, [stringQueryUserId])
 
   const handleClickFollow = (prevIsFollowing: boolean) => {
     if (pageUserInfo) {
       if (prevIsFollowing) {
-        sendFollowCancel({ receiverId: pageUserInfo.userId });
+        sendFollowCancel({ receiverId: pageUserInfo.userId })
       } else {
-        sendFollow({ receiverId: pageUserInfo.userId });
+        sendFollow({ receiverId: pageUserInfo.userId })
       }
       setPageUserInfo((prevState) =>
         prevState
@@ -120,32 +120,32 @@ const User: NextPage = () => {
                 : prevState.followerCount + 1,
             }
           : null
-      );
-      setIsFollowing((prev) => !prev);
+      )
+      setIsFollowing((prev) => !prev)
     }
-  };
+  }
 
   useIsomorphicLayoutEffect(() => {
-    setNavigationTitle(`${pageUserInfo?.nickname}`);
-  }, [pageUserInfo?.nickname, setNavigationTitle]);
+    setNavigationTitle(`${pageUserInfo?.nickname}`)
+  }, [pageUserInfo?.nickname, setNavigationTitle])
 
   useEffect(() => {
     if (stringQueryUserId && userId) {
       if (stringQueryUserId === userId) {
-        setIsMe(true);
-        getMyProfile();
+        setIsMe(true)
+        getMyProfile()
       } else {
-        getOtherProfile();
+        getOtherProfile()
       }
     }
-  }, [userId, getMyProfile, getOtherProfile, stringQueryUserId]);
+  }, [userId, getMyProfile, getOtherProfile, stringQueryUserId])
 
   if (pageUserInfo === null) {
     if (isError) {
-      return <Custom404 />;
+      return <Custom404 />
     }
 
-    return <BasketballLoading />;
+    return <BasketballLoading />
   }
 
   const {
@@ -156,7 +156,7 @@ const User: NextPage = () => {
     description,
     positions,
     proficiency,
-  } = pageUserInfo;
+  } = pageUserInfo
 
   return (
     <div>
@@ -272,10 +272,10 @@ const User: NextPage = () => {
         </div>
       </AdditionalInfoSpacer>
     </div>
-  );
-};
+  )
+}
 
-export default withRouteGuard("private", User);
+export default withRouteGuard("private", User)
 
 const MainInfoContainer = styled.div<{ isBackgroundTransparent: boolean }>`
   ${({ theme, isBackgroundTransparent }) => css`
@@ -283,31 +283,31 @@ const MainInfoContainer = styled.div<{ isBackgroundTransparent: boolean }>`
     background: rgba(255, 255, 255, ${isBackgroundTransparent ? 0 : 1});
     transition: background 200ms;
   `}
-`;
+`
 
 const AdditionalInfoSpacer = styled(Spacer)`
   ${({ theme }) => css`
     padding: ${theme.gaps.md} ${theme.gaps.base};
   `}
-`;
+`
 
 const FlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
+`
 
 const MainInfoArea = styled(FlexContainer)`
   ${({ theme }) => css`
     padding: 0 ${theme.gaps.xs};
   `}
-`;
+`
 
 const ButtonContainer = styled(FlexContainer)`
   ${({ theme }) => css`
     gap: 0 ${theme.gaps.xs};
   `}
-`;
+`
 
 const StatBar = styled.dl`
   ${({ theme }) => css`
@@ -325,11 +325,11 @@ const StatBar = styled.dl`
       padding: ${theme.gaps.xs} 0;
     }
   `}
-`;
+`
 
 const Description = styled.div`
   ${({ theme }) => css`
     margin: ${theme.gaps.md} 0;
     line-height: 1.4;
   `}
-`;
+`

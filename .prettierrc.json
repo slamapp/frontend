@@ -8,5 +8,6 @@
   "arrowParens": "always",
   "proseWrap": "preserve",
   "endOfLine": "auto",
-  "htmlWhitespaceSensitivity": "css"
+  "htmlWhitespaceSensitivity": "css",
+  "semi": false
 }

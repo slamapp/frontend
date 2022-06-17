@@ -1,12 +1,12 @@
-import styled from "@emotion/styled";
-import React from "react";
-import { useAuthContext } from "~/contexts/hooks";
-import { NoItemMessage } from "..";
-import NotificationItem from "./NotificationItem";
+import styled from "@emotion/styled"
+import React from "react"
+import { useAuthContext } from "~/contexts/hooks"
+import { NoItemMessage } from ".."
+import NotificationItem from "./NotificationItem"
 
 const NotificationList = () => {
-  const { authProps } = useAuthContext();
-  const { notifications } = authProps.currentUser;
+  const { authProps } = useAuthContext()
+  const { notifications } = authProps.currentUser
 
   return (
     <NotificationListContainer>
@@ -26,11 +26,11 @@ const NotificationList = () => {
         />
       ))}
     </NotificationListContainer>
-  );
-};
+  )
+}
 
-export default NotificationList;
+export default NotificationList
 
 const NotificationListContainer = styled.div`
   margin: 0 16px;
-`;
+`

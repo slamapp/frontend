@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import styled from "@emotion/styled";
-import Router from "next/router";
-import { useInterval, useTimeout } from "~/hooks";
+import React, { useEffect, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import styled from "@emotion/styled"
+import Router from "next/router"
+import { useInterval, useTimeout } from "~/hooks"
 
 const TopPageLoader = () => {
-  const [isProgressBar, setIsProgressBar] = useState(true);
-  const [percentage, setPercentage] = useState(0);
+  const [isProgressBar, setIsProgressBar] = useState(true)
+  const [percentage, setPercentage] = useState(0)
 
   useInterval(() => {
     if (percentage < 100) {
-      setPercentage((prev) => prev + (90 - prev) / 20);
+      setPercentage((prev) => prev + (90 - prev) / 20)
     }
-  }, 100);
+  }, 100)
 
   useEffect(() => {
     if (!isProgressBar) {
-      setPercentage(100);
+      setPercentage(100)
     }
-  }, [isProgressBar]);
+  }, [isProgressBar])
 
   useEffect(() => {
-    setPercentage(() => 60);
-    Router.events.on("routeChangeStart", () => setIsProgressBar(true));
-    Router.events.on("routeChangeComplete", () => setIsProgressBar(false));
-    Router.events.on("routeChangeError", () => setIsProgressBar(false));
-  }, []);
+    setPercentage(() => 60)
+    Router.events.on("routeChangeStart", () => setIsProgressBar(true))
+    Router.events.on("routeChangeComplete", () => setIsProgressBar(false))
+    Router.events.on("routeChangeError", () => setIsProgressBar(false))
+  }, [])
 
   useTimeout(() => {
-    setIsProgressBar(false);
-  }, 2000); // TODO: 제거 필요!! 농구장에서 새로고침시 router.events.on 동작 안함
+    setIsProgressBar(false)
+  }, 2000) // TODO: 제거 필요!! 농구장에서 새로고침시 router.events.on 동작 안함
 
   return (
     <Container>
@@ -44,8 +44,8 @@ const TopPageLoader = () => {
         )}
       </AnimatePresence>
     </Container>
-  );
-};
+  )
+}
 
 const ProgressBar = styled(motion.div)`
   border-radius: 0 16px 16px 0;
@@ -67,10 +67,10 @@ const ProgressBar = styled(motion.div)`
       background-position: 800px 0;
     }
   }
-`;
+`
 
 const Container = styled.div`
   width: 100%;
-`;
+`
 
-export default TopPageLoader;
+export default TopPageLoader

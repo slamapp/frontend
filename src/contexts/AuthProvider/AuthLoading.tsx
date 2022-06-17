@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import { useAuthContext } from "~/contexts/hooks";
-import { Logo } from "~/components/domains";
+import { useEffect, useState } from "react"
+import styled from "@emotion/styled"
+import { useAuthContext } from "~/contexts/hooks"
+import { Logo } from "~/components/domains"
 
-const FADE_OUT_TIME_MS = 400;
+const FADE_OUT_TIME_MS = 400
 
 const AuthLoading = () => {
-  const { authProps } = useAuthContext();
-  const { isLoading } = authProps;
+  const { authProps } = useAuthContext()
+  const { isLoading } = authProps
 
-  const [isDisplay, setIsDisplay] = useState(true);
+  const [isDisplay, setIsDisplay] = useState(true)
 
   useEffect(() => {
     if (isLoading) {
-      setIsDisplay(true);
+      setIsDisplay(true)
     } else {
-      setTimeout(() => setIsDisplay(false), FADE_OUT_TIME_MS);
+      setTimeout(() => setIsDisplay(false), FADE_OUT_TIME_MS)
     }
-  }, [isLoading]);
+  }, [isLoading])
 
   return isDisplay ? (
     <LoadingContainer isShow={isLoading}>
@@ -25,8 +25,8 @@ const AuthLoading = () => {
     </LoadingContainer>
   ) : (
     <></>
-  );
-};
+  )
+}
 
 const LoadingContainer = styled.div<{ isShow: boolean }>`
   pointer-events: none;
@@ -43,6 +43,6 @@ const LoadingContainer = styled.div<{ isShow: boolean }>`
   // 애니메이션
   transition: all ${FADE_OUT_TIME_MS}ms ease-out;
   opacity: ${({ isShow }) => (isShow ? 1 : 0)};
-`;
+`
 
-export default AuthLoading;
+export default AuthLoading

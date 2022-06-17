@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
-import { useNavigationContext } from "~/contexts/hooks";
-import { ErrorMessage } from "../components/domains";
+import styled from "@emotion/styled"
+import { useNavigationContext } from "~/contexts/hooks"
+import { ErrorMessage } from "../components/domains"
 
 export default function Custom500() {
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_ERROR");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_ERROR")
 
   return (
     <PageContainer>
@@ -13,7 +13,7 @@ export default function Custom500() {
         description={"관리자에게 문의하거나 잠시 후 다시 시도해주세요."}
       />
     </PageContainer>
-  );
+  )
 }
 
 const PageContainer = styled.div`
@@ -23,4 +23,4 @@ const PageContainer = styled.div`
   align-items: center;
   flex: 1;
   margin: 0 ${({ theme }) => theme.gaps.base};
-`;
+`

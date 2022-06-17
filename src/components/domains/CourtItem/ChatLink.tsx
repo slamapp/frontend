@@ -1,9 +1,9 @@
-import Link from "next/link";
-import type { APIChatroom } from "~/domainTypes/tobe";
-import { IconButton } from "~/components/uis/molecules";
+import Link from "next/link"
+import type { APIChatroom } from "~/domainTypes/tobe"
+import { IconButton } from "~/components/uis/molecules"
 
 interface Props {
-  chatroomId: APIChatroom["id"];
+  chatroomId: APIChatroom["id"]
 }
 
 const ChatButton: React.FC<Props> = ({ chatroomId }) => {
@@ -13,7 +13,7 @@ const ChatButton: React.FC<Props> = ({ chatroomId }) => {
         <IconButton name="message-circle" />
       </a>
     </Link>
-  );
-};
+  )
+}
 
-export default ChatButton;
+export default ChatButton

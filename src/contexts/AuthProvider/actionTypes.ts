@@ -1,5 +1,5 @@
-import type { ActionWithoutPayload, ActionWithPayload } from "~/contexts/type";
-import type { APIFavorite, APINotification, APIUser } from "~/domainTypes/tobe";
+import type { ActionWithoutPayload, ActionWithPayload } from "~/contexts/type"
+import type { APIFavorite, APINotification, APIUser } from "~/domainTypes/tobe"
 
 export type ActionUnion =
   | ActionWithPayload<
@@ -24,4 +24,4 @@ export type ActionUnion =
     >
   | ActionWithPayload<"UNSHIFT_NOTIFICATION", any>
   | ActionWithoutPayload<"READ_ALL_NOTIFICATIONS">
-  | ActionWithPayload<"SET_MY_RESERVATIONS", any>;
+  | ActionWithPayload<"SET_MY_RESERVATIONS", any>

@@ -5,8 +5,8 @@ export const positionType = {
   PG: "포인트가드",
   C: "센터",
   TBD: "미정",
-} as const;
+} as const
 
-type PositionMap = typeof positionType;
-export type PositionValue = PositionMap[keyof PositionMap];
-export type PositionKey = keyof PositionMap;
+type PositionMap = typeof positionType
+export type PositionValue = PositionMap[keyof PositionMap]
+export type PositionKey = keyof PositionMap

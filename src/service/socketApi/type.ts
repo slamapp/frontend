@@ -1,6 +1,6 @@
-import type { CompatClient } from "@stomp/stompjs";
+import type { CompatClient } from "@stomp/stompjs"
 
 export interface SocketApi {
-  getWebSocket: () => WebSocket;
-  getCompatClient: () => CompatClient;
+  getWebSocket: () => WebSocket
+  getCompatClient: () => CompatClient
 }

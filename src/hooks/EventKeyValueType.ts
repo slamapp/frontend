@@ -423,4 +423,4 @@ export type EventKeyValue =
   | "LaunchApplication13"
   | "LaunchApplication14"
   | "LaunchApplication15"
-  | "LaunchApplication16";
+  | "LaunchApplication16"

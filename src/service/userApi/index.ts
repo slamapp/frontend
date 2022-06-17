@@ -1,5 +1,5 @@
-import { authRequest, authFileRequest } from "../fetcher";
-import type { UserApi } from "./type";
+import { authRequest, authFileRequest } from "../fetcher"
+import type { UserApi } from "./type"
 
 const userAPI: UserApi = {
   getUserData: () => authRequest.get("/users/me"),
@@ -9,6 +9,6 @@ const userAPI: UserApi = {
   updateMyProfileImage: (editedProfileImageFile) =>
     authFileRequest.put("/users/myprofile/image", editedProfileImageFile),
   deleteMyProfileImage: () => authRequest.delete("/users/myprofile/image"),
-};
+}
 
-export default userAPI;
+export default userAPI

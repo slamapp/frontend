@@ -3,13 +3,13 @@ const appendImageFileToFormData = (
   key: string
 ) => {
   if (!profileImageFile) {
-    return null;
+    return null
   }
 
-  const formData = new FormData();
-  formData.append(key, profileImageFile);
+  const formData = new FormData()
+  formData.append(key, profileImageFile)
 
-  return formData;
-};
+  return formData
+}
 
-export default appendImageFileToFormData;
+export default appendImageFileToFormData

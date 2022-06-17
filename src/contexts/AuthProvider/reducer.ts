@@ -1,27 +1,27 @@
-import type { Reducer } from "react";
-import type { Reservation } from "~/domainTypes";
+import type { Reducer } from "react"
+import type { Reservation } from "~/domainTypes"
 import type {
   APINotification,
   APIUser,
   APIFavorite,
   APIReservation,
-} from "~/domainTypes/tobe";
-import type { ActionUnion } from "./actionTypes";
+} from "~/domainTypes/tobe"
+import type { ActionUnion } from "./actionTypes"
 
 export interface DataProps {
   currentUser: {
-    userId: APIUser["id"] | null;
-    email: APIUser["email"] | null;
-    profileImage: APIUser["profileImage"] | null;
-    role: APIUser["role"] | null;
-    description: APIUser["description"] | null;
-    nickname: APIUser["nickname"] | null;
-    favorites: APIFavorite[];
-    notifications: APINotification[];
-    notificationLastId?: APINotification["id"] | null;
-    reservations: APIReservation[];
-  };
-  isLoading: boolean;
+    userId: APIUser["id"] | null
+    email: APIUser["email"] | null
+    profileImage: APIUser["profileImage"] | null
+    role: APIUser["role"] | null
+    description: APIUser["description"] | null
+    nickname: APIUser["nickname"] | null
+    favorites: APIFavorite[]
+    notifications: APINotification[]
+    notificationLastId?: APINotification["id"] | null
+    reservations: APIReservation[]
+  }
+  isLoading: boolean
 }
 
 export const initialData = {
@@ -38,12 +38,12 @@ export const initialData = {
     reservations: [],
   },
   isLoading: true,
-};
+}
 
 export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
   switch (action.type) {
     case "SET_CURRENT_USER": {
-      const { user, notifications } = action.payload;
+      const { user, notifications } = action.payload
       const {
         id,
         nickname,
@@ -53,7 +53,7 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
         profileImage,
         role,
         description,
-      } = user;
+      } = user
 
       return {
         ...prevState,
@@ -71,13 +71,13 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           notificationLastId:
             notifications[notifications.length - 1]?.id || null,
         },
-      };
+      }
     }
     case "CLEAR_CURRENT_USER": {
       return {
         ...prevState,
         ...initialData,
-      };
+      }
     }
     case "LOADING_ON": {
       return {
@@ -86,7 +86,7 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ...prevState.currentUser,
         },
         isLoading: true,
-      };
+      }
     }
     case "LOADING_OFF": {
       return {
@@ -95,10 +95,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ...prevState.currentUser,
         },
         isLoading: false,
-      };
+      }
     }
     case "UPDATE_MY_PROFILE": {
-      const { nickname, positions, proficiency, description } = action.payload;
+      const { nickname, positions, proficiency, description } = action.payload
 
       return {
         ...prevState,
@@ -109,10 +109,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           proficiency,
           description,
         },
-      };
+      }
     }
     case "SET_MY_PROFILE_IMAGE": {
-      const { profileImage } = action.payload;
+      const { profileImage } = action.payload
 
       return {
         ...prevState,
@@ -120,10 +120,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ...prevState.currentUser,
           profileImage,
         },
-      };
+      }
     }
     case "GET_MY_FAVORITES": {
-      const { favorites } = action.payload;
+      const { favorites } = action.payload
 
       return {
         ...prevState,
@@ -131,10 +131,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ...prevState.currentUser,
           favorites: [...favorites],
         },
-      };
+      }
     }
     case "CREATE_FAVORITE": {
-      const { favorite } = action.payload;
+      const { favorite } = action.payload
 
       return {
         ...prevState,
@@ -142,10 +142,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ...prevState.currentUser,
           favorites: [...prevState.currentUser.favorites, favorite],
         },
-      };
+      }
     }
     case "DELETE_FAVORITE": {
-      const { deletedFavoriteId } = action.payload;
+      const { deletedFavoriteId } = action.payload
 
       return {
         ...prevState,
@@ -155,10 +155,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
             ({ id }) => id !== deletedFavoriteId
           ),
         },
-      };
+      }
     }
     case "SET_MY_RESERVATIONS": {
-      const { reservations } = action.payload;
+      const { reservations } = action.payload
 
       return {
         ...prevState,
@@ -166,10 +166,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ...prevState.currentUser,
           reservations: [...reservations],
         },
-      };
+      }
     }
     case "UNSHIFT_NOTIFICATION": {
-      const { notification } = action.payload;
+      const { notification } = action.payload
 
       return {
         ...prevState,
@@ -177,10 +177,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ...prevState.currentUser,
           notifications: [notification, ...prevState.currentUser.notifications],
         },
-      };
+      }
     }
     case "CONCAT_NOTIFICATIONS": {
-      const { notifications, lastId } = action.payload;
+      const { notifications, lastId } = action.payload
 
       return {
         ...prevState,
@@ -192,7 +192,7 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
           ],
           notificationLastId: notifications.length !== 0 ? lastId : null,
         },
-      };
+      }
     }
     case "READ_ALL_NOTIFICATIONS": {
       return {
@@ -206,10 +206,10 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
             })),
           ],
         },
-      };
+      }
     }
     default: {
-      return { ...prevState };
+      return { ...prevState }
     }
   }
-};
+}

@@ -1,17 +1,17 @@
-import type { NextPage } from "next";
-import React, { useState, useRef } from "react";
-import type { APIFollow, APIUser } from "~/domainTypes/tobe";
-import { withRouteGuard } from "~/hocs";
-import { useInfiniteScroll } from "~/hooks";
-import { useNavigationContext } from "~/contexts/hooks";
-import { UserListItem } from "~/components/domains";
+import type { NextPage } from "next"
+import React, { useState, useRef } from "react"
+import type { APIFollow, APIUser } from "~/domainTypes/tobe"
+import { withRouteGuard } from "~/hocs"
+import { useInfiniteScroll } from "~/hooks"
+import { useNavigationContext } from "~/contexts/hooks"
+import { UserListItem } from "~/components/domains"
 
 type Following = {
-  id: APIFollow["id"];
-  receiver: Pick<APIUser, "id" | "nickname" | "profileImage">;
-  createdAt: APIFollow["createdAt"];
-  updatedAt: APIFollow["updatedAt"];
-};
+  id: APIFollow["id"]
+  receiver: Pick<APIUser, "id" | "nickname" | "profileImage">
+  createdAt: APIFollow["createdAt"]
+  updatedAt: APIFollow["updatedAt"]
+}
 
 const dummyFollowings: Following[] = [
   {
@@ -25,18 +25,18 @@ const dummyFollowings: Following[] = [
     createdAt: "2021-06-01T00:00:00:000Z",
     updatedAt: "2021-06-01T00:00:00:000Z",
   },
-];
+]
 
 const FollowingPage: NextPage = () => {
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_USER_FOLLOWING");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_USER_FOLLOWING")
 
-  const [followings, setFollowings] = useState<Following[]>([]);
-  const ref = useRef<HTMLDivElement>(null);
+  const [followings, setFollowings] = useState<Following[]>([])
+  const ref = useRef<HTMLDivElement>(null)
 
   const [isFetching] = useInfiniteScroll(ref, () => {
-    setFollowings((prev: any) => [...prev, ...dummyFollowings]);
-  });
+    setFollowings((prev: any) => [...prev, ...dummyFollowings])
+  })
 
   return (
     <div>
@@ -55,7 +55,7 @@ const FollowingPage: NextPage = () => {
         ))}
       <div ref={ref} style={{ height: 10 }}></div>
     </div>
-  );
-};
+  )
+}
 
-export default withRouteGuard("private", FollowingPage);
+export default withRouteGuard("private", FollowingPage)

@@ -1,19 +1,19 @@
-import React, { useMemo } from "react";
-import styled from "@emotion/styled";
-import type { Dayjs } from "dayjs";
-import { Text } from "~/components/uis/atoms";
-import { week } from "~/utils/date";
+import React, { useMemo } from "react"
+import styled from "@emotion/styled"
+import type { Dayjs } from "dayjs"
+import { Text } from "~/components/uis/atoms"
+import { week } from "~/utils/date"
 
 interface Props {
-  date: Dayjs;
-  selected: boolean;
-  onClick: (date: Dayjs) => void;
+  date: Dayjs
+  selected: boolean
+  onClick: (date: Dayjs) => void
 }
 
 const DateItem = React.memo(
   React.forwardRef<HTMLDivElement, Props>(
     ({ date, onClick, selected }, ref) => {
-      const dayOfWeekIndex = useMemo(() => date.day(), [date]);
+      const dayOfWeekIndex = useMemo(() => date.day(), [date])
 
       return (
         <DateItemContainer ref={ref} onClick={() => onClick(date)}>
@@ -24,12 +24,12 @@ const DateItem = React.memo(
             <span>{date.date()}</span>
           </Day>
         </DateItemContainer>
-      );
+      )
     }
   )
-);
+)
 
-export default DateItem;
+export default DateItem
 
 const DateItemContainer = styled.div`
   margin-top: ${({ theme }) => theme.gaps.md};
@@ -39,24 +39,24 @@ const DateItemContainer = styled.div`
   flex-direction: column;
   text-align: center;
   cursor: pointer;
-`;
+`
 
-const SUNDAY_INDEX = 0;
-const SATURDAY_INDEX = 6;
+const SUNDAY_INDEX = 0
+const SATURDAY_INDEX = 6
 
 const DayOfTheWeek = styled(Text)<{ index: number }>`
   margin-bottom: 10px;
   color: ${({ index, theme }) => {
     if (index === SUNDAY_INDEX) {
-      return theme.colors.red.middle;
+      return theme.colors.red.middle
     } else if (index === SATURDAY_INDEX) {
-      return theme.colors.blue.middle;
+      return theme.colors.blue.middle
     } else {
-      return theme.colors.gray700;
+      return theme.colors.gray700
     }
   }};
   font-size: ${({ theme }) => theme.fontSizes.xs};
-`;
+`
 
 const Day = styled(Text)<{ selected: boolean }>`
   display: flex;
@@ -78,4 +78,4 @@ const Day = styled(Text)<{ selected: boolean }>`
       selected ? theme.colors.gray900 : theme.colors.gray700};
     color: ${({ theme }) => theme.colors.white};
   }
-`;
+`

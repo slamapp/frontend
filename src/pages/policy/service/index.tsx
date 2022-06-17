@@ -1,5 +1,5 @@
-import type { NextPage } from "next";
-import Head from "next/head";
+import type { NextPage } from "next"
+import Head from "next/head"
 
 const ServicePolicy: NextPage = () => {
   return (
@@ -9,7 +9,7 @@ const ServicePolicy: NextPage = () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
     </div>
-  );
-};
+  )
+}
 
-export default ServicePolicy;
+export default ServicePolicy

@@ -1,5 +1,5 @@
-import { request, authRequest, authFileRequest } from "../fetcher";
-import type { CourtApi } from "./type";
+import { request, authRequest, authFileRequest } from "../fetcher"
+import type { CourtApi } from "./type"
 
 const courtApi: CourtApi = {
   getCourtsByCoordsAndDate: ({
@@ -28,6 +28,6 @@ const courtApi: CourtApi = {
     }),
   getAllCourtReservationsByDate: (courtId, date) =>
     authRequest.get(`/courts/${courtId}/reservations/${date}`),
-};
+}
 
-export default courtApi;
+export default courtApi

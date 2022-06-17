@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 
-import * as S from "./style";
+import * as S from "./style"
 
 interface Props {
-  onZoomIn: () => void;
-  onZoomOut: () => void;
-  bottom?: number;
+  onZoomIn: () => void
+  onZoomOut: () => void
+  bottom?: number
 }
 
 const ZoomButton = ({ onZoomIn, onZoomOut, bottom }: Props) => (
@@ -13,6 +13,6 @@ const ZoomButton = ({ onZoomIn, onZoomOut, bottom }: Props) => (
     <S.MapIconButton type="button" name="plus" onClick={onZoomIn} />
     <S.MapIconButton type="button" name="minus" onClick={onZoomOut} />
   </S.ZoomActions>
-);
+)
 
-export default ZoomButton;
+export default ZoomButton

@@ -1,43 +1,43 @@
-import { useCallback, useState } from "react";
-import styled from "@emotion/styled";
-import dayjs from "dayjs";
+import { useCallback, useState } from "react"
+import styled from "@emotion/styled"
+import dayjs from "dayjs"
 
-import { useReservationContext } from "~/contexts/hooks";
-import { Spacer, Button, Text } from "~/components/uis/atoms";
+import { useReservationContext } from "~/contexts/hooks"
+import { Spacer, Button, Text } from "~/components/uis/atoms"
 import {
   getTimeFromIndex,
   getTimezoneDateStringFromDate,
   week,
-} from "~/utils/date";
-import Modal from "../Modal";
-import { DayOfTheWeek } from "..";
+} from "~/utils/date"
+import Modal from "../Modal"
+import { DayOfTheWeek } from ".."
 
 interface Props {
-  visible: boolean;
-  onClose: () => void;
-  onDecideBall: (hasBall: boolean) => void;
+  visible: boolean
+  onClose: () => void
+  onDecideBall: (hasBall: boolean) => void
 }
 
 const steps = {
   CONFIRM_RESERVATION: 1,
   DECIDE_BALL: 2,
-};
+}
 
 const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
   const {
     reservation: { courtName, startIndex, endIndex, date },
-  } = useReservationContext();
+  } = useReservationContext()
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1)
 
   const handleClickNext = useCallback(() => {
-    setStep((prev) => prev + 1);
-  }, []);
+    setStep((prev) => prev + 1)
+  }, [])
 
   const handleClose = useCallback(() => {
-    setStep(1);
-    onClose();
-  }, [onClose]);
+    setStep(1)
+    onClose()
+  }, [onClose])
 
   return (
     <Modal visible={visible} onClose={handleClose}>
@@ -109,29 +109,29 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
         )}
       </Spacer>
     </Modal>
-  );
-};
+  )
+}
 
-export default HasBallDecisionModal;
+export default HasBallDecisionModal
 
 const HalfButton = styled(Button)`
   flex: 1;
   box-sizing: content-box;
   line-height: 1.3;
-`;
+`
 
 const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.gray700};
   font-size: ${({ theme }) => theme.fontSizes.sm};
-`;
+`
 
 const SubText = styled(Text)`
   color: ${({ theme }) => theme.colors.gray600};
-`;
+`
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 ${({ theme }) => theme.gaps.sm};
   margin-bottom: 10px;
-`;
+`

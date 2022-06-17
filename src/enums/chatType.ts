@@ -1,7 +1,7 @@
 export const chatType = {
   DEFAULT: "DEFAULT",
   LOUDSPEAKER: "LOUDSPEAKER",
-} as const;
+} as const
 
-type ChatTypeMap = typeof chatType;
-export type ChatType = ChatTypeMap[keyof ChatTypeMap];
+type ChatTypeMap = typeof chatType
+export type ChatType = ChatTypeMap[keyof ChatTypeMap]

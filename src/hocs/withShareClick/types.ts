@@ -3,20 +3,20 @@ import type {
   APICourtChatroom,
   APIUser,
   OmitAt,
-} from "~/domainTypes/tobe";
+} from "~/domainTypes/tobe"
 
-export type ShareArgs = CourtArgs | CourtChatroomArgs | UserArgs;
+export type ShareArgs = CourtArgs | CourtChatroomArgs | UserArgs
 
 type CourtArgs = Args<{
-  court: Pick<APICourt, "id" | "latitude" | "longitude" | "name">;
-}>;
+  court: Pick<APICourt, "id" | "latitude" | "longitude" | "name">
+}>
 type CourtChatroomArgs = Args<{
-  courtChatroom: OmitAt<APICourtChatroom>;
-}>;
+  courtChatroom: OmitAt<APICourtChatroom>
+}>
 type UserArgs = Args<{
-  user: OmitAt<APIUser>;
-}>;
+  user: OmitAt<APIUser>
+}>
 
 type Args<Obj> = {
-  [Key in keyof Obj]: [Key, Obj];
-}[keyof Obj];
+  [Key in keyof Obj]: [Key, Obj]
+}[keyof Obj]

@@ -1,9 +1,9 @@
-import * as S from "./style";
+import * as S from "./style"
 
 interface Props {
-  unit: number;
-  startIndex: number;
-  endIndex: number;
+  unit: number
+  startIndex: number
+  endIndex: number
 }
 
 const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
@@ -51,7 +51,7 @@ const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default RangeSelector;
+export default RangeSelector

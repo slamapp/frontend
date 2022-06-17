@@ -1,13 +1,13 @@
-import { useMemo } from "react";
-import Box from "./Box";
+import { useMemo } from "react"
+import Box from "./Box"
 
 interface Props {
-  line?: number;
-  fontSize?: number;
-  lineHeight?: number;
-  stepPercentage?: number;
-  lineBreak?: number;
-  [x: string]: any;
+  line?: number
+  fontSize?: number
+  lineHeight?: number
+  stepPercentage?: number
+  lineBreak?: number
+  [x: string]: any
 }
 
 const Paragraph = ({
@@ -19,17 +19,17 @@ const Paragraph = ({
   ...props
 }: Props) => {
   const stepWidth = (ratio: number) =>
-    Math.floor(ratio / stepPercentage) * stepPercentage;
+    Math.floor(ratio / stepPercentage) * stepPercentage
 
   // 정갈한 Paragraph 모양을 위한 Step Percentage
   const middleLineWidthRandomRatio = useMemo(
     () => stepWidth(80 + Math.floor(Math.random() * 20)),
     []
-  );
+  )
   const lastLineWidthRandomRatio = useMemo(
     () => stepWidth(20 + Math.floor(Math.random() * 80)),
     []
-  );
+  )
 
   return (
     <div {...props} style={{ fontSize, lineHeight }}>
@@ -51,7 +51,7 @@ const Paragraph = ({
         )
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Paragraph;
+export default Paragraph

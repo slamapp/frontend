@@ -1,45 +1,45 @@
-import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useLocalToken } from "~/hooks/domain";
+import type { NextPage } from "next"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
+import { useLocalToken } from "~/hooks/domain"
 
 // TODO: Version2에서 private / prevented RedirectPath Props로 받아오도록 변경하기
-const privateRedirectPath = "/courts";
-const preventedRedirectPath = "/";
+const privateRedirectPath = "/courts"
+const preventedRedirectPath = "/"
 
-type RouteOption = "private" | "prevented";
+type RouteOption = "private" | "prevented"
 
 const withRouteGuard = (option: RouteOption, Page: NextPage) => {
   return () => {
-    const [localToken] = useLocalToken();
-    const router = useRouter();
-    const { pathname } = router;
+    const [localToken] = useLocalToken()
+    const router = useRouter()
+    const { pathname } = router
 
     useEffect(() => {
       if (router.isReady) {
         switch (option) {
           case "private":
             if (localToken) {
-              router.replace({ pathname: `${pathname}`, query: router.query });
+              router.replace({ pathname: `${pathname}`, query: router.query })
             } else {
-              router.replace(privateRedirectPath);
+              router.replace(privateRedirectPath)
             }
-            break;
+            break
           case "prevented":
             if (localToken) {
-              router.replace(preventedRedirectPath);
+              router.replace(preventedRedirectPath)
             } else {
-              router.replace({ pathname: `${pathname}`, query: router.query });
+              router.replace({ pathname: `${pathname}`, query: router.query })
             }
-            break;
+            break
           default:
-            break;
+            break
         }
       }
-    }, [localToken]);
+    }, [localToken])
 
-    return <Page />;
-  };
-};
+    return <Page />
+  }
+}
 
-export default withRouteGuard;
+export default withRouteGuard

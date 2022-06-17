@@ -1,27 +1,27 @@
-import { useRouter } from "next/router";
-import type { ReactNode } from "react";
-import { useCallback, useReducer } from "react";
-import reservationApi from "~/service/reservationApi";
-import { useAuthContext } from "~/contexts/hooks";
-import { getISOString } from "~/utils/date";
-import { actionTypes } from "./actionTypes";
+import { useRouter } from "next/router"
+import type { ReactNode } from "react"
+import { useCallback, useReducer } from "react"
+import reservationApi from "~/service/reservationApi"
+import { useAuthContext } from "~/contexts/hooks"
+import { getISOString } from "~/utils/date"
+import { actionTypes } from "./actionTypes"
 
-import ReservationContext from "./context";
-import { reducer, initialState } from "./reducer";
+import ReservationContext from "./context"
+import { reducer, initialState } from "./reducer"
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const ReservationProvider = ({ children }: Props) => {
-  const [reservation, dispatch] = useReducer(reducer, initialState);
-  const router = useRouter();
+  const [reservation, dispatch] = useReducer(reducer, initialState)
+  const router = useRouter()
 
   const {
     authProps: { currentUser },
-  } = useAuthContext();
+  } = useAuthContext()
 
-  const { startIndex, endIndex, selectedReservationId } = reservation;
+  const { startIndex, endIndex, selectedReservationId } = reservation
 
   const handleInitReservation = useCallback(
     (reservations: any, courtName: string, date: any) => {
@@ -33,32 +33,32 @@ const ReservationProvider = ({ children }: Props) => {
           date,
           userId: currentUser.userId,
         },
-      });
+      })
     },
     [currentUser]
-  );
+  )
 
   const handleSetCurrentBlock = useCallback((startIndex: number) => {
-    dispatch({ type: actionTypes.CLICK_BLOCK, payload: { startIndex } });
-  }, []);
+    dispatch({ type: actionTypes.CLICK_BLOCK, payload: { startIndex } })
+  }, [])
 
   const handleStartCreate = useCallback(() => {
     // setIsOpen(false);
-    dispatch({ type: actionTypes.START_CREATE });
-  }, []);
+    dispatch({ type: actionTypes.START_CREATE })
+  }, [])
 
   const handleDecreaseStep = useCallback(() => {
-    dispatch({ type: actionTypes.DECREASE_STEP });
-  }, []);
+    dispatch({ type: actionTypes.DECREASE_STEP })
+  }, [])
 
   const handleStartUpdate = useCallback(() => {
-    dispatch({ type: actionTypes.START_UPDATE });
-  }, []);
+    dispatch({ type: actionTypes.START_UPDATE })
+  }, [])
 
   const handleCreateReservation = useCallback(
     async (date: string, courtId: string, hasBall: boolean) => {
       if (!date || !courtId) {
-        return;
+        return
       }
 
       const data = {
@@ -66,42 +66,42 @@ const ReservationProvider = ({ children }: Props) => {
         startTime: getISOString(date as string, startIndex),
         endTime: getISOString(date as string, endIndex + 1),
         hasBall,
-      };
-
-      try {
-        await reservationApi.createReservation(data);
-      } catch (error) {
-        console.error(error);
       }
 
-      router.push("/reservations");
+      try {
+        await reservationApi.createReservation(data)
+      } catch (error) {
+        console.error(error)
+      }
+
+      router.push("/reservations")
     },
     [endIndex, startIndex, router]
-  );
+  )
 
   const handleChangeHasBall = useCallback((hasBall: boolean) => {
     dispatch({
       type: actionTypes.SET_HAS_BALL,
       payload: { hasBall },
-    });
-  }, []);
+    })
+  }, [])
 
   const handleSelectReservation = useCallback(
     (selectedReservationId: number) => {
       dispatch({
         type: actionTypes.CLICK_RESERVATION_MARKER,
         payload: { selectedReservationId },
-      });
+      })
     },
     []
-  );
+  )
 
   const handleSetCurrentInput = useCallback((currentInput: string) => {
     dispatch({
       type: actionTypes.SET_CURRENT_INPUT,
       payload: { currentInput },
-    });
-  }, []);
+    })
+  }, [])
 
   const handleSetTime = useCallback(
     (timeIndex: number) => {
@@ -111,10 +111,10 @@ const ReservationProvider = ({ children }: Props) => {
           timeIndex,
           user: currentUser,
         },
-      });
+      })
     },
     [currentUser]
-  );
+  )
 
   return (
     <ReservationContext.Provider
@@ -134,7 +134,7 @@ const ReservationProvider = ({ children }: Props) => {
     >
       {children}
     </ReservationContext.Provider>
-  );
-};
+  )
+}
 
-export default ReservationProvider;
+export default ReservationProvider

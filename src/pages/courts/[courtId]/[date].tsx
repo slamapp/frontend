@@ -1,50 +1,50 @@
-import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-import dayjs from "dayjs";
-import { courtApi } from "~/service";
+import type { NextPage } from "next"
+import { useRouter } from "next/router"
+import { useCallback, useEffect, useState } from "react"
+import dayjs from "dayjs"
+import { courtApi } from "~/service"
 import {
   useAuthContext,
   useNavigationContext,
   useReservationContext,
-} from "~/contexts/hooks";
+} from "~/contexts/hooks"
 
-import { week, getTimeFromIndex } from "~/utils/date";
+import { week, getTimeFromIndex } from "~/utils/date"
 import {
   TimeTable,
   ReservationModalContent as ModalContent,
   DayOfTheWeek,
-} from "~/components/domains";
-import { ModalSheet } from "~/components/uis/templates";
-import { Text } from "~/components/uis/atoms";
+} from "~/components/domains"
+import { ModalSheet } from "~/components/uis/templates"
+import { Text } from "~/components/uis/atoms"
 
-const getIsPast = (date: string) => dayjs().isAfter(date, "day");
+const getIsPast = (date: string) => dayjs().isAfter(date, "day")
 
 const Reservation: NextPage = () => {
-  const router = useRouter();
+  const router = useRouter()
   const {
     query: { courtId, date, timeSlot },
-  } = router;
+  } = router
 
   const {
     authProps: { currentUser },
-  } = useAuthContext();
+  } = useAuthContext()
 
   const {
     useMountPage,
     clearNavigationEvent,
     setCustomButtonEvent,
     setNavigationTitle,
-  } = useNavigationContext();
+  } = useNavigationContext()
 
   const {
     reservation,
     handleDecreaseStep,
     handleInitReservation,
     handleCreateReservation,
-  } = useReservationContext();
+  } = useReservationContext()
 
-  useMountPage("PAGE_COURT_RESERVATIONS");
+  useMountPage("PAGE_COURT_RESERVATIONS")
 
   const {
     startIndex,
@@ -58,64 +58,64 @@ const Reservation: NextPage = () => {
     modalContentData,
     hasBall,
     currentInput,
-  } = reservation;
+  } = reservation
 
-  const [snap, setSnap] = useState(0);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [snap, setSnap] = useState(0)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const handleClose = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    setIsOpen(false)
+  }, [])
 
   const handleOpen = useCallback(() => {
-    setIsOpen(true);
-  }, []);
+    setIsOpen(true)
+  }, [])
 
   useEffect(() => {
     if (router.isReady && getIsPast(date as string)) {
-      alert("과거의 예약 정보는 확인할 수 없습니다.");
-      router.replace("/courts");
+      alert("과거의 예약 정보는 확인할 수 없습니다.")
+      router.replace("/courts")
     }
 
-    const el = document.querySelector("#scrolled-container");
+    const el = document.querySelector("#scrolled-container")
 
     if (router.isReady && !timeSlot) {
       el!.scrollTo({
         top: 0,
         left: 0,
         behavior: "smooth",
-      });
+      })
     }
-  }, [router]);
+  }, [router])
 
   useEffect(() => {
-    setNavigationTitle(<ReservationTitle date={date as string} />);
-  }, [date, setNavigationTitle]);
+    setNavigationTitle(<ReservationTitle date={date as string} />)
+  }, [date, setNavigationTitle])
 
   useEffect(() => {
     if (step > 1) {
       setCustomButtonEvent("취소", () => {
-        handleClose();
-        handleDecreaseStep();
-      });
+        handleClose()
+        handleDecreaseStep()
+      })
     } else {
-      clearNavigationEvent();
+      clearNavigationEvent()
     }
 
-    return () => clearNavigationEvent();
+    return () => clearNavigationEvent()
   }, [
     step,
     clearNavigationEvent,
     setCustomButtonEvent,
     handleDecreaseStep,
     handleClose,
-  ]);
+  ])
 
   useEffect(() => {
     const initReservations = async () => {
       const {
         data: { reservations },
-      } = await courtApi.getAllCourtReservationsByDate(`${courtId}`, `${date}`);
+      } = await courtApi.getAllCourtReservationsByDate(`${courtId}`, `${date}`)
 
       const {
         data: { court },
@@ -123,16 +123,16 @@ const Reservation: NextPage = () => {
         `${courtId}`,
         dayjs().format("YYYY-MM-DD"),
         "dawn"
-      );
-      handleInitReservation(reservations, court.name, date);
-    };
+      )
+      handleInitReservation(reservations, court.name, date)
+    }
 
     if (router.isReady && currentUser.userId) {
-      initReservations();
+      initReservations()
     }
-  }, [courtId, date, currentUser.userId, router, handleInitReservation]);
+  }, [courtId, date, currentUser.userId, router, handleInitReservation])
 
-  console.log(mode);
+  console.log(mode)
 
   return (
     <div>
@@ -146,7 +146,7 @@ const Reservation: NextPage = () => {
         isOpen={isOpen}
         onClose={handleClose}
         onSnap={(snap: number) => {
-          setSnap(snap);
+          setSnap(snap)
         }}
         onCloseStart={() => setSnap(-1)}
       >
@@ -169,7 +169,7 @@ const Reservation: NextPage = () => {
             requestDisabled={requestDisabled}
             onSubmit={() => {
               if (mode === "create") {
-                handleCreateReservation(date, courtId, hasBall);
+                handleCreateReservation(date, courtId, hasBall)
               }
             }}
             buttonText={
@@ -180,13 +180,13 @@ const Reservation: NextPage = () => {
       </ModalSheet>
       <div style={{ height: 320 }}></div>
     </div>
-  );
-};
+  )
+}
 
-export default Reservation;
+export default Reservation
 
 const ReservationTitle: React.FC<{ date: string }> = ({ date }) => {
-  const d = dayjs(date as string);
+  const d = dayjs(date as string)
 
   return (
     <Text size="base">
@@ -196,5 +196,5 @@ const ReservationTitle: React.FC<{ date: string }> = ({ date }) => {
       </DayOfTheWeek>
       )
     </Text>
-  );
-};
+  )
+}

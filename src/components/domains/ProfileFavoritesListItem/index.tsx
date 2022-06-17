@@ -1,14 +1,14 @@
-import React from "react";
-import type { ReactNode, HTMLAttributes } from "react";
-import styled from "@emotion/styled";
-import Link from "next/link";
-import { Spacer, Text, Icon, Button } from "~/components/uis/atoms";
-import type { APIFavorite } from "~/domainTypes/tobe";
+import React from "react"
+import type { ReactNode, HTMLAttributes } from "react"
+import styled from "@emotion/styled"
+import Link from "next/link"
+import { Spacer, Text, Icon, Button } from "~/components/uis/atoms"
+import type { APIFavorite } from "~/domainTypes/tobe"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
-  className?: string;
-  courtId: APIFavorite["court"]["id"];
+  children: ReactNode
+  className?: string
+  courtId: APIFavorite["court"]["id"]
 }
 
 const ProfileFavoritesListItem: React.FC<Props> = ({
@@ -35,14 +35,14 @@ const ProfileFavoritesListItem: React.FC<Props> = ({
         </Button>
       </div>
     </ListItem>
-  );
-};
+  )
+}
 
 const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: ${({ theme }) => theme.gaps.xs} 0;
-`;
+`
 
-export default ProfileFavoritesListItem;
+export default ProfileFavoritesListItem

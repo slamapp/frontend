@@ -1,16 +1,16 @@
-import { useReservationContext } from "~/contexts/hooks";
-import { Text } from "~/components/uis/atoms";
+import { useReservationContext } from "~/contexts/hooks"
+import { Text } from "~/components/uis/atoms"
 import {
   MAJOR_TIME_BLOCK_UNIT,
   ACTIVE_RESERVATION_COUNT,
   getTimeFromIndex,
-} from "~/utils/date";
-import * as S from "./style";
-import type { TimeBlockUnitProps, Status } from "../type";
-import Hour from "./Hour";
+} from "~/utils/date"
+import * as S from "./style"
+import type { TimeBlockUnitProps, Status } from "../type"
+import Hour from "./Hour"
 
 const getTimeSlotFromIndex = (index: number) =>
-  `${getTimeFromIndex(index)} - ${getTimeFromIndex(index + 1)}`;
+  `${getTimeFromIndex(index)} - ${getTimeFromIndex(index + 1)}`
 
 const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
   index,
@@ -24,18 +24,18 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
 }) => {
   const {
     reservation: { step },
-  } = useReservationContext();
+  } = useReservationContext()
 
-  const isEven = index % 2 === 0;
-  const hasBlackTopBorder = index % MAJOR_TIME_BLOCK_UNIT === 0;
+  const isEven = index % 2 === 0
+  const hasBlackTopBorder = index % MAJOR_TIME_BLOCK_UNIT === 0
   const hasBlackBottomBorder =
-    index % MAJOR_TIME_BLOCK_UNIT === MAJOR_TIME_BLOCK_UNIT - 1;
+    index % MAJOR_TIME_BLOCK_UNIT === MAJOR_TIME_BLOCK_UNIT - 1
   const status: Status =
     reservationCount === 0
       ? "none"
       : reservationCount >= ACTIVE_RESERVATION_COUNT
       ? "active"
-      : "lack";
+      : "lack"
 
   return (
     <S.TimeBlockUnitWrapper
@@ -68,7 +68,7 @@ const TimeBlockUnit: React.FC<TimeBlockUnitProps> = ({
         )}
       </S.BallColumn>
     </S.TimeBlockUnitWrapper>
-  );
-};
+  )
+}
 
-export default TimeBlockUnit;
+export default TimeBlockUnit

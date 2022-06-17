@@ -1,43 +1,43 @@
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import styled from "@emotion/styled";
-import dynamic from "next/dynamic";
-import type { APIFavorite } from "~/domainTypes/tobe";
-import { Button, Spacer } from "~/components/uis/atoms";
-import CourtItem from "../CourtItem";
-import NoItemMessage from "../NoItemMessage";
-import { useAuthContext } from "~/contexts/hooks";
-import favoriteAPI from "~/service/favoriteApi";
+import React, { useEffect, useState } from "react"
+import Link from "next/link"
+import styled from "@emotion/styled"
+import dynamic from "next/dynamic"
+import type { APIFavorite } from "~/domainTypes/tobe"
+import { Button, Spacer } from "~/components/uis/atoms"
+import CourtItem from "../CourtItem"
+import NoItemMessage from "../NoItemMessage"
+import { useAuthContext } from "~/contexts/hooks"
+import favoriteAPI from "~/service/favoriteApi"
 
 const SkeletonParagraph = dynamic(
   () => import("~/components/uis/atoms/Skeleton/Paragraph"),
   { ssr: false }
-);
+)
 
 const FavoriteList = () => {
-  const { authProps } = useAuthContext();
-  const { userId } = authProps.currentUser;
+  const { authProps } = useAuthContext()
+  const { userId } = authProps.currentUser
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
   const [favorites, setFavorites] = useState<
     Awaited<ReturnType<typeof favoriteAPI["getMyFavorites"]>>["data"]
-  >([]);
+  >([])
 
   const getPageFavorites = async () => {
     try {
-      const { data } = await favoriteAPI.getMyFavorites();
-      setFavorites(data);
-      setIsLoading(false);
+      const { data } = await favoriteAPI.getMyFavorites()
+      setFavorites(data)
+      setIsLoading(false)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   useEffect(() => {
     if (userId) {
-      getPageFavorites();
+      getPageFavorites()
     }
-  }, [userId]);
+  }, [userId])
 
   if (isLoading) {
     return (
@@ -53,7 +53,7 @@ const FavoriteList = () => {
           </FavoriteItem>
         ))}
       </Spacer>
-    );
+    )
   }
 
   if (favorites.length === 0) {
@@ -64,7 +64,7 @@ const FavoriteList = () => {
         description={"즐겨찾기하면 더 빠르게 예약하실 수 있어요"}
         buttonTitle={"즐겨찾는 농구장 등록하기"}
       />
-    );
+    )
   }
 
   return (
@@ -116,20 +116,20 @@ const FavoriteList = () => {
         </FavoriteItem>
       ))}
     </Spacer>
-  );
-};
+  )
+}
 
 const Actions = styled(Spacer)`
   margin-top: 40px;
   flex-flow: row wrap;
-`;
+`
 
-const ActionsLeftButtons = styled(Spacer)``;
+const ActionsLeftButtons = styled(Spacer)``
 
 const FavoriteItem = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadiuses.lg};
   padding: 20px;
-`;
+`
 
-export default FavoriteList;
+export default FavoriteList

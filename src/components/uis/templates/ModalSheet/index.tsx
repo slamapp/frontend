@@ -1,11 +1,11 @@
-import type { ComponentProps } from "react";
-import styled from "@emotion/styled";
-import Sheet from "react-modal-sheet";
+import type { ComponentProps } from "react"
+import styled from "@emotion/styled"
+import Sheet from "react-modal-sheet"
 
 type Props = Pick<
   ComponentProps<typeof CustomSheet>,
   "isOpen" | "onClose" | "onSnap" | "onCloseStart"
->;
+>
 
 const ModalSheet: React.FC<Props> = ({
   isOpen,
@@ -28,10 +28,10 @@ const ModalSheet: React.FC<Props> = ({
         <Sheet.Content onViewportBoxUpdate={() => {}}>{children}</Sheet.Content>
       </Sheet.Container>
     </CustomSheet>
-  );
-};
+  )
+}
 
-export default ModalSheet;
+export default ModalSheet
 
 const CustomSheet = styled(Sheet)`
   z-index: 1000 !important;
@@ -40,4 +40,4 @@ const CustomSheet = styled(Sheet)`
     right: 0;
     margin: auto;
   }
-`;
+`

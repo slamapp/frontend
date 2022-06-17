@@ -1,40 +1,40 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
 
-type Handler = (e: Event) => void;
+type Handler = (e: Event) => void
 
-const events = ["mousedown", "touchstart"];
+const events = ["mousedown", "touchstart"]
 
 const useClickAway = <T extends HTMLElement>(handler: Handler) => {
-  const ref = useRef<T>(null);
-  const savedHandler = useRef(handler);
+  const ref = useRef<T>(null)
+  const savedHandler = useRef(handler)
 
   useEffect(() => {
-    savedHandler.current = handler;
-  }, [handler]);
+    savedHandler.current = handler
+  }, [handler])
 
   useEffect(() => {
-    const element = ref.current;
+    const element = ref.current
     if (!element) {
-      return;
+      return
     }
 
     const handleEvent = (e: Event) => {
       if (!element.contains(e.target as Node)) {
-        savedHandler.current(e);
+        savedHandler.current(e)
       }
-    };
+    }
 
     events.forEach((eventName) =>
       document.addEventListener(eventName, handleEvent)
-    );
+    )
 
     return () =>
       events.forEach((eventName) =>
         document.removeEventListener(eventName, handleEvent)
-      );
-  }, [ref]);
+      )
+  }, [ref])
 
-  return ref;
-};
+  return ref
+}
 
-export default useClickAway;
+export default useClickAway

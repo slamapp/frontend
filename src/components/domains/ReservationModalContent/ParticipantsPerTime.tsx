@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled"
 
-import Link from "next/link";
-import { Avatar } from "~/components/uis/molecules";
-import { Text } from "~/components/uis/atoms";
-import { getTimeFromIndex } from "~/utils/date";
-import * as S from "./style";
+import Link from "next/link"
+import { Avatar } from "~/components/uis/molecules"
+import { Text } from "~/components/uis/atoms"
+import { getTimeFromIndex } from "~/utils/date"
+import * as S from "./style"
 
 const ParticipantsPerTime: React.FC<{ participantsPerBlock: any[] }> = ({
   participantsPerBlock,
@@ -28,13 +28,13 @@ const ParticipantsPerTime: React.FC<{ participantsPerBlock: any[] }> = ({
         </ParticipantWithTimeWrapper>
       ))}
     </S.ContentWrapper>
-  );
-};
+  )
+}
 
-export default ParticipantsPerTime;
+export default ParticipantsPerTime
 
 const ParticipantWithTimeWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-`;
+`

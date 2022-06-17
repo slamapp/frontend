@@ -1,16 +1,16 @@
-import type { CSSProperties } from "react";
-import styled from "@emotion/styled";
-import Link from "next/link";
-import React from "react";
-import Image from "next/image";
-import { Spacer, Icon, Text, Button } from "~/components/uis/atoms";
+import type { CSSProperties } from "react"
+import styled from "@emotion/styled"
+import Link from "next/link"
+import React from "react"
+import Image from "next/image"
+import { Spacer, Icon, Text, Button } from "~/components/uis/atoms"
 
 interface Props {
-  title: string;
-  description: string;
-  buttonTitle: string;
-  style?: CSSProperties;
-  type: "reservation" | "favorite" | "notification";
+  title: string
+  description: string
+  buttonTitle: string
+  style?: CSSProperties
+  type: "reservation" | "favorite" | "notification"
 }
 
 const NoItemMessage = ({
@@ -51,27 +51,27 @@ const NoItemMessage = ({
       </Link>
       <div style={{ height: 40 }}></div>
     </WrapperSpacer>
-  );
-};
+  )
+}
 
-export default NoItemMessage;
+export default NoItemMessage
 
 const TextGray = styled(Text)`
   color: ${({ theme }) => theme.colors.gray700};
-`;
+`
 
 const SearchButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const SearchIcon = styled(Icon)`
   margin-right: 5px;
-`;
+`
 
 const WrapperSpacer = styled(Spacer)`
   height: 80%;
   align-items: center;
   justify-content: center;
-`;
+`

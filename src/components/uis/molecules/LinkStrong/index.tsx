@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import Link from "next/link";
-import type { ReactNode } from "react";
-import type { UrlObject } from "url";
+import styled from "@emotion/styled"
+import Link from "next/link"
+import type { ReactNode } from "react"
+import type { UrlObject } from "url"
 
 interface Props {
-  href: string | UrlObject;
-  children: ReactNode;
+  href: string | UrlObject
+  children: ReactNode
 }
 
 const LinkStrong = ({ href, children }: Props) => (
@@ -14,12 +14,12 @@ const LinkStrong = ({ href, children }: Props) => (
       <Strong>{children}</Strong>
     </a>
   </Link>
-);
+)
 
-export default LinkStrong;
+export default LinkStrong
 
 const Strong = styled.strong`
   :hover {
     cursor: pointer;
   }
-`;
+`

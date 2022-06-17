@@ -1,13 +1,13 @@
-import type { NextPage } from "next";
-import React from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { useNavigationContext } from "~/contexts/hooks";
-import { withRouteGuard } from "~/hocs";
+import type { NextPage } from "next"
+import React from "react"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import { useNavigationContext } from "~/contexts/hooks"
+import { withRouteGuard } from "~/hocs"
 
 const ChatroomListPage: NextPage = () => {
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_CHATROOM_LIST");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_CHATROOM_LIST")
 
   return (
     <div>
@@ -15,10 +15,10 @@ const ChatroomListPage: NextPage = () => {
         <div>hi</div>
       </ChatroomListItem>
     </div>
-  );
-};
+  )
+}
 
-export default withRouteGuard("private", ChatroomListPage);
+export default withRouteGuard("private", ChatroomListPage)
 
 const ChatroomListItem = styled.div`
   margin: 8px 16px;
@@ -28,4 +28,4 @@ const ChatroomListItem = styled.div`
     border-radius: ${theme.borderRadiuses.lg};
     background: ${theme.colors.white};
   `}
-`;
+`

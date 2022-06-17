@@ -1,34 +1,34 @@
-import React, { useCallback, useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { useLocalToken } from "~/hooks/domain";
-import { useAuthContext } from "~/contexts/hooks";
-import { Spinner, Header } from "~/components/uis/atoms";
+import React, { useCallback, useEffect, useState } from "react"
+import styled from "@emotion/styled"
+import { useRouter } from "next/router"
+import Link from "next/link"
+import { useLocalToken } from "~/hooks/domain"
+import { useAuthContext } from "~/contexts/hooks"
+import { Spinner, Header } from "~/components/uis/atoms"
 
 const RedirectPage = () => {
-  const [isNeedReLogin, setIsNeedReLogin] = useState(false);
-  const [, setToken] = useLocalToken();
-  const { authProviderInit } = useAuthContext();
-  const router = useRouter();
-  const { token } = router.query;
+  const [isNeedReLogin, setIsNeedReLogin] = useState(false)
+  const [, setToken] = useLocalToken()
+  const { authProviderInit } = useAuthContext()
+  const router = useRouter()
+  const { token } = router.query
 
   const getCurrentUserData = useCallback(async () => {
-    setToken(token);
+    setToken(token)
     try {
-      await authProviderInit();
-      router.replace("/");
+      await authProviderInit()
+      router.replace("/")
     } catch (error) {
-      console.error(error);
-      setIsNeedReLogin(true);
+      console.error(error)
+      setIsNeedReLogin(true)
     }
-  }, [token, authProviderInit, setToken]);
+  }, [token, authProviderInit, setToken])
 
   useEffect(() => {
     if (token) {
-      getCurrentUserData();
+      getCurrentUserData()
     }
-  }, [token]);
+  }, [token])
 
   const NeedReLoginMarkUp = () => {
     return (
@@ -40,17 +40,17 @@ const RedirectPage = () => {
           </a>
         </Link>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <PageContainer>
       {isNeedReLogin ? <NeedReLoginMarkUp /> : <Spinner />}
     </PageContainer>
-  );
-};
+  )
+}
 
-export default RedirectPage;
+export default RedirectPage
 
 const PageContainer = styled.div`
   display: flex;
@@ -58,4 +58,4 @@ const PageContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-`;
+`

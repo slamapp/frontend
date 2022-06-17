@@ -1,27 +1,27 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import styled from "@emotion/styled";
-import dayjs from "dayjs";
-import { useResize } from "~/hooks";
-import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect";
-import { useReservationContext } from "~/contexts/hooks";
-import { Spacer, Image, Text } from "~/components/uis/atoms";
-import { getTimezoneIndexFromDate } from "~/utils/date";
-import { TimeBlockUnit, ActionTimeBlockUnit, Header } from "./TimeBlockUnits";
-import TimeRangeSelector from "./TimeRangeSelector";
-import * as S from "./style";
+import { useCallback, useEffect, useMemo, useState } from "react"
+import styled from "@emotion/styled"
+import dayjs from "dayjs"
+import { useResize } from "~/hooks"
+import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
+import { useReservationContext } from "~/contexts/hooks"
+import { Spacer, Image, Text } from "~/components/uis/atoms"
+import { getTimezoneIndexFromDate } from "~/utils/date"
+import { TimeBlockUnit, ActionTimeBlockUnit, Header } from "./TimeBlockUnits"
+import TimeRangeSelector from "./TimeRangeSelector"
+import * as S from "./style"
 
 const timeSlotIndexMap: { [key in string]: number } = {
   dawn: 0,
   morning: 12,
   afternoon: 24,
   night: 35,
-};
+}
 
 interface Props {
-  isToday: boolean;
-  timeSlot: string;
-  onModalOpen: () => void;
-  onModalClose: () => void;
+  isToday: boolean
+  timeSlot: string
+  onModalOpen: () => void
+  onModalClose: () => void
 }
 
 const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
@@ -37,56 +37,56 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
     handleSelectReservation,
     handleSetCurrentBlock,
     handleSetTime,
-  } = useReservationContext();
+  } = useReservationContext()
 
   const currentTimeIndex = useMemo(
     () => (isToday ? getTimezoneIndexFromDate(dayjs()) : null),
     [isToday]
-  );
+  )
 
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [height, setHeight] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false)
+  const [height, setHeight] = useState(0)
 
   const ref = useResize<HTMLDivElement>((rect) => {
-    setHeight(rect.width);
-  });
+    setHeight(rect.width)
+  })
 
   const handleClickBlock = useCallback(
     (index) => {
-      onModalOpen();
+      onModalOpen()
       if (step === 1) {
-        handleSetCurrentBlock(index);
+        handleSetCurrentBlock(index)
       } else {
-        handleSetTime(index);
+        handleSetTime(index)
       }
     },
     [step, handleSetCurrentBlock, handleSetTime, onModalOpen]
-  );
+  )
 
   const handleClickReservationMarker = useCallback(
     (reservationId: number) => {
       if (step === 1) {
-        onModalOpen();
-        handleSelectReservation(reservationId);
+        onModalOpen()
+        handleSelectReservation(reservationId)
       }
     },
     [step, onModalOpen, handleSelectReservation]
-  );
+  )
 
   useIsomorphicLayoutEffect(() => {
     if (ref.current) {
-      setHeight(ref.current.offsetWidth);
+      setHeight(ref.current.offsetWidth)
     }
-  }, [ref]);
+  }, [ref])
 
   useEffect(() => {
     if (height !== 0) {
-      setIsInitialized(true);
+      setIsInitialized(true)
     }
-  }, [height]);
+  }, [height])
 
   useEffect(() => {
-    const el = document.querySelector("#scrolled-container");
+    const el = document.querySelector("#scrolled-container")
 
     if (timeSlot && el && isInitialized) {
       setTimeout(
@@ -97,9 +97,9 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
             behavior: "smooth",
           }),
         200
-      );
+      )
     }
-  }, [isInitialized]);
+  }, [isInitialized])
 
   return (
     <div
@@ -181,14 +181,14 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
         <ActionTimeBlockUnit height={height} next onClose={onModalClose} />
       </S.TimeTableContainer>
     </div>
-  );
-};
+  )
+}
 
-export default TimeTable;
+export default TimeTable
 
 const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
-`;
+`
 
 const ImageWrapper = styled.div`
   width: 44px;
@@ -198,4 +198,4 @@ const ImageWrapper = styled.div`
     width: 100%;
     height: 100%;
   }
-`;
+`

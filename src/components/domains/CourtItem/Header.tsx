@@ -1,4 +1,4 @@
-import { Spacer, Icon, Text } from "~/components/uis/atoms";
+import { Spacer, Icon, Text } from "~/components/uis/atoms"
 
 const Header: React.FC = ({ children }) => {
   return (
@@ -8,7 +8,7 @@ const Header: React.FC = ({ children }) => {
         {children}
       </Text>
     </Spacer>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

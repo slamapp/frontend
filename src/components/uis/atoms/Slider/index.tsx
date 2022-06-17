@@ -1,13 +1,13 @@
-import styled from "@emotion/styled";
-import { useCallback, useEffect, useRef, useState } from "react";
+import styled from "@emotion/styled"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 interface Props {
-  min?: number;
-  max?: number;
-  step?: number;
-  defaultValue?: number;
-  onChange?: (value: number) => void;
-  [x: string]: any;
+  min?: number
+  max?: number
+  step?: number
+  defaultValue?: number
+  onChange?: (value: number) => void
+  [x: string]: any
 }
 
 const Slider = ({
@@ -18,54 +18,54 @@ const Slider = ({
   onChange,
   ...props
 }: Props) => {
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const [dragging, setDragging] = useState(false);
-  const [value, setValue] = useState(defaultValue || min);
+  const sliderRef = useRef<HTMLDivElement>(null)
+  const [dragging, setDragging] = useState(false)
+  const [value, setValue] = useState(defaultValue || min)
 
   const handleMouseDown = useCallback(() => {
-    setDragging(true);
-  }, []);
+    setDragging(true)
+  }, [])
 
   const handleMouseUp = useCallback(() => {
-    setDragging(false);
-  }, []);
+    setDragging(false)
+  }, [])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!dragging) {
-        return;
+        return
       }
 
-      const handleOffset = e.pageX - sliderRef.current!.offsetLeft;
-      const sliderWidth = sliderRef.current!.offsetWidth;
+      const handleOffset = e.pageX - sliderRef.current!.offsetLeft
+      const sliderWidth = sliderRef.current!.offsetWidth
 
-      const track = handleOffset / sliderWidth;
-      let newValue;
+      const track = handleOffset / sliderWidth
+      let newValue
       if (track < 0) {
-        newValue = min;
+        newValue = min
       } else if (track > 1) {
-        newValue = max;
+        newValue = max
       } else {
-        newValue = Math.round((min + (max - min) * track) / step) * step;
-        newValue = Math.min(max, Math.max(min, newValue));
+        newValue = Math.round((min + (max - min) * track) / step) * step
+        newValue = Math.min(max, Math.max(min, newValue))
       }
 
-      setValue(newValue);
+      setValue(newValue)
       if (onChange) {
-        onChange(value);
+        onChange(value)
       }
-    };
+    }
 
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleMouseUp)
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [value, min, max, dragging, sliderRef, handleMouseUp, onChange, step]);
+      document.removeEventListener("mousemove", handleMouseMove)
+      document.removeEventListener("mouseup", handleMouseUp)
+    }
+  }, [value, min, max, dragging, sliderRef, handleMouseUp, onChange, step])
 
-  const percentage = ((value - min) / (max - min)) * 100;
+  const percentage = ((value - min) / (max - min)) * 100
 
   return (
     <SliderContainer ref={sliderRef} {...props}>
@@ -76,14 +76,14 @@ const Slider = ({
         style={{ left: `${percentage}%` }}
       />
     </SliderContainer>
-  );
-};
+  )
+}
 
 const SliderContainer = styled.div`
   position: relative;
   width: 100%;
   height: 16px;
-`;
+`
 
 const Rail = styled.div`
   position: absolute;
@@ -93,7 +93,7 @@ const Rail = styled.div`
   height: 4px;
   border-radius: 2px;
   background-color: #aaa;
-`;
+`
 
 const Handle = styled.div`
   position: absolute;
@@ -110,7 +110,7 @@ const Handle = styled.div`
   &:active {
     cursor: grabbing;
   }
-`;
+`
 
 const Track = styled.div`
   position: absolute;
@@ -120,6 +120,6 @@ const Track = styled.div`
   height: 4px;
   border-radius: 2px;
   background-color: #44b;
-`;
+`
 
-export default Slider;
+export default Slider

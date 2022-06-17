@@ -1,111 +1,111 @@
-import { useState, useEffect, useCallback } from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Sheet from "react-modal-sheet";
-import styled from "@emotion/styled";
-import { useRouter } from "next/router";
-import type { APICourt, APINewCourt, Coord } from "~/domainTypes/tobe";
-import { withRouteGuard } from "~/hocs";
-import { courtApi } from "~/service";
-import { useForm } from "~/hooks";
-import { useMapContext, useNavigationContext } from "~/contexts/hooks";
-import { getCurrentLocation } from "~/utils/geolocation";
+import { useState, useEffect, useCallback } from "react"
+import type { NextPage } from "next"
+import Head from "next/head"
+import Sheet from "react-modal-sheet"
+import styled from "@emotion/styled"
+import { useRouter } from "next/router"
+import type { APICourt, APINewCourt, Coord } from "~/domainTypes/tobe"
+import { withRouteGuard } from "~/hocs"
+import { courtApi } from "~/service"
+import { useForm } from "~/hooks"
+import { useMapContext, useNavigationContext } from "~/contexts/hooks"
+import { getCurrentLocation } from "~/utils/geolocation"
 import {
   Map,
   GeneralMarker,
   BottomFixedButton,
   LeadToLoginModal,
   BasketballLoading,
-} from "~/components/domains";
-import { Label } from "~/components/uis/molecules";
-import { Input } from "~/components/uis/organisms";
-import { Text, Icon, Button, Spacer } from "~/components/uis/atoms";
+} from "~/components/domains"
+import { Label } from "~/components/uis/molecules"
+import { Input } from "~/components/uis/organisms"
+import { Text, Icon, Button, Spacer } from "~/components/uis/atoms"
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (
     latitude: APICourt["latitude"],
     longitude: APICourt["longitude"],
     callback?: (result: any, status: kakao.maps.services.Status) => void
-  ) => string;
+  ) => string
 }
 
 const CreateCourt: NextPage = () => {
-  const { map } = useMapContext();
+  const { map } = useMapContext()
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_COURT_CREATE");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_COURT_CREATE")
 
-  const [isOpen, setOpen] = useState(false);
-  const [level, setLevel] = useState(3);
-  const [center, setCenter] = useState<Coord>();
-  const [position, setPosition] = useState<Coord>();
-  const [address, setAddress] = useState<string>();
-  const [validatedBasketCount, setValidatedBasketCount] = useState(1);
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+  const [isOpen, setOpen] = useState(false)
+  const [level, setLevel] = useState(3)
+  const [center, setCenter] = useState<Coord>()
+  const [position, setPosition] = useState<Coord>()
+  const [address, setAddress] = useState<string>()
+  const [validatedBasketCount, setValidatedBasketCount] = useState(1)
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
 
   const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
-    const geocoder = new kakao.maps.services.Geocoder();
+    const geocoder = new kakao.maps.services.Geocoder()
 
-    (geocoder as Geocoder).coord2Address(
+    ;(geocoder as Geocoder).coord2Address(
       longitude,
       latitude,
       (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           // 도로명 주소
           if (result[0].road_address) {
-            setAddress(result[0].road_address.address_name);
+            setAddress(result[0].road_address.address_name)
           }
           // 법정 주소
           else if (result[0].address.address_name) {
-            setAddress(result[0].address.address_name);
+            setAddress(result[0].address.address_name)
           }
           // 주소가 없는 경우
           else {
-            setAddress("주소가 존재하지 않습니다.");
+            setAddress("주소가 존재하지 않습니다.")
           }
         }
       }
-    );
-  };
+    )
+  }
 
   const handleClickKakaoMap = (
     _: kakao.maps.Map,
     { latLng }: kakao.maps.event.MouseEvent
   ) => {
     if (latLng) {
-      setPosition([latLng.getLat(), latLng.getLng()]);
-      searchAddrFromCoords([latLng.getLat(), latLng.getLng()]);
+      setPosition([latLng.getLat(), latLng.getLng()])
+      searchAddrFromCoords([latLng.getLat(), latLng.getLng()])
     }
-  };
+  }
 
   const handleGetCurrentLocation = useCallback(() => {
     getCurrentLocation(([latitude, longitude]) => {
-      setCenter([latitude, longitude]);
-    });
-  }, []);
+      setCenter([latitude, longitude])
+    })
+  }, [])
 
   const handleZoomIn = useCallback(() => {
-    setLevel((level) => level - 1);
-  }, []);
+    setLevel((level) => level - 1)
+  }, [])
 
   const handleZoomOut = useCallback(() => {
-    setLevel((level) => level + 1);
-  }, []);
+    setLevel((level) => level + 1)
+  }, [])
 
   const handleClickSaveLocationButton = () => {
-    setOpen(false);
+    setOpen(false)
     if (position) {
-      const [latitude, longitude] = position;
-      setValues((prev) => ({ ...prev, latitude, longitude }));
-      setCenter(position);
+      const [latitude, longitude] = position
+      setValues((prev) => ({ ...prev, latitude, longitude }))
+      setCenter(position)
     }
-  };
+  }
 
   useEffect(() => {
-    handleGetCurrentLocation();
-  }, [handleGetCurrentLocation]);
+    handleGetCurrentLocation()
+  }, [handleGetCurrentLocation])
 
   const { values, errors, isLoading, setValues, handleSubmit } = useForm<
     Pick<
@@ -123,39 +123,37 @@ const CreateCourt: NextPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        await courtApi.createNewCourt(values);
-        router.push("/courts");
+        await courtApi.createNewCourt(values)
+        router.push("/courts")
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     },
     validate: (values) => {
-      const errors: { [key in keyof typeof values]?: string } = {};
-      const { basketCount, name, longitude, latitude } = values;
+      const errors: { [key in keyof typeof values]?: string } = {}
+      const { basketCount, name, longitude, latitude } = values
 
       if (!name) {
-        errors.name = "농구장 이름을 입력해주세요.";
+        errors.name = "농구장 이름을 입력해주세요."
       }
       if (basketCount < 1) {
-        errors.basketCount = "골대 개수를 입력해주세요.";
+        errors.basketCount = "골대 개수를 입력해주세요."
       }
       if (!longitude || !latitude) {
-        errors.longitude = "위치를 지정해주세요.";
+        errors.longitude = "위치를 지정해주세요."
       }
 
-      return errors;
+      return errors
     },
-  });
+  })
 
   useEffect(() => {
     if (values.basketCount > 99) {
-      setValidatedBasketCount(
-        Number(values.basketCount.toString().slice(0, 2))
-      );
+      setValidatedBasketCount(Number(values.basketCount.toString().slice(0, 2)))
     } else {
-      setValidatedBasketCount(values.basketCount);
+      setValidatedBasketCount(values.basketCount)
     }
-  }, [values.basketCount]);
+  }, [values.basketCount])
 
   return (
     <div>
@@ -339,34 +337,34 @@ const CreateCourt: NextPage = () => {
         cancel={{
           content: "닫기",
           handle: () => {
-            setIsOpenConfirmModal(false);
+            setIsOpenConfirmModal(false)
           },
         }}
         confirm={{
           content: "제출하기",
           handle: (e) => {
             try {
-              handleSubmit(e);
-              router.push("/courts");
+              handleSubmit(e)
+              router.push("/courts")
             } catch (error) {
-              console.error(error);
+              console.error(error)
             }
           },
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default withRouteGuard("private", CreateCourt);
+export default withRouteGuard("private", CreateCourt)
 
 const MainContainer = styled.div`
   padding: ${({ theme }) => `30px ${theme.gaps.base}`};
-`;
+`
 
 const PreviewContainer = styled.div`
   width: 100%;
-`;
+`
 
 const PreviewBanner = styled.div`
   width: 100%;
@@ -394,26 +392,26 @@ const PreviewBanner = styled.div`
   &.error::before {
     border: 1px solid ${({ theme }) => theme.colors.red.strong};
   }
-`;
+`
 
 const CustomSheet = styled(Sheet)`
   max-width: 640px;
   margin: auto;
-`;
+`
 
 const MapGuide = styled(Text)`
   margin: ${({ theme }) => theme.gaps.md};
   margin-top: 0;
-`;
+`
 
 const DecoIcon = styled(Icon)`
   vertical-align: text-bottom;
   margin-right: ${({ theme }) => theme.gaps.xxs};
-`;
+`
 
 const AddressGuide = styled.p`
   margin: 12px 0;
-`;
+`
 
 const MoveToMap = styled.a`
   position: absolute;
@@ -423,15 +421,15 @@ const MoveToMap = styled.a`
   right: 0;
   z-index: 1;
   cursor: pointer;
-`;
+`
 
 const SubText = styled(Text)`
   color: ${({ theme }) => theme.colors.gray500};
-`;
+`
 
 const ErrorMessage = styled(Text)`
   text-align: right;
   flex-grow: 1;
   margin: 4px 0;
   color: ${({ theme }) => theme.colors.red.strong};
-`;
+`

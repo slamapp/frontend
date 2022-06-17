@@ -1,4 +1,4 @@
-import type { HourProps } from "../type";
+import type { HourProps } from "../type"
 
 const Hour: React.FC<HourProps> = ({ hour }) => (
   <div
@@ -9,6 +9,6 @@ const Hour: React.FC<HourProps> = ({ hour }) => (
     {hour}
     <span>시</span>
   </div>
-);
+)
 
-export default Hour;
+export default Hour

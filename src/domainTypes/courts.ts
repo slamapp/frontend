@@ -5,8 +5,8 @@ export const textures = {
   SOIL: "흙",
   CONCRETE: "콘크리트",
   ETC: "기타",
-} as const;
+} as const
 
-type Texture = typeof textures;
-export type TextureValueUnion = Texture[keyof Texture];
-export type TextureKeyUnion = keyof Texture;
+type Texture = typeof textures
+export type TextureValueUnion = Texture[keyof Texture]
+export type TextureKeyUnion = keyof Texture

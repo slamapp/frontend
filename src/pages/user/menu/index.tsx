@@ -1,17 +1,17 @@
-import type { NextPage } from "next";
-import React, { useState } from "react";
-import styled from "@emotion/styled";
-import { withRouteGuard } from "~/hocs";
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
-import { Icon, Button } from "~/components/uis/atoms";
-import { Modal } from "~/components/domains";
+import type { NextPage } from "next"
+import React, { useState } from "react"
+import styled from "@emotion/styled"
+import { withRouteGuard } from "~/hocs"
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { Icon, Button } from "~/components/uis/atoms"
+import { Modal } from "~/components/domains"
 
 const Menu: NextPage = () => {
-  const { logout } = useAuthContext();
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_USER_MENU");
+  const { logout } = useAuthContext()
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_USER_MENU")
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const list = [
     // {
@@ -24,15 +24,15 @@ const Menu: NextPage = () => {
       onClick: () => setIsModalOpen(true),
       icon: "log-out",
     },
-  ] as const;
+  ] as const
 
   const handleClickCancelLogout = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
   const handleClickConfirmLogout = () => {
-    logout();
-    setIsModalOpen(false);
-  };
+    logout()
+    setIsModalOpen(false)
+  }
 
   return (
     <div>
@@ -64,14 +64,14 @@ const Menu: NextPage = () => {
         </Modal.BottomButtonContainer>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default withRouteGuard("private", Menu);
+export default withRouteGuard("private", Menu)
 
 const MenuList = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.gray100};
-`;
+`
 
 const MenuItem = styled.div`
   display: flex;
@@ -90,4 +90,4 @@ const MenuItem = styled.div`
   &:active {
     background: ${({ theme }) => theme.colors.gray300};
   }
-`;
+`

@@ -3,22 +3,20 @@ import type {
   OmitAt,
   APIFollow,
   APILoudspeaker,
-} from "~/domainTypes/tobe";
+} from "~/domainTypes/tobe"
 
-export type APINotification =
-  | APINotificationFollow
-  | APINotificationLoudspeaker;
+export type APINotification = APINotificationFollow | APINotificationLoudspeaker
 
 interface APINotificationFollow extends DefaultNotification {
-  type: "FOLLOW";
-  follow: OmitAt<APIFollow>;
+  type: "FOLLOW"
+  follow: OmitAt<APIFollow>
 }
 
 interface APINotificationLoudspeaker extends DefaultNotification {
-  type: "LOUDSPEAKER";
-  loudspeaker: OmitAt<APILoudspeaker>;
+  type: "LOUDSPEAKER"
+  loudspeaker: OmitAt<APILoudspeaker>
 }
 interface DefaultNotification extends APICommon {
-  isRead: boolean;
-  isClicked: boolean;
+  isRead: boolean
+  isClicked: boolean
 }

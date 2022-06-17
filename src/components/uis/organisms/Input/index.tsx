@@ -1,22 +1,22 @@
-import type { HTMLAttributes, FocusEvent, ChangeEvent } from "react";
-import { useState } from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { Label } from "~/components/uis/molecules";
-import { Text } from "~/components/uis/atoms";
+import type { HTMLAttributes, FocusEvent, ChangeEvent } from "react"
+import { useState } from "react"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import { Label } from "~/components/uis/molecules"
+import { Text } from "~/components/uis/atoms"
 
 interface Props extends HTMLAttributes<HTMLInputElement> {
-  label: string;
-  type: string;
-  name: string;
-  value?: string | number;
-  visibleError?: boolean;
-  isRequired?: boolean;
-  min?: number;
-  max?: number;
-  required?: boolean;
-  onChange?(e: ChangeEvent<HTMLInputElement>): void;
-  autoFocus?: boolean;
+  label: string
+  type: string
+  name: string
+  value?: string | number
+  visibleError?: boolean
+  isRequired?: boolean
+  min?: number
+  max?: number
+  required?: boolean
+  onChange?(e: ChangeEvent<HTMLInputElement>): void
+  autoFocus?: boolean
 }
 
 const Input = ({
@@ -27,16 +27,16 @@ const Input = ({
   max,
   ...props
 }: Props) => {
-  const [isFocus, setFocus] = useState(false);
+  const [isFocus, setFocus] = useState(false)
 
   const handleToggle = () => {
-    setFocus(!isFocus);
-  };
+    setFocus(!isFocus)
+  }
 
   const handleFocus = (e: FocusEvent<HTMLInputElement, Element>) => {
-    e.target.select();
-    handleToggle();
-  };
+    e.target.select()
+    handleToggle()
+  }
 
   return (
     <div>
@@ -58,10 +58,10 @@ const Input = ({
         </Container>
       </label>
     </div>
-  );
-};
+  )
+}
 
-export default Input;
+export default Input
 
 const Container = styled.div`
   ${({ theme }) => css`
@@ -80,7 +80,7 @@ const Container = styled.div`
       border: 1px solid ${theme.colors.red.strong};
     }
   `}
-`;
+`
 
 const InputContent = styled.input`
   ${({ theme }) => css`
@@ -103,4 +103,4 @@ const InputContent = styled.input`
       -webkit-appearance: none;
     }
   `}
-`;
+`

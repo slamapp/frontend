@@ -1,5 +1,5 @@
-import { request, authRequest, authFileRequest } from "../fetcher";
-import type { FavoriteApi } from "./type";
+import { request, authRequest, authFileRequest } from "../fetcher"
+import type { FavoriteApi } from "./type"
 
 const favoriteAPI: FavoriteApi = {
   getMyFavorites: () => authRequest.get("/favorites"),
@@ -8,6 +8,6 @@ const favoriteAPI: FavoriteApi = {
 
   deleteMyFavorite: (favoriteId) =>
     authRequest.delete(`/favorites/${favoriteId}`),
-};
+}
 
-export default favoriteAPI;
+export default favoriteAPI

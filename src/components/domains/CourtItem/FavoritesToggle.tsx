@@ -1,10 +1,10 @@
-import { useCallback } from "react";
-import { Icon } from "~/components/uis/atoms";
-import { useAuthContext } from "~/contexts/hooks";
-import type { APICourt } from "~/domainTypes/tobe";
+import { useCallback } from "react"
+import { Icon } from "~/components/uis/atoms"
+import { useAuthContext } from "~/contexts/hooks"
+import type { APICourt } from "~/domainTypes/tobe"
 
 interface Props {
-  courtId: APICourt["id"];
+  courtId: APICourt["id"]
 }
 
 const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
@@ -14,22 +14,22 @@ const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
     },
     createFavorite,
     deleteFavorite,
-  } = useAuthContext();
+  } = useAuthContext()
 
-  const isChecked = favorites.some(({ court }) => court.id === courtId);
+  const isChecked = favorites.some(({ court }) => court.id === courtId)
 
   const handleToggleFavorite = useCallback(() => {
     if (isChecked) {
       const deletingFavorite = favorites.find(
         ({ court }) => court.id === courtId
-      );
+      )
       if (deletingFavorite) {
-        deleteFavorite(deletingFavorite.id);
+        deleteFavorite(deletingFavorite.id)
       }
     } else {
-      createFavorite(courtId);
+      createFavorite(courtId)
     }
-  }, [isChecked, courtId, createFavorite, deleteFavorite, favorites]);
+  }, [isChecked, courtId, createFavorite, deleteFavorite, favorites])
 
   return (
     <Icon.Toggle
@@ -37,7 +37,7 @@ const FavoritesToggle: React.FC<Props> = ({ courtId }) => {
       checked={isChecked}
       onChange={handleToggleFavorite}
     />
-  );
-};
+  )
+}
 
-export default FavoritesToggle;
+export default FavoritesToggle

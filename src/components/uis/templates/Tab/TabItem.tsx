@@ -1,16 +1,16 @@
-import styled from "@emotion/styled";
-import { useNavigationContext } from "~/contexts/hooks";
-import { Text } from "~/components/uis/atoms";
+import styled from "@emotion/styled"
+import { useNavigationContext } from "~/contexts/hooks"
+import { Text } from "~/components/uis/atoms"
 
 interface Props {
-  title?: string;
-  index?: string;
-  active?: boolean;
-  [x: string]: any;
+  title?: string
+  index?: string
+  active?: boolean
+  [x: string]: any
 }
 
 const TabItem = ({ title, index, active = false, ...props }: Props) => {
-  const { navigationProps } = useNavigationContext();
+  const { navigationProps } = useNavigationContext()
 
   return (
     <TabItemWrapper
@@ -20,12 +20,12 @@ const TabItem = ({ title, index, active = false, ...props }: Props) => {
     >
       <Text strong={active}>{title}</Text>
     </TabItemWrapper>
-  );
-};
+  )
+}
 
 const TabItemWrapper = styled.div<{
-  active?: boolean;
-  isBackgroundTransparent: boolean;
+  active?: boolean
+  isBackgroundTransparent: boolean
 }>`
   flex-grow: 1;
   display: inline-flex;
@@ -45,10 +45,10 @@ const TabItemWrapper = styled.div<{
   :hover {
     background: ${({ theme }) => theme.colors.gray200};
   }
-`;
+`
 
 TabItem.defaultProps = {
   __TYPE: "Tab.Item",
-};
+}
 
-export default TabItem;
+export default TabItem

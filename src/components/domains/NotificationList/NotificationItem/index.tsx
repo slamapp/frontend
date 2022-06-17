@@ -1,24 +1,24 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/ko";
-import { Spacer } from "~/components/uis/atoms";
-import { LinkStrong } from "~/components/uis/molecules";
-import type { APINotification } from "~/domainTypes/tobe";
-import { CourtItem, ProfileAvatar } from "~/components/domains";
+import React from "react"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import "dayjs/locale/ko"
+import { Spacer } from "~/components/uis/atoms"
+import { LinkStrong } from "~/components/uis/molecules"
+import type { APINotification } from "~/domainTypes/tobe"
+import { CourtItem, ProfileAvatar } from "~/components/domains"
 
-dayjs.extend(relativeTime);
+dayjs.extend(relativeTime)
 
 interface Props {
-  notification: APINotification;
+  notification: APINotification
 }
 
 const NotificationItem = ({ notification }: Props) => {
-  const { createdAt, isClicked, isRead } = notification;
-  const date = new Date(createdAt);
-  const fromCreatedAt = dayjs(date).locale("ko").fromNow();
+  const { createdAt, isClicked, isRead } = notification
+  const date = new Date(createdAt)
+  const fromCreatedAt = dayjs(date).locale("ko").fromNow()
 
   return (
     <NotificationItemContainer type={notification.type}>
@@ -46,22 +46,22 @@ const NotificationItem = ({ notification }: Props) => {
         </div>
       </div>
     </NotificationItemContainer>
-  );
-};
-export default NotificationItem;
+  )
+}
+export default NotificationItem
 
 const getNotificationMarkUp = ({
   date,
   notification,
 }: {
-  date: Date;
-  notification: APINotification;
+  date: Date
+  notification: APINotification
 }) => {
-  const dayFormatted = dayjs(date).format("YYYY-MM-DD");
+  const dayFormatted = dayjs(date).format("YYYY-MM-DD")
 
   switch (notification.type) {
     case "FOLLOW": {
-      const { sender } = notification.follow;
+      const { sender } = notification.follow
 
       return (
         <>
@@ -77,10 +77,10 @@ const getNotificationMarkUp = ({
             님이 팔로우 했습니다
           </div>
         </>
-      );
+      )
     }
     case "LOUDSPEAKER": {
-      const { court } = notification.loudspeaker;
+      const { court } = notification.loudspeaker
 
       return (
         <>
@@ -100,13 +100,13 @@ const getNotificationMarkUp = ({
             <div>{court.image}</div>
           </div>
         </>
-      );
+      )
     }
 
     default:
-      break;
+      break
   }
-};
+}
 
 const NotificationItemContainer = styled.div<{ type: APINotification["type"] }>`
   align-items: center;
@@ -121,4 +121,4 @@ const NotificationItemContainer = styled.div<{ type: APINotification["type"] }>`
     border-radius: ${theme.borderRadiuses.sm};
     box-shadow: ${theme.boxShadows.sm};
   `}
-`;
+`

@@ -1,16 +1,16 @@
-import styled from "@emotion/styled";
-import type { ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
-import ReactDom from "react-dom";
-import { useIsomorphicLayoutEffect, useClickAway } from "~/hooks";
+import styled from "@emotion/styled"
+import type { ReactNode } from "react"
+import { useEffect, useMemo, useState } from "react"
+import ReactDom from "react-dom"
+import { useIsomorphicLayoutEffect, useClickAway } from "~/hooks"
 
 interface Props {
-  children?: ReactNode;
-  width?: number;
-  height?: number;
-  visible?: boolean;
-  onClose?: () => void;
-  [x: string]: any;
+  children?: ReactNode
+  width?: number
+  height?: number
+  visible?: boolean
+  onClose?: () => void
+  [x: string]: any
 }
 
 const Modal = ({
@@ -22,40 +22,40 @@ const Modal = ({
   onClose = () => {},
   ...props
 }: Props) => {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true);
+    setMounted(true)
 
-    return () => setMounted(false);
-  }, []);
+    return () => setMounted(false)
+  }, [])
 
   const ref = useClickAway<HTMLDivElement>(() => {
-    onClose();
-  });
+    onClose()
+  })
 
   const containerStyle = useMemo(
     () => ({ width, maxWidth, height }),
     [width, maxWidth, height]
-  );
+  )
 
   const el = useMemo(() => {
     if (typeof document !== "undefined") {
-      return document.createElement("div");
+      return document.createElement("div")
     }
-  }, []);
+  }, [])
 
   useIsomorphicLayoutEffect(() => {
     if (el) {
-      document.body.appendChild(el);
+      document.body.appendChild(el)
     }
 
     return () => {
       if (el) {
-        document.body.removeChild(el);
+        document.body.removeChild(el)
       }
-    };
-  });
+    }
+  })
 
   return mounted
     ? ReactDom.createPortal(
@@ -70,8 +70,8 @@ const Modal = ({
         </BackgroundDim>,
         el!
       )
-    : null;
-};
+    : null
+}
 
 const BackgroundDim = styled.div`
   position: fixed;
@@ -81,7 +81,7 @@ const BackgroundDim = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 3000;
-`;
+`
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -93,6 +93,6 @@ const ModalContainer = styled.div`
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   border-radius: ${({ theme }) => theme.borderRadiuses.lg};
-`;
+`
 
-export default Modal;
+export default Modal

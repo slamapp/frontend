@@ -1,18 +1,18 @@
-import type { FC } from "react";
-import { useCallback, useReducer, useEffect } from "react";
-import type { ContextProps } from "./context";
-import Context from "./context";
-import { reducer, initialData } from "./reducer";
+import type { FC } from "react"
+import { useCallback, useReducer, useEffect } from "react"
+import type { ContextProps } from "./context"
+import Context from "./context"
+import { reducer, initialData } from "./reducer"
 
 const NavigationProvider: FC = ({ children }) => {
-  const [navigationProps, dispatch] = useReducer(reducer, initialData);
+  const [navigationProps, dispatch] = useReducer(reducer, initialData)
 
   const useMountPage: ContextProps["useMountPage"] = (currentPageType) =>
     useEffect(() => {
-      dispatch({ type: currentPageType });
+      dispatch({ type: currentPageType })
 
-      return () => dispatch({ type: "PAGE_NONE" });
-    }, []);
+      return () => dispatch({ type: "PAGE_NONE" })
+    }, [])
 
   const setIsTopTransparent: ContextProps["setIsTopTransparent"] = (
     isTopTransparent
@@ -20,21 +20,21 @@ const NavigationProvider: FC = ({ children }) => {
     dispatch({
       type: "NAVIGATION_SET_IS_TOP_TRANSPARENT",
       payload: { isTopTransparent },
-    });
+    })
 
   const useDisableTopTransparent: ContextProps["useDisableTopTransparent"] =
     () =>
       useEffect(() => {
-        setIsTopTransparent(false);
+        setIsTopTransparent(false)
 
-        return () => setIsTopTransparent(true);
-      }, []);
+        return () => setIsTopTransparent(true)
+      }, [])
 
   const setNavigationEvent: ContextProps["setNavigationEvent"] = useCallback(
     (events = { back: null, customButton: null }) =>
       dispatch({ type: "EVENT_BIND", payload: { events } }),
     []
-  );
+  )
 
   const setCustomButtonEvent: ContextProps["setCustomButtonEvent"] =
     useCallback(
@@ -44,29 +44,29 @@ const NavigationProvider: FC = ({ children }) => {
           payload: { title, handleClick },
         }),
       []
-    );
+    )
 
   const useMountCustomButtonEvent: ContextProps["useMountCustomButtonEvent"] = (
     customButtonName,
     handleClick
   ) =>
     useEffect(() => {
-      setCustomButtonEvent(customButtonName, handleClick);
+      setCustomButtonEvent(customButtonName, handleClick)
 
-      return clearNavigationEvent;
-    }, []);
+      return clearNavigationEvent
+    }, [])
 
   const clearNavigationEvent: ContextProps["clearNavigationEvent"] =
     useCallback(() => {
-      dispatch({ type: "EVENT_CLEAR" });
-    }, []);
+      dispatch({ type: "EVENT_CLEAR" })
+    }, [])
 
   const setNavigationTitle: ContextProps["setNavigationTitle"] = useCallback(
     (title) => {
-      dispatch({ type: "NAVIGATION_SET_TITLE", payload: { title } });
+      dispatch({ type: "NAVIGATION_SET_TITLE", payload: { title } })
     },
     []
-  );
+  )
 
   return (
     <Context.Provider
@@ -84,7 +84,7 @@ const NavigationProvider: FC = ({ children }) => {
     >
       {children}
     </Context.Provider>
-  );
-};
+  )
+}
 
-export default NavigationProvider;
+export default NavigationProvider

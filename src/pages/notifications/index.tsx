@@ -1,39 +1,39 @@
-import type { NextPage } from "next";
-import React, { useRef, useEffect, useMemo } from "react";
-import styled from "@emotion/styled";
-import { withRouteGuard } from "~/hocs";
-import { useIntersectionObserver } from "~/hooks";
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks";
-import NotificationList from "~/components/domains/NotificationList";
-import { Skeleton } from "~/components/uis/atoms";
-import { NoItemMessage } from "~/components/domains";
+import type { NextPage } from "next"
+import React, { useRef, useEffect, useMemo } from "react"
+import styled from "@emotion/styled"
+import { withRouteGuard } from "~/hocs"
+import { useIntersectionObserver } from "~/hooks"
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import NotificationList from "~/components/domains/NotificationList"
+import { Skeleton } from "~/components/uis/atoms"
+import { NoItemMessage } from "~/components/domains"
 
 const NotificationsPage: NextPage = () => {
   const { authProps, getMoreNotifications, readAllNotifications } =
-    useAuthContext();
-  const { notificationLastId, notifications } = authProps.currentUser;
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_NOTIFICATIONS");
+    useAuthContext()
+  const { notificationLastId, notifications } = authProps.currentUser
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_NOTIFICATIONS")
 
-  const ref = useRef<HTMLDivElement>(null);
-  const entry = useIntersectionObserver(ref, {});
+  const ref = useRef<HTMLDivElement>(null)
+  const entry = useIntersectionObserver(ref, {})
 
   useEffect(() => {
     if (entry?.isIntersecting) {
-      getMoreNotifications();
+      getMoreNotifications()
     }
-  }, [entry?.isIntersecting]);
+  }, [entry?.isIntersecting])
 
   const isNeedReadAllNotifications = useMemo(
     () => notifications.some((notification) => !notification.isRead),
     [notifications]
-  );
+  )
 
   useEffect(() => {
     if (isNeedReadAllNotifications) {
-      readAllNotifications();
+      readAllNotifications()
     }
-  }, []);
+  }, [])
 
   return (
     <PageConainer>
@@ -57,14 +57,14 @@ const NotificationsPage: NextPage = () => {
         )}
       </div>
     </PageConainer>
-  );
-};
+  )
+}
 
-export default withRouteGuard("private", NotificationsPage);
+export default withRouteGuard("private", NotificationsPage)
 
 const PageConainer = styled.div`
   flex: 1;
-`;
+`
 
 const SkeletonNotification = () => (
   <div style={{ padding: 12 }}>
@@ -78,4 +78,4 @@ const SkeletonNotification = () => (
       <div style={{ clear: "both" }} />
     </div>
   </div>
-);
+)

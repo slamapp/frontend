@@ -1,16 +1,16 @@
 const getLocalToken = (): string => {
-  const tokenKey = process.env.NEXT_PUBLIC_SLAM_LOCAL_TOKEN_KEY as string;
-  const initialValue = "";
+  const tokenKey = process.env.NEXT_PUBLIC_SLAM_LOCAL_TOKEN_KEY as string
+  const initialValue = ""
 
   try {
-    const item = localStorage.getItem(tokenKey);
+    const item = localStorage.getItem(tokenKey)
 
-    return item ? JSON.parse(item) : initialValue;
+    return item ? JSON.parse(item) : initialValue
   } catch (error) {
-    console.error(error);
+    console.error(error)
 
-    return initialValue;
+    return initialValue
   }
-};
+}
 
-export default getLocalToken;
+export default getLocalToken

@@ -1,15 +1,15 @@
-import Link from "next/link";
-import { Avatar } from "~/components/uis/molecules";
-import { Text } from "~/components/uis/atoms";
-import { useReservationContext } from "~/contexts/hooks";
-import BottomFixedButton from "../BottomFixedButton";
-import * as S from "./style";
+import Link from "next/link"
+import { Avatar } from "~/components/uis/molecules"
+import { Text } from "~/components/uis/atoms"
+import { useReservationContext } from "~/contexts/hooks"
+import BottomFixedButton from "../BottomFixedButton"
+import * as S from "./style"
 
 interface Props {
-  startTime: string;
-  endTime: string;
-  participants: any[];
-  availableReservation: boolean;
+  startTime: string
+  endTime: string
+  participants: any[]
+  availableReservation: boolean
 }
 
 const BlockStatusContent = ({
@@ -18,7 +18,7 @@ const BlockStatusContent = ({
   participants,
   availableReservation,
 }: Props) => {
-  const { handleStartCreate } = useReservationContext();
+  const { handleStartCreate } = useReservationContext()
 
   return (
     <>
@@ -50,7 +50,7 @@ const BlockStatusContent = ({
         </BottomFixedButton>
       )}
     </>
-  );
-};
+  )
+}
 
-export default BlockStatusContent;
+export default BlockStatusContent

@@ -1,23 +1,23 @@
-import type { ReactNode } from "react";
-import { createContext } from "react";
-import type { PageType } from "./actionTypes";
-import type { DataProps } from "./reducer";
-import { initialData } from "./reducer";
-import type { Events } from "./types";
+import type { ReactNode } from "react"
+import { createContext } from "react"
+import type { PageType } from "./actionTypes"
+import type { DataProps } from "./reducer"
+import { initialData } from "./reducer"
+import type { Events } from "./types"
 
 export interface ContextProps {
-  navigationProps: DataProps;
-  useMountPage: (pageType: PageType) => void;
-  setNavigationEvent: (events: Events) => void;
-  setCustomButtonEvent: (title: string, handleClick: any) => void;
-  setIsTopTransparent: (issTopTransparent: boolean) => void;
-  useDisableTopTransparent: () => void;
+  navigationProps: DataProps
+  useMountPage: (pageType: PageType) => void
+  setNavigationEvent: (events: Events) => void
+  setCustomButtonEvent: (title: string, handleClick: any) => void
+  setIsTopTransparent: (issTopTransparent: boolean) => void
+  useDisableTopTransparent: () => void
   useMountCustomButtonEvent: (
     customButtonName: string,
     handleClick: (...args: any[]) => void
-  ) => void;
-  clearNavigationEvent: () => void;
-  setNavigationTitle: (title: ReactNode) => void;
+  ) => void
+  clearNavigationEvent: () => void
+  setNavigationTitle: (title: ReactNode) => void
 }
 
 const initialContext = {
@@ -30,8 +30,8 @@ const initialContext = {
   useMountCustomButtonEvent: () => {},
   clearNavigationEvent: () => {},
   setNavigationTitle: () => {},
-};
+}
 
-const Context = createContext<ContextProps>(initialContext);
+const Context = createContext<ContextProps>(initialContext)
 
-export default Context;
+export default Context

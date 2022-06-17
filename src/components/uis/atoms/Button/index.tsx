@@ -1,21 +1,21 @@
-import type { ReactNode, MouseEvent, CSSProperties } from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import type { ReactNode, MouseEvent, CSSProperties } from "react"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
 
-type Size = "sm" | "md" | "lg";
+type Size = "sm" | "md" | "lg"
 
 interface Props {
-  children?: ReactNode;
-  className?: string;
-  size?: Size;
-  type?: "button" | "submit";
-  secondary?: boolean;
-  tertiary?: boolean;
-  fullWidth?: boolean;
-  block?: boolean;
-  disabled?: boolean;
-  style?: CSSProperties;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  children?: ReactNode
+  className?: string
+  size?: Size
+  type?: "button" | "submit"
+  secondary?: boolean
+  tertiary?: boolean
+  fullWidth?: boolean
+  block?: boolean
+  disabled?: boolean
+  style?: CSSProperties
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void
 }
 
 const Button = ({
@@ -46,14 +46,14 @@ const Button = ({
     >
       {children}
     </StyledButton>
-  );
-};
+  )
+}
 
 const fontSizeMap: { [key in Size]: string } = {
   sm: "xs",
   md: "sm",
   lg: "base",
-};
+}
 
 const StyledButton = styled.button<Omit<Props, "children">>`
   ${({ theme, size, fullWidth, block }) => css`
@@ -112,6 +112,6 @@ const StyledButton = styled.button<Omit<Props, "children">>`
     cursor: not-allowed;
     filter: contrast(-0.8);
   }
-`;
+`
 
-export default Button;
+export default Button

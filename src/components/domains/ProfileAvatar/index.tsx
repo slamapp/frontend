@@ -1,17 +1,17 @@
-import Link from "next/link";
-import type { FC } from "react";
-import type { APIUser } from "~/domainTypes/tobe/user";
-import { Avatar } from "~/components/uis/molecules";
-import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants";
+import Link from "next/link"
+import type { FC } from "react"
+import type { APIUser } from "~/domainTypes/tobe/user"
+import { Avatar } from "~/components/uis/molecules"
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 
-type Size = "lg" | "md" | "sm";
+type Size = "lg" | "md" | "sm"
 
 type Props = {
-  userId: APIUser["id"];
-  nickname: APIUser["nickname"];
-  profileImage: APIUser["profileImage"];
-  size?: Size;
-};
+  userId: APIUser["id"]
+  nickname: APIUser["nickname"]
+  profileImage: APIUser["profileImage"]
+  size?: Size
+}
 
 const ProfileAvatar: FC<Props> = ({
   userId,
@@ -29,6 +29,6 @@ const ProfileAvatar: FC<Props> = ({
       />
     </a>
   </Link>
-);
+)
 
-export default ProfileAvatar;
+export default ProfileAvatar

@@ -1,23 +1,23 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import styled from "@emotion/styled";
-import { withRouteGuard } from "~/hocs";
-import { useNavigationContext } from "~/contexts/hooks";
-import { BottomFixedButton, Logo } from "~/components/domains";
-import { Spacer } from "~/components/uis/atoms";
+import type { NextPage } from "next"
+import Head from "next/head"
+import { useRouter } from "next/router"
+import styled from "@emotion/styled"
+import { withRouteGuard } from "~/hocs"
+import { useNavigationContext } from "~/contexts/hooks"
+import { BottomFixedButton, Logo } from "~/components/domains"
+import { Spacer } from "~/components/uis/atoms"
 
 const Login: NextPage = () => {
-  const router = useRouter();
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_LOGIN");
+  const router = useRouter()
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_LOGIN")
 
-  const endpoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string;
-  const kakaoUrl = `${endpoint}/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`;
+  const endpoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string
+  const kakaoUrl = `${endpoint}/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`
 
   const handleClickLogin = () => {
-    router.replace(kakaoUrl);
-  };
+    router.replace(kakaoUrl)
+  }
 
   return (
     <PageContainer>
@@ -40,22 +40,22 @@ const Login: NextPage = () => {
         카카오 로그인
       </KaKaoLoginButton>
     </PageContainer>
-  );
-};
+  )
+}
 
-export default withRouteGuard("prevented", Login);
+export default withRouteGuard("prevented", Login)
 
 const PageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 90%;
-`;
+`
 
 const DescriptionText = styled.span`
   font-size: 16;
   font-weight: 900;
-`;
+`
 
 const KaKaoLoginButton = styled(BottomFixedButton)`
   background-color: ${({ theme }) => theme.colors.kakao.yellow.strong};
@@ -63,4 +63,4 @@ const KaKaoLoginButton = styled(BottomFixedButton)`
   :hover {
     background-color: ${({ theme }) => theme.colors.kakao.yellow.middle};
   }
-`;
+`

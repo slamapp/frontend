@@ -1,14 +1,14 @@
-import type { ReactNode, HTMLAttributes } from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { Text } from "~/components/uis/atoms";
+import type { ReactNode, HTMLAttributes } from "react"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import { Text } from "~/components/uis/atoms"
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {
-  children: ReactNode;
-  size?: number | "xs" | "sm" | "base" | "md" | "lg" | "xl";
-  clickable?: boolean;
-  border?: boolean;
-  secondary?: boolean;
+  children: ReactNode
+  size?: number | "xs" | "sm" | "base" | "md" | "lg" | "xl"
+  clickable?: boolean
+  border?: boolean
+  secondary?: boolean
 }
 
 const Chip = ({
@@ -31,10 +31,10 @@ const Chip = ({
     >
       {children}
     </ChipItem>
-  );
-};
+  )
+}
 
-export default Chip;
+export default Chip
 
 const ChipItem = styled(Text)`
   ${({ theme }) => css`
@@ -70,4 +70,4 @@ const ChipItem = styled(Text)`
     css`
       border: 1px solid ${theme.colors.gray300};
     `}
-`;
+`

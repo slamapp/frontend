@@ -1,16 +1,16 @@
-import React, { useRef } from "react";
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { BottomNavigation, TopNavigation } from "~/components/domains";
-import { useNavigationContext } from "~/contexts/hooks";
-import Container from "./Container";
-import { TopPageLoader } from "~/components/uis/atoms";
+import React, { useRef } from "react"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import { BottomNavigation, TopNavigation } from "~/components/domains"
+import { useNavigationContext } from "~/contexts/hooks"
+import Container from "./Container"
+import { TopPageLoader } from "~/components/uis/atoms"
 
 const DefaultLayout: React.FC = ({ children }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  const { navigationProps } = useNavigationContext();
-  const { isBottomNavigation, isTopNavigation } = navigationProps;
+  const { navigationProps } = useNavigationContext()
+  const { isBottomNavigation, isTopNavigation } = navigationProps
 
   return (
     <Container ref={containerRef}>
@@ -24,14 +24,14 @@ const DefaultLayout: React.FC = ({ children }) => {
       />
       {isBottomNavigation && <BottomNavigation />}
     </Container>
-  );
-};
+  )
+}
 
-export default DefaultLayout;
+export default DefaultLayout
 
 const ToastPortal = styled.div<{
-  isBottomNavigation?: boolean;
-  containerRect?: DOMRect;
+  isBottomNavigation?: boolean
+  containerRect?: DOMRect
 }>`
   ${({ isBottomNavigation, containerRect }) => css`
     position: fixed;
@@ -39,10 +39,10 @@ const ToastPortal = styled.div<{
     width: ${(containerRect?.width || 0) - 32}px;
     bottom: ${isBottomNavigation ? 72 : 16}px;
   `}
-`;
+`
 
 const StyledMain = styled.main`
   display: flex;
   flex-direction: column;
   flex: 1;
-`;
+`

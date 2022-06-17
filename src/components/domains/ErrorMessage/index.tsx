@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "@emotion/styled";
-import Link from "next/link";
-import type { CSSProperties } from "react";
-import { Icon, Text, Image, Button, Spacer } from "~/components/uis/atoms";
+import React from "react"
+import styled from "@emotion/styled"
+import Link from "next/link"
+import type { CSSProperties } from "react"
+import { Icon, Text, Image, Button, Spacer } from "~/components/uis/atoms"
 
 interface Props {
-  title: string;
-  description: string;
-  buttonTitle?: string;
-  style?: CSSProperties;
+  title: string
+  description: string
+  buttonTitle?: string
+  style?: CSSProperties
 }
 
 const ErrorMessage = ({ title, description, buttonTitle, style }: Props) => {
@@ -29,27 +29,27 @@ const ErrorMessage = ({ title, description, buttonTitle, style }: Props) => {
       </Link>
       <div style={{ height: 40 }}></div>
     </WrapperSpacer>
-  );
-};
+  )
+}
 
-export default ErrorMessage;
+export default ErrorMessage
 
 const TextGray = styled(Text)`
   color: ${({ theme }) => theme.colors.gray500};
-`;
+`
 
 const SearchButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const SearchIcon = styled(Icon)`
   margin-right: 5px;
-`;
+`
 
 const WrapperSpacer = styled(Spacer)`
   height: 80%;
   align-items: center;
   justify-content: center;
-`;
+`

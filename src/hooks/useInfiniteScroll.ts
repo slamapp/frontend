@@ -1,14 +1,14 @@
-import type { RefObject } from "react";
-import { useEffect, useRef, useState } from "react";
+import type { RefObject } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const useInfiniteScroll = (
   target: RefObject<HTMLElement>,
   loadMore: any,
   threshold = 1.0
 ) => {
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(false)
   const [intersectionObserver, setIntersectionObserver] =
-    useState<IntersectionObserver>();
+    useState<IntersectionObserver>()
 
   useEffect(() => {
     setIntersectionObserver(
@@ -16,32 +16,32 @@ const useInfiniteScroll = (
         (entries) => {
           entries.forEach(async (entry) => {
             if (entry.isIntersecting && !isFetching) {
-              setIsFetching(true);
-              await loadMore();
-              setIsFetching(false);
+              setIsFetching(true)
+              await loadMore()
+              setIsFetching(false)
             }
-          });
+          })
         },
         { threshold }
       )
-    );
-  }, [isFetching, loadMore, threshold]);
+    )
+  }, [isFetching, loadMore, threshold])
 
   useEffect(() => {
-    const el = target.current;
+    const el = target.current
 
     if (el && intersectionObserver) {
-      intersectionObserver.observe(el);
+      intersectionObserver.observe(el)
     }
 
     return () => {
       if (el) {
-        intersectionObserver?.unobserve(el);
+        intersectionObserver?.unobserve(el)
       }
-    };
-  }, [target, intersectionObserver]);
+    }
+  }, [target, intersectionObserver])
 
-  return [isFetching];
-};
+  return [isFetching]
+}
 
-export default useInfiniteScroll;
+export default useInfiniteScroll

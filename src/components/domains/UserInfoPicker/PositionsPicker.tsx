@@ -1,10 +1,10 @@
-import type { ChangeEvent } from "react";
-import { Radio } from "~/components/uis/atoms";
-import type { PositionKey, PositionValue } from "~/enums/positionType";
+import type { ChangeEvent } from "react"
+import { Radio } from "~/components/uis/atoms"
+import type { PositionKey, PositionValue } from "~/enums/positionType"
 
 const positionItems: {
-  value: PositionKey;
-  text: PositionValue;
+  value: PositionKey
+  text: PositionValue
 }[] = [
   {
     value: "PF",
@@ -30,11 +30,11 @@ const positionItems: {
     value: "TBD",
     text: "미정",
   },
-];
+]
 
 interface Props {
-  selectedValue: PositionKey[];
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  selectedValue: PositionKey[]
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 const PositionsPicker: React.FC<Props> = ({ selectedValue, onChange }) => {
@@ -49,7 +49,7 @@ const PositionsPicker: React.FC<Props> = ({ selectedValue, onChange }) => {
         />
       ))}
     </Radio.Group>
-  );
-};
+  )
+}
 
-export default PositionsPicker;
+export default PositionsPicker

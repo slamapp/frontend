@@ -1,2 +1,2 @@
-export { default as withShareClick } from "./withShareClick";
-export { default as withRouteGuard } from "./withRouteGuard";
+export { default as withShareClick } from "./withShareClick"
+export { default as withRouteGuard } from "./withRouteGuard"

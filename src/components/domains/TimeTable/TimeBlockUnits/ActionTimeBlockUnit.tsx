@@ -1,17 +1,17 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import dayjs from "dayjs";
+import Link from "next/link"
+import { useRouter } from "next/router"
+import dayjs from "dayjs"
 
-import { getTimezoneDateStringFromDate } from "~/utils/date";
-import * as S from "./style";
-import type { ActionTimeBlockUnitProps } from "../type";
-import Hour from "./Hour";
+import { getTimezoneDateStringFromDate } from "~/utils/date"
+import * as S from "./style"
+import type { ActionTimeBlockUnitProps } from "../type"
+import Hour from "./Hour"
 
 const getNextDay = (date: string) =>
-  getTimezoneDateStringFromDate(dayjs(date).add(1, "day"));
+  getTimezoneDateStringFromDate(dayjs(date).add(1, "day"))
 
 const getPrevDay = (date: string) =>
-  getTimezoneDateStringFromDate(dayjs(date).subtract(1, "day"));
+  getTimezoneDateStringFromDate(dayjs(date).subtract(1, "day"))
 
 const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
   height,
@@ -23,7 +23,7 @@ const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
 }) => {
   const {
     query: { courtId, date },
-  } = useRouter();
+  } = useRouter()
 
   return (
     <S.TimeBlockUnitWrapper
@@ -64,7 +64,7 @@ const ActionTimeBlockUnit: React.FC<ActionTimeBlockUnitProps> = ({
       <S.VerticalDivider />
       <S.OneSixthColumn className="time-block__action" />
     </S.TimeBlockUnitWrapper>
-  );
-};
+  )
+}
 
-export default ActionTimeBlockUnit;
+export default ActionTimeBlockUnit

@@ -1,33 +1,33 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
 
-type Handler = (contentRect: DOMRectReadOnly) => void;
+type Handler = (contentRect: DOMRectReadOnly) => void
 
 const useResize = <T extends Element>(handler: Handler) => {
-  const savedHandler = useRef<Handler>(handler);
-  const ref = useRef<T>(null);
+  const savedHandler = useRef<Handler>(handler)
+  const ref = useRef<T>(null)
 
   useEffect(() => {
-    savedHandler.current = handler;
-  }, [handler]);
+    savedHandler.current = handler
+  }, [handler])
 
   useEffect(() => {
-    const element = ref.current;
+    const element = ref.current
     if (!element) {
-      return;
+      return
     }
 
     const observer = new ResizeObserver((entries) => {
-      savedHandler.current(entries[0].contentRect);
-    });
+      savedHandler.current(entries[0].contentRect)
+    })
 
-    observer.observe(element);
+    observer.observe(element)
 
     return () => {
-      observer.disconnect();
-    };
-  }, [ref]);
+      observer.disconnect()
+    }
+  }, [ref])
 
-  return ref;
-};
+  return ref
+}
 
-export default useResize;
+export default useResize

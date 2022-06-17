@@ -1,21 +1,21 @@
-import React, { useCallback, useState } from "react";
-import { Spacer, Text } from "~/components/uis/atoms";
-import { useReservationContext } from "~/contexts/hooks";
-import * as S from "./style";
-import BottomFixedButton from "../BottomFixedButton";
-import HasBallDecisionModal from "./HasBallDecisionModal";
-import ParticipantsPerTime from "./ParticipantsPerTime";
-import TimeForm from "./TimeForm";
+import React, { useCallback, useState } from "react"
+import { Spacer, Text } from "~/components/uis/atoms"
+import { useReservationContext } from "~/contexts/hooks"
+import * as S from "./style"
+import BottomFixedButton from "../BottomFixedButton"
+import HasBallDecisionModal from "./HasBallDecisionModal"
+import ParticipantsPerTime from "./ParticipantsPerTime"
+import TimeForm from "./TimeForm"
 
 interface Props {
-  startTime: string;
-  endTime: string | null;
-  currentInput: "START" | "END";
-  hasBall: boolean;
-  buttonText: string;
-  requestDisabled: boolean;
-  participantsPerBlock: any[];
-  onSubmit: (hasBall: boolean) => void;
+  startTime: string
+  endTime: string | null
+  currentInput: "START" | "END"
+  hasBall: boolean
+  buttonText: string
+  requestDisabled: boolean
+  participantsPerBlock: any[]
+  onSubmit: (hasBall: boolean) => void
 }
 
 const SelectedRangeContent = ({
@@ -27,27 +27,26 @@ const SelectedRangeContent = ({
   requestDisabled,
   onSubmit,
 }: Props) => {
-  const { handleChangeHasBall, handleSetCurrentInput } =
-    useReservationContext();
+  const { handleChangeHasBall, handleSetCurrentInput } = useReservationContext()
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleModalOpen = useCallback(() => {
-    setIsModalOpen(true);
-  }, []);
+    setIsModalOpen(true)
+  }, [])
 
   const handleModalClose = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
+    setIsModalOpen(false)
+  }, [])
 
   const handleDecideHasBall = useCallback(
     (hasBall: boolean) => {
-      setIsModalOpen(false);
-      handleChangeHasBall(hasBall);
-      onSubmit(hasBall);
+      setIsModalOpen(false)
+      handleChangeHasBall(hasBall)
+      onSubmit(hasBall)
     },
     [handleChangeHasBall, onSubmit]
-  );
+  )
 
   return (
     <>
@@ -87,7 +86,7 @@ const SelectedRangeContent = ({
         onDecideBall={handleDecideHasBall}
       />
     </>
-  );
-};
+  )
+}
 
-export default SelectedRangeContent;
+export default SelectedRangeContent

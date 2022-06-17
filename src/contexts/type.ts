@@ -1,8 +1,8 @@
 export interface ActionWithPayload<Type, Payload = any>
   extends ActionWithoutPayload<Type> {
-  payload: Payload;
+  payload: Payload
 }
 
 export interface ActionWithoutPayload<Type> {
-  type: Type;
+  type: Type
 }

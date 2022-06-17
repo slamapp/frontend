@@ -1,10 +1,10 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
-import type { TimeBlockUnitWrapperProps, StatusProps } from "../type";
+import { css } from "@emotion/react"
+import styled from "@emotion/styled"
+import type { TimeBlockUnitWrapperProps, StatusProps } from "../type"
 
 const TimeTableContainer = styled.div`
   position: relative;
-`;
+`
 
 const OneSixthColumn = styled.div`
   flex-grow: 1;
@@ -13,7 +13,7 @@ const OneSixthColumn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 const FourSixthColumn = styled.div`
   flex-grow: 4;
@@ -23,7 +23,7 @@ const FourSixthColumn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 const HourColumn = styled(OneSixthColumn)`
   display: flex;
@@ -31,17 +31,17 @@ const HourColumn = styled(OneSixthColumn)`
   align-items: center;
   position: relative;
   font-size: 20px;
-`;
+`
 
 const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
   display: flex;
   height: ${({ height }) => `${height}px`};
 
   ${({ isEven, hasBlackTopBorder, hasBlackBottomBorder, theme }) => {
-    const black = theme.colors.gray900;
-    const transparentBlack = "rgb(135 135 135 / 0.2)";
-    const topBorderColor = hasBlackTopBorder ? black : transparentBlack;
-    const bottomBorderColor = hasBlackBottomBorder ? black : transparentBlack;
+    const black = theme.colors.gray900
+    const transparentBlack = "rgb(135 135 135 / 0.2)"
+    const topBorderColor = hasBlackTopBorder ? black : transparentBlack
+    const bottomBorderColor = hasBlackBottomBorder ? black : transparentBlack
 
     return isEven
       ? css`
@@ -66,7 +66,7 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
             box-shadow: 0 2px 0 ${topBorderColor} inset,
               0 -4px 0 ${bottomBorderColor} inset;
           }
-        `;
+        `
   }}
 
   ${({ previous, theme }) =>
@@ -96,7 +96,7 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
         filter: grayscale(100%);
       }
     `}
-`;
+`
 
 const HoursHorizontalDivider = styled.div`
   position: absolute;
@@ -105,33 +105,33 @@ const HoursHorizontalDivider = styled.div`
   top: -1px;
   background-color: ${({ theme }) => theme.colors.gray900};
   opacity: 0.08;
-`;
+`
 
 const StatusColumn = styled(FourSixthColumn)<StatusProps>`
   cursor: pointer;
   background-color: ${({ status, theme }) => {
     switch (status) {
       case "active":
-        return theme.colors.slam.orange.strong;
+        return theme.colors.slam.orange.strong
       case "lack":
-        return `rgba(254, 109, 4, 0.3)`;
+        return `rgba(254, 109, 4, 0.3)`
       default:
-        return "transparent";
+        return "transparent"
     }
   }};
-`;
+`
 
 const BallColumn = styled(OneSixthColumn)`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const VerticalDivider = styled.div`
   width: 8px;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.gray900};
-`;
+`
 
 const Selector = styled.div<any>`
   display: flex;
@@ -147,7 +147,7 @@ const Selector = styled.div<any>`
   box-shadow: ${({ theme }) => theme.boxShadows.lg};
   width: ${({ hasReservation }) => hasReservation && "75%"};
   margin-left: auto;
-`;
+`
 
 const ReservationMarker = styled.div<any>`
   display: flex;
@@ -165,7 +165,7 @@ const ReservationMarker = styled.div<any>`
   color: white;
   border-radius: 16px;
   box-sizing: border-box;
-`;
+`
 
 const NavigationBlock = styled.div`
   display: flex;
@@ -176,7 +176,7 @@ const NavigationBlock = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   width: calc(100% - 32px);
   padding: 6px 0px;
-`;
+`
 
 export {
   TimeTableContainer,
@@ -191,4 +191,4 @@ export {
   Selector,
   ReservationMarker,
   NavigationBlock,
-};
+}

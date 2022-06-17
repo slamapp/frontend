@@ -1,9 +1,9 @@
-import type { MouseEvent } from "react";
-import * as S from "./style";
+import type { MouseEvent } from "react"
+import * as S from "./style"
 
 interface Props {
-  bottom?: number;
-  onGetCurrentLocation: (e?: MouseEvent<HTMLButtonElement>) => void;
+  bottom?: number
+  onGetCurrentLocation: (e?: MouseEvent<HTMLButtonElement>) => void
 }
 
 const CurrentLocationButton: React.FC<Props> = ({
@@ -18,6 +18,6 @@ const CurrentLocationButton: React.FC<Props> = ({
       onClick={onGetCurrentLocation}
     />
   </S.PositionAction>
-);
+)
 
-export default CurrentLocationButton;
+export default CurrentLocationButton

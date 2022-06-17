@@ -1,29 +1,29 @@
-import styled from "@emotion/styled";
-import type { ReactNode } from "react";
-import { useLocalToken } from "~/hooks/domain";
-import type { ContextProps } from "./context";
-import { Context } from "./context";
-import useStomp from "./useStomp";
+import styled from "@emotion/styled"
+import type { ReactNode } from "react"
+import { useLocalToken } from "~/hooks/domain"
+import type { ContextProps } from "./context"
+import { Context } from "./context"
+import useStomp from "./useStomp"
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const SocketProvider = ({ children }: Props) => {
-  const [token] = useLocalToken();
-  const { isConnected, isLoading, sendAuth } = useStomp(token);
+  const [token] = useLocalToken()
+  const { isConnected, isLoading, sendAuth } = useStomp(token)
 
   const sendFollow: ContextProps["sendFollow"] = (body) => {
-    sendAuth(`/follow`, body);
-  };
+    sendAuth(`/follow`, body)
+  }
 
   const sendFollowCancel: ContextProps["sendFollowCancel"] = (body) => {
-    sendAuth(`/followcancel`, body);
-  };
+    sendAuth(`/followcancel`, body)
+  }
 
   const sendLoudSpeaker: ContextProps["sendLoudSpeaker"] = (body) => {
-    sendAuth(`/loudSpeaker`, body);
-  };
+    sendAuth(`/loudSpeaker`, body)
+  }
 
   return (
     <Context.Provider
@@ -43,10 +43,10 @@ const SocketProvider = ({ children }: Props) => {
 
       {children}
     </Context.Provider>
-  );
-};
+  )
+}
 
-export default SocketProvider;
+export default SocketProvider
 
 const StyledTopSocketLoading = styled.div<{ isLoading: boolean }>`
   position: absolute;
@@ -75,4 +75,4 @@ const StyledTopSocketLoading = styled.div<{ isLoading: boolean }>`
       background-position: 200% 50%;
     }
   }
-`;
+`

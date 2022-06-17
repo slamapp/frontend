@@ -1,12 +1,12 @@
-import type { NextPage } from "next";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import styled from "@emotion/styled";
-import type { APINewCourt } from "~/domainTypes/tobe";
-import managementApi from "~/service/managementApi";
-import { useNavigationContext } from "~/contexts/hooks";
-import { NewCourtItem, Modal } from "~/components/domains";
-import { Tab } from "~/components/uis/templates";
-import { Spacer } from "~/components/uis/atoms";
+import type { NextPage } from "next"
+import React, { useState, useEffect, useRef, useCallback } from "react"
+import styled from "@emotion/styled"
+import type { APINewCourt } from "~/domainTypes/tobe"
+import managementApi from "~/service/managementApi"
+import { useNavigationContext } from "~/contexts/hooks"
+import { NewCourtItem, Modal } from "~/components/domains"
+import { Tab } from "~/components/uis/templates"
+import { Spacer } from "~/components/uis/atoms"
 
 type OldNewCourt = Pick<
   APINewCourt,
@@ -18,112 +18,112 @@ type OldNewCourt = Pick<
   | "texture"
   | "status"
   | "image"
-> & { newCourtId: number; courtName: string };
+> & { newCourtId: number; courtName: string }
 
 const NewCourtsPage: NextPage = () => {
-  const { useMountPage } = useNavigationContext();
-  useMountPage("PAGE_ADMIN_NEWCOURTS");
+  const { useMountPage } = useNavigationContext()
+  useMountPage("PAGE_ADMIN_NEWCOURTS")
 
-  const [readyData, setReadyData] = useState<OldNewCourt[]>([]);
-  const [doneData, setDoneData] = useState<OldNewCourt[]>([]);
-  const [currentLastId, setCurrentLastId] = useState<number | null>(0);
+  const [readyData, setReadyData] = useState<OldNewCourt[]>([])
+  const [doneData, setDoneData] = useState<OldNewCourt[]>([])
+  const [currentLastId, setCurrentLastId] = useState<number | null>(0)
   const [activeStatus, setActiveStatus] =
-    useState<OldNewCourt["status"]>("READY");
-  const [isFetching, setIsFetching] = useState(false);
-  const [isOpenDenyModal, setIsOpenDenyModal] = useState(false);
-  const [isOpenAcceptModal, setIsOpenAcceptModal] = useState(false);
+    useState<OldNewCourt["status"]>("READY")
+  const [isFetching, setIsFetching] = useState(false)
+  const [isOpenDenyModal, setIsOpenDenyModal] = useState(false)
+  const [isOpenAcceptModal, setIsOpenAcceptModal] = useState(false)
 
   const loadMore = useCallback(
     async (status: OldNewCourt["status"]) => {
       if (readyData.length === 0 || isFetching || currentLastId === null) {
-        return;
+        return
       }
 
       try {
-        setIsFetching(true);
+        setIsFetching(true)
         const {
           data: { contents, lastId },
         } = await managementApi.getNewCourts(
           status,
           !currentLastId,
           currentLastId
-        );
+        )
         if (status === "READY") {
-          setReadyData((prev) => [...prev, ...contents]);
+          setReadyData((prev) => [...prev, ...contents])
         } else {
-          setDoneData((prev) => [...prev, ...contents]);
+          setDoneData((prev) => [...prev, ...contents])
         }
-        setCurrentLastId(lastId);
+        setCurrentLastId(lastId)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
 
-      setIsFetching(false);
+      setIsFetching(false)
     },
     [currentLastId, isFetching, readyData.length]
-  );
+  )
 
   const getNewCourts = useCallback(
     async (status: OldNewCourt["status"]) => {
       try {
-        setIsFetching(true);
+        setIsFetching(true)
         const {
           data: { contents, lastId },
         } = await managementApi.getNewCourts(
           status,
           !currentLastId,
           currentLastId
-        );
+        )
         if (status === "READY") {
-          setReadyData((prev) => [...prev, ...contents]);
+          setReadyData((prev) => [...prev, ...contents])
         } else {
-          setDoneData((prev) => [...prev, ...contents]);
+          setDoneData((prev) => [...prev, ...contents])
         }
-        setCurrentLastId(lastId);
+        setCurrentLastId(lastId)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
 
-      setIsFetching(false);
+      setIsFetching(false)
     },
     [currentLastId, isFetching, readyData.length]
-  );
+  )
 
   const handleClick = (status: OldNewCourt["status"]) => {
     if (activeStatus === status) {
-      return;
+      return
     }
 
-    setCurrentLastId(0);
-    setReadyData([]);
-    setDoneData([]);
-    setActiveStatus(status);
-  };
+    setCurrentLastId(0)
+    setReadyData([])
+    setDoneData([])
+    setActiveStatus(status)
+  }
 
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    getNewCourts(activeStatus);
-  }, [activeStatus]);
+    getNewCourts(activeStatus)
+  }, [activeStatus])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(async (entry) => {
           if (entry.isIntersecting) {
-            await loadMore(activeStatus);
+            await loadMore(activeStatus)
           }
-        });
+        })
       },
       { threshold: 1 }
-    );
+    )
 
     if (ref.current) {
-      observer.observe(ref.current);
+      observer.observe(ref.current)
     }
 
-    return () => observer.disconnect();
-  }, [ref, activeStatus, getNewCourts]);
+    return () => observer.disconnect()
+  }, [ref, activeStatus, getNewCourts])
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -175,14 +175,14 @@ const NewCourtsPage: NextPage = () => {
         <Modal.Header>승인이 완료되었습니다.</Modal.Header>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default NewCourtsPage;
+export default NewCourtsPage
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   margin: ${({ theme }) => theme.gaps.base};
-`;
+`

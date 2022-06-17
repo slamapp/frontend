@@ -1,15 +1,15 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 import {
   AuthProvider,
   NavigationProvider,
   SocketProvider,
   MapProvider,
   ReservationProvider,
-} from ".";
-import AnalyticsProvider from "./AnalyticsProvider";
+} from "."
+import AnalyticsProvider from "./AnalyticsProvider"
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Providers = ({ children }: Props) => {
@@ -25,7 +25,7 @@ const Providers = ({ children }: Props) => {
         </NavigationProvider>
       </SocketProvider>
     </AuthProvider>
-  );
-};
+  )
+}
 
-export default Providers;
+export default Providers

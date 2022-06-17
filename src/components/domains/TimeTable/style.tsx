@@ -1,9 +1,9 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { css } from "@emotion/react"
+import styled from "@emotion/styled"
 
 const TimeTableContainer = styled.div`
   position: relative;
-`;
+`
 
 const ReservationMarker = styled.div<any>`
   display: flex;
@@ -23,6 +23,6 @@ const ReservationMarker = styled.div<any>`
   box-sizing: border-box;
   text-align: center;
   filter: ${({ theme }) => theme.filter.dropShadow};
-`;
+`
 
-export { TimeTableContainer, ReservationMarker };
+export { TimeTableContainer, ReservationMarker }

@@ -1,11 +1,11 @@
-import type { MouseEvent } from "react";
-import styled from "@emotion/styled";
-import Link from "next/link";
-import { css } from "@emotion/react";
-import { useRouter } from "next/router";
-import type { APINewCourt } from "~/domainTypes/tobe";
-import { Text, Button } from "~/components/uis/atoms";
-import managementApi from "~/service/managementApi";
+import type { MouseEvent } from "react"
+import styled from "@emotion/styled"
+import Link from "next/link"
+import { css } from "@emotion/react"
+import { useRouter } from "next/router"
+import type { APINewCourt } from "~/domainTypes/tobe"
+import { Text, Button } from "~/components/uis/atoms"
+import managementApi from "~/service/managementApi"
 
 interface Props {
   data: Pick<
@@ -18,9 +18,9 @@ interface Props {
     | "texture"
     | "status"
     | "image"
-  > & { newCourtId: number; courtName: string };
-  state: "READY" | "DONE";
-  [x: string]: any;
+  > & { newCourtId: number; courtName: string }
+  state: "READY" | "DONE"
+  [x: string]: any
 }
 const NewCourtItem = ({
   data,
@@ -29,35 +29,35 @@ const NewCourtItem = ({
   setIsOpenDenyModal,
   setIsOpenAcceptModal,
 }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleDeny = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await managementApi.denyNewCourt(data.newCourtId);
-      setIsOpenDenyModal(true);
+      await managementApi.denyNewCourt(data.newCourtId)
+      setIsOpenDenyModal(true)
       setTimeout(() => {
-        setIsOpenDenyModal(false);
-        router.reload();
-      }, 1000);
+        setIsOpenDenyModal(false)
+        router.reload()
+      }, 1000)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await managementApi.acceptNewCourt(data.newCourtId);
-      setIsOpenAcceptModal(true);
+      await managementApi.acceptNewCourt(data.newCourtId)
+      setIsOpenAcceptModal(true)
       setTimeout(() => {
-        setIsOpenAcceptModal(false);
-        router.reload();
-      }, 1000);
+        setIsOpenAcceptModal(false)
+        router.reload()
+      }, 1000)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <Link href={`/admin/newcourts/${data.newCourtId}`} passHref>
@@ -85,10 +85,10 @@ const NewCourtItem = ({
         )}
       </Container>
     </Link>
-  );
-};
+  )
+}
 
-export default NewCourtItem;
+export default NewCourtItem
 
 const Container = styled.a`
   ${({ theme }) => css`
@@ -102,7 +102,7 @@ const Container = styled.a`
     box-shadow: ${theme.boxShadows.sm};
     padding: ${theme.gaps.base};
   `}
-`;
+`
 
 const StatusBar = styled(Button)`
   text-align: center;
@@ -114,13 +114,13 @@ const StatusBar = styled(Button)`
   &.deny {
     background: ${({ theme }) => theme.colors.red.light};
   }
-`;
+`
 
 const CourtName = styled(Text)`
   margin-bottom: ${({ theme }) => theme.gaps.sm};
-`;
+`
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
-`;
+`

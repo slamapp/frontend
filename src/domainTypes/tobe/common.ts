@@ -1,17 +1,17 @@
-import type { APIUser } from "~/domainTypes/tobe";
+import type { APIUser } from "~/domainTypes/tobe"
 
 export interface APISend extends APICommon {
-  sender: OmitAt<APIUser>;
+  sender: OmitAt<APIUser>
 }
 
 export interface APICommon extends APIIdObject {
-  createdAt: ISOString;
-  updatedAt: ISOString;
+  createdAt: ISOString
+  updatedAt: ISOString
 }
 
 export interface APIIdObject {
-  id: string;
+  id: string
 }
 
-export type ISOString = string;
-export type OmitAt<T> = Omit<T, "createdAt" | "updatedAt">;
+export type ISOString = string
+export type OmitAt<T> = Omit<T, "createdAt" | "updatedAt">

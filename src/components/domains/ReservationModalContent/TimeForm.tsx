@@ -1,8 +1,8 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
-import { Text } from "~/components/uis/atoms";
+import { css } from "@emotion/react"
+import styled from "@emotion/styled"
+import { Text } from "~/components/uis/atoms"
 
-import * as S from "./style";
+import * as S from "./style"
 
 const TimeInput: React.FC<any> = ({ time, selected, text, onClick }) => {
   return (
@@ -13,8 +13,8 @@ const TimeInput: React.FC<any> = ({ time, selected, text, onClick }) => {
         {time || "시간 입력"}
       </S.TimeSlotText>
     </TimeInputWrapper>
-  );
-};
+  )
+}
 
 const TimeInputWrapper = styled.span<any>`
   display: flex;
@@ -43,13 +43,13 @@ const TimeInputWrapper = styled.span<any>`
         background-color: ${theme.colors.white};
       }
     `}
-`;
+`
 
 interface TimeFormProps {
-  currentInput: "START" | "END";
-  startTime: string;
-  endTime: string | null;
-  onSetCurrentInput: (currentInput: string) => void;
+  currentInput: "START" | "END"
+  startTime: string
+  endTime: string | null
+  onSetCurrentInput: (currentInput: string) => void
 }
 
 const TimeForm: React.FC<TimeFormProps> = ({
@@ -73,8 +73,8 @@ const TimeForm: React.FC<TimeFormProps> = ({
         onClick={() => onSetCurrentInput("END")}
       />
     </TimeFormContainer>
-  );
-};
+  )
+}
 
 const TimeFormContainer = styled.span`
   display: flex;
@@ -83,6 +83,6 @@ const TimeFormContainer = styled.span`
   background-color: ${({ theme }) => theme.colors.gray100};
   border-radius: ${({ theme }) => theme.borderRadiuses.md};
   overflow: hidden;
-`;
+`
 
-export default TimeForm;
+export default TimeForm

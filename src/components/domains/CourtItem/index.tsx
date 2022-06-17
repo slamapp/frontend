@@ -1,10 +1,10 @@
-import ChatLink from "./ChatLink";
-import FavoritesToggle from "./FavoritesToggle";
-import KakaoMapLink from "./KakaoMapLink";
-import Share from "./Share";
-import Header from "./Header";
-import Address from "./Address";
-import Datetime from "./Datetime";
+import ChatLink from "./ChatLink"
+import FavoritesToggle from "./FavoritesToggle"
+import KakaoMapLink from "./KakaoMapLink"
+import Share from "./Share"
+import Header from "./Header"
+import Address from "./Address"
+import Datetime from "./Datetime"
 
 const CourtItem = {
   Share,
@@ -14,6 +14,6 @@ const CourtItem = {
   Header,
   Address,
   Datetime,
-};
+}
 
-export default CourtItem;
+export default CourtItem

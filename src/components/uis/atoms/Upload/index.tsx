@@ -1,15 +1,15 @@
-import styled from "@emotion/styled";
-import type { ChangeEvent, DragEvent, ReactNode } from "react";
-import { useState } from "react";
+import styled from "@emotion/styled"
+import type { ChangeEvent, DragEvent, ReactNode } from "react"
+import { useState } from "react"
 
 interface Props {
-  children?: ReactNode;
-  name?: string;
-  accept?: any;
-  value?: File;
-  onChange?: (file: File) => void;
-  onChangeFileSrc?: (fileSrc: string) => void;
-  [x: string]: any;
+  children?: ReactNode
+  name?: string
+  accept?: any
+  value?: File
+  onChange?: (file: File) => void
+  onChangeFileSrc?: (fileSrc: string) => void
+  [x: string]: any
 }
 
 const Upload = ({
@@ -23,81 +23,81 @@ const Upload = ({
   inputRef,
   ...props
 }: Props) => {
-  const [file, setFile] = useState(value);
-  const [dragging, setDragging] = useState(false);
+  const [file, setFile] = useState(value)
+  const [dragging, setDragging] = useState(false)
 
   const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const changedFile: File = (target.files as FileList)[0];
-    setFile(changedFile);
-    getFileSrc(changedFile);
-  };
+    const changedFile: File = (target.files as FileList)[0]
+    setFile(changedFile)
+    getFileSrc(changedFile)
+  }
 
   const getFileSrc = (fileBlob: File) => {
     if (fileBlob) {
-      const reader = new FileReader();
+      const reader = new FileReader()
 
       const onFileLoadEnd = () => {
-        reader.removeEventListener("loadend", onFileLoadEnd, false);
+        reader.removeEventListener("loadend", onFileLoadEnd, false)
         if (typeof reader.result === "string") {
-          onChangeFileSrc?.(reader.result);
+          onChangeFileSrc?.(reader.result)
         }
-      };
+      }
 
-      reader.addEventListener("loadend", onFileLoadEnd, false);
-      reader.readAsDataURL(fileBlob);
+      reader.addEventListener("loadend", onFileLoadEnd, false)
+      reader.readAsDataURL(fileBlob)
     }
-  };
+  }
 
   const handleChooseFile = () => {
-    inputRef.current?.click();
-  };
+    inputRef.current?.click()
+  }
 
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     if (!droppable) {
-      return;
+      return
     }
 
-    e.preventDefault(); // 브라우저 기본 이벤트를 막는다.
-    e.stopPropagation(); // 부모나 자식 컴포넌트로 이벤트가 전파되는 것을 막는다.
+    e.preventDefault() // 브라우저 기본 이벤트를 막는다.
+    e.stopPropagation() // 부모나 자식 컴포넌트로 이벤트가 전파되는 것을 막는다.
 
     if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
-      setDragging(true);
+      setDragging(true)
     }
-  };
+  }
   const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     if (!droppable) {
-      return;
+      return
     }
 
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
-    setDragging(false);
-  };
+    setDragging(false)
+  }
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     if (!droppable) {
-      return;
+      return
     }
 
-    e.preventDefault();
-    e.stopPropagation();
-  };
+    e.preventDefault()
+    e.stopPropagation()
+  }
   const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
     if (!droppable) {
-      return;
+      return
     }
 
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
-    const { files } = e.dataTransfer;
-    const changedFile = files[0];
-    setFile(changedFile);
+    const { files } = e.dataTransfer
+    const changedFile = files[0]
+    setFile(changedFile)
     if (onChange) {
-      onChange(changedFile);
+      onChange(changedFile)
     }
-    setDragging(false);
-  };
+    setDragging(false)
+  }
 
   return (
     <div
@@ -117,11 +117,11 @@ const Upload = ({
       />
       {typeof children === "function" ? children(file, dragging) : children}
     </div>
-  );
-};
+  )
+}
 
-export default Upload;
+export default Upload
 
 const Input = styled.input`
   display: none;
-`;
+`

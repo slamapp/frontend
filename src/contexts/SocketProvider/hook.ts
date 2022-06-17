@@ -1,4 +1,4 @@
-import { useContext } from "react";
-import { Context } from "./context";
+import { useContext } from "react"
+import { Context } from "./context"
 
-export default () => useContext(Context);
+export default () => useContext(Context)

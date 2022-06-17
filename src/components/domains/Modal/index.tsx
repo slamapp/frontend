@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
-import { Modal } from "~/components/uis/templates";
-import * as S from "./style";
+import type { ReactNode } from "react"
+import { Modal } from "~/components/uis/templates"
+import * as S from "./style"
 
 interface Props {
-  children: ReactNode;
-  visible: boolean;
-  onClose: () => void;
+  children: ReactNode
+  visible: boolean
+  onClose: () => void
 }
 
 const DefaultModal = ({ children, visible, onClose }: Props) => {
@@ -18,10 +18,10 @@ const DefaultModal = ({ children, visible, onClose }: Props) => {
     >
       {children}
     </Modal>
-  );
-};
+  )
+}
 
-DefaultModal.Header = S.Header;
-DefaultModal.BottomButtonContainer = S.BottomButtonContainer;
+DefaultModal.Header = S.Header
+DefaultModal.BottomButtonContainer = S.BottomButtonContainer
 
-export default DefaultModal;
+export default DefaultModal

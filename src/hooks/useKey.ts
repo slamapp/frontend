@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from "react";
-import type { EventKeyValue } from "./EventKeyValueType";
+import { useCallback, useEffect } from "react"
+import type { EventKeyValue } from "./EventKeyValueType"
 
-type KeyEvent = "keydown" | "keyup";
-type Handler = () => void;
+type KeyEvent = "keydown" | "keyup"
+type Handler = () => void
 
 const useKey = (
   targetKey: EventKeyValue,
@@ -12,19 +12,19 @@ const useKey = (
   const handleKey = useCallback(
     ({ key }) => {
       if (key === targetKey) {
-        handler();
+        handler()
       }
     },
     [targetKey, handler]
-  );
+  )
 
   useEffect(() => {
-    window.addEventListener(event, handleKey);
+    window.addEventListener(event, handleKey)
 
     return () => {
-      window.removeEventListener(event, handleKey);
-    };
-  }, [event, targetKey, handleKey]);
-};
+      window.removeEventListener(event, handleKey)
+    }
+  }, [event, targetKey, handleKey])
+}
 
-export default useKey;
+export default useKey

@@ -2,7 +2,7 @@ export const requestTypes = {
   DEFAULT: "DEFAULT",
   AUTH: "AUTH",
   AUTH_FILE: "AUTH_FILE",
-} as const;
+} as const
 
-export type RequestType = typeof requestTypes;
-export type RequestTypeUnion = RequestType[keyof RequestType];
+export type RequestType = typeof requestTypes
+export type RequestTypeUnion = RequestType[keyof RequestType]

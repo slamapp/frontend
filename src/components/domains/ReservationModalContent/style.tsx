@@ -1,6 +1,6 @@
-import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { Text } from "~/components/uis/atoms";
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
+import { Text } from "~/components/uis/atoms"
 
 export const ModalContent = styled.section`
   display: flex;
@@ -8,19 +8,19 @@ export const ModalContent = styled.section`
   margin: 0 20px;
   margin-top: 15px;
   gap: ${({ theme }) => theme.gaps.sm};
-`;
+`
 
 export const ContentWrapper = styled.article`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.gaps.xs};
-`;
+`
 
 export const AvatarGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-`;
+`
 
 export const TimeSlotText = styled(Text)`
   font-weight: bold;
@@ -31,4 +31,4 @@ export const TimeSlotText = styled(Text)`
       color: ${theme.colors.gray400};
       font-weight: 500;
     `};
-`;
+`
