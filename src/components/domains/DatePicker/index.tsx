@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
-import Flicking from "@egjs/react-flicking"
 import styled from "@emotion/styled"
+import Flicking from "@egjs/react-flicking"
 import type { Dayjs } from "dayjs"
 import { useNavigationContext } from "~/contexts/hooks"
 import DateItem from "./DateItem"

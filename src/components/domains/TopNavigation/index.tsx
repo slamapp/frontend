@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useRef } from "react"
-import styled from "@emotion/styled"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import styled from "@emotion/styled"
+import { ProfileAvatar } from "~/components/domains"
 import { Icon, Badge } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { useIntersectionObserver } from "~/hooks"
-import { ProfileAvatar } from "~/components/domains"
 
 const TopNavigation = () => {
   const sensorRef = useRef<HTMLDivElement>(null)

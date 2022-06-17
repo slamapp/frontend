@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import styled from "@emotion/styled"
 import Router from "next/router"
+import styled from "@emotion/styled"
+import { AnimatePresence, motion } from "framer-motion"
 import { useInterval, useTimeout } from "~/hooks"
 
 const TopPageLoader = () => {

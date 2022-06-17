@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { Avatar } from "~/components/uis/molecules"
 import { Text } from "~/components/uis/atoms"
+import { Avatar } from "~/components/uis/molecules"
 import { useReservationContext } from "~/contexts/hooks"
 import BottomFixedButton from "../BottomFixedButton"
 import * as S from "./style"

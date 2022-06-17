@@ -1,13 +1,13 @@
-import { useReservationContext } from "~/contexts/hooks"
 import { Text } from "~/components/uis/atoms"
+import { useReservationContext } from "~/contexts/hooks"
 import {
   MAJOR_TIME_BLOCK_UNIT,
   ACTIVE_RESERVATION_COUNT,
   getTimeFromIndex,
 } from "~/utils/date"
-import * as S from "./style"
 import type { TimeBlockUnitProps, Status } from "../type"
 import Hour from "./Hour"
+import * as S from "./style"
 
 const getTimeSlotFromIndex = (index: number) =>
   `${getTimeFromIndex(index)} - ${getTimeFromIndex(index + 1)}`

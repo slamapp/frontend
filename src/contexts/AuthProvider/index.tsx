@@ -2,18 +2,18 @@ import type { ReactNode } from "react"
 import { useReducer, useEffect, useCallback } from "react"
 import { useRouter } from "next/router"
 import type { AxiosError } from "axios"
+import { Toast } from "~/components/uis/molecules"
+import { useLocalToken } from "~/hooks/domain"
 import {
   reservationApi,
   favoriteApi,
   userApi,
   notificationApi,
 } from "~/service"
-import { useLocalToken } from "~/hooks/domain"
-import { Toast } from "~/components/uis/molecules"
-import Context from "./context"
-import { initialData, reducer } from "./reducer"
 import AuthLoading from "./AuthLoading"
+import Context from "./context"
 import type { ContextProps } from "./context"
+import { initialData, reducer } from "./reducer"
 
 const LOG_OUT_LOGO_ANIMATION_DELAY_TIME_MS = 2000
 interface Props {

@@ -4,9 +4,9 @@ import styled from "@emotion/styled"
 import { useMapContext } from "~/contexts/hooks"
 import type { Coord } from "~/domainTypes/tobe"
 import { DEFAULT_POSITION } from "~/utils/geolocation"
+import CurrentLocationButton from "./CurrentLocationButton"
 import useKakaoMapEvent from "./useKakaoMapEvent"
 import ZoomButton from "./ZoomButton"
-import CurrentLocationButton from "./CurrentLocationButton"
 
 declare global {
   interface Window {

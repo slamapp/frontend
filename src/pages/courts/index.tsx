@@ -2,22 +2,9 @@ import { useState, useCallback, useEffect, useMemo } from "react"
 import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
-import { useRouter } from "next/router"
-import { courtApi } from "~/service"
-import type { APICourt, Coord } from "~/domainTypes/tobe"
-import { useLocalToken } from "~/hooks/domain"
-import { DEFAULT_POSITION, getCurrentLocation } from "~/utils/geolocation"
-import {
-  useAuthContext,
-  useMapContext,
-  useNavigationContext,
-} from "~/contexts/hooks"
-import {
-  getTimezoneCurrentDate,
-  getTimezoneDateStringFromDate,
-} from "~/utils/date"
 import {
   DatePicker,
   BasketballMarker,
@@ -27,8 +14,21 @@ import {
 } from "~/components/domains"
 import { Text, Button, Spacer } from "~/components/uis/atoms"
 import { ModalSheet } from "~/components/uis/templates"
-import type { CourtApi } from "~/service/courtApi/type"
+import {
+  useAuthContext,
+  useMapContext,
+  useNavigationContext,
+} from "~/contexts/hooks"
+import type { APICourt, Coord } from "~/domainTypes/tobe"
 import { useLocalStorage } from "~/hooks"
+import { useLocalToken } from "~/hooks/domain"
+import { courtApi } from "~/service"
+import type { CourtApi } from "~/service/courtApi/type"
+import {
+  getTimezoneCurrentDate,
+  getTimezoneDateStringFromDate,
+} from "~/utils/date"
+import { DEFAULT_POSITION, getCurrentLocation } from "~/utils/geolocation"
 
 interface Geocoder extends kakao.maps.services.Geocoder {
   coord2Address: (

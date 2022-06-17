@@ -1,12 +1,12 @@
-import type { NextPage } from "next"
 import React, { useRef, useEffect, useMemo } from "react"
+import type { NextPage } from "next"
 import styled from "@emotion/styled"
-import { withRouteGuard } from "~/hocs"
-import { useIntersectionObserver } from "~/hooks"
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { NoItemMessage } from "~/components/domains"
 import NotificationList from "~/components/domains/NotificationList"
 import { Skeleton } from "~/components/uis/atoms"
-import { NoItemMessage } from "~/components/domains"
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { withRouteGuard } from "~/hocs"
+import { useIntersectionObserver } from "~/hooks"
 
 const NotificationsPage: NextPage = () => {
   const { authProps, getMoreNotifications, readAllNotifications } =

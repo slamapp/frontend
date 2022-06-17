@@ -1,7 +1,6 @@
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import { Text } from "~/components/uis/atoms"
-
 import * as S from "./style"
 
 const TimeInput: React.FC<any> = ({ time, selected, text, onClick }) => {

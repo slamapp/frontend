@@ -1,32 +1,32 @@
 import { useEffect, useState, useCallback } from "react"
 import type { NextPage } from "next"
 import Head from "next/head"
-import { useRouter } from "next/router"
 import Link from "next/link"
-import styled from "@emotion/styled"
+import { useRouter } from "next/router"
 import { css } from "@emotion/react"
+import styled from "@emotion/styled"
 import type { AxiosError } from "axios"
-import { withRouteGuard } from "~/hocs"
-import type { APIFavorite, APIUser, APICourt } from "~/domainTypes/tobe"
+import {
+  ProfileFavoritesListItem,
+  BasketballLoading,
+} from "~/components/domains"
+import { Text, Button, Spacer } from "~/components/uis/atoms"
+import { Label, Chip, Avatar } from "~/components/uis/molecules"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
-import userApi from "~/service/userApi"
 import {
   useNavigationContext,
   useAuthContext,
   useSocketContext,
 } from "~/contexts/hooks"
-import Custom404 from "~/pages/404"
+import type { APIFavorite, APIUser, APICourt } from "~/domainTypes/tobe"
+import { withRouteGuard } from "~/hocs"
 import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
+import Custom404 from "~/pages/404"
+import userApi from "~/service/userApi"
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
 } from "~/utils/userInfo"
-import {
-  ProfileFavoritesListItem,
-  BasketballLoading,
-} from "~/components/domains"
-import { Label, Chip, Avatar } from "~/components/uis/molecules"
-import { Text, Button, Spacer } from "~/components/uis/atoms"
 
 interface ResponseUserProfile
   extends Pick<

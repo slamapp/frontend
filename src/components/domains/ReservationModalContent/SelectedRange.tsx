@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react"
 import { Spacer, Text } from "~/components/uis/atoms"
 import { useReservationContext } from "~/contexts/hooks"
-import * as S from "./style"
 import BottomFixedButton from "../BottomFixedButton"
 import HasBallDecisionModal from "./HasBallDecisionModal"
 import ParticipantsPerTime from "./ParticipantsPerTime"
+import * as S from "./style"
 import TimeForm from "./TimeForm"
 
 interface Props {

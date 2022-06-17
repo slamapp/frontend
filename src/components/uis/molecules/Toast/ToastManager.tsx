@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 import { v4 } from "uuid"
-
 import ToastItem from "./ToastItem"
 import type { CreateToast } from "./types"
 

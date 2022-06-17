@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import Context from "./context"
-import { useInitialize, usePageSend } from "./hooks"
 import { sendPageview } from "./handle"
+import { useInitialize, usePageSend } from "./hooks"
 
 interface Props {
   children: ReactNode

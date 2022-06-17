@@ -1,7 +1,7 @@
-import type { NextPage } from "next"
 import React from "react"
-import styled from "@emotion/styled"
+import type { NextPage } from "next"
 import { css } from "@emotion/react"
+import styled from "@emotion/styled"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 

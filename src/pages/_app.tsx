@@ -1,9 +1,11 @@
+import React from "react"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import { ThemeProvider } from "@emotion/react"
-import theme from "~/styles/theme"
-import Providers from "~/contexts/Providers"
 import { DefaultLayout } from "~/components/domains/layout"
+import Providers from "~/contexts/Providers"
+import theme from "~/styles/theme"
+
 import "~/styles/global.css"
 
 function MyApp({ Component, pageProps }: AppProps) {

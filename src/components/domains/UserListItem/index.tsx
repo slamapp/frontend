@@ -1,10 +1,10 @@
 import React from "react"
-import styled from "@emotion/styled"
 import type { CSSProperties } from "react"
-import { Text, Button, Spacer } from "~/components/uis/atoms"
+import styled from "@emotion/styled"
 import { ProfileAvatar } from "~/components/domains"
-import type { APIUser } from "~/domainTypes/tobe"
+import { Text, Button, Spacer } from "~/components/uis/atoms"
 import { useSocketContext } from "~/contexts/hooks"
+import type { APIUser } from "~/domainTypes/tobe"
 
 interface Props {
   className?: string

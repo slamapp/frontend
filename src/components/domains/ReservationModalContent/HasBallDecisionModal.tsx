@@ -1,16 +1,15 @@
 import { useCallback, useState } from "react"
 import styled from "@emotion/styled"
 import dayjs from "dayjs"
-
-import { useReservationContext } from "~/contexts/hooks"
 import { Spacer, Button, Text } from "~/components/uis/atoms"
+import { useReservationContext } from "~/contexts/hooks"
 import {
   getTimeFromIndex,
   getTimezoneDateStringFromDate,
   week,
 } from "~/utils/date"
-import Modal from "../Modal"
 import { DayOfTheWeek } from ".."
+import Modal from "../Modal"
 
 interface Props {
   visible: boolean

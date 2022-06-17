@@ -1,8 +1,8 @@
-import Link from "next/link"
 import type { FC } from "react"
-import type { APIUser } from "~/domainTypes/tobe/user"
+import Link from "next/link"
 import { Avatar } from "~/components/uis/molecules"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
+import type { APIUser } from "~/domainTypes/tobe/user"
 
 type Size = "lg" | "md" | "sm"
 

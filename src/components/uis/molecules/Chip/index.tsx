@@ -1,6 +1,6 @@
 import type { ReactNode, HTMLAttributes } from "react"
-import styled from "@emotion/styled"
 import { css } from "@emotion/react"
+import styled from "@emotion/styled"
 import { Text } from "~/components/uis/atoms"
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {

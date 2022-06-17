@@ -1,10 +1,10 @@
 import React, { useRef } from "react"
-import styled from "@emotion/styled"
 import { css } from "@emotion/react"
+import styled from "@emotion/styled"
 import { BottomNavigation, TopNavigation } from "~/components/domains"
+import { TopPageLoader } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
 import Container from "./Container"
-import { TopPageLoader } from "~/components/uis/atoms"
 
 const DefaultLayout: React.FC = ({ children }) => {
   const containerRef = useRef<HTMLDivElement>(null)

@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "@emotion/styled"
 import { Spacer } from "~/components/uis/atoms"
+import type { APIReservation } from "~/domainTypes/tobe"
 import CourtItem from "../CourtItem"
 import Loudspeaker from "./Loudspeaker"
 import ReservationItemBottom from "./ReservationItemBottom"
-import type { APIReservation } from "~/domainTypes/tobe"
 
 interface Props {
   reservation: APIReservation

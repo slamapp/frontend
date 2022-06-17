@@ -10,7 +10,7 @@
     "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json", 
+    "project": "./tsconfig.json",
     "extraFileExtensions": [".css"]
   },
   "rules": {
@@ -34,6 +34,53 @@
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-shadow": "off"
+    "@typescript-eslint/no-shadow": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling"],
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "next",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "next/**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@emotion/**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "~/**",
+            "group": "parent",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "react",
+          "next",
+          "next/**",
+          "@emotion/**"
+        ],
+        "newlines-between": "never",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ]
   }
 }

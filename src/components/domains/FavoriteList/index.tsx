@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import styled from "@emotion/styled"
-import dynamic from "next/dynamic"
-import type { APIFavorite } from "~/domainTypes/tobe"
 import { Button, Spacer } from "~/components/uis/atoms"
-import CourtItem from "../CourtItem"
-import NoItemMessage from "../NoItemMessage"
 import { useAuthContext } from "~/contexts/hooks"
 import favoriteAPI from "~/service/favoriteApi"
+import CourtItem from "../CourtItem"
+import NoItemMessage from "../NoItemMessage"
 
 const SkeletonParagraph = dynamic(
   () => import("~/components/uis/atoms/Skeleton/Paragraph"),

@@ -1,5 +1,5 @@
-import styled from "@emotion/styled"
 import React from "react"
+import styled from "@emotion/styled"
 import Lottie from "react-lottie"
 import * as animationData from "../../../../public/assets/lottie/basketball.json"
 

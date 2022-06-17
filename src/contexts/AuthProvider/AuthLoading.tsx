@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import styled from "@emotion/styled"
-import { useAuthContext } from "~/contexts/hooks"
 import { Logo } from "~/components/domains"
+import { useAuthContext } from "~/contexts/hooks"
 
 const FADE_OUT_TIME_MS = 400
 

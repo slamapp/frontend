@@ -1,8 +1,7 @@
-import styled from "@emotion/styled"
-
 import Link from "next/link"
-import { Avatar } from "~/components/uis/molecules"
+import styled from "@emotion/styled"
 import { Text } from "~/components/uis/atoms"
+import { Avatar } from "~/components/uis/molecules"
 import { getTimeFromIndex } from "~/utils/date"
 import * as S from "./style"
 

@@ -1,8 +1,8 @@
-import styled from "@emotion/styled"
 import type { ComponentProps } from "react"
 import { useEffect, useState } from "react"
-import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
+import styled from "@emotion/styled"
 import { Image as ImageComponent } from "~/components/uis/atoms"
+import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import AvatarGroup from "./AvatarGroup"
 
 interface Props {

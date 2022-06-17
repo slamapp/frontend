@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import AnalyticsProvider from "./AnalyticsProvider"
 import {
   AuthProvider,
   NavigationProvider,
@@ -6,7 +7,6 @@ import {
   MapProvider,
   ReservationProvider,
 } from "."
-import AnalyticsProvider from "./AnalyticsProvider"
 
 interface Props {
   children: ReactNode
