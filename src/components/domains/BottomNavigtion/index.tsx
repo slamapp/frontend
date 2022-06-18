@@ -7,31 +7,31 @@ const BottomNavigation = () => {
   const { authProps } = useAuthContext()
 
   if (!authProps.currentUser) {
-    return null
+    return (
+      <Container>
+        <Wrapper>
+          <NavIcon.Map />
+          <NavIcon.Login />
+        </Wrapper>
+      </Container>
+    )
   }
 
-  const { role } = authProps.currentUser
+  if (authProps.currentUser) {
+    return (
+      <Container>
+        <Wrapper>
+          <NavIcon.Favorites />
+          <NavIcon.Map />
+          <NavIcon.Chat />
+          <NavIcon.Reservations />
+          {authProps.currentUser.role === "ADMIN" && <NavIcon.newCourt />}
+        </Wrapper>
+      </Container>
+    )
+  }
 
-  return (
-    <Container>
-      <Wrapper>
-        {role === "ADMIN" || role === "USER" ? (
-          <>
-            <NavIcon.Favorites />
-            <NavIcon.Map />
-            <NavIcon.Chat />
-            <NavIcon.Reservations />
-          </>
-        ) : (
-          <>
-            <NavIcon.Map />
-            <NavIcon.Login />
-          </>
-        )}
-        {role === "ADMIN" && <NavIcon.newCourt />}
-      </Wrapper>
-    </Container>
-  )
+  return null
 }
 
 export default BottomNavigation

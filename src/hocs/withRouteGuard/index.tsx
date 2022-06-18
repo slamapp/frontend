@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useAuthContext } from "~/contexts/hooks"
@@ -15,34 +14,28 @@ const withRouteGuard = (option: RouteOption, Page: NextPage) => {
     const { authProps } = useAuthContext()
     const [localToken] = useLocalToken()
     const router = useRouter()
-    const { pathname } = router
 
-    useEffect(() => {
-      if (router.isReady) {
-        switch (option) {
-          case "private":
-            if (localToken) {
-              router.replace({ pathname: `${pathname}`, query: router.query })
-            } else {
-              router.replace(privateRedirectPath)
-            }
-            break
-          case "prevented":
-            if (localToken) {
-              router.replace(preventedRedirectPath)
-            } else {
-              router.replace({ pathname: `${pathname}`, query: router.query })
-            }
-            break
-          default:
-            break
-        }
+    if (!router.isReady || authProps.isLoading) {
+      return <>Loading...</>
+    }
+
+    if (option === "prevented") {
+      if (localToken || authProps.currentUser) {
+        router.replace(preventedRedirectPath)
+      } else {
+        return <Page />
       }
-    }, [localToken])
+    }
 
-    console.log(authProps.currentUser)
+    if (option === "private") {
+      if (localToken && authProps.currentUser) {
+        return <Page />
+      } else {
+        router.replace(privateRedirectPath)
+      }
+    }
 
-    return <Page />
+    return null
   }
 }
 

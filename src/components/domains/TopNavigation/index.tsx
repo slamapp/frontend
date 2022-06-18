@@ -49,10 +49,6 @@ const TopNavigation = () => {
     [authProps.notifications]
   )
 
-  if (!authProps.currentUser) {
-    return null
-  }
-
   return (
     <>
       <Container isTransparent={isTopTransparent}>

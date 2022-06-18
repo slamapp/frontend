@@ -119,14 +119,13 @@ const Reservations: NextPage = () => {
           />
         ) : (
           <Spacer gap="md" type="vertical">
-            {expiredReservations &&
-              expiredReservations.map((reservation: any) => (
-                <ReservationItem
-                  key={reservation.reservationId}
-                  {...reservation}
-                  expired
-                />
-              ))}
+            {expiredReservations.map((reservation: any) => (
+              <ReservationItem
+                key={reservation.reservationId}
+                {...reservation}
+                expired
+              />
+            ))}
           </Spacer>
         )}
       </TabContentsWrapper>
