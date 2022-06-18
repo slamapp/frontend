@@ -57,7 +57,7 @@ const NoItemMessage = ({
 export default NoItemMessage
 
 const TextGray = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray700};
+  color: ${({ theme }) => theme.previousTheme.colors.gray700};
 `
 
 const SearchButton = styled(Button)`

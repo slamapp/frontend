@@ -70,7 +70,7 @@ const Menu: NextPage = () => {
 export default withRouteGuard("private", Menu)
 
 const MenuList = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colors.gray100};
+  border-top: 1px solid ${({ theme }) => theme.previousTheme.colors.gray100};
 `
 
 const MenuItem = styled.div`
@@ -79,15 +79,15 @@ const MenuItem = styled.div`
   gap: 12px;
   padding: 12px 16px;
   transition: background 200ms;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray50};
+  border-bottom: 1px solid ${({ theme }) => theme.previousTheme.colors.gray50};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.gray100};
+    background: ${({ theme }) => theme.previousTheme.colors.gray100};
   }
   &:focus {
-    background: ${({ theme }) => theme.colors.gray200};
+    background: ${({ theme }) => theme.previousTheme.colors.gray200};
   }
   &:active {
-    background: ${({ theme }) => theme.colors.gray300};
+    background: ${({ theme }) => theme.previousTheme.colors.gray300};
   }
 `

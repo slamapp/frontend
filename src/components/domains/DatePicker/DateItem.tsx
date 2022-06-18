@@ -32,8 +32,8 @@ const DateItem = React.memo(
 export default DateItem
 
 const DateItemContainer = styled.div`
-  margin-top: ${({ theme }) => theme.gaps.md};
-  margin-bottom: ${({ theme }) => theme.gaps.xs};
+  margin-top: ${({ theme }) => theme.previousTheme.gaps.md};
+  margin-bottom: ${({ theme }) => theme.previousTheme.gaps.xs};
   margin-right: 10px;
   display: "flex";
   flex-direction: column;
@@ -48,14 +48,14 @@ const DayOfTheWeek = styled(Text)<{ index: number }>`
   margin-bottom: 10px;
   color: ${({ index, theme }) => {
     if (index === SUNDAY_INDEX) {
-      return theme.colors.red.middle
+      return theme.previousTheme.colors.red.middle
     } else if (index === SATURDAY_INDEX) {
-      return theme.colors.blue.middle
+      return theme.previousTheme.colors.blue.middle
     } else {
-      return theme.colors.gray700
+      return theme.previousTheme.colors.gray700
     }
   }};
-  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-size: ${({ theme }) => theme.previousTheme.fontSizes.xs};
 `
 
 const Day = styled(Text)<{ selected: boolean }>`
@@ -64,18 +64,22 @@ const Day = styled(Text)<{ selected: boolean }>`
   align-items: center;
   width: 40px;
   height: 40px;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  font-size: ${({ theme }) => theme.previousTheme.fontSizes.sm};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
   background: ${({ theme, selected }) =>
-    selected ? theme.colors.gray900 : "none"};
+    selected ? theme.previousTheme.colors.gray900 : "none"};
   color: ${({ theme, selected }) =>
-    selected ? theme.colors.white : theme.colors.gray900};
+    selected
+      ? theme.previousTheme.colors.white
+      : theme.previousTheme.colors.gray900};
 
   transition: all 200ms;
 
   :hover {
     background: ${({ theme, selected }) =>
-      selected ? theme.colors.gray900 : theme.colors.gray700};
-    color: ${({ theme }) => theme.colors.white};
+      selected
+        ? theme.previousTheme.colors.gray900
+        : theme.previousTheme.colors.gray700};
+    color: ${({ theme }) => theme.previousTheme.colors.white};
   }
 `

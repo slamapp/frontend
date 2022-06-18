@@ -129,8 +129,8 @@ const Actions = styled(Spacer)`
 const ActionsLeftButtons = styled(Spacer)``
 
 const FavoriteItem = styled.div`
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: ${({ theme }) => theme.borderRadiuses.lg};
+  background-color: ${({ theme }) => theme.previousTheme.colors.white};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.lg};
   padding: 20px;
 `
 

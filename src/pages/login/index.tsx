@@ -58,9 +58,11 @@ const DescriptionText = styled.span`
 `
 
 const KaKaoLoginButton = styled(BottomFixedButton)`
-  background-color: ${({ theme }) => theme.colors.kakao.yellow.strong};
-  color: ${({ theme }) => theme.colors.kakao.brown.strong};
+  background-color: ${({ theme }) =>
+    theme.previousTheme.colors.kakao.yellow.strong};
+  color: ${({ theme }) => theme.previousTheme.colors.kakao.brown.strong};
   :hover {
-    background-color: ${({ theme }) => theme.colors.kakao.yellow.middle};
+    background-color: ${({ theme }) =>
+      theme.previousTheme.colors.kakao.yellow.middle};
   }
 `

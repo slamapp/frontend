@@ -35,7 +35,7 @@ const ErrorMessage = ({ title, description, buttonTitle, style }: Props) => {
 export default ErrorMessage
 
 const TextGray = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray500};
+  color: ${({ theme }) => theme.previousTheme.colors.gray500};
 `
 
 const SearchButton = styled(Button)`

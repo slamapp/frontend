@@ -411,6 +411,6 @@ const ModalContentContainer = styled.div`
 `
 
 const ReservationCount = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray800};
-  margin-top: ${({ theme }) => theme.gaps.md};
+  color: ${({ theme }) => theme.previousTheme.colors.gray800};
+  margin-top: ${({ theme }) => theme.previousTheme.gaps.md};
 `

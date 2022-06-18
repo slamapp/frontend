@@ -57,9 +57,9 @@ const StyledButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ theme }) => theme.buttonHeights.lg};
-  height: ${({ theme }) => theme.buttonHeights.lg};
-  background: ${({ theme }) => theme.colors.activeGradientColor};
+  width: ${({ theme }) => theme.previousTheme.buttonHeights.lg};
+  height: ${({ theme }) => theme.previousTheme.buttonHeights.lg};
+  background: ${({ theme }) => theme.previousTheme.colors.activeGradientColor};
 `
 
 export default Loudspeaker

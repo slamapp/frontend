@@ -67,16 +67,16 @@ const ReservationItem = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  background-color: ${({ theme }) => theme.previousTheme.colors.white};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
   padding: 20px;
 `
 
 const Actions = styled(Spacer)`
   justify-content: flex-end;
   align-items: center;
-  margin-top: ${({ theme }) => theme.gaps.sm};
-  margin-bottom: ${({ theme }) => theme.gaps.base};
+  margin-top: ${({ theme }) => theme.previousTheme.gaps.sm};
+  margin-bottom: ${({ theme }) => theme.previousTheme.gaps.base};
 `
 
 const HeaderContainer = styled.div`

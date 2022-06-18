@@ -4,7 +4,7 @@ import Head from "next/head"
 import { ThemeProvider } from "@emotion/react"
 import { DefaultLayout } from "~/components/domains/layout"
 import Providers from "~/contexts/Providers"
-import theme from "~/styles/theme"
+import emotionTheme from "~/styles/emotionTheme"
 
 import "~/styles/global.css"
 
@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Slam | 우리 주변 농구장을 빠르게</title>
       </Head>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={emotionTheme}>
         <Providers>
           <DefaultLayout>
             <Component {...pageProps} />

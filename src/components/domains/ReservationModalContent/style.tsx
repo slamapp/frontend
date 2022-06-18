@@ -7,13 +7,13 @@ export const ModalContent = styled.section`
   flex-direction: column;
   margin: 0 20px;
   margin-top: 15px;
-  gap: ${({ theme }) => theme.gaps.sm};
+  gap: ${({ theme }) => theme.previousTheme.gaps.sm};
 `
 
 export const ContentWrapper = styled.article`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.gaps.xs};
+  gap: ${({ theme }) => theme.previousTheme.gaps.xs};
 `
 
 export const AvatarGroup = styled.div`
@@ -24,11 +24,11 @@ export const AvatarGroup = styled.div`
 
 export const TimeSlotText = styled(Text)`
   font-weight: bold;
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${({ theme }) => theme.previousTheme.fontSizes.lg};
   ${({ isPlaceHolder, theme }) =>
     isPlaceHolder &&
     css`
-      color: ${theme.colors.gray400};
+      color: ${theme.previousTheme.colors.gray400};
       font-weight: 500;
     `};
 `

@@ -55,7 +55,7 @@ const StyledFlicking = styled(Flicking)`
 
   .flicking-camera {
     display: flex;
-    padding: 0 ${({ theme }) => theme.gaps.sm};
-    filter: ${({ theme }) => theme.filter.dropShadow};
+    padding: 0 ${({ theme }) => theme.previousTheme.gaps.sm};
+    filter: ${({ theme }) => theme.previousTheme.filter.dropShadow};
   }
 `

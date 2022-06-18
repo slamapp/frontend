@@ -318,8 +318,12 @@ const Icon = ({
 const IconWrapper = styled.i<Pick<Props, "size" | "rotate">>`
   display: inline-block;
   ${({ size, theme }) => css`
-    width: ${typeof size === "string" ? theme.iconSize[size] : size};
-    height: ${typeof size === "string" ? theme.iconSize[size] : size};
+    width: ${typeof size === "string"
+      ? theme.previousTheme.iconSize[size]
+      : size};
+    height: ${typeof size === "string"
+      ? theme.previousTheme.iconSize[size]
+      : size};
   `}
 
   img {
@@ -352,13 +356,13 @@ const StyledIconToggleLabel = styled.label<{ size: "sm" | "md" | "lg" }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.white};
-  border: 2px solid ${({ theme }) => theme.colors.gray100};
-  border-radius: ${({ theme }) => theme.borderRadiuses.lg};
-  min-width: ${({ theme, size }) => theme.buttonHeights[size]};
-  min-height: ${({ theme, size }) => theme.buttonHeights[size]};
-  width: ${({ theme, size }) => theme.buttonHeights[size]};
-  height: ${({ theme, size }) => theme.buttonHeights[size]};
+  background-color: ${({ theme }) => theme.previousTheme.colors.white};
+  border: 2px solid ${({ theme }) => theme.previousTheme.colors.gray100};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.lg};
+  min-width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
+  min-height: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
+  width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
+  height: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
   cursor: pointer;
   input {
     display: none;

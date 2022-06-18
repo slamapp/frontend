@@ -9,7 +9,7 @@ const PositionAction = styled.div<{ bottom?: number }>`
 `
 
 const MapIconButton = styled(IconButton)`
-  padding: ${({ theme }) => theme.gaps.xs};
+  padding: ${({ theme }) => theme.previousTheme.gaps.xs};
   border: none;
   border-radius: 12px;
 `
@@ -23,7 +23,8 @@ const ZoomActions = styled.div<{ bottom?: number }>`
   z-index: 10;
 
   button:first-of-type {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray200};
+    border-bottom: 1px solid
+      ${({ theme }) => theme.previousTheme.colors.gray200};
   }
 `
 

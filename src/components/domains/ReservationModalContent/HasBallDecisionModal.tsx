@@ -120,17 +120,17 @@ const HalfButton = styled(Button)`
 `
 
 const Label = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray700};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.previousTheme.colors.gray700};
+  font-size: ${({ theme }) => theme.previousTheme.fontSizes.sm};
 `
 
 const SubText = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray600};
+  color: ${({ theme }) => theme.previousTheme.colors.gray600};
 `
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 ${({ theme }) => theme.gaps.sm};
+  padding: 0 ${({ theme }) => theme.previousTheme.gaps.sm};
   margin-bottom: 10px;
 `

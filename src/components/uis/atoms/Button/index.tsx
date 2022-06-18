@@ -58,24 +58,26 @@ const fontSizeMap: { [key in Size]: string } = {
 const StyledButton = styled.button<Omit<Props, "children">>`
   ${({ theme, size, fullWidth, block }) => css`
     display: ${block ? "block" : "inline-block"};
-    height: ${theme.buttonHeights[size!]};
+    height: ${theme.previousTheme.buttonHeights[size!]};
     width: ${fullWidth && "100%"};
-    padding: 0 ${theme.buttonRightLeftPaddings[size as Size]};
+    padding: 0 ${theme.previousTheme.buttonRightLeftPaddings[size as Size]};
     white-space: nowrap;
 
-    font-size: ${theme.fontSizes[fontSizeMap[size as Size] as Size]};
-    border-radius: ${theme.borderRadiuses[size as Size]};
+    font-size: ${theme.previousTheme.fontSizes[
+      fontSizeMap[size as Size] as Size
+    ]};
+    border-radius: ${theme.previousTheme.borderRadiuses[size as Size]};
     transition: all 200ms;
   `}
 
   ${({ theme }) =>
     css`
-      background-color: ${theme.colors.gray900};
+      background-color: ${theme.previousTheme.colors.gray900};
       color: ${theme.colors.white};
-      border: 1px solid ${theme.colors.gray200};
+      border: 1px solid ${theme.previousTheme.colors.gray200};
 
       :hover {
-        background-color: ${theme.colors.gray700};
+        background-color: ${theme.previousTheme.colors.gray700};
       }
     `}
 
@@ -88,23 +90,23 @@ const StyledButton = styled.button<Omit<Props, "children">>`
     secondary &&
     css`
       background-color: ${theme.colors.white};
-      color: ${theme.colors.gray900};
-      border: 1px solid ${theme.colors.gray200};
+      color: ${theme.previousTheme.colors.gray900};
+      border: 1px solid ${theme.previousTheme.colors.gray200};
 
       :hover {
-        background-color: ${theme.colors.gray200};
+        background-color: ${theme.previousTheme.colors.gray200};
       }
     `}
 
   ${({ theme, tertiary }) =>
     tertiary &&
     css`
-      background-color: ${theme.colors.gray200};
-      color: ${theme.colors.gray900};
-      border: 1px solid ${theme.colors.gray300};
+      background-color: ${theme.previousTheme.colors.gray200};
+      color: ${theme.previousTheme.colors.gray900};
+      border: 1px solid ${theme.previousTheme.colors.gray300};
 
       :hover {
-        background-color: ${theme.colors.gray400};
+        background-color: ${theme.previousTheme.colors.gray400};
       }
     `}
 

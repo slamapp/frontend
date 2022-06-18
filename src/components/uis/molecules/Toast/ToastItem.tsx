@@ -42,7 +42,7 @@ const Container = styled.div`
   padding: 0 20px;
   align-items: center;
   box-sizing: border-box;
-  color: ${({ theme }) => theme?.colors?.gray800 || "#292929"};
+  color: ${({ theme }) => theme.previousTheme.colors.gray800 || "#292929"};
   font-weight: 700;
 
   // Glassmorphism

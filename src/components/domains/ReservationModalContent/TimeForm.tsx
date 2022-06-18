@@ -21,25 +21,25 @@ const TimeInputWrapper = styled.span<any>`
   gap: 10px;
   width: 120px;
   cursor: pointer;
-  border: 1px solid ${({ theme }) => theme.colors.gray100};
+  border: 1px solid ${({ theme }) => theme.previousTheme.colors.gray100};
 
-  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
   transition: background-color 200ms ease-in-out;
   padding: 16px;
 
   :hover {
-    background-color: ${({ theme }) => theme.colors.gray300};
+    background-color: ${({ theme }) => theme.previousTheme.colors.gray300};
   }
 
   ${({ selected, theme }) =>
     selected &&
     css`
-      background-color: ${theme.colors.white};
+      background-color: ${theme.previousTheme.colors.white};
       z-index: 2;
-      box-shadow: ${theme.boxShadows.lg};
+      box-shadow: ${theme.previousTheme.boxShadows.lg};
 
       &:hover {
-        background-color: ${theme.colors.white};
+        background-color: ${theme.previousTheme.colors.white};
       }
     `}
 `
@@ -79,8 +79,8 @@ const TimeFormContainer = styled.span`
   display: flex;
   align-items: center;
   width: fit-content;
-  background-color: ${({ theme }) => theme.colors.gray100};
-  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray100};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
   overflow: hidden;
 `
 

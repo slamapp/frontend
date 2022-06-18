@@ -35,9 +35,11 @@ const Text: FC<Props> = ({
 
   const StyledText = styled(Tag)<Props>`
     font-size: ${({ theme }) => {
-      return typeof size === "string" ? theme.fontSizes[size] : `${size}px`
+      return typeof size === "string"
+        ? theme.previousTheme.fontSizes[size]
+        : `${size}px`
     }};
-    color: ${({ theme }) => theme.colors?.gray900};
+    color: ${({ theme }) => theme.previousTheme.colors.gray900};
     color: ${color && color};
     font-weight: ${strong && "bold"};
     text-decoration: ${underline && "underline"};

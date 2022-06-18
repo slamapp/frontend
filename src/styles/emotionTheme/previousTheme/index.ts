@@ -1,4 +1,4 @@
-const theme = {
+const previousTheme = {
   colors: {
     white: "#FFFFFF",
     black: "#000000",
@@ -108,6 +108,4 @@ const theme = {
   },
 } as const
 
-export default theme
-
-export type ITheme = typeof theme
+export default previousTheme

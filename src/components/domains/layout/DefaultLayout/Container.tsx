@@ -32,7 +32,7 @@ const StyledContainer = styled.div<{ height: number }>`
   overflow-x: hidden;
   max-width: 640px;
   margin: auto;
-  background-color: ${({ theme }) => theme.colors.gray50};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray50};
   height: ${({ height }) => `${height}`}px;
 
   ::-webkit-scrollbar {

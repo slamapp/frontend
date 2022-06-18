@@ -97,10 +97,10 @@ const Container = styled.a`
     display: block;
     width: 100%;
     box-sizing: border-box;
-    background-color: ${theme.colors.white};
-    border-radius: ${theme.borderRadiuses.md};
-    box-shadow: ${theme.boxShadows.sm};
-    padding: ${theme.gaps.base};
+    background-color: ${theme.previousTheme.colors.white};
+    border-radius: ${theme.previousTheme.borderRadiuses.md};
+    box-shadow: ${theme.previousTheme.boxShadows.sm};
+    padding: ${theme.previousTheme.gaps.base};
   `}
 `
 
@@ -108,16 +108,16 @@ const StatusBar = styled(Button)`
   text-align: center;
 
   &.accept {
-    background: ${({ theme }) => theme.colors.green.light};
+    background: ${({ theme }) => theme.previousTheme.colors.green.light};
   }
 
   &.deny {
-    background: ${({ theme }) => theme.colors.red.light};
+    background: ${({ theme }) => theme.previousTheme.colors.red.light};
   }
 `
 
 const CourtName = styled(Text)`
-  margin-bottom: ${({ theme }) => theme.gaps.sm};
+  margin-bottom: ${({ theme }) => theme.previousTheme.gaps.sm};
 `
 
 const ButtonContainer = styled.div`

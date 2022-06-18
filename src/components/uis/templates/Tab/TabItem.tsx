@@ -43,7 +43,7 @@ const TabItemWrapper = styled.div<{
   transition: background 200ms;
 
   :hover {
-    background: ${({ theme }) => theme.colors.gray200};
+    background: ${({ theme }) => theme.previousTheme.colors.gray200};
   }
 `
 

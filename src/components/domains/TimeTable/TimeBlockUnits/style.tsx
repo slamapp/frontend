@@ -38,7 +38,7 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
   height: ${({ height }) => `${height}px`};
 
   ${({ isEven, hasBlackTopBorder, hasBlackBottomBorder, theme }) => {
-    const black = theme.colors.gray900
+    const black = theme.previousTheme.colors.gray900
     const transparentBlack = "rgb(135 135 135 / 0.2)"
     const topBorderColor = hasBlackTopBorder ? black : transparentBlack
     const bottomBorderColor = hasBlackBottomBorder ? black : transparentBlack
@@ -73,7 +73,7 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
     previous &&
     css`
       & .time-block__action {
-        box-shadow: 0 -4px 0 ${theme.colors.gray900} inset;
+        box-shadow: 0 -4px 0 ${theme.previousTheme.colors.gray900} inset;
       }
     `}
 
@@ -81,15 +81,15 @@ const TimeBlockUnitWrapper = styled.div<TimeBlockUnitWrapperProps>`
     next &&
     css`
       & .time-block__action {
-        box-shadow: 0 4px 0 ${theme.colors.gray900} inset;
+        box-shadow: 0 4px 0 ${theme.previousTheme.colors.gray900} inset;
       }
     `}
   
   ${({ disabled, theme }) =>
     disabled &&
     css`
-      background-color: ${theme.colors.gray400};
-      color: ${theme.colors.gray500};
+      background-color: ${theme.previousTheme.colors.gray400};
+      color: ${theme.previousTheme.colors.gray500};
       pointer-events: none;
 
       & .time-block__status {
@@ -103,7 +103,7 @@ const HoursHorizontalDivider = styled.div`
   height: 2px;
   width: 20%;
   top: -1px;
-  background-color: ${({ theme }) => theme.colors.gray900};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray900};
   opacity: 0.08;
 `
 
@@ -112,7 +112,7 @@ const StatusColumn = styled(FourSixthColumn)<StatusProps>`
   background-color: ${({ status, theme }) => {
     switch (status) {
       case "active":
-        return theme.colors.slam.orange.strong
+        return theme.previousTheme.colors.slam.orange.strong
       case "lack":
         return `rgba(254, 109, 4, 0.3)`
       default:
@@ -130,7 +130,7 @@ const BallColumn = styled(OneSixthColumn)`
 const VerticalDivider = styled.div`
   width: 8px;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.gray900};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray900};
 `
 
 const Selector = styled.div<any>`
@@ -140,11 +140,12 @@ const Selector = styled.div<any>`
   width: 100%;
   height: 100%;
   color: white;
-  background-color: ${({ theme }) => theme.colors.gray900};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray900};
   border-radius: 16px;
-  border: 8px solid ${({ theme }) => theme.colors.slam.orange.strong};
+  border: 8px solid
+    ${({ theme }) => theme.previousTheme.colors.slam.orange.strong};
   box-sizing: border-box;
-  box-shadow: ${({ theme }) => theme.boxShadows.lg};
+  box-shadow: ${({ theme }) => theme.previousTheme.boxShadows.lg};
   width: ${({ hasReservation }) => hasReservation && "75%"};
   margin-left: auto;
 `
@@ -161,7 +162,7 @@ const ReservationMarker = styled.div<any>`
     height: ${height}px;
     border: ${selected && "8px solid orange"};
   `};
-  background-color: ${({ theme }) => theme.colors.gray900};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray900};
   color: white;
   border-radius: 16px;
   box-sizing: border-box;
@@ -171,9 +172,9 @@ const NavigationBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: ${({ theme }) => theme.borderRadiuses.md};
-  border: 4px solid ${({ theme }) => theme.colors.black};
-  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
+  border: 4px solid ${({ theme }) => theme.previousTheme.colors.black};
+  background-color: ${({ theme }) => theme.previousTheme.colors.white};
   width: calc(100% - 32px);
   padding: 6px 0px;
 `

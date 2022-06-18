@@ -25,7 +25,7 @@ const ChatroomListItem = styled.div`
   padding: 16px;
 
   ${({ theme }) => css`
-    border-radius: ${theme.borderRadiuses.lg};
-    background: ${theme.colors.white};
+    border-radius: ${theme.previousTheme.borderRadiuses.lg};
+    background: ${theme.previousTheme.colors.white};
   `}
 `

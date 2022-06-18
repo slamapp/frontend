@@ -355,7 +355,7 @@ const Center = styled.div`
 `
 
 const Container = styled(Spacer)`
-  padding: ${({ theme }) => `30px ${theme.gaps.base} 120px`};
+  padding: ${({ theme }) => `30px ${theme.previousTheme.gaps.base} 120px`};
 `
 
 const UploadableArea = styled(Upload)`
@@ -365,7 +365,7 @@ const UploadableArea = styled(Upload)`
 const LetterCount = styled(Text)`
   ${({ theme }) => css`
     &.error {
-      color: ${theme.colors.red.strong};
+      color: ${theme.previousTheme.colors.red.strong};
     }
   `}
 `
@@ -374,6 +374,6 @@ const ErrorMessage = styled(Text)`
   ${({ theme }) => css`
     text-align: right;
     flex-grow: 1;
-    color: ${theme.colors.red.strong};
+    color: ${theme.previousTheme.colors.red.strong};
   `}
 `

@@ -87,9 +87,9 @@ const AvatarWrapper = styled.div<{
   > img {
     transition: opacity 0.2s ease;
     width: ${({ size, theme }) =>
-      typeof size === "string" && theme.avatarSizes[size]};
+      typeof size === "string" && theme.previousTheme.avatarSizes[size]};
     height: ${({ size, theme }) =>
-      typeof size === "string" && theme.avatarSizes[size]};
+      typeof size === "string" && theme.previousTheme.avatarSizes[size]};
   }
 
   > img {

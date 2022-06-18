@@ -140,14 +140,14 @@ const TabContainer = styled.div`
   justify-content: space-around;
   align-items: center;
   height: 52px;
-  border-bottom: 4px solid ${({ theme }) => theme.colors.gray100};
+  border-bottom: 4px solid ${({ theme }) => theme.previousTheme.colors.gray100};
 `
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  margin: 0 ${({ theme }) => theme.gaps.base};
+  margin: 0 ${({ theme }) => theme.previousTheme.gaps.base};
 `
 
 const TabContentsWrapper = styled.div`

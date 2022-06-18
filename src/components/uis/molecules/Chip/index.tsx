@@ -38,13 +38,13 @@ export default Chip
 
 const ChipItem = styled(Text)`
   ${({ theme }) => css`
-    background-color: ${theme.colors.white};
-    color: ${theme.colors.gray700};
+    background-color: ${theme.previousTheme.colors.white};
+    color: ${theme.previousTheme.colors.gray700};
 
-    border-radius: ${theme.borderRadiuses.lg};
-    padding: ${theme.chipPadding};
+    border-radius: ${theme.previousTheme.borderRadiuses.lg};
+    padding: ${theme.previousTheme.chipPadding};
     display: inline-block;
-    margin-bottom: ${theme.gaps.xs};
+    margin-bottom: ${theme.previousTheme.gaps.xs};
     cursor: default;
   `}
 
@@ -54,20 +54,20 @@ const ChipItem = styled(Text)`
       cursor: pointer;
 
       &:hover {
-        background-color: ${theme.colors.gray300};
+        background-color: ${theme.previousTheme.colors.gray300};
       }
     `}
 
   ${({ theme, secondary }) =>
     secondary &&
     css`
-      background-color: ${theme.colors.gray900};
-      color: ${theme.colors.white};
+      background-color: ${theme.previousTheme.colors.gray900};
+      color: ${theme.previousTheme.colors.white};
     `}
 
   ${({ theme, border }) =>
     border &&
     css`
-      border: 1px solid ${theme.colors.gray300};
+      border: 1px solid ${theme.previousTheme.colors.gray300};
     `}
 `

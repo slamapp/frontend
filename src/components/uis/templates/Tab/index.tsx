@@ -67,7 +67,7 @@ const TabItemContainer = styled.div`
   display: flex;
   position: sticky;
   align-self: flex-start;
-  box-shadow: ${({ theme }) => theme.boxShadows.sm};
+  box-shadow: ${({ theme }) => theme.previousTheme.boxShadows.sm};
   top: 56px;
 `
 

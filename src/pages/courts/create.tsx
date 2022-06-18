@@ -359,7 +359,7 @@ const CreateCourt: NextPage = () => {
 export default withRouteGuard("private", CreateCourt)
 
 const MainContainer = styled.div`
-  padding: ${({ theme }) => `30px ${theme.gaps.base}`};
+  padding: ${({ theme }) => `30px ${theme.previousTheme.gaps.base}`};
 `
 
 const PreviewContainer = styled.div`
@@ -390,7 +390,7 @@ const PreviewBanner = styled.div`
   }
 
   &.error::before {
-    border: 1px solid ${({ theme }) => theme.colors.red.strong};
+    border: 1px solid ${({ theme }) => theme.previousTheme.colors.red.strong};
   }
 `
 
@@ -400,13 +400,13 @@ const CustomSheet = styled(Sheet)`
 `
 
 const MapGuide = styled(Text)`
-  margin: ${({ theme }) => theme.gaps.md};
+  margin: ${({ theme }) => theme.previousTheme.gaps.md};
   margin-top: 0;
 `
 
 const DecoIcon = styled(Icon)`
   vertical-align: text-bottom;
-  margin-right: ${({ theme }) => theme.gaps.xxs};
+  margin-right: ${({ theme }) => theme.previousTheme.gaps.xxs};
 `
 
 const AddressGuide = styled.p`
@@ -424,12 +424,12 @@ const MoveToMap = styled.a`
 `
 
 const SubText = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray500};
+  color: ${({ theme }) => theme.previousTheme.colors.gray500};
 `
 
 const ErrorMessage = styled(Text)`
   text-align: right;
   flex-grow: 1;
   margin: 4px 0;
-  color: ${({ theme }) => theme.colors.red.strong};
+  color: ${({ theme }) => theme.previousTheme.colors.red.strong};
 `

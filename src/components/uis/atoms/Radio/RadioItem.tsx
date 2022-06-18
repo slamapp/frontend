@@ -30,7 +30,7 @@ const RadioItem: React.FC<RadioItemProps> = ({
 }
 
 const StyledLabel = styled.label`
-  margin-right: ${({ theme }) => theme.gaps.xs};
+  margin-right: ${({ theme }) => theme.previousTheme.gaps.xs};
 `
 
 const StyledRadio = styled.input`
@@ -43,15 +43,15 @@ const StyledRadio = styled.input`
 
     &:enabled {
       &:hover + span {
-        background-color: ${theme.colors.gray100};
+        background-color: ${theme.previousTheme.colors.gray100};
       }
 
       &:checked + span {
-        background-color: ${theme.colors.gray900};
-        color: ${theme.colors.white};
+        background-color: ${theme.previousTheme.colors.gray900};
+        color: ${theme.previousTheme.colors.white};
 
         &:hover {
-          background-color: ${theme.colors.gray700};
+          background-color: ${theme.previousTheme.colors.gray700};
         }
       }
     }

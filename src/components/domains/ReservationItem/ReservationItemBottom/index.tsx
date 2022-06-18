@@ -92,17 +92,17 @@ const ParticipantsToggle = styled(Button)`
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 2px solid ${({ theme }) => theme.colors.gray200};
+  border: 2px solid ${({ theme }) => theme.previousTheme.colors.gray200};
 `
 
 const ParticipantList = styled.div`
   width: 100%;
   padding: 15px 20px;
-  margin-top: ${({ theme }) => theme.gaps.base};
+  margin-top: ${({ theme }) => theme.previousTheme.gaps.base};
   box-sizing: border-box;
-  border-radius: ${({ theme }) => theme.borderRadiuses.md};
+  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
 
-  background-color: ${({ theme }) => theme.colors.gray200};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray200};
 `
 
 const Container = styled.div`

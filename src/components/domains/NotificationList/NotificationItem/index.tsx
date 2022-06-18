@@ -115,10 +115,12 @@ const NotificationItemContainer = styled.div<{ type: APINotification["type"] }>`
   margin-bottom: 12px;
   ${({ theme, type }) => css`
     background: ${type === "FOLLOW"
-      ? theme.colors.white
-      : theme.colors.activeGradientColor};
-    color: ${type === "FOLLOW" ? theme.colors.gray900 : theme.colors.white};
-    border-radius: ${theme.borderRadiuses.sm};
-    box-shadow: ${theme.boxShadows.sm};
+      ? theme.previousTheme.colors.white
+      : theme.previousTheme.colors.activeGradientColor};
+    color: ${type === "FOLLOW"
+      ? theme.previousTheme.colors.gray900
+      : theme.previousTheme.colors.white};
+    border-radius: ${theme.previousTheme.borderRadiuses.sm};
+    box-shadow: ${theme.previousTheme.boxShadows.sm};
   `}
 `

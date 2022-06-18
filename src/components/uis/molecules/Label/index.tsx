@@ -23,14 +23,14 @@ export default Label
 
 const StyledText = styled(Text)`
   ${({ theme }) => css`
-    margin-bottom: ${theme.gaps.xs};
-    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.previousTheme.gaps.xs};
+    color: ${theme.previousTheme.colors.gray900};
   `}
 `
 
 const RequiredTag = styled.span`
   ${({ theme }) => css`
-    color: ${theme.colors.slam.orange.strong};
+    color: ${theme.previousTheme.colors.slam.orange.strong};
     vertical-align: text-top;
   `}
 `

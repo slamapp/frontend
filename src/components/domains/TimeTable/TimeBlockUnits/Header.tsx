@@ -24,7 +24,7 @@ const Header: React.FC = () => {
 export default Header
 
 const TableHeader = styled(S.TimeBlockUnitWrapper)`
-  background-color: ${({ theme }) => theme.colors.gray900};
+  background-color: ${({ theme }) => theme.previousTheme.colors.gray900};
   position: sticky;
   top: 56px;
   overflow-y: auto;
@@ -32,7 +32,7 @@ const TableHeader = styled(S.TimeBlockUnitWrapper)`
 `
 
 const TableHeaderText = styled(Text)`
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.previousTheme.colors.white};
 `
 
 const ImageWrapper = styled.div`

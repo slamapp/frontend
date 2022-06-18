@@ -67,17 +67,17 @@ const Container = styled.div`
   ${({ theme }) => css`
     box-sizing: border-box;
     width: 100%;
-    background-color: ${theme.colors.white};
-    padding: ${theme.inputPadding};
-    border-radius: ${theme.borderRadiuses.lg};
-    border: 1px solid ${theme.colors.gray300};
+    background-color: ${theme.previousTheme.colors.white};
+    padding: ${theme.previousTheme.inputPadding};
+    border-radius: ${theme.previousTheme.borderRadiuses.lg};
+    border: 1px solid ${theme.previousTheme.colors.gray300};
 
     &.focus {
-      border: 1px solid ${theme.colors.slam.orange.strong};
+      border: 1px solid ${theme.previousTheme.colors.slam.orange.strong};
     }
 
     &.error {
-      border: 1px solid ${theme.colors.red.strong};
+      border: 1px solid ${theme.previousTheme.colors.red.strong};
     }
   `}
 `
@@ -86,12 +86,12 @@ const InputContent = styled.input`
   ${({ theme }) => css`
     box-sizing: border-box;
     width: 100%;
-    color: ${theme.colors.gray900};
+    color: ${theme.previousTheme.colors.gray900};
     font-weight: bold;
     border: none;
 
     &::placeholder {
-      color: ${theme.colors.gray300};
+      color: ${theme.previousTheme.colors.gray300};
     }
 
     &:focus {
