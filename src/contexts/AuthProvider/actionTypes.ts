@@ -1,5 +1,5 @@
 import type { ActionWithoutPayload, ActionWithPayload } from "~/contexts/type"
-import type { APIFavorite, APINotification, APIUser } from "~/domainTypes/tobe"
+import type { APIFavorite, APINotification, APIUser } from "~/types/domains"
 
 export type ActionUnion =
   | ActionWithPayload<

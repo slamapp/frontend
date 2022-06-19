@@ -7,21 +7,21 @@ import {
   BottomFixedButton,
   PositionsPicker,
   ProficiencyPicker,
+  BasketballLoading,
+  LeadToLoginModal,
 } from "~/components/domains"
 import { Text, Button, Spacer, Upload } from "~/components/uis/atoms"
 import { Toast, Label, Avatar } from "~/components/uis/molecules"
 import { Input } from "~/components/uis/organisms"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APIUser } from "~/domainTypes/tobe"
-import type { PositionKey } from "~/enums/positionType"
-import type { ProficiencyKey } from "~/enums/proficiencyType"
 import useForm from "~/hooks/useForm"
 import type { Error } from "~/hooks/useForm"
 import { userApi } from "~/service"
+import type { Keyof } from "~/types/common"
+import type { APIUser, proficiencyType } from "~/types/domains"
+import type { positionType } from "~/types/domains/user"
 import { appendImageFileToFormData } from "~/utils"
-import BasketballLoading from "../BasketballLoading"
-import LeadToLoginModal from "../LeadToLoginModal"
 
 const LENGTH_LIMIT_NICKNAME = 15
 const LENGTH_LIMIT_DESCRIPTION = 25
@@ -130,7 +130,7 @@ const ProfileForm = () => {
 
   const handleChangeProficiency = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
-      const proficiency = target.value as ProficiencyKey
+      const proficiency = target.value as Keyof<typeof proficiencyType>
       setValues((prev) => ({ ...prev, proficiency }))
     },
     []
@@ -138,7 +138,7 @@ const ProfileForm = () => {
 
   const handleChangePositions = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      const selectedPosition = e.target.value as PositionKey
+      const selectedPosition = e.target.value as Keyof<typeof positionType>
 
       setValues((prev) => {
         switch (selectedPosition) {

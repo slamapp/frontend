@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import { Button } from "~/components/uis/atoms"
 import { useSocketContext } from "~/contexts/hooks"
-import type { APICourt, APIReservation } from "~/domainTypes/tobe"
+import type { APICourt, APIReservation } from "~/types/domains"
 
 const ONE_HOUR_SECONDS = 3600
 

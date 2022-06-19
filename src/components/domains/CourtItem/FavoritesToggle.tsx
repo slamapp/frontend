@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { Icon } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APICourt } from "~/domainTypes/tobe"
+import type { APICourt } from "~/types/domains"
 
 interface Props {
   courtId: APICourt["id"]

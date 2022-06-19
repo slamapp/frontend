@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react"
+import { BottomFixedButton } from "~/components/domains"
 import { Spacer, Text } from "~/components/uis/atoms"
 import { useReservationContext } from "~/contexts/hooks"
-import BottomFixedButton from "../BottomFixedButton"
 import HasBallDecisionModal from "./HasBallDecisionModal"
 import ParticipantsPerTime from "./ParticipantsPerTime"
 import * as S from "./style"

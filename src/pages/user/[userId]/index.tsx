@@ -18,11 +18,11 @@ import {
   useAuthContext,
   useSocketContext,
 } from "~/contexts/hooks"
-import type { APIFavorite, APIUser, APICourt } from "~/domainTypes/tobe"
 import { withRouteGuard } from "~/hocs"
 import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
 import Custom404 from "~/pages/404"
 import userApi from "~/service/userApi"
+import type { APIFavorite, APIUser } from "~/types/domains"
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
@@ -258,7 +258,11 @@ const User: NextPage = () => {
         </div>
         <div>
           <Label>숙련도</Label>
-          <Chip secondary>{getTranslatedProficiency(proficiency).korean}</Chip>
+          <Chip secondary>
+            {proficiency === null
+              ? "미정"
+              : getTranslatedProficiency(proficiency).korean}
+          </Chip>
         </div>
         <div>
           <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>

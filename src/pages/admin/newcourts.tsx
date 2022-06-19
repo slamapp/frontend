@@ -5,8 +5,8 @@ import { NewCourtItem, Modal } from "~/components/domains"
 import { Spacer } from "~/components/uis/atoms"
 import { Tab } from "~/components/uis/templates"
 import { useNavigationContext } from "~/contexts/hooks"
-import type { APINewCourt } from "~/domainTypes/tobe"
 import managementApi from "~/service/managementApi"
+import type { APINewCourt } from "~/types/domains"
 
 type OldNewCourt = Pick<
   APINewCourt,

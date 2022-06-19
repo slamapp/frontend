@@ -4,9 +4,9 @@ import styled from "@emotion/styled"
 import { UserListItem } from "~/components/domains"
 import { Text, Icon, Button } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APICourt, APIReservation } from "~/domainTypes/tobe"
 import reservationAPI from "~/service/reservationApi"
 import type { ReservationApi } from "~/service/reservationApi/type"
+import type { APICourt, APIReservation } from "~/types/domains"
 
 interface Props {
   courtId: APICourt["id"]

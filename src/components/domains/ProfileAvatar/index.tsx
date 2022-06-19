@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Avatar } from "~/components/uis/molecules"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APIUser } from "~/domainTypes/tobe/user"
+import type { APIUser } from "~/types/domains"
 
 type Size = "lg" | "md" | "sm"
 

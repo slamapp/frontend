@@ -2,9 +2,9 @@ import React, { useState, useRef } from "react"
 import type { NextPage } from "next"
 import { UserListItem } from "~/components/domains"
 import { useNavigationContext } from "~/contexts/hooks"
-import type { APIFollow, APIUser } from "~/domainTypes/tobe"
 import { withRouteGuard } from "~/hocs"
 import { useInfiniteScroll } from "~/hooks"
+import type { APIFollow, APIUser } from "~/types/domains"
 
 type Following = {
   id: APIFollow["id"]

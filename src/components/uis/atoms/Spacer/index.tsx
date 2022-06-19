@@ -1,9 +1,10 @@
 import type { CSSProperties } from "react"
 import styled from "@emotion/styled"
 import type previousTheme from "~/styles/emotionTheme/previousTheme"
+import type { Keyof } from "~/types/common"
 
 interface Props {
-  gap: keyof typeof previousTheme["gaps"] | number
+  gap: Keyof<typeof previousTheme["gaps"]> | number
   type?: "vertical" | "horizontal"
   style?: CSSProperties
 }

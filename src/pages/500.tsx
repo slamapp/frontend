@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
+import { ErrorMessage } from "~/components/domains"
 import { useNavigationContext } from "~/contexts/hooks"
-import { ErrorMessage } from "../components/domains"
 
 export default function Custom500() {
   const { useMountPage } = useNavigationContext()

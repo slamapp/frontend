@@ -1,4 +1,4 @@
-import { request, authRequest, authFileRequest } from "../fetcher"
+import { authRequest } from "../fetcher"
 import type { FavoriteApi } from "./type"
 
 const favoriteAPI: FavoriteApi = {

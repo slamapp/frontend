@@ -1,4 +1,7 @@
-import type { APIUser } from "~/domainTypes/tobe"
+import type { APIUser } from "~/types/domains"
+
+export type ValueOf<T> = T[keyof T]
+export type Keyof<T> = keyof T
 
 export interface APISend extends APICommon {
   sender: OmitAt<APIUser>

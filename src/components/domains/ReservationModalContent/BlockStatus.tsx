@@ -1,8 +1,8 @@
 import Link from "next/link"
+import { BottomFixedButton } from "~/components/domains"
 import { Text } from "~/components/uis/atoms"
 import { Avatar } from "~/components/uis/molecules"
 import { useReservationContext } from "~/contexts/hooks"
-import BottomFixedButton from "../BottomFixedButton"
 import * as S from "./style"
 
 interface Props {

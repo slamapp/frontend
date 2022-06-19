@@ -1,7 +1,9 @@
-import type { PositionKey, PositionValue } from "~/enums/positionType"
-import type { ProficiencyKey, ProficiencyValue } from "~/enums/proficiencyType"
+import type { Keyof, ValueOf } from "~/types/common"
+import type { proficiencyType, positionType } from "~/types/domains"
 
-const getKoreanProficiency = (englishProficiency: ProficiencyKey) => {
+const getKoreanProficiency = (
+  englishProficiency: Keyof<typeof proficiencyType>
+) => {
   switch (englishProficiency) {
     case "BEGINNER":
       return "뉴비"
@@ -10,21 +12,21 @@ const getKoreanProficiency = (englishProficiency: ProficiencyKey) => {
     case "MASTER":
       return "고수"
     default:
-      return "선택한 숙련도가 없습니다"
+      return "뉴비"
   }
 }
 
 export const getTranslatedProficiency = (
-  englishProficiency: ProficiencyKey
+  englishProficiency: Keyof<typeof proficiencyType>
 ): {
-  english: ProficiencyKey
-  korean: ProficiencyValue
+  english: Keyof<typeof proficiencyType>
+  korean: ValueOf<typeof proficiencyType>
 } => ({
   english: englishProficiency,
   korean: getKoreanProficiency(englishProficiency),
 })
 
-const getKoreanPosition = (englishPosition: PositionKey) => {
+const getKoreanPosition = (englishPosition: Keyof<typeof positionType>) => {
   switch (englishPosition) {
     case "C":
       return "센터"
@@ -42,10 +44,10 @@ const getKoreanPosition = (englishPosition: PositionKey) => {
 }
 
 export const getTranslatedPositions = (
-  englishPositions: PositionKey[]
+  englishPositions: Keyof<typeof positionType>[]
 ): {
-  english: PositionKey
-  korean: PositionValue
+  english: Keyof<typeof positionType>
+  korean: ValueOf<typeof positionType>
 }[] =>
   englishPositions.map((english) => ({
     english,

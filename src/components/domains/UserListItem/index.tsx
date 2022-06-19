@@ -4,7 +4,7 @@ import styled from "@emotion/styled"
 import { ProfileAvatar } from "~/components/domains"
 import { Text, Button, Spacer } from "~/components/uis/atoms"
 import { useSocketContext } from "~/contexts/hooks"
-import type { APIUser } from "~/domainTypes/tobe"
+import type { APIUser } from "~/types/domains"
 
 interface Props {
   className?: string

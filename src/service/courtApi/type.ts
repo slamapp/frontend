@@ -1,10 +1,10 @@
+import type { ApiPromise } from "~/service/type"
 import type {
   APICourt,
   APINewCourt,
   APIUser,
   APIReservation,
-} from "~/domainTypes/tobe"
-import type { ApiPromise } from "~/service/type"
+} from "~/types/domains"
 
 export interface CourtApi {
   getCourtsByCoordsAndDate: (coordsAndDate: {

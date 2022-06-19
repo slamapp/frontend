@@ -1,9 +1,9 @@
 import Link from "next/link"
 import { IconButton } from "~/components/uis/molecules"
-import type { APIChatroom } from "~/domainTypes/tobe"
+import type { APIChatRoom } from "~/types/domains"
 
 interface Props {
-  chatroomId: APIChatroom["id"]
+  chatroomId: APIChatRoom["id"]
 }
 
 const ChatButton: React.FC<Props> = ({ chatroomId }) => {

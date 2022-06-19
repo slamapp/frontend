@@ -15,10 +15,11 @@ import { Text, Icon, Button, Spacer } from "~/components/uis/atoms"
 import { Label } from "~/components/uis/molecules"
 import { Input } from "~/components/uis/organisms"
 import { useMapContext, useNavigationContext } from "~/contexts/hooks"
-import type { APICourt, APINewCourt, Coord } from "~/domainTypes/tobe"
 import { withRouteGuard } from "~/hocs"
 import { useForm } from "~/hooks"
 import { courtApi } from "~/service"
+import type { Keyof } from "~/types/common"
+import type { APICourt, APINewCourt, Coord } from "~/types/domains"
 import { getCurrentLocation } from "~/utils/geolocation"
 
 interface Geocoder extends kakao.maps.services.Geocoder {
@@ -130,7 +131,7 @@ const CreateCourt: NextPage = () => {
       }
     },
     validate: (values) => {
-      const errors: { [key in keyof typeof values]?: string } = {}
+      const errors: { [key in Keyof<typeof values>]?: string } = {}
       const { basketCount, name, longitude, latitude } = values
 
       if (!name) {

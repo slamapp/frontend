@@ -7,7 +7,7 @@ import "dayjs/locale/ko"
 import { CourtItem, ProfileAvatar } from "~/components/domains"
 import { Spacer } from "~/components/uis/atoms"
 import { LinkStrong } from "~/components/uis/molecules"
-import type { APINotification } from "~/domainTypes/tobe"
+import type { APINotification } from "~/types/domains"
 
 dayjs.extend(relativeTime)
 

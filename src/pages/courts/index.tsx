@@ -19,11 +19,11 @@ import {
   useMapContext,
   useNavigationContext,
 } from "~/contexts/hooks"
-import type { APICourt, Coord } from "~/domainTypes/tobe"
 import { useLocalStorage } from "~/hooks"
 import { useLocalToken } from "~/hooks/domain"
 import { courtApi } from "~/service"
 import type { CourtApi } from "~/service/courtApi/type"
+import type { APICourt, Coord } from "~/types/domains"
 import {
   getTimezoneCurrentDate,
   getTimezoneDateStringFromDate,

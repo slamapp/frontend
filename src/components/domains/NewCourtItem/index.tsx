@@ -4,8 +4,8 @@ import { useRouter } from "next/router"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import { Text, Button } from "~/components/uis/atoms"
-import type { APINewCourt } from "~/domainTypes/tobe"
 import managementApi from "~/service/managementApi"
+import type { APINewCourt } from "~/types/domains"
 
 interface Props {
   data: Pick<

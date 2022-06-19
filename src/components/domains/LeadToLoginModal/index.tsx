@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
+import { Modal } from "~/components/domains"
 import { Button } from "~/components/uis/atoms"
-import Modal from "../Modal"
 
 interface Props {
   headerContent: ReactNode

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APICourt } from "~/domainTypes/tobe"
+import type { APICourt } from "~/types/domains"
 
 interface Props {
   map: kakao.maps.Map

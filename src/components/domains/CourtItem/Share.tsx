@@ -1,6 +1,6 @@
 import { IconButton } from "~/components/uis/molecules"
-import type { APICourt } from "~/domainTypes/tobe"
 import { withShareClick } from "~/hocs"
+import type { APICourt } from "~/types/domains"
 
 interface ShareProps {
   court: Pick<APICourt, "id" | "name" | "longitude" | "latitude">

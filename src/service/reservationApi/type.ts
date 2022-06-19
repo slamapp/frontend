@@ -1,5 +1,5 @@
-import type { APIReservation, APICourt, APIUser } from "~/domainTypes/tobe"
 import type { ApiPromise } from "~/service/type"
+import type { APIReservation, APICourt, APIUser } from "~/types/domains"
 
 export interface ReservationApi {
   getMyUpcomingReservations: () => ApiPromise<{

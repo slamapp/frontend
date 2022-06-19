@@ -1,10 +1,11 @@
 import type { ChangeEvent } from "react"
 import { Radio } from "~/components/uis/atoms"
-import type { ProficiencyKey, ProficiencyValue } from "~/enums/proficiencyType"
+import type { ValueOf } from "~/types/common"
+import type { APIUser, proficiencyType } from "~/types/domains"
 
 const proficiencyItems: {
-  value: ProficiencyKey
-  text: ProficiencyValue
+  value: APIUser["proficiency"]
+  text: ValueOf<typeof proficiencyType>
 }[] = [
   {
     value: "BEGINNER",
@@ -21,7 +22,7 @@ const proficiencyItems: {
 ]
 
 interface Props {
-  selectedValue: ProficiencyKey
+  selectedValue: APIUser["proficiency"]
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 

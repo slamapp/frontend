@@ -1,10 +1,11 @@
 import type { ChangeEvent } from "react"
 import { Radio } from "~/components/uis/atoms"
-import type { PositionKey, PositionValue } from "~/enums/positionType"
+import type { Keyof, ValueOf } from "~/types/common"
+import type { positionType } from "~/types/domains"
 
 const positionItems: {
-  value: PositionKey
-  text: PositionValue
+  value: Keyof<typeof positionType>
+  text: ValueOf<typeof positionType>
 }[] = [
   {
     value: "PF",
@@ -33,7 +34,7 @@ const positionItems: {
 ]
 
 interface Props {
-  selectedValue: PositionKey[]
+  selectedValue: Keyof<typeof positionType>[]
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
