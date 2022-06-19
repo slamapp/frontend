@@ -13,6 +13,7 @@ import {
   LeadToLoginModal,
 } from "~/components/domains"
 import { Text, Button, Spacer } from "~/components/uis/atoms"
+import { Toast } from "~/components/uis/molecules"
 import { ModalSheet } from "~/components/uis/templates"
 import {
   useAuthContext,
@@ -103,16 +104,19 @@ const Courts: NextPage = () => {
       const endLatitude = neLatLng.getLat()
       const endLongitude = neLatLng.getLng()
 
-      const { data } = await courtApi.getCourtsByCoordsAndDate({
-        date: getTimezoneDateStringFromDate(selectedDate),
-        startLatitude,
-        startLongitude,
-        endLatitude,
-        endLongitude,
-        time: "morning",
-      })
-
-      setCourts(data)
+      try {
+        const { data } = await courtApi.getCourtsByCoordsAndDate({
+          date: getTimezoneDateStringFromDate(selectedDate),
+          startLatitude,
+          startLongitude,
+          endLatitude,
+          endLongitude,
+          time: "morning",
+        })
+        setCourts(data)
+      } catch (error) {
+        Toast.show("코트 정보를 받아오는 데에 실패했어요")
+      }
     },
     [selectedDate]
   )

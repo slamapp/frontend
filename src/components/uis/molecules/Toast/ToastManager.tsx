@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
+import { ThemeProvider } from "@emotion/react"
 import { v4 } from "uuid"
+import emotionTheme from "~/styles/emotionTheme"
 import ToastItem from "./ToastItem"
 import type { CreateToast } from "./types"
 
@@ -34,7 +36,7 @@ const ToastManager = ({ bind }: Props) => {
   }, [bind, createToast])
 
   return (
-    <>
+    <ThemeProvider theme={emotionTheme}>
       {toasts.map(({ id, message, duration }) => (
         <ToastItem
           message={message}
@@ -43,7 +45,7 @@ const ToastManager = ({ bind }: Props) => {
           onDone={() => removeToast(id)}
         />
       ))}
-    </>
+    </ThemeProvider>
   )
 }
 

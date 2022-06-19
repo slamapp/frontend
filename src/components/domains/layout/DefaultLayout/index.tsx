@@ -20,7 +20,7 @@ const DefaultLayout: React.FC = ({ children }) => {
       <ToastPortal
         id="toast-portal"
         isBottomNavigation={isBottomNavigation}
-        containerRect={containerRef?.current?.getClientRects()[0]}
+        containerRect={containerRef.current?.getClientRects()[0]}
       />
       {isBottomNavigation && <BottomNavigation />}
     </Container>
