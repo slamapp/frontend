@@ -26,12 +26,7 @@ const UserListItem: React.FC<Props> = ({
 
   return (
     <ListItem className={className} style={style}>
-      <Spacer
-        gap={10}
-        style={{
-          alignItems: "center",
-        }}
-      >
+      <Spacer type="horizontal" gap={10} align="center">
         <ProfileAvatar
           profileImage={profileImage}
           userId={id}

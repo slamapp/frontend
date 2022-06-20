@@ -23,5 +23,5 @@ export default withRouteGuard("private", Home)
 
 const PageContainer = styled.div`
   flex: 1;
-  margin: 0 ${({ theme }) => theme.gaps.base};
+  margin: 0 16px;
 `

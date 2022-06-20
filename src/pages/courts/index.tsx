@@ -12,8 +12,8 @@ import {
   CourtItem,
   LeadToLoginModal,
 } from "~/components/domains"
-import { Text, Button, Spacer } from "~/components/uis/atoms"
-import { Toast } from "~/components/uis/molecules"
+import { Text, Button, Spacer, Icon } from "~/components/uis/atoms"
+import { IconButton, Toast } from "~/components/uis/molecules"
 import { ModalSheet } from "~/components/uis/templates"
 import {
   useAuthContext,
@@ -44,13 +44,11 @@ const Courts: NextPage = () => {
 
   const { authProps } = useAuthContext()
 
-  const { useMountPage, useDisableTopTransparent, useMountCustomButtonEvent } =
-    useNavigationContext()
+  const { useMountPage, useMountCustomButtonEvent } = useNavigationContext()
 
   const [localToken] = useLocalToken()
 
   useMountPage("PAGE_MAP")
-  useDisableTopTransparent()
 
   const { map } = useMapContext()
 
@@ -60,7 +58,6 @@ const Courts: NextPage = () => {
     Awaited<ReturnType<CourtApi["getCourtsByCoordsAndDate"]>>["data"]
   >([])
 
-  const [level, setLevel] = useState<number>(5)
   const [mapInitialCenter, setMapInitialCenter] = useLocalStorage(
     "mapInitialCenter",
     DEFAULT_POSITION
@@ -77,13 +74,21 @@ const Courts: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenLeadToLoginModal, setIsOpenLeadToLoginModal] = useState(false)
 
-  useMountCustomButtonEvent("추가", () => {
-    if (localToken) {
-      router.push("/courts/create")
-    } else {
-      setIsOpenLeadToLoginModal(true)
+  useMountCustomButtonEvent(
+    <Spacer type="horizontal" gap={8} align="center">
+      <Text color="lightgrey" size="xs">
+        새 농구장을 추가해보세요
+      </Text>
+      <Icon name="plus-circle" size={24} />
+    </Spacer>,
+    () => {
+      if (localToken) {
+        router.push("/courts/create")
+      } else {
+        setIsOpenLeadToLoginModal(true)
+      }
     }
-  })
+  )
 
   const [snap, setSnap] = useState<number>(1)
 
@@ -120,18 +125,6 @@ const Courts: NextPage = () => {
     },
     [selectedDate]
   )
-
-  const handleZoomIn = useCallback(() => {
-    if (map) {
-      setLevel(map.getLevel() - 1)
-    }
-  }, [map])
-
-  const handleZoomOut = useCallback(() => {
-    if (map) {
-      setLevel(map.getLevel() + 1)
-    }
-  }, [map])
 
   const restoreCourts = useCallback(
     async (courtId: APICourt["id"], needCenter = false) => {
@@ -171,8 +164,16 @@ const Courts: NextPage = () => {
       router.push(`/courts?courtId=${court.id}`, undefined, {
         shallow: true,
       })
+
+      const moveLatLon = new kakao.maps.LatLng(court.latitude, court.longitude)
+
+      if (map) {
+        setTimeout(() => {
+          map.panTo(moveLatLon)
+        }, 0)
+      }
     },
-    [restoreCourts, router]
+    [restoreCourts, router, map]
   )
 
   const handleChangeSnap = useCallback((snap: number) => {
@@ -269,7 +270,8 @@ const Courts: NextPage = () => {
       />
 
       <Map.KakaoMap
-        level={level}
+        isShrink={isOpen}
+        level={5}
         center={center}
         onClick={onClose}
         onDragStart={onClose}
@@ -299,14 +301,14 @@ const Courts: NextPage = () => {
       <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
         {selectedMarker && (
           <ModalContentContainer>
-            <Spacer gap="xs" type="vertical">
+            <Spacer gap="xs">
               <CourtItem.Header>{selectedMarker.court.name}</CourtItem.Header>
               <CourtItem.Address>{address}</CourtItem.Address>
             </Spacer>
             <ReservationCount block strong size="lg">
               {selectedMarker.reservationMaxCount} 명
             </ReservationCount>
-            <Actions gap="xs">
+            <Actions type="horizontal" gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedMarker.court.id} />
               <CourtItem.Share
                 court={{

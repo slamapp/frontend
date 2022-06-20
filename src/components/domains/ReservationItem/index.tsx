@@ -10,11 +10,11 @@ interface Props {
   reservation: APIReservation
 }
 
-const UpcomingReservations = ({ reservation }: Props) => {
+const ReservationItemComponent = ({ reservation }: Props) => {
   return (
     <ReservationItem>
       <HeaderContainer>
-        <Spacer gap={10} type="vertical">
+        <Spacer gap={10}>
           <CourtItem.Header>{reservation.court.name}</CourtItem.Header>
           <CourtItem.Datetime
             endDatetime={reservation.endTime}
@@ -61,7 +61,7 @@ const UpcomingReservations = ({ reservation }: Props) => {
   )
 }
 
-export default UpcomingReservations
+export default ReservationItemComponent
 
 const ReservationItem = styled.div`
   display: flex;

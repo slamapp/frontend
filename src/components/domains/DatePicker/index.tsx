@@ -25,16 +25,7 @@ const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
   )
 
   return (
-    <StyledFlicking
-      style={{
-        backgroundColor: navigationProps.isTopTransparent
-          ? "rgba(255,255,255,0)"
-          : "rgba(255,255,255,1)",
-      }}
-      moveType="freeScroll"
-      bound={true}
-      horizontal={true}
-    >
+    <StyledFlicking moveType="freeScroll" bound={true} horizontal={true}>
       {twoWeekDates.map((date, i) => (
         <DateItem
           key={i}

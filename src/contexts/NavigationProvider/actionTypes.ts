@@ -8,16 +8,14 @@ type EventAction =
   | ActionWithPayload<"EVENT_BIND", { events: Events }>
   | ActionWithPayload<
       "EVENT_BIND_CUSTOM_BUTTON",
-      { title: string; handleClick: any }
+      { title: ReactNode; handleClick: any }
     >
   | ActionWithoutPayload<"EVENT_CLEAR">
 
-type NavigationAction =
-  | ActionWithPayload<"NAVIGATION_SET_TITLE", { title: ReactNode }>
-  | ActionWithPayload<
-      "NAVIGATION_SET_IS_TOP_TRANSPARENT",
-      { isTopTransparent: boolean }
-    >
+type NavigationAction = ActionWithPayload<
+  "NAVIGATION_SET_TITLE",
+  { title: ReactNode }
+>
 
 type PageAction =
   | ActionWithoutPayload<"PAGE_NONE">

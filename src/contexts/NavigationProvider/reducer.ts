@@ -2,7 +2,6 @@ import type { ReactNode, Reducer } from "react"
 import type { Action, PageType } from "./actionTypes"
 
 export interface DataProps {
-  isTopTransparent: boolean
   isTopNavigation: boolean
   isBottomNavigation: boolean
   currentPage: PageType
@@ -13,13 +12,12 @@ export interface DataProps {
   title: ReactNode
   handleClickBack: null | (() => void)
   customButton: null | {
-    title: string
+    title: ReactNode
     handleClick: () => void
   }
 }
 
 export const initialData: DataProps = {
-  isTopTransparent: true,
   isTopNavigation: true,
   isBottomNavigation: true,
   currentPage: "PAGE_NONE",
@@ -57,7 +55,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNotifications: true,
         isProfile: true,
         isMenu: false,
-        title: "즐겨찾는 농구장",
+        title: "즐겨찾기",
       }
     }
     case "PAGE_NOTIFICATIONS": {
@@ -70,7 +68,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNotifications: false,
         isProfile: false,
         isMenu: false,
-        title: "알림",
+        title: "",
       }
     }
     case "PAGE_MAP": {
@@ -83,7 +81,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNotifications: false,
         isProfile: false,
         isMenu: false,
-        title: "농구장 찾기",
+        title: "어디서 농구할까요?",
       }
     }
     case "PAGE_COURT_RESERVATIONS": {
@@ -109,7 +107,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNotifications: true,
         isProfile: true,
         isMenu: false,
-        title: "예약 목록",
+        title: "예약",
       }
     }
     case "PAGE_ACTIVITY": {
@@ -157,7 +155,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: action.type,
-        isBack: true,
+        isBack: false,
         isNotifications: false,
         isProfile: false,
         isMenu: true,
@@ -189,7 +187,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isNext: false,
         isMenu: false,
-        title: "채팅방 목록",
+        title: "채팅방",
       }
     }
     case "PAGE_ADMIN_NEWCOURTS": {
@@ -198,12 +196,12 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isTopNavigation: true,
         isBottomNavigation: true,
         currentPage: action.type,
-        isBack: true,
+        isBack: false,
         isNotifications: false,
         isProfile: false,
         isNext: false,
         isMenu: true,
-        title: "새 농구장 리스트",
+        title: "새 농구장",
       }
     }
     case "PAGE_USER_MENU": {
@@ -216,7 +214,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isNotifications: false,
         isProfile: false,
         isMenu: false,
-        title: "사용자 메뉴",
+        title: "메뉴",
       }
     }
     case "PAGE_ERROR": {
@@ -230,14 +228,6 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: true,
         isMenu: false,
         title: "",
-      }
-    }
-    case "NAVIGATION_SET_IS_TOP_TRANSPARENT": {
-      const { isTopTransparent } = action.payload
-
-      return {
-        ...prevState,
-        isTopTransparent,
       }
     }
     case "NAVIGATION_SET_TITLE": {

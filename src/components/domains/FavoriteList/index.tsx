@@ -42,7 +42,7 @@ const FavoriteList = () => {
 
   if (isLoading) {
     return (
-      <Spacer gap="base" type="vertical">
+      <Spacer gap="base" style={{ marginTop: 24 }}>
         {[0, 1, 2].map((key) => (
           <FavoriteItem key={key}>
             <SkeletonParagraph
@@ -69,22 +69,13 @@ const FavoriteList = () => {
   }
 
   return (
-    <Spacer
-      gap="base"
-      type="vertical"
-      style={{
-        marginTop: 56,
-      }}
-    >
+    <Spacer gap="base" style={{ marginTop: 24 }}>
       {favorites.map(({ id, court }) => (
         <FavoriteItem key={id}>
-          <Spacer gap="xs" type="vertical">
-            <CourtItem.Header>{court.name}</CourtItem.Header>
-            {/* <CourtItem.Address>{"주소 넣기"}</CourtItem.Address> */}
-          </Spacer>
+          <CourtItem.Header>{court.name}</CourtItem.Header>
 
-          <Actions gap="xs">
-            <ActionsLeftButtons gap="xs">
+          <Actions gap="xs" type="horizontal">
+            <Spacer gap="xs" type="horizontal">
               <CourtItem.FavoritesToggle courtId={court.id} />
               <CourtItem.Share
                 court={{
@@ -94,18 +85,18 @@ const FavoriteList = () => {
                   name: court.name,
                 }}
               />
-              <CourtItem.ChatLink
+              {/* <CourtItem.ChatLink
                 chatroomId={
                   // TODO: Court에 chatroomId 포함시키기
                   "1"
                 }
-              />
+              /> */}
               <CourtItem.KakaoMapLink
                 latitude={court.latitude}
                 longitude={court.longitude}
                 courtName={court.name}
               />
-            </ActionsLeftButtons>
+            </Spacer>
             <Link href={`/courts?courtId=${court.id}`} passHref>
               <a style={{ flex: 1, display: "flex" }}>
                 <Button size="lg" style={{ flex: 1 }}>
@@ -125,12 +116,10 @@ const Actions = styled(Spacer)`
   flex-flow: row wrap;
 `
 
-const ActionsLeftButtons = styled(Spacer)``
-
 const FavoriteItem = styled.div`
   background-color: ${({ theme }) => theme.previousTheme.colors.white};
   border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.lg};
-  padding: 20px;
+  padding: 20px 12px 12px 12px;
 `
 
 export default FavoriteList

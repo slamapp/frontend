@@ -155,13 +155,7 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
                   selected={reservationId === selectedReservationId}
                   onClick={() => handleClickReservationMarker(reservationId)}
                 >
-                  <Spacer
-                    gap="xxs"
-                    type="vertical"
-                    style={{
-                      alignItems: "center",
-                    }}
-                  >
+                  <Spacer type="horizontal" gap="xxs" align="center">
                     <ImageWrapper>
                       <Image
                         unoptimized

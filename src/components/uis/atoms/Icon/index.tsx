@@ -316,7 +316,9 @@ const Icon = ({
 }
 
 const IconWrapper = styled.i<Pick<Props, "size" | "rotate">>`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   ${({ size, theme }) => css`
     width: ${typeof size === "string"
       ? theme.previousTheme.iconSize[size]

@@ -126,11 +126,11 @@ const NewCourtsPage: NextPage = () => {
   }, [ref, activeStatus, getNewCourts])
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", marginTop: 24 }}>
       <Tab onClick={handleClick}>
         <Tab.Item title="처리 대기" index="READY">
           <Container>
-            <Spacer gap="base" type="vertical">
+            <Spacer gap="base">
               {readyData.map((court) => (
                 <NewCourtItem
                   key={court.newCourtId}
@@ -145,7 +145,7 @@ const NewCourtsPage: NextPage = () => {
         </Tab.Item>
         <Tab.Item title="처리 완료" index="DONE">
           <Container>
-            <Spacer gap="base" type="vertical">
+            <Spacer gap="base">
               {doneData.map((court) => (
                 <NewCourtItem
                   key={court.newCourtId}

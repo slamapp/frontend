@@ -22,7 +22,7 @@ const NotificationItem = ({ notification }: Props) => {
 
   return (
     <NotificationItemContainer type={notification.type}>
-      <Spacer gap={6} style={{ alignItems: "center" }}>
+      <Spacer type="horizontal" gap={6} style={{ alignItems: "center" }}>
         {getNotificationMarkUp({ date, notification })}
       </Spacer>
       <div>

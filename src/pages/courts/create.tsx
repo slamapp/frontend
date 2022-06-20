@@ -218,7 +218,7 @@ const CreateCourt: NextPage = () => {
 
       <form>
         <MainContainer>
-          <Spacer gap="base" type="vertical">
+          <Spacer gap="base">
             <div>
               <Input
                 label="농구장 이름"
@@ -324,7 +324,7 @@ const CreateCourt: NextPage = () => {
               height: 100,
             }}
           >
-            <Spacer gap={4} type="vertical">
+            <Spacer gap={4}>
               <Text size="md" strong block>
                 새 농구장 추가를 제안하시겠습니까?
               </Text>

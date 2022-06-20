@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useRef } from "react"
+import React, { useMemo, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
 import { ProfileAvatar } from "~/components/domains"
 import { Icon, Badge } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
-import { useIntersectionObserver } from "~/hooks"
 
 const TopNavigation = () => {
   const sensorRef = useRef<HTMLDivElement>(null)
@@ -20,10 +19,8 @@ const TopNavigation = () => {
       isMenu,
       handleClickBack,
       customButton,
-      isTopTransparent,
       isProfile,
     },
-    setIsTopTransparent,
   } = useNavigationContext()
 
   const router = useRouter()
@@ -31,14 +28,6 @@ const TopNavigation = () => {
   const handleDefaultBack = () => {
     router.back()
   }
-
-  const entry = useIntersectionObserver(sensorRef, {})
-
-  useEffect(() => {
-    if (entry) {
-      setIsTopTransparent(entry.isIntersecting)
-    }
-  }, [entry?.isIntersecting])
 
   const unreadNotificationsCount = useMemo(
     () =>
@@ -51,7 +40,7 @@ const TopNavigation = () => {
 
   return (
     <>
-      <Container isTransparent={isTopTransparent}>
+      <Container>
         <Wrapper>
           <IconGroup>
             {isBack && (
@@ -88,10 +77,9 @@ const TopNavigation = () => {
             )}
           </IconGroup>
         </Wrapper>
-        <TitleWrapper>
-          <Title>{title}</Title>
-        </TitleWrapper>
+        <TitleWrapper>{title}</TitleWrapper>
       </Container>
+
       <TopNavigationSensor ref={sensorRef} />
     </>
   )
@@ -99,7 +87,7 @@ const TopNavigation = () => {
 
 export default TopNavigation
 
-const Container = styled.nav<{ isTransparent: boolean }>`
+const Container = styled.nav`
   z-index: 1000;
   position: sticky;
   top: 0;
@@ -113,9 +101,7 @@ const Container = styled.nav<{ isTransparent: boolean }>`
     bottom: 0;
     display: block;
     height: 56px;
-    background: ${({ theme }) => theme.colors.white};
     transition: opacity 200ms;
-    opacity: ${({ isTransparent }) => (isTransparent ? 0 : 1)};
   }
 `
 
@@ -123,31 +109,16 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 56px;
-  padding: 0 16px;
+  padding: 12px 12px 6px 16px;
 `
 
 const TitleWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const Title = styled.h1`
-  display: block;
-  width: 60%;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: 16px;
   font-weight: 700;
-  pointer-events: none;
+  font-size: 28px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 22px;
 `
 
 const IconGroup = styled.div`
@@ -162,7 +133,7 @@ const CursorIcon = styled(Icon)`
 `
 
 const CustomButton = styled.div`
-  padding: 12px;
+  padding: 8px 0 8px 0;
   font-weight: 700;
 
   :hover {

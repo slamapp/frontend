@@ -14,8 +14,8 @@ const DefaultLayout: React.FC = ({ children }) => {
 
   return (
     <Container ref={containerRef}>
-      {isTopNavigation && <TopNavigation />}
       <TopPageLoader />
+      {isTopNavigation && <TopNavigation />}
       <StyledMain>{children}</StyledMain>
       <ToastPortal
         id="toast-portal"

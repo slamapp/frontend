@@ -26,7 +26,7 @@ const Login: NextPage = () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
 
-      <Spacer gap={6} type="vertical" style={{ alignItems: "center" }}>
+      <Spacer gap={6} align="center">
         <Logo width={160} />
         <DescriptionText>같이 농구할 사람이 없다고?</DescriptionText>
       </Spacer>

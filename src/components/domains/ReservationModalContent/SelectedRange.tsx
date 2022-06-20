@@ -51,7 +51,7 @@ const SelectedRangeContent = ({
   return (
     <>
       <S.ModalContent>
-        <Spacer gap="xs" type="vertical">
+        <Spacer type="horizontal" gap="xs">
           <Text>선택한 시간</Text>
           <TimeForm
             onSetCurrentInput={handleSetCurrentInput}

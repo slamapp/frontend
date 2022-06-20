@@ -14,22 +14,6 @@ const NavigationProvider: FC = ({ children }) => {
       return () => dispatch({ type: "PAGE_NONE" })
     }, [])
 
-  const setIsTopTransparent: ContextProps["setIsTopTransparent"] = (
-    isTopTransparent
-  ) =>
-    dispatch({
-      type: "NAVIGATION_SET_IS_TOP_TRANSPARENT",
-      payload: { isTopTransparent },
-    })
-
-  const useDisableTopTransparent: ContextProps["useDisableTopTransparent"] =
-    () =>
-      useEffect(() => {
-        setIsTopTransparent(false)
-
-        return () => setIsTopTransparent(true)
-      }, [])
-
   const setNavigationEvent: ContextProps["setNavigationEvent"] = useCallback(
     (events = { back: null, customButton: null }) =>
       dispatch({ type: "EVENT_BIND", payload: { events } }),
@@ -77,8 +61,6 @@ const NavigationProvider: FC = ({ children }) => {
         setNavigationEvent,
         setCustomButtonEvent,
         clearNavigationEvent,
-        setIsTopTransparent,
-        useDisableTopTransparent,
         useMountCustomButtonEvent,
       }}
     >

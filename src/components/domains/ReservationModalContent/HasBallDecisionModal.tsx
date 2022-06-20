@@ -40,21 +40,25 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
 
   return (
     <Modal visible={visible} onClose={handleClose}>
-      <Spacer gap="xs" type="vertical">
+      <Spacer type="horizontal" gap="xs">
         {step === steps.CONFIRM_RESERVATION && (
           <>
             <Modal.Header strong style={{ paddingBottom: 30 }}>
               예약하시겠습니까?
             </Modal.Header>
             <Content>
-              <Spacer gap="xs" type="vertical">
-                <Spacer gap="xxs" type="vertical">
+              <Spacer type="horizontal" gap="xs">
+                <Spacer type="horizontal" gap="xxs">
                   <Label>선택한 농구장</Label>
                   <Text size="lg">{courtName}</Text>
                 </Spacer>
-                <Spacer gap="xxs" type="vertical">
+                <Spacer type="horizontal" gap="xxs">
                   <Label>선택한 시간</Label>
-                  <Spacer gap="xs" style={{ paddingBottom: 40 }}>
+                  <Spacer
+                    type="horizontal"
+                    gap="xs"
+                    style={{ paddingBottom: 40 }}
+                  >
                     <Text size="lg">
                       {getTimezoneDateStringFromDate(
                         dayjs(date),
@@ -96,7 +100,7 @@ const HasBallDecisionModal = ({ visible, onClose, onDecideBall }: Props) => {
                 * 농구공 유무 선택을 통해 예약이 확정됩니다.
               </SubText>
             </Modal.Header>
-            <Spacer gap="xs" type="vertical">
+            <Spacer type="horizontal" gap="xs">
               <Button size="lg" onClick={() => onDecideBall(true)}>
                 네 🏀
               </Button>

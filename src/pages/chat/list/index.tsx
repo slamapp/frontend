@@ -10,9 +10,9 @@ const ChatroomListPage: NextPage = () => {
   useMountPage("PAGE_CHATROOM_LIST")
 
   return (
-    <div>
+    <div style={{ marginTop: 24 }}>
       <ChatroomListItem>
-        <div>hi</div>
+        <div>채팅방 아이템</div>
       </ChatroomListItem>
     </div>
   )

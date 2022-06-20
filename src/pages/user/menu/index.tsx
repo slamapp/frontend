@@ -70,6 +70,7 @@ const Menu: NextPage = () => {
 export default withRouteGuard("private", Menu)
 
 const MenuList = styled.div`
+  margin-top: 24px;
   border-top: 1px solid ${({ theme }) => theme.previousTheme.colors.gray100};
 `
 

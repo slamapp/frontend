@@ -18,12 +18,7 @@ const ProfileFavoritesListItem: React.FC<Props> = ({
 }) => {
   return (
     <ListItem className={className}>
-      <Spacer
-        gap={10}
-        style={{
-          alignItems: "center",
-        }}
-      >
+      <Spacer type="horizontal" gap={10} style={{ alignItems: "center" }}>
         <Icon name="map-pin" color="#FE6D04" />
         <Text size="base">{children}</Text>
       </Spacer>

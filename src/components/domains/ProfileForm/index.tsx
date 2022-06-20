@@ -173,7 +173,7 @@ const ProfileForm = () => {
     <div>
       <form>
         <Center>
-          <Spacer gap="xs" type="vertical">
+          <Spacer gap="xs">
             <UploadableArea
               inputRef={profileImageRef}
               onChangeFileSrc={(fileSrc) => setProfileImage(fileSrc)}

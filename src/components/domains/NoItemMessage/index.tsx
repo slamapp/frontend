@@ -35,7 +35,7 @@ const NoItemMessage = ({
         }
         alt="basketball"
       />
-      <Spacer gap="xxs" type="vertical" style={{ textAlign: "center" }}>
+      <Spacer gap="xxs" style={{ textAlign: "center" }}>
         <Text size="md" block strong>
           {title}
         </Text>

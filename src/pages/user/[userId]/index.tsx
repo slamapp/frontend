@@ -39,17 +39,11 @@ interface ResponseUserProfile
 }
 
 const User: NextPage = () => {
-  const {
-    navigationProps,
-    useMountPage,
-    setNavigationTitle,
-    useDisableTopTransparent,
-  } = useNavigationContext()
+  const { useMountPage, setNavigationTitle } = useNavigationContext()
   const { sendFollow, sendFollowCancel } = useSocketContext()
   const { authProps } = useAuthContext()
 
   useMountPage("PAGE_USER")
-  useDisableTopTransparent()
 
   const { query } = useRouter()
   const { userId: stringQueryUserId } = query
@@ -167,9 +161,7 @@ const User: NextPage = () => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
 
-      <MainInfoContainer
-        isBackgroundTransparent={navigationProps.isTopTransparent}
-      >
+      <MainInfoContainer>
         <MainInfoArea>
           <Avatar
             src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
@@ -242,7 +234,7 @@ const User: NextPage = () => {
       <AdditionalInfoSpacer gap="base" type="vertical">
         <div>
           <Label>포지션</Label>
-          <Spacer gap="xs">
+          <Spacer type="horizontal" gap="xs">
             {positions.length ? (
               getTranslatedPositions(positions).map(({ english, korean }) => (
                 <Chip key={english} secondary>
@@ -283,10 +275,9 @@ const User: NextPage = () => {
 
 export default withRouteGuard("private", User)
 
-const MainInfoContainer = styled.div<{ isBackgroundTransparent: boolean }>`
-  ${({ theme, isBackgroundTransparent }) => css`
+const MainInfoContainer = styled.div`
+  ${({ theme }) => css`
     padding: ${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md};
-    background: rgba(255, 255, 255, ${isBackgroundTransparent ? 0 : 1});
     transition: background 200ms;
   `}
 `

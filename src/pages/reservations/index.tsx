@@ -101,7 +101,7 @@ const Reservations: NextPage = () => {
               buttonTitle="예약할 농구장 찾기"
             />
           ) : (
-            <Spacer gap="md" type="vertical">
+            <Spacer gap="md">
               {upcomingReservations.map((reservation) => (
                 <ReservationItem
                   key={reservation.id}
@@ -118,13 +118,9 @@ const Reservations: NextPage = () => {
             buttonTitle="예약할 농구장 찾기"
           />
         ) : (
-          <Spacer gap="md" type="vertical">
-            {expiredReservations.map((reservation: any) => (
-              <ReservationItem
-                key={reservation.reservationId}
-                {...reservation}
-                expired
-              />
+          <Spacer gap="md">
+            {expiredReservations.map((reservation) => (
+              <ReservationItem key={reservation.id} reservation={reservation} />
             ))}
           </Spacer>
         )}
@@ -141,6 +137,7 @@ const TabContainer = styled.div`
   align-items: center;
   height: 52px;
   border-bottom: 4px solid ${({ theme }) => theme.previousTheme.colors.gray100};
+  margin-top: 16px;
 `
 
 const PageContainer = styled.div`

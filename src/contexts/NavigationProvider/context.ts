@@ -9,11 +9,9 @@ export interface ContextProps {
   navigationProps: DataProps
   useMountPage: (pageType: PageType) => void
   setNavigationEvent: (events: Events) => void
-  setCustomButtonEvent: (title: string, handleClick: any) => void
-  setIsTopTransparent: (issTopTransparent: boolean) => void
-  useDisableTopTransparent: () => void
+  setCustomButtonEvent: (title: ReactNode, handleClick: any) => void
   useMountCustomButtonEvent: (
-    customButtonName: string,
+    customButtonName: ReactNode,
     handleClick: (...args: any[]) => void
   ) => void
   clearNavigationEvent: () => void
@@ -25,8 +23,6 @@ const initialContext = {
   useMountPage: () => {},
   setNavigationEvent: () => {},
   setCustomButtonEvent: () => {},
-  setIsTopTransparent: () => {},
-  useDisableTopTransparent: () => {},
   useMountCustomButtonEvent: () => {},
   clearNavigationEvent: () => {},
   setNavigationTitle: () => {},

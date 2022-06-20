@@ -2,7 +2,7 @@ import { Spacer, Icon, Text } from "~/components/uis/atoms"
 
 const Header: React.FC = ({ children }) => {
   return (
-    <Spacer gap="xxs">
+    <Spacer gap="xxs" type="horizontal">
       <Icon name="map-pin" color="#FE6D04" />
       <Text size="lg" strong>
         {children}
