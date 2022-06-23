@@ -3,6 +3,7 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
 import {
@@ -13,8 +14,7 @@ import {
   LeadToLoginModal,
 } from "~/components/domains"
 import { Text, Button, Spacer, Icon } from "~/components/uis/atoms"
-import { IconButton, Toast } from "~/components/uis/molecules"
-import { ModalSheet } from "~/components/uis/templates"
+import { Toast } from "~/components/uis/molecules"
 import {
   useAuthContext,
   useMapContext,
@@ -89,8 +89,6 @@ const Courts: NextPage = () => {
       }
     }
   )
-
-  const [snap, setSnap] = useState<number>(1)
 
   const onClose = useCallback(() => {
     setIsOpen(false)
@@ -169,16 +167,13 @@ const Courts: NextPage = () => {
 
       if (map) {
         setTimeout(() => {
+          map.relayout()
           map.panTo(moveLatLon)
-        }, 0)
+        }, 100)
       }
     },
-    [restoreCourts, router, map]
+    [restoreCourts, router, map, setMapInitialCenter]
   )
-
-  const handleChangeSnap = useCallback((snap: number) => {
-    setSnap(snap)
-  }, [])
 
   const handleGetCurrentLocation = useCallback(async () => {
     getCurrentLocation(async ([latitude, longitude]) => {
@@ -270,7 +265,6 @@ const Courts: NextPage = () => {
       />
 
       <Map.KakaoMap
-        isShrink={isOpen}
         level={5}
         center={center}
         onClick={onClose}
@@ -298,16 +292,16 @@ const Courts: NextPage = () => {
           ))}
       </Map.KakaoMap>
 
-      <ModalSheet isOpen={isOpen} onClose={onClose} onSnap={handleChangeSnap}>
+      <BottomModal isOpen={isOpen}>
         {selectedMarker && (
-          <ModalContentContainer>
+          <BottomModalContainer>
             <Spacer gap="xs">
               <CourtItem.Header>{selectedMarker.court.name}</CourtItem.Header>
               <CourtItem.Address>{address}</CourtItem.Address>
             </Spacer>
-            <ReservationCount block strong size="lg">
+            <Text block strong size="lg">
               {selectedMarker.reservationMaxCount} 명
-            </ReservationCount>
+            </Text>
             <Actions type="horizontal" gap="xs">
               <CourtItem.FavoritesToggle courtId={selectedMarker.court.id} />
               <CourtItem.Share
@@ -359,27 +353,9 @@ const Courts: NextPage = () => {
                 </Link>
               )}
             </Actions>
-
-            {snap === 0 ? (
-              <>
-                <div>농구장 사진</div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: 200,
-                    backgroundColor: "orange",
-                  }}
-                >
-                  농구장 사진사진
-                </div>
-
-                <div>코트 바닥 정보</div>
-                <div>고무고무</div>
-              </>
-            ) : null}
-          </ModalContentContainer>
+          </BottomModalContainer>
         )}
-      </ModalSheet>
+      </BottomModal>
 
       <LeadToLoginModal
         headerContent={
@@ -411,12 +387,17 @@ const Actions = styled(Spacer)`
   margin-top: ${({ theme }) => theme.gaps.sm};
 `
 
-const ModalContentContainer = styled.div`
-  margin: 0 20px;
-  margin-top: 10px;
+const BottomModal = styled.div<{ isOpen: boolean }>`
+  ${({ theme, isOpen }) => css`
+    height: ${isOpen ? 210 : 0}px;
+    background-color: ${theme.colors.white};
+  `}
+  z-index: 100;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.3);
+  transition: height 40ms ease-in-out;
 `
 
-const ReservationCount = styled(Text)`
-  color: ${({ theme }) => theme.previousTheme.colors.gray800};
-  margin-top: ${({ theme }) => theme.previousTheme.gaps.md};
+const BottomModalContainer = styled.div`
+  margin: 28px 20px 16px 20px;
 `

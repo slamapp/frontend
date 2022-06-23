@@ -15,7 +15,6 @@ declare global {
 }
 
 interface Props {
-  isShrink?: ComponentProps<typeof MapContainer>["isShrink"]
   level: number
   center: Coord
   draggable?: boolean
@@ -29,7 +28,6 @@ interface Props {
 }
 
 const KakaoMap = ({
-  isShrink = false,
   level,
   center,
   draggable = true,
@@ -84,11 +82,15 @@ const KakaoMap = ({
     })
   }, [handleInitMap])
 
+  const currentHeight = mapRef.current?.getClientRects()[0].height
+
   useEffect(() => {
     if (map) {
-      map.relayout()
+      setTimeout(() => {
+        map.relayout()
+      }, 10)
     }
-  }, [mapRef.current?.getClientRects()[0].height])
+  }, [currentHeight])
 
   useKakaoMapEvent<kakao.maps.Map>(map, "click", onClick)
   useKakaoMapEvent<kakao.maps.Map>(map, "dragstart", onDragStart)
@@ -97,7 +99,7 @@ const KakaoMap = ({
 
   return (
     <>
-      <MapContainer isShrink={isShrink} ref={mapRef} style={style}>
+      <MapContainer ref={mapRef} style={style}>
         {children}
       </MapContainer>
     </>
@@ -115,9 +117,9 @@ const Map = {
 
 export default Map
 
-const MapContainer = styled.div<{ isShrink: boolean }>`
+const MapContainer = styled.div`
   width: 100%;
   flex: 1;
-  margin-bottom: ${({ isShrink }) => (isShrink ? "270px" : undefined)};
   position: relative;
+  margin-bottom: -16px;
 `
