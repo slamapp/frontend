@@ -169,11 +169,23 @@ const Courts: NextPage = () => {
         setTimeout(() => {
           map.relayout()
           map.panTo(moveLatLon)
+          fetchCourtsByBoundsAndDatetime(map)
         }, 100)
       }
     },
     [restoreCourts, router, map, setMapInitialCenter]
   )
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (map) {
+        map.relayout()
+        setTimeout(() => {
+          fetchCourtsByBoundsAndDatetime(map)
+        }, 200)
+      }
+    }, 100)
+  }, [isOpen])
 
   const handleGetCurrentLocation = useCallback(async () => {
     getCurrentLocation(async ([latitude, longitude]) => {
@@ -249,9 +261,7 @@ const Courts: NextPage = () => {
         updateSelectedCourtDetail()
       }
     }
-  }, [map, fetchCourtsByBoundsAndDatetime, center, authProps.favorites])
-
-  useEffect(() => {}, [])
+  }, [map, fetchCourtsByBoundsAndDatetime, authProps.favorites])
 
   return (
     <>

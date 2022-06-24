@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react"
-import type { ReactNode, CSSProperties, ComponentProps } from "react"
+import type { ReactNode, CSSProperties } from "react"
 import styled from "@emotion/styled"
 import { useMapContext } from "~/contexts/hooks"
 import type { Coord } from "~/types/domains"
@@ -81,16 +81,6 @@ const KakaoMap = ({
       handleInitMap(newMap)
     })
   }, [handleInitMap])
-
-  const currentHeight = mapRef.current?.getClientRects()[0].height
-
-  useEffect(() => {
-    if (map) {
-      setTimeout(() => {
-        map.relayout()
-      }, 10)
-    }
-  }, [currentHeight])
 
   useKakaoMapEvent<kakao.maps.Map>(map, "click", onClick)
   useKakaoMapEvent<kakao.maps.Map>(map, "dragstart", onDragStart)
