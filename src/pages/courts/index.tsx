@@ -426,4 +426,5 @@ const BottomModal = styled.div<{ isOpen: boolean }>`
 const BottomModalContainer = styled.div`
   flex: 1;
   margin: 28px 20px 16px 20px;
+  overflow: hidden;
 `
