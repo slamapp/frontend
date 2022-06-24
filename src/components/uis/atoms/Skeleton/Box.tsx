@@ -2,8 +2,8 @@ import styled from "@emotion/styled"
 import Base from "./Base"
 
 interface Props {
-  width: number | string
-  height: number | string
+  width?: number | string
+  height?: number | string
 }
 
 const Box = styled(Base)<Props>`
