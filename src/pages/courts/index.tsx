@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from "react"
+import { useState, useCallback, useEffect, useMemo, useRef } from "react"
 import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
@@ -40,6 +40,7 @@ interface Geocoder extends kakao.maps.services.Geocoder {
 }
 
 const Courts: NextPage = () => {
+  const isMountedRef = useRef(false)
   const router = useRouter()
 
   const { authProps } = useAuthContext()
@@ -169,7 +170,6 @@ const Courts: NextPage = () => {
         setTimeout(() => {
           map.relayout()
           map.panTo(moveLatLon)
-          fetchCourtsByBoundsAndDatetime(map)
         }, 100)
       }
     },
@@ -177,14 +177,18 @@ const Courts: NextPage = () => {
   )
 
   useEffect(() => {
-    setTimeout(() => {
-      if (map) {
-        map.relayout()
-        setTimeout(() => {
-          fetchCourtsByBoundsAndDatetime(map)
-        }, 200)
-      }
-    }, 100)
+    if (isMountedRef.current) {
+      setTimeout(() => {
+        if (map) {
+          map.relayout()
+          setTimeout(() => {
+            fetchCourtsByBoundsAndDatetime(map)
+          }, 200)
+        }
+      }, 100)
+    }
+
+    isMountedRef.current = true
   }, [isOpen])
 
   const handleGetCurrentLocation = useCallback(async () => {
