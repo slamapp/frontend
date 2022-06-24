@@ -1,14 +1,18 @@
+import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 
 const Base = styled.div`
+  ${({ theme }) => css`
+    background-image: linear-gradient(
+      90deg,
+      ${theme.colors.gray0100} 0px,
+      ${theme.colors.gray0050} 40px,
+      ${theme.colors.gray0100} 80px
+    );
+  `}
+
   display: inline-block;
   border-radius: 4px;
-  background-image: linear-gradient(
-    90deg,
-    #dfe3e8 0px,
-    #efefef 40px,
-    #dfe3e8 80px
-  );
   background-size: 200% 200%;
   background-position: 0 center;
   animation: skeleton--zoom-in 0.2s ease-out,
