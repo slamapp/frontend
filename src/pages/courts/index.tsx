@@ -13,7 +13,7 @@ import {
   CourtItem,
   LeadToLoginModal,
 } from "~/components/domains"
-import { Text, Button, Spacer, Icon } from "~/components/uis/atoms"
+import { Text, Button, Spacer, Icon, Skeleton } from "~/components/uis/atoms"
 import { Toast } from "~/components/uis/molecules"
 import {
   useAuthContext,
@@ -355,6 +355,30 @@ const Courts: NextPage = () => {
             </Actions>
           </BottomModalContainer>
         )}
+        {!selectedMarker && (
+          <BottomModalContainer>
+            <Spacer justify="space-between" style={{ height: "100%" }}>
+              <Spacer gap={8}>
+                <Spacer type="horizontal" align="center" gap={8}>
+                  <Skeleton.Circle size={32} />
+                  <Skeleton.Box
+                    height={24}
+                    style={{ flex: 1, marginRight: 80 }}
+                  />
+                </Spacer>
+                <Skeleton.Paragraph fontSize={12} line={2} />
+              </Spacer>
+
+              <Spacer type="horizontal" gap={12}>
+                <Skeleton.Box height={36} width={36} />
+                <Skeleton.Box height={36} width={36} />
+                <Skeleton.Box height={36} width={36} />
+                <Skeleton.Box height={36} width={36} />
+                <Skeleton.Box height={36} style={{ flex: 1 }} />
+              </Spacer>
+            </Spacer>
+          </BottomModalContainer>
+        )}
       </BottomModal>
 
       <LeadToLoginModal
@@ -392,6 +416,7 @@ const BottomModal = styled.div<{ isOpen: boolean }>`
     height: ${isOpen ? 210 : 0}px;
     background-color: ${theme.colors.white};
   `}
+  display: flex;
   z-index: 100;
   border-radius: 16px 16px 0 0;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.3);
@@ -399,5 +424,6 @@ const BottomModal = styled.div<{ isOpen: boolean }>`
 `
 
 const BottomModalContainer = styled.div`
+  flex: 1;
   margin: 28px 20px 16px 20px;
 `
