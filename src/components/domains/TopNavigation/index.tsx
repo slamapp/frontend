@@ -2,6 +2,7 @@ import React, { useMemo, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
+import { motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
 import { Icon, Badge } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
@@ -11,17 +12,18 @@ const TopNavigation = () => {
 
   const { authProps } = useAuthContext()
 
+  const { navigationProps } = useNavigationContext()
+
   const {
-    navigationProps: {
-      isBack,
-      isNotifications,
-      title,
-      isMenu,
-      handleClickBack,
-      customButton,
-      isProfile,
-    },
-  } = useNavigationContext()
+    isBack,
+    isNotifications,
+    title,
+    isMenu,
+    handleClickBack,
+    customButton,
+    isProfile,
+    isTopNavShrink,
+  } = navigationProps
 
   const router = useRouter()
 
@@ -40,7 +42,17 @@ const TopNavigation = () => {
 
   return (
     <>
-      <Container>
+      <Container
+        initial={{ background: undefined }}
+        animate={
+          isTopNavShrink
+            ? {
+                background:
+                  "linear-gradient(rgba(250,250,250,1),rgba(250,250,250,1),rgba(250,250,250,1), rgba(250,250,250, 0))",
+              }
+            : { background: undefined }
+        }
+      >
         <Wrapper>
           <IconGroup>
             {isBack && (
@@ -77,7 +89,16 @@ const TopNavigation = () => {
             )}
           </IconGroup>
         </Wrapper>
-        <TitleWrapper>{title}</TitleWrapper>
+        <TitleWrapper
+          initial={{ originX: 0, y: 0, scale: 1 }}
+          animate={
+            isTopNavShrink
+              ? { originX: 0, y: -40, scale: 0.7 }
+              : { originX: 0, y: 0, scale: 1 }
+          }
+        >
+          {title}
+        </TitleWrapper>
       </Container>
 
       <TopNavigationSensor ref={sensorRef} />
@@ -87,7 +108,7 @@ const TopNavigation = () => {
 
 export default TopNavigation
 
-const Container = styled.nav`
+const Container = styled(motion.nav)`
   z-index: 1000;
   position: sticky;
   top: 0;
@@ -112,9 +133,9 @@ const Wrapper = styled.div`
   padding: 12px 12px 6px 16px;
 `
 
-const TitleWrapper = styled.div`
-  font-weight: 700;
+const TitleWrapper = styled(motion.div)`
   font-size: 28px;
+  font-weight: 700;
   display: flex;
   justify-content: flex-start;
   align-items: center;

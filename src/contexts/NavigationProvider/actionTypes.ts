@@ -12,10 +12,9 @@ type EventAction =
     >
   | ActionWithoutPayload<"EVENT_CLEAR">
 
-type NavigationAction = ActionWithPayload<
-  "NAVIGATION_SET_TITLE",
-  { title: ReactNode }
->
+type NavigationAction =
+  | ActionWithPayload<"NAVIGATION_SET_TITLE", { title: ReactNode }>
+  | ActionWithPayload<"SET_TOP_NAV_IS_SHRINK", { isShrink: boolean }>
 
 type PageAction =
   | ActionWithoutPayload<"PAGE_NONE">
