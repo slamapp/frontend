@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import { BottomNavigation, TopNavigation } from "~/components/domains"
@@ -9,8 +9,24 @@ import Container from "./Container"
 const DefaultLayout: React.FC = ({ children }) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const { navigationProps } = useNavigationContext()
+  const { navigationProps, setTopNavIsShrink } = useNavigationContext()
   const { isBottomNavigation, isTopNavigation } = navigationProps
+
+  const setTopIsShrinkByScroll = () => {
+    if (containerRef.current) {
+      setTopNavIsShrink(containerRef.current.scrollTop > 80)
+    }
+  }
+
+  useEffect(() => {
+    containerRef.current?.addEventListener("scroll", setTopIsShrinkByScroll)
+
+    return () =>
+      containerRef.current?.removeEventListener(
+        "scroll",
+        setTopIsShrinkByScroll
+      )
+  }, [containerRef])
 
   return (
     <Container ref={containerRef}>

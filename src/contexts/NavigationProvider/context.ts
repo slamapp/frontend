@@ -16,6 +16,7 @@ export interface ContextProps {
   ) => void
   clearNavigationEvent: () => void
   setNavigationTitle: (title: ReactNode) => void
+  setTopNavIsShrink: (isShrink: boolean) => void
 }
 
 const initialContext = {
@@ -26,6 +27,7 @@ const initialContext = {
   useMountCustomButtonEvent: () => {},
   clearNavigationEvent: () => {},
   setNavigationTitle: () => {},
+  setTopNavIsShrink: () => {},
 }
 
 const Context = createContext<ContextProps>(initialContext)

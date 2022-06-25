@@ -10,6 +10,7 @@ export interface DataProps {
   isProfile: boolean
   isMenu: boolean
   title: ReactNode
+  isTopNavShrink: boolean
   handleClickBack: null | (() => void)
   customButton: null | {
     title: ReactNode
@@ -26,6 +27,7 @@ export const initialData: DataProps = {
   isProfile: true,
   isMenu: false,
   title: "",
+  isTopNavShrink: false,
   handleClickBack: null,
   customButton: null,
 }
@@ -238,6 +240,14 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         title,
       }
     }
+    case "SET_TOP_NAV_IS_SHRINK": {
+      const { isShrink } = action.payload
+
+      return {
+        ...prevState,
+        isTopNavShrink: isShrink,
+      }
+    }
     case "EVENT_BIND": {
       const { back, customButton } = action.payload.events
 
@@ -266,7 +276,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
       }
     }
     default: {
-      return { ...prevState }
+      return prevState
     }
   }
 }

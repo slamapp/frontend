@@ -7,6 +7,10 @@ import { reducer, initialData } from "./reducer"
 const NavigationProvider: FC = ({ children }) => {
   const [navigationProps, dispatch] = useReducer(reducer, initialData)
 
+  const setTopNavIsShrink = (isShrink: boolean) => {
+    dispatch({ type: "SET_TOP_NAV_IS_SHRINK", payload: { isShrink } })
+  }
+
   const useMountPage: ContextProps["useMountPage"] = (currentPageType) =>
     useEffect(() => {
       dispatch({ type: currentPageType })
@@ -62,6 +66,7 @@ const NavigationProvider: FC = ({ children }) => {
         setCustomButtonEvent,
         clearNavigationEvent,
         useMountCustomButtonEvent,
+        setTopNavIsShrink,
       }}
     >
       {children}
