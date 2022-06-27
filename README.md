@@ -1,4 +1,6 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/87c0390f-8dbe-4a17-bfc3-966c79692a93/deploy-status)](https://app.netlify.com/sites/slamsapp/deploys)
+## 배포상태
+- main: [![Netlify Status](https://api.netlify.com/api/v1/badges/87c0390f-8dbe-4a17-bfc3-966c79692a93/deploy-status)](https://app.netlify.com/sites/slamsapp/deploys)
+- develop: [![Netlify Status](https://api.netlify.com/api/v1/badges/4e0f99d7-eb95-45ab-8aa1-cdafc08fbfe6/deploy-status)](https://app.netlify.com/sites/developslamsapp/deploys)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
