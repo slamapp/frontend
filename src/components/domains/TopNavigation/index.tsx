@@ -2,10 +2,16 @@ import React, { useMemo, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
+import type { Variants } from "framer-motion"
 import { motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
 import { Icon, Badge } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+
+const titleWrapperVariants: Variants = {
+  notShrink: { originX: 0, x: 0, y: 0, scale: 1 },
+  shrink: { originX: 0, x: 4, y: -40, scale: 0.7 },
+}
 
 const TopNavigation = () => {
   const sensorRef = useRef<HTMLDivElement>(null)
@@ -90,12 +96,9 @@ const TopNavigation = () => {
           </IconGroup>
         </Wrapper>
         <TitleWrapper
-          initial={{ originX: 0, y: 0, scale: 1 }}
-          animate={
-            isTopNavShrink
-              ? { originX: 0, y: -40, scale: 0.7 }
-              : { originX: 0, y: 0, scale: 1 }
-          }
+          variants={titleWrapperVariants}
+          initial="notShrink"
+          animate={isTopNavShrink ? "shrink" : "notShrink"}
         >
           {title}
         </TitleWrapper>
@@ -130,7 +133,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 12px 6px 16px;
+  padding: 0px 12px;
+  height: 50px;
 `
 
 const TitleWrapper = styled(motion.div)`

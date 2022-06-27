@@ -21,7 +21,13 @@ const ProfileAvatar = ({
 }: Props) => {
   return (
     <Link href={`/user/${userId}`} passHref>
-      <a>
+      <a
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Avatar
           size={size}
           src={profileImage || DEFAULT_PROFILE_IMAGE_URL}

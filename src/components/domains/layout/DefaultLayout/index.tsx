@@ -12,11 +12,12 @@ const DefaultLayout: React.FC = ({ children }) => {
   const { navigationProps, setTopNavIsShrink } = useNavigationContext()
   const { isBottomNavigation, isTopNavigation } = navigationProps
 
-  const setTopIsShrinkByScroll = () => {
-    if (containerRef.current) {
-      setTopNavIsShrink(containerRef.current.scrollTop > 80)
-    }
-  }
+  const setTopIsShrinkByScroll = () =>
+    requestAnimationFrame(() => {
+      if (containerRef.current) {
+        setTopNavIsShrink(containerRef.current.scrollTop > 30)
+      }
+    })
 
   useEffect(() => {
     containerRef.current?.addEventListener("scroll", setTopIsShrinkByScroll)
