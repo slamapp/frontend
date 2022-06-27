@@ -187,8 +187,6 @@ const Courts: NextPage = () => {
         }
       }, 100)
     }
-
-    isMountedRef.current = true
   }, [isOpen])
 
   const handleGetCurrentLocation = useCallback(async () => {
@@ -235,13 +233,13 @@ const Courts: NextPage = () => {
       )
     }
 
-    if (selectedMarker) {
+    if (map && selectedMarker) {
       searchAddressFromCoords(
         selectedMarker.court.latitude,
         selectedMarker.court.longitude
       )
     }
-  }, [selectedMarker])
+  }, [selectedMarker, map])
 
   useEffect(() => {
     const updateSelectedCourtDetail = async () => {
@@ -266,6 +264,10 @@ const Courts: NextPage = () => {
       }
     }
   }, [map, fetchCourtsByBoundsAndDatetime, authProps.favorites])
+
+  useEffect(() => {
+    isMountedRef.current = true
+  }, [])
 
   return (
     <>

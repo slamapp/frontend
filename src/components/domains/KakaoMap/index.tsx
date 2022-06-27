@@ -88,11 +88,9 @@ const KakaoMap = ({
   useKakaoMapEvent<kakao.maps.Map>(map, "zoom_changed", onZoomChanged)
 
   return (
-    <>
-      <MapContainer ref={mapRef} style={style}>
-        {children}
-      </MapContainer>
-    </>
+    <MapContainer ref={mapRef} style={style}>
+      {children}
+    </MapContainer>
   )
 }
 
