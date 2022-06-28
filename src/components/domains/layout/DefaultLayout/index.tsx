@@ -4,6 +4,7 @@ import styled from "@emotion/styled"
 import { BottomNavigation, TopNavigation } from "~/components/domains"
 import { TopPageLoader } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
+import { useIntersectionObserver } from "~/hooks"
 import Container from "./Container"
 
 const DefaultLayout: React.FC = ({ children }) => {
@@ -12,27 +13,24 @@ const DefaultLayout: React.FC = ({ children }) => {
   const { navigationProps, setTopNavIsShrink } = useNavigationContext()
   const { isBottomNavigation, isTopNavigation } = navigationProps
 
-  const setTopIsShrinkByScroll = () =>
-    requestAnimationFrame(() => {
-      if (containerRef.current) {
-        setTopNavIsShrink(containerRef.current.scrollTop > 30)
-      }
-    })
+  const topIntersectionObserverRef = useRef<HTMLDivElement>(null)
+
+  const topIntersectionObserverEntry = useIntersectionObserver(
+    topIntersectionObserverRef,
+    {}
+  )
 
   useEffect(() => {
-    containerRef.current?.addEventListener("scroll", setTopIsShrinkByScroll)
-
-    return () =>
-      containerRef.current?.removeEventListener(
-        "scroll",
-        setTopIsShrinkByScroll
-      )
-  }, [containerRef])
+    if (topIntersectionObserverEntry) {
+      setTopNavIsShrink(!topIntersectionObserverEntry?.isIntersecting)
+    }
+  }, [topIntersectionObserverEntry?.isIntersecting])
 
   return (
     <Container ref={containerRef}>
       <TopPageLoader />
       {isTopNavigation && <TopNavigation />}
+      <TopIntersectionObserver ref={topIntersectionObserverRef} />
       <StyledMain>{children}</StyledMain>
       <ToastPortal
         id="toast-portal"
@@ -62,4 +60,10 @@ const StyledMain = styled.main`
   display: flex;
   flex-direction: column;
   flex: 1;
+`
+
+const TopIntersectionObserver = styled.div`
+  position: absolute;
+  min-height: 30px;
+  width: 100%;
 `

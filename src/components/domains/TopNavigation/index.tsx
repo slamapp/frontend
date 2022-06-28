@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react"
+import React, { useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
@@ -14,8 +14,6 @@ const titleWrapperVariants: Variants = {
 }
 
 const TopNavigation = () => {
-  const sensorRef = useRef<HTMLDivElement>(null)
-
   const { authProps } = useAuthContext()
 
   const { navigationProps } = useNavigationContext()
@@ -54,7 +52,7 @@ const TopNavigation = () => {
           isTopNavShrink
             ? {
                 background:
-                  "linear-gradient(rgba(250,250,250,1),rgba(250,250,250,1),rgba(250,250,250,1), rgba(250,250,250, 0))",
+                  "linear-gradient(#fafafa,#fafafa,#fafafa, transparent)",
               }
             : { background: undefined }
         }
@@ -103,8 +101,6 @@ const TopNavigation = () => {
           {title}
         </TitleWrapper>
       </Container>
-
-      <TopNavigationSensor ref={sensorRef} />
     </>
   )
 }
@@ -164,10 +160,4 @@ const CustomButton = styled.div`
   :hover {
     cursor: pointer;
   }
-`
-
-const TopNavigationSensor = styled.div`
-  position: absolute;
-  min-height: 56px;
-  width: 100%;
 `
