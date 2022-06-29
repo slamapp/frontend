@@ -30,22 +30,22 @@ const NavIcon = ({ href, iconName, pageTypes }: Props) => {
 }
 
 NavIcon.Favorites = () => (
-  <NavIcon href={"/"} iconName={"star"} pageTypes={["PAGE_FAVORITES"]} />
+  <NavIcon href="/" iconName="star" pageTypes={["PAGE_FAVORITES"]} />
 )
 NavIcon.Map = () => (
-  <NavIcon href={"/courts"} iconName={"map"} pageTypes={["PAGE_MAP"]} />
+  <NavIcon href="/courts" iconName="map" pageTypes={["PAGE_MAP"]} />
 )
 NavIcon.Reservations = () => (
   <NavIcon
-    href={"/reservations"}
-    iconName={"calendar"}
+    href="/reservations"
+    iconName="calendar"
     pageTypes={["PAGE_RESERVATIONS"]}
   />
 )
 NavIcon.Chat = () => (
   <NavIcon
-    href={"/chat/list"}
-    iconName={"message-circle"}
+    href="/chat/list"
+    iconName="message-circle"
     pageTypes={[
       "PAGE_USER_CHATROOM",
       "PAGE_COURT_CHATROOM",
@@ -55,13 +55,13 @@ NavIcon.Chat = () => (
 )
 NavIcon.newCourt = () => (
   <NavIcon
-    href={"/admin/newcourts"}
-    iconName={"check-square"}
+    href="/admin/newcourts"
+    iconName="check-square"
     pageTypes={["PAGE_ADMIN_NEWCOURTS"]}
   />
 )
 NavIcon.Login = () => (
-  <NavIcon href={"/login"} iconName={"log-in"} pageTypes={["PAGE_LOGIN"]} />
+  <NavIcon href="/login" iconName="log-in" pageTypes={["PAGE_LOGIN"]} />
 )
 
 export default NavIcon

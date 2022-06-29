@@ -360,7 +360,7 @@ const Courts: NextPage = () => {
                   </a>
                 </Link>
               ) : (
-                <Link href={"/login"} passHref>
+                <Link href="/login" passHref>
                   <a style={{ flex: 1, display: "flex" }}>
                     <Button size="lg" style={{ flex: 1 }}>
                       로그인하고 예약하기

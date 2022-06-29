@@ -27,6 +27,10 @@
     "class-methods-use-this": "off",
     "consistent-return": "off",
     "react/display-name": "off",
+    "react/jsx-curly-brace-presence": [
+      "error",
+      { "props": "never", "children": "never" }
+    ],
     "camelcase": "off",
     "curly": ["error", "all"],
     "import/no-import-module-exports": "off",

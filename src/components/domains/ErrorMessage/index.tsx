@@ -14,7 +14,7 @@ interface Props {
 const ErrorMessage = ({ title, description, buttonTitle, style }: Props) => {
   return (
     <WrapperSpacer gap="base" style={style}>
-      <Image src={"/assets/error.svg"} alt="error" />
+      <Image src="/assets/error.svg" alt="error" />
       <Spacer gap="xxs" style={{ textAlign: "center" }}>
         <Text size="md" block strong>
           {title}

@@ -79,7 +79,7 @@ const TopNavigation = () => {
             )}
             {isProfile && <ProfileAvatar.Mine />}
             {isMenu && (
-              <Link href={`/user/menu`} passHref>
+              <Link href="/user/menu" passHref>
                 <a>
                   <Icon name="menu" size={24} />
                 </a>

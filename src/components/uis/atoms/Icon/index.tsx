@@ -348,7 +348,7 @@ Icon.Toggle = ({
   onChange: ComponentProps<"input">["onChange"]
 }) => (
   <StyledIconToggleLabel size={size}>
-    <Icon color={"#FFC700"} name={name} fill={checked} size={iconSize} />
+    <Icon color="#FFC700" name={name} fill={checked} size={iconSize} />
     <input type="checkbox" checked={checked} onChange={onChange} />
   </StyledIconToggleLabel>
 )

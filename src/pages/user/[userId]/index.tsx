@@ -220,7 +220,7 @@ const User: NextPage = () => {
           </ButtonContainer>
         ) : (
           <div>
-            <Link href={`/user/edit`} passHref>
+            <Link href="/user/edit" passHref>
               <a>
                 <Button fullWidth secondary>
                   프로필 편집
@@ -242,7 +242,7 @@ const User: NextPage = () => {
                 </Chip>
               ))
             ) : (
-              <Chip key={"no_position"} secondary>
+              <Chip key="no_position" secondary>
                 선택한 포지션이 없습니다
               </Chip>
             )}
