@@ -116,3 +116,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+<div align="center">
+  <sub>
+    <sup>Managed by <a href="https://github.com/manudeli">@manudeli</a> <a href="https://github.com/yungjurick">@yungjurick</a> <a href="https://github.com/locodingve">@locodingve</a> <a href="https://github.com/KwonYeKyeong">@KwonYeKyeong</a></sup>
+  </sub>
+  <small>✌</small>
+</div>
