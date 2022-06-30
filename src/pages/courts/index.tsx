@@ -342,15 +342,9 @@ const Courts: NextPage = () => {
 
               {localToken ? (
                 <Link
-                  href={{
-                    pathname: `/courts/[courtId]/[date]`,
-                    query: {
-                      timeSlot: "morning",
-                    },
-                  }}
-                  as={`/courts/${
+                  href={`reservations/courts/${
                     selectedMarker.court.id
-                  }/${getTimezoneDateStringFromDate(selectedDate)}`}
+                  }?date=${getTimezoneDateStringFromDate(selectedDate)}`}
                   passHref
                 >
                   <a style={{ flex: 1, display: "flex" }}>

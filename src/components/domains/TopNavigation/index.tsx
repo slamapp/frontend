@@ -10,7 +10,8 @@ import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 
 const titleWrapperVariants: Variants = {
   notShrink: { originX: 0, x: 0, y: 0, scale: 1 },
-  shrink: { originX: 0, x: 4, y: -40, scale: 0.7 },
+  shrink: { originX: 0, x: 6, y: -40, scale: 0.7 },
+  shrinkWithBack: { originX: 0, x: 30, y: -40, scale: 0.7 },
 }
 
 const TopNavigation = () => {
@@ -93,10 +94,17 @@ const TopNavigation = () => {
             )}
           </IconGroup>
         </Wrapper>
+
         <TitleWrapper
           variants={titleWrapperVariants}
           initial="notShrink"
-          animate={isTopNavShrink ? "shrink" : "notShrink"}
+          animate={
+            isTopNavShrink
+              ? isBack
+                ? "shrinkWithBack"
+                : "shrink"
+              : "notShrink"
+          }
         >
           {title}
         </TitleWrapper>

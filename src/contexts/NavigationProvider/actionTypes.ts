@@ -22,6 +22,7 @@ type PageAction =
   | ActionWithoutPayload<"PAGE_LOGIN">
   | ActionWithoutPayload<"PAGE_MAP">
   | ActionWithoutPayload<"PAGE_RESERVATIONS">
+  | ActionWithoutPayload<"PAGE_RESERVATIONS_COURTS">
   | ActionWithoutPayload<"PAGE_COURT_RESERVATIONS">
   | ActionWithoutPayload<"PAGE_ACTIVITY">
   | ActionWithoutPayload<"PAGE_COURT_CREATE">
