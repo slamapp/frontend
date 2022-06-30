@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
 import type { Variants } from "framer-motion"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
 import { Icon, Badge } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
@@ -95,19 +95,21 @@ const TopNavigation = () => {
           </IconGroup>
         </Wrapper>
 
-        <TitleWrapper
-          variants={titleWrapperVariants}
-          initial="notShrink"
-          animate={
-            isTopNavShrink
-              ? isBack
-                ? "shrinkWithBack"
-                : "shrink"
-              : "notShrink"
-          }
-        >
-          {title}
-        </TitleWrapper>
+        <AnimatePresence exitBeforeEnter>
+          <TitleWrapper
+            variants={titleWrapperVariants}
+            initial="notShrink"
+            animate={
+              isTopNavShrink
+                ? isBack
+                  ? "shrinkWithBack"
+                  : "shrink"
+                : "notShrink"
+            }
+          >
+            {title}
+          </TitleWrapper>
+        </AnimatePresence>
       </Container>
     </>
   )
