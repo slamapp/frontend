@@ -196,7 +196,6 @@ const CreateCourt: NextPage = () => {
                 />
                 <Map.CurrentLocationButton
                   onGetCurrentLocation={handleGetCurrentLocation}
-                  bottom={120}
                 />
                 {position ? (
                   <GeneralMarker map={map!} position={position} />

@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react"
+import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import { Icon } from "~/components/uis/atoms"
 
@@ -10,6 +11,7 @@ interface Props {
   size?: ComponentProps<typeof StyledIconButton>["size"]
   type?: ComponentProps<typeof StyledIconButton>["type"]
   onClick?: ComponentProps<typeof StyledIconButton>["onClick"]
+  noOutlined?: ComponentProps<typeof StyledIconButton>["noOutlined"]
 }
 
 const IconButton = ({
@@ -20,9 +22,11 @@ const IconButton = ({
   onClick,
   size = "lg",
   iconSize = "sm",
+  noOutlined = false,
 }: Props) => {
   return (
     <StyledIconButton
+      noOutlined={noOutlined}
       className={className}
       type={type}
       onClick={onClick}
@@ -33,19 +37,24 @@ const IconButton = ({
   )
 }
 
-const StyledIconButton = styled.button<{ size: "sm" | "md" | "lg" }>`
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.previousTheme.colors.white};
-  border: 2px solid ${({ theme }) => theme.previousTheme.colors.gray100};
-  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.lg};
-  min-width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  min-height: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  height: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  cursor: pointer;
+const StyledIconButton = styled.button<{
+  size: "sm" | "md" | "lg"
+  noOutlined: boolean
+}>`
+  ${({ theme, size, noOutlined }) => css`
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: ${theme.previousTheme.colors.white};
+    border: ${noOutlined ? 0 : 2}px solid ${theme.previousTheme.colors.gray100};
+    border-radius: ${theme.previousTheme.borderRadiuses.lg};
+    min-width: ${theme.previousTheme.buttonHeights[size]};
+    min-height: ${theme.previousTheme.buttonHeights[size]};
+    width: ${theme.previousTheme.buttonHeights[size]};
+    height: ${theme.previousTheme.buttonHeights[size]};
+    cursor: pointer;
+  `}
 `
 
 IconButton.Share = ({

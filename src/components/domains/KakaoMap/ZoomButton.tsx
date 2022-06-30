@@ -1,5 +1,6 @@
 import React from "react"
-import * as S from "./style"
+import styled from "@emotion/styled"
+import { IconButton } from "~/components/uis/molecules"
 
 interface Props {
   onZoomIn: () => void
@@ -8,10 +9,24 @@ interface Props {
 }
 
 const ZoomButton = ({ onZoomIn, onZoomOut, bottom }: Props) => (
-  <S.ZoomActions bottom={bottom}>
-    <S.MapIconButton type="button" name="plus" onClick={onZoomIn} />
-    <S.MapIconButton type="button" name="minus" onClick={onZoomOut} />
-  </S.ZoomActions>
+  <ZoomActions bottom={bottom}>
+    <IconButton type="button" name="plus" onClick={onZoomIn} />
+    <IconButton type="button" name="minus" onClick={onZoomOut} />
+  </ZoomActions>
 )
 
 export default ZoomButton
+
+const ZoomActions = styled.div<{ bottom?: number }>`
+  display: inline-flex;
+  flex-direction: column;
+  position: absolute;
+  right: 12px;
+  bottom: ${({ bottom }) => (bottom ? `${bottom + 230}px` : "230px")};
+  z-index: 10;
+
+  button:first-of-type {
+    border-bottom: 1px solid
+      ${({ theme }) => theme.previousTheme.colors.gray200};
+  }
+`

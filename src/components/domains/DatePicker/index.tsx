@@ -2,7 +2,6 @@ import React, { useMemo } from "react"
 import styled from "@emotion/styled"
 import Flicking from "@egjs/react-flicking"
 import type { Dayjs } from "dayjs"
-import { useNavigationContext } from "~/contexts/hooks"
 import DateItem from "./DateItem"
 
 const DAY_RANGE = 14
@@ -14,8 +13,6 @@ interface Props {
 }
 
 const DatePicker: React.FC<Props> = ({ startDate, onClick, selectedDate }) => {
-  const { navigationProps } = useNavigationContext()
-
   const twoWeekDates = useMemo(
     () =>
       Array.from({ length: DAY_RANGE }, (_, index) =>
@@ -43,6 +40,7 @@ export default DatePicker
 
 const StyledFlicking = styled(Flicking)`
   transition: background-color 200ms;
+  padding-right: 16px;
 
   .flicking-camera {
     display: flex;

@@ -165,3 +165,12 @@ a {
   -ms-touch-action: manipulation;
   touch-action: manipulation;
 }
+
+input,
+textarea,
+button,
+select,
+div,
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
