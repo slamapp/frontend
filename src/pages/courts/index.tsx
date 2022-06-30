@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
+import { motion } from "framer-motion"
 import {
   DatePicker,
   BasketballMarker,
@@ -45,7 +46,8 @@ const Courts: NextPage = () => {
 
   const { authProps } = useAuthContext()
 
-  const { useMountPage, useMountCustomButtonEvent } = useNavigationContext()
+  const { useMountPage, useMountCustomButtonEvent, setNavigationTitle } =
+    useNavigationContext()
 
   const [localToken] = useLocalToken()
 
@@ -240,6 +242,22 @@ const Courts: NextPage = () => {
       )
     }
   }, [selectedMarker, map])
+
+  useEffect(() => {
+    const titleText = selectedMarker
+      ? "여기에서 농구할까요?"
+      : "어디서 농구할까요?"
+    setNavigationTitle(
+      <motion.span
+        key={titleText}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        {titleText}
+      </motion.span>
+    )
+  }, [selectedMarker, setNavigationTitle])
 
   useEffect(() => {
     const updateSelectedCourtDetail = async () => {
