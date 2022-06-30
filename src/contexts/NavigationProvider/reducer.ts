@@ -112,6 +112,19 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         title: "예약",
       }
     }
+    case "PAGE_RESERVATIONS_COURTS": {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: true,
+        currentPage: action.type,
+        isBack: true,
+        isNotifications: true,
+        isProfile: true,
+        isMenu: false,
+        title: "",
+      }
+    }
     case "PAGE_ACTIVITY": {
       return {
         ...prevState,

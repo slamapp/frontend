@@ -16,6 +16,7 @@ export { PositionsPicker, ProficiencyPicker } from "./UserInfoPicker"
 export { default as NoItemMessage } from "./NoItemMessage"
 export { default as ProfileFavoritesListItem } from "./ProfileFavoritesListItem"
 export { default as ProfileAvatar } from "./ProfileAvatar"
+export { default as ReservationTable } from "./ReservationTable"
 /* eslint-disable import/no-cycle */
 export { default as FavoriteList } from "./FavoriteList"
 export { default as LeadToLoginModal } from "./LeadToLoginModal"
