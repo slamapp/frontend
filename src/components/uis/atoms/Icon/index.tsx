@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react"
+import Image from "next/image"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import Icons from "feather-icons"
@@ -310,7 +311,12 @@ const Icon = ({
 
   return (
     <IconWrapper {...props} size={size} rotate={rotate}>
-      <img src={`data:image/svg+xml;base64,${base64}`} alt={name} />
+      <Image
+        width={24}
+        height={24}
+        src={`data:image/svg+xml;base64,${base64}`}
+        alt={name}
+      />
     </IconWrapper>
   )
 }
