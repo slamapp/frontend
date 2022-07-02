@@ -1,73 +1,90 @@
 import React, { useState } from "react"
-import type { NextPage } from "next"
+import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
 import styled from "@emotion/styled"
+import dayjs from "dayjs"
 import { Modal } from "~/components/domains"
-import { Icon, Button } from "~/components/uis/atoms"
+import { Icon, Button, Spacer } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 
-const Menu: NextPage = () => {
-  const { logout } = useAuthContext()
-  const { useMountPage } = useNavigationContext()
-  useMountPage("PAGE_USER_MENU")
-
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const list = [
-    // {
-    //   title: "다크 모드",
-    //   onClick: () => console.log("dark Mode clicked"),
-    //   icon: "moon",
-    // },
-    {
-      title: "로그아웃",
-      onClick: () => setIsModalOpen(true),
-      icon: "log-out",
-    },
-  ] as const
-
-  const handleClickCancelLogout = () => {
-    setIsModalOpen(false)
-  }
-  const handleClickConfirmLogout = () => {
-    logout()
-    setIsModalOpen(false)
-  }
-
-  return (
-    <div>
-      <MenuList>
-        {list.map(({ title, onClick, icon }) => (
-          <MenuItem key={title} onClick={onClick}>
-            <Icon name={icon} /> {title}
-          </MenuItem>
-        ))}
-      </MenuList>
-      <Modal visible={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Modal.Header block>정말 로그아웃 하시나요? 🤔</Modal.Header>
-        <Modal.BottomButtonContainer>
-          <Button
-            style={{ flex: 1 }}
-            secondary
-            size="lg"
-            onClick={handleClickCancelLogout}
-          >
-            취소
-          </Button>
-          <Button
-            style={{ flex: 1 }}
-            size="lg"
-            onClick={handleClickConfirmLogout}
-          >
-            로그아웃하기
-          </Button>
-        </Modal.BottomButtonContainer>
-      </Modal>
-    </div>
-  )
+interface Props {
+  buildTime: string
 }
 
-export default withRouteGuard("private", Menu)
+const Menu = withRouteGuard(
+  "private",
+  ({ buildTime }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    const { logout } = useAuthContext()
+    const { useMountPage } = useNavigationContext()
+    useMountPage("PAGE_USER_MENU")
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const list = [
+      // {
+      //   title: "다크 모드",
+      //   onClick: () => console.log("dark Mode clicked"),
+      //   icon: "moon",
+      // },
+      {
+        title: "로그아웃",
+        onClick: () => setIsModalOpen(true),
+        icon: "log-out",
+      },
+    ] as const
+
+    const handleClickCancelLogout = () => {
+      setIsModalOpen(false)
+    }
+    const handleClickConfirmLogout = () => {
+      logout()
+      setIsModalOpen(false)
+    }
+
+    return (
+      <Spacer
+        type="vertical"
+        justify="space-between"
+        style={{ height: "100%" }}
+      >
+        <MenuList>
+          {list.map(({ title, onClick, icon }) => (
+            <MenuItem key={title} onClick={onClick}>
+              <Icon name={icon} /> {title}
+            </MenuItem>
+          ))}
+        </MenuList>
+        <div style={{ textAlign: "center" }}>
+          {dayjs(buildTime).format(
+            "빌드 버전: YYYY년 MM월 DD일 HH시 MM분 ss초"
+          )}
+        </div>
+        <Modal visible={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <Modal.Header block>정말 로그아웃 하시나요? 🤔</Modal.Header>
+          <Modal.BottomButtonContainer>
+            <Button
+              style={{ flex: 1 }}
+              secondary
+              size="lg"
+              onClick={handleClickCancelLogout}
+            >
+              취소
+            </Button>
+            <Button
+              style={{ flex: 1 }}
+              size="lg"
+              onClick={handleClickConfirmLogout}
+            >
+              로그아웃하기
+            </Button>
+          </Modal.BottomButtonContainer>
+        </Modal>
+      </Spacer>
+    )
+  }
+)
+
+export default Menu
 
 const MenuList = styled.div`
   margin-top: 24px;
@@ -92,3 +109,11 @@ const MenuItem = styled.div`
     background: ${({ theme }) => theme.previousTheme.colors.gray300};
   }
 `
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  return {
+    props: {
+      buildTime: new Date().toISOString(),
+    },
+  }
+}

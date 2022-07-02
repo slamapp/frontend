@@ -1,3 +1,4 @@
+import type { ComponentType } from "react"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useAuthContext } from "~/contexts/hooks"
@@ -9,8 +10,11 @@ const preventedRedirectPath = "/"
 
 type RouteOption = "private" | "prevented"
 
-const withRouteGuard = (option: RouteOption, Page: NextPage) => {
-  return () => {
+const withRouteGuard = <P extends object>(
+  option: RouteOption,
+  Page: NextPage<P>
+) => {
+  return (props: P) => {
     const { authProps } = useAuthContext()
     const [localToken] = useLocalToken()
     const router = useRouter()
@@ -23,13 +27,13 @@ const withRouteGuard = (option: RouteOption, Page: NextPage) => {
       if (localToken || authProps.currentUser) {
         router.replace(preventedRedirectPath)
       } else {
-        return <Page />
+        return <Page {...props} />
       }
     }
 
     if (option === "private") {
       if (localToken && authProps.currentUser) {
-        return <Page />
+        return <Page {...props} />
       } else {
         router.replace(privateRedirectPath)
       }
