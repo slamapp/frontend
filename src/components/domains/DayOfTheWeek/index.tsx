@@ -1,23 +1,6 @@
 import styled from "@emotion/styled"
 import { Text } from "~/components/uis/atoms"
 
-const SubHeaderArea = styled.div`
-  height: 50px;
-`
-
-const SubHeader = styled(Text)`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-`
-
-const AddressText = styled(SubHeader)`
-  color: ${({ theme }) => theme.previousTheme.colors.gray700};
-`
-
 const SUNDAY_INDEX = 0
 const SATURDAY_INDEX = 6
 
@@ -34,4 +17,4 @@ const DayOfTheWeek = styled(Text)<{ index: number }>`
   }};
 `
 
-export { SubHeaderArea, AddressText, DayOfTheWeek }
+export default DayOfTheWeek

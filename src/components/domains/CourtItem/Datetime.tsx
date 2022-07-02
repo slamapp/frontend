@@ -1,8 +1,9 @@
 import { useMemo } from "react"
+import styled from "@emotion/styled"
 import dayjs from "dayjs"
+import { DayOfTheWeek } from "~/components/domains"
 import { Spacer, Text } from "~/components/uis/atoms"
 import { week } from "~/utils/date"
-import * as S from "./style"
 
 interface Props {
   startDatetime: string
@@ -18,9 +19,9 @@ const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
       <Spacer gap="xxs" type="horizontal">
         <Text strong>
           {startDate.format("YYYY년 MM월 DD일")} (
-          <S.DayOfTheWeek index={startDate.day()}>
+          <DayOfTheWeek index={startDate.day()}>
             {week[startDate.day()]}
-          </S.DayOfTheWeek>
+          </DayOfTheWeek>
           )
         </Text>
         <Text strong>
@@ -32,3 +33,9 @@ const Datetime: React.FC<Props> = ({ startDatetime, endDatetime }) => {
 }
 
 export default Datetime
+
+const S = {
+  SubHeaderArea: styled.div`
+    height: 50px;
+  `,
+}

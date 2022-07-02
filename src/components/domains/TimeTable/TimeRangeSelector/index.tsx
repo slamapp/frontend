@@ -1,4 +1,4 @@
-import * as S from "./style"
+import styled from "@emotion/styled"
 
 interface Props {
   unit: number
@@ -29,7 +29,7 @@ const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
               width: 8,
               backgroundColor: "#262625",
             }}
-          ></div>
+          />
           <div
             style={{
               position: "absolute",
@@ -39,7 +39,7 @@ const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
               width: 8,
               backgroundColor: "#262625",
             }}
-          ></div>
+          />
           <S.EndRangeSelector
             style={{
               width: unit * 4,
@@ -55,3 +55,16 @@ const RangeSelector: React.FC<Props> = ({ unit, startIndex, endIndex }) => {
 }
 
 export default RangeSelector
+
+const S = {
+  StartRangeSelector: styled.div`
+    border-radius: 16px 16px 4px 4px;
+    background-color: black;
+    height: 23px;
+  `,
+  EndRangeSelector: styled.div`
+    border-radius: 4px 4px 16px 16px;
+    background-color: black;
+    height: 23px;
+  `,
+}
