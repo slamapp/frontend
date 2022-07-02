@@ -1,5 +1,7 @@
 import type { ComponentProps } from "react"
 import Link from "next/link"
+import styled from "@emotion/styled"
+import { motion } from "framer-motion"
 import { Icon } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
 import type { PageType } from "~/contexts/NavigationProvider/actionTypes"
@@ -16,7 +18,7 @@ const NavIcon = ({ href, iconName, pageTypes }: Props) => {
 
   return (
     <Link href={href} key={href} passHref>
-      <a>
+      <S.MotionAnchor whileTap={{ scale: 0.7 }}>
         <Icon
           name={iconName}
           size={24}
@@ -24,16 +26,30 @@ const NavIcon = ({ href, iconName, pageTypes }: Props) => {
             pageTypes.some((item) => item === currentPage) ? "black" : "#cfcfcf"
           }
         />
-      </a>
+      </S.MotionAnchor>
     </Link>
   )
+}
+
+const S = {
+  MotionAnchor: styled(motion.a)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+  `,
 }
 
 NavIcon.Favorites = () => (
   <NavIcon href="/" iconName="star" pageTypes={["PAGE_FAVORITES"]} />
 )
 NavIcon.Map = () => (
-  <NavIcon href="/courts" iconName="map" pageTypes={["PAGE_MAP"]} />
+  <NavIcon
+    href="/courts"
+    iconName="map"
+    pageTypes={["PAGE_MAP", "PAGE_RESERVATIONS_COURTS"]}
+  />
 )
 NavIcon.Reservations = () => (
   <NavIcon
