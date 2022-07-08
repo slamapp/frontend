@@ -6,6 +6,7 @@ import { CourtItem, NoItemMessage } from "~/components/domains"
 import { Button, Spacer } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
 import favoriteAPI from "~/service/favoriteApi"
+import type { APIFavorite } from "~/types/domains"
 
 const SkeletonParagraph = dynamic(
   () => import("~/components/uis/atoms/Skeleton/Paragraph"),
@@ -16,14 +17,12 @@ const FavoriteList = () => {
   const { authProps } = useAuthContext()
 
   const [isLoading, setIsLoading] = useState(true)
-  const [favorites, setFavorites] = useState<
-    Awaited<ReturnType<typeof favoriteAPI["getMyFavorites"]>>["data"]
-  >([])
+  const [favorites, setFavorites] = useState<APIFavorite[]>([])
 
   const getPageFavorites = async () => {
     try {
       const { data } = await favoriteAPI.getMyFavorites()
-      setFavorites(data)
+      setFavorites(data.contents)
       setIsLoading(false)
     } catch (error) {
       console.error(error)

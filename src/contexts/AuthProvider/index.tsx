@@ -118,8 +118,11 @@ const AuthProvider = ({ children }: Props) => {
     useCallback(async () => {
       try {
         const { data } = await reservationApi.getMyUpcomingReservations()
-        const { reservations } = data
-        dispatch({ type: "SET_MY_RESERVATIONS", payload: { reservations } })
+
+        dispatch({
+          type: "SET_MY_RESERVATIONS",
+          payload: { reservations: data.contents },
+        })
       } catch (error) {
         throw error as AxiosError
       }
@@ -130,7 +133,10 @@ const AuthProvider = ({ children }: Props) => {
       try {
         const { data } = await favoriteApi.getMyFavorites()
 
-        dispatch({ type: "GET_MY_FAVORITES", payload: { favorites: data } })
+        dispatch({
+          type: "GET_MY_FAVORITES",
+          payload: { favorites: data.contents },
+        })
       } catch (error) {
         throw error as AxiosError
       }

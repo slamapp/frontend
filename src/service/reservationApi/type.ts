@@ -1,43 +1,14 @@
 import type { ApiPromise } from "~/service/type"
+import type { ListDTO, InfiniteScrollDTO } from "~/types/common"
 import type { APIReservation, APICourt, APIUser } from "~/types/domains"
 
 export interface ReservationApi {
-  getMyUpcomingReservations: () => ApiPromise<{
-    reservations: {
-      basketCount: APIReservation["court"]["basketCount"]
-      courtId: number
-      courtName: APIReservation["court"]["name"]
-      latitude: APIReservation["court"]["latitude"]
-      longitude: APIReservation["court"]["longitude"]
-      startTime: APIReservation["startTime"]
-      endTime: APIReservation["endTime"]
-      numberOfReservations: number
-      reservationId: number
-      createdAt: APIReservation["createdAt"]
-      updatedAt: APIReservation["updatedAt"]
-    }[]
-  }>
+  getMyUpcomingReservations: () => ApiPromise<ListDTO<APIReservation[]>>
 
   getMyExpiredReservations: (
     isFirst: boolean,
     lastId: number | undefined | null
-  ) => ApiPromise<{
-    contents: [
-      {
-        reservationId: APIReservation["id"]
-        courtId: APIReservation["court"]["id"]
-        latitude: APIReservation["court"]["latitude"]
-        longitude: APIReservation["court"]["longitude"]
-        courtName: APIReservation["court"]["name"]
-        startTime: APIReservation["startTime"]
-        endTime: APIReservation["endTime"]
-        numberOfReservations: number
-        createdAt: APIReservation["createdAt"]
-        updatedAt: APIReservation["updatedAt"]
-      }
-    ]
-    lastId: APIReservation["id"]
-  }>
+  ) => ApiPromise<InfiniteScrollDTO<APIReservation[]>>
 
   getMyReservationParticipants: (props: {
     courtId: APICourt["id"]
