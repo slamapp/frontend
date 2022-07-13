@@ -13,8 +13,6 @@ export const MAX_RESERVATION_TIME_BLOCK_UNIT = 6
 export const MAJOR_TIME_BLOCK_UNIT = 12
 export const ACTIVE_RESERVATION_COUNT = 6
 
-const ONE_HOUR = 60 * 60 * 1000
-
 const TIME_OFFSET = 9
 const TIME_LENGTH = 2
 const DEFAULT_TIMEZONE = "Asia/Seoul"

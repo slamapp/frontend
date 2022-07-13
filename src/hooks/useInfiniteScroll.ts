@@ -1,5 +1,5 @@
 import type { RefObject } from "react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 const useInfiniteScroll = (
   target: RefObject<HTMLElement>,

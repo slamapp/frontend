@@ -33,6 +33,7 @@
     ],
     "camelcase": "off",
     "curly": ["error", "all"],
+    "no-console": "off", // TODO: remove this line when we are done with the development
     "import/no-import-module-exports": "off",
     "newline-before-return": "error",
     "@typescript-eslint/no-empty-function": "off",

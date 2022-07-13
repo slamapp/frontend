@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
+import type { GetStaticProps, InferGetStaticPropsType } from "next"
 import styled from "@emotion/styled"
 import dayjs from "dayjs"
 import { Modal } from "~/components/domains"

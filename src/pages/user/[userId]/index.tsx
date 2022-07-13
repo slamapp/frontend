@@ -259,7 +259,7 @@ const User: NextPage = () => {
         <div>
           <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
           {pageFavorites.length ? (
-            pageFavorites.map(({ id, court }) => (
+            pageFavorites.map(({ court }) => (
               <ProfileFavoritesListItem key={court.id} courtId={court.id}>
                 {court.name}
               </ProfileFavoritesListItem>

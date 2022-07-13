@@ -1,4 +1,4 @@
-import { request, authRequest, authFileRequest } from "../fetcher"
+import { authRequest } from "../fetcher"
 import type { ReservationApi } from "./type"
 
 const reservationApi: ReservationApi = {

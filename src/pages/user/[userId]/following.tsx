@@ -34,7 +34,7 @@ const FollowingPage: NextPage = () => {
   const [followings, setFollowings] = useState<Following[]>([])
   const ref = useRef<HTMLDivElement>(null)
 
-  const [isFetching] = useInfiniteScroll(ref, () => {
+  useInfiniteScroll(ref, () => {
     setFollowings((prev: any) => [...prev, ...dummyFollowings])
   })
 

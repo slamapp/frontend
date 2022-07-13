@@ -21,10 +21,12 @@ const useScroll = <T extends HTMLElement>(): [
     }
 
     const handleScroll = () => {
-      setState({
-        x: ref.current!.scrollLeft,
-        y: ref.current!.scrollTop,
-      })
+      if (element) {
+        setState({
+          x: element.scrollLeft,
+          y: element.scrollTop,
+        })
+      }
     }
 
     element.addEventListener("scroll", handleScroll, { passive: true })

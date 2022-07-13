@@ -1,4 +1,3 @@
-import type { ComponentType } from "react"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useAuthContext } from "~/contexts/hooks"

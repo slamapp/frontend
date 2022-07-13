@@ -1,4 +1,4 @@
-import { request, authRequest, authFileRequest } from "../fetcher"
+import { request, authRequest } from "../fetcher"
 import type { CourtApi } from "./type"
 
 const courtApi: CourtApi = {

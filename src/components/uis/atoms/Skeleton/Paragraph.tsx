@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import Box from "./Box"
 
 interface Props {
@@ -18,17 +18,19 @@ const Paragraph = ({
   lineBreak = 4,
   ...props
 }: Props) => {
-  const stepWidth = (ratio: number) =>
-    Math.floor(ratio / stepPercentage) * stepPercentage
+  const stepWidth = useCallback(
+    (ratio: number) => Math.floor(ratio / stepPercentage) * stepPercentage,
+    [stepPercentage]
+  )
 
   // 정갈한 Paragraph 모양을 위한 Step Percentage
   const middleLineWidthRandomRatio = useMemo(
     () => stepWidth(80 + Math.floor(Math.random() * 20)),
-    []
+    [stepWidth]
   )
   const lastLineWidthRandomRatio = useMemo(
     () => stepWidth(20 + Math.floor(Math.random() * 80)),
-    []
+    [stepWidth]
   )
 
   return (

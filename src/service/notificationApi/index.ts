@@ -1,4 +1,4 @@
-import { request, authRequest, authFileRequest } from "../fetcher"
+import { authRequest } from "../fetcher"
 import type { NotificationApi } from "./type"
 
 const notificationApi: NotificationApi = {

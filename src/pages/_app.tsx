@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               "/assets/basketball/only_ball_500.gif",
               "/assets/basketball/only_ball_500.png",
             ].map((url) => (
-              <Image key={url} src={url} lazy width={1} height={1} />
+              <Image key={url} src={url} lazy width={1} height={1} alt={url} />
             ))}
           </div>
           <DefaultLayout>
