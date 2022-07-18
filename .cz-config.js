@@ -9,12 +9,13 @@ const typeEnums = {
   refactor: "리팩토링 시",
   ci: "CI 구성 파일 및 스크립트 변경 시",
   config: "설정파일 변경 / 추가시",
-};
+  chore: "의존성 패키지 추가 / 그 외 기타",
+}
 
 const maxSpaceLength = Object.keys(typeEnums).reduce(
   (acc, { length }) => (length > acc ? length : acc),
   0
-);
+)
 
 const commitizenConfig = {
   types: Object.entries(typeEnums).map(([type, description]) => ({
@@ -23,6 +24,6 @@ const commitizenConfig = {
       `${type}:     ${" ".repeat(maxSpaceLength - type.length)}` + description,
   })),
   allowBreakingChanges: ["feat", "fix", "remove"],
-};
+}
 
-module.exports = commitizenConfig;
+module.exports = commitizenConfig
