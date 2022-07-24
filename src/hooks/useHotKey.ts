@@ -126,7 +126,12 @@ const useHotKey = (hotkeys: Hotkey[]) => {
   const globalKeys = useMemo(() => hotkeys.filter((k) => k.global), [hotkeys])
 
   const invokeCallback = useCallback(
-    (global, combo, callbackName: CallbackName, e: KeyboardEvent) => {
+    (
+      global: boolean,
+      combo: KeyCombo,
+      callbackName: CallbackName,
+      e: KeyboardEvent
+    ) => {
       const keys = global ? globalKeys : localKeys
       keys.forEach((hotkey) => {
         if (comboMatches(parseKeyCombo(hotkey.combo), combo)) {
@@ -140,21 +145,21 @@ const useHotKey = (hotkeys: Hotkey[]) => {
   )
 
   const handleGlobalKeyDown = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       invokeCallback(true, getKeyCombo(e), "onKeyDown", e)
     },
     [invokeCallback]
   )
 
   const handleGlobalKeyUp = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       invokeCallback(true, getKeyCombo(e), "onKeyUp", e)
     },
     [invokeCallback]
   )
 
   const handleLocalKeyDown = useCallback(
-    (e) => {
+    (e: { nativeEvent: KeyboardEvent }) => {
       invokeCallback(
         false,
         getKeyCombo(e.nativeEvent),
@@ -166,7 +171,7 @@ const useHotKey = (hotkeys: Hotkey[]) => {
   )
 
   const handleLocalKeyUp = useCallback(
-    (e) => {
+    (e: { nativeEvent: KeyboardEvent }) => {
       invokeCallback(
         false,
         getKeyCombo(e.nativeEvent),

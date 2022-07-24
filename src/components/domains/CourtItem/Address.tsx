@@ -1,7 +1,12 @@
+import React from "react"
 import styled from "@emotion/styled"
 import { Text } from "~/components/uis/atoms"
 
-const Address: React.FC = ({ children }) => {
+interface Props {
+  children: React.ReactNode
+}
+
+const Address = ({ children }: Props) => {
   return (
     <S.SubHeaderArea>
       <S.AddressText>{children}</S.AddressText>

@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react"
-import dynamic from "next/dynamic"
 import Link from "next/link"
 import styled from "@emotion/styled"
 import { CourtItem, NoItemMessage } from "~/components/domains"
-import { Button, Spacer } from "~/components/uis/atoms"
+import { Button, Skeleton, Spacer } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
 import favoriteAPI from "~/service/favoriteApi"
 import type { APIFavorite } from "~/types/domains"
-
-const SkeletonParagraph = dynamic(
-  () => import("~/components/uis/atoms/Skeleton/Paragraph"),
-  { ssr: false }
-)
 
 const FavoriteList = () => {
   const { authProps } = useAuthContext()
@@ -44,7 +38,7 @@ const FavoriteList = () => {
       <Spacer gap="base" style={{ marginTop: 24 }}>
         {[0, 1, 2].map((key) => (
           <FavoriteItem key={key}>
-            <SkeletonParagraph
+            <Skeleton.Paragraph
               line={4}
               fontSize={20}
               lineHeight={2.0}

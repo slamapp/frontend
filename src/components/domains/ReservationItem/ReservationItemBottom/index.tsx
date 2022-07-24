@@ -67,9 +67,7 @@ const ReservationItemBottom = ({
                   nickname: authProps.currentUser.nickname,
                   profileImage: authProps.currentUser.profileImage,
                 }}
-              >
-                {authProps.currentUser.nickname}
-              </UserListItem>
+              />
             )}
           {participants.map(
             ({ userId, nickname, profileImage, isFollowed }) => (
@@ -77,9 +75,7 @@ const ReservationItemBottom = ({
                 key={userId}
                 isFollowed={isFollowed}
                 user={{ id: userId, nickname, profileImage }}
-              >
-                {nickname}
-              </UserListItem>
+              />
             )
           )}
         </ParticipantList>

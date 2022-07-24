@@ -3,24 +3,24 @@ import { useCallback, useRef, useState } from "react"
 
 export type AsyncFn = (...args: any[]) => Promise<any>
 
-interface StateProps {
+interface StateProps<T> {
   isLoading: boolean
-  value?: undefined
-  error?: undefined
+  value?: T
+  error?: unknown
 }
 
-const useAsyncFn = (
-  fn: AsyncFn,
+const useAsyncFn = <Args extends any[], T>(
+  fn: (...args: Args) => Promise<T>,
   deps: DependencyList
-): [state: StateProps, callback: AsyncFn] => {
+): [state: StateProps<T>, callback: typeof fn] => {
   const lastCallId = useRef(0)
-  const [state, setState] = useState<StateProps>({
+  const [state, setState] = useState<StateProps<T>>({
     isLoading: false,
     value: undefined,
     error: undefined,
   })
 
-  const callback = useCallback((...args) => {
+  const callback = useCallback((...args: Parameters<typeof fn>) => {
     const callId = lastCallId.current + 1
 
     if (!state.isLoading) {
@@ -43,7 +43,6 @@ const useAsyncFn = (
         return error
       }
     )
-    // eslint-disable-next-line
   }, deps)
 
   return [state, callback]

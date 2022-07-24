@@ -5,7 +5,7 @@ const useKeyPress = (targetKey: EventKeyValue) => {
   const [keyPressed, setKeyPressed] = useState<boolean>(false)
 
   const handleKeyDown = useCallback(
-    ({ key }) => {
+    ({ key }: KeyboardEvent) => {
       if (key === targetKey) {
         setKeyPressed(true)
       }
@@ -14,7 +14,7 @@ const useKeyPress = (targetKey: EventKeyValue) => {
   )
 
   const handleKeyUp = useCallback(
-    ({ key }) => {
+    ({ key }: KeyboardEvent) => {
       if (key === targetKey) {
         setKeyPressed(false)
       }

@@ -18,22 +18,20 @@ interface Props {
 const ToastManager = ({ bind }: Props) => {
   const [toasts, setToasts] = useState<Toast[]>([])
 
-  const createToast = useCallback((message, duration) => {
-    const newToast = {
-      id: v4(),
-      message,
-      duration,
-    }
-    setToasts((oldToasts) => [...oldToasts, newToast])
-  }, [])
-
-  const removeToast = useCallback((id) => {
+  const removeToast = useCallback((id: string) => {
     setToasts((oldToasts) => oldToasts.filter((toast) => toast.id !== id))
   }, [])
 
   useEffect(() => {
-    bind(createToast)
-  }, [bind, createToast])
+    bind((message, duration) => {
+      const newToast = {
+        id: v4(),
+        message,
+        duration,
+      }
+      setToasts((oldToasts) => [...oldToasts, newToast])
+    })
+  }, [bind])
 
   return (
     <ThemeProvider theme={emotionTheme}>

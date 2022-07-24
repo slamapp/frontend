@@ -51,18 +51,6 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
     setHeight(rect.width)
   })
 
-  const handleClickBlock = useCallback(
-    (index) => {
-      onModalOpen()
-      if (step === 1) {
-        handleSetCurrentBlock(index)
-      } else {
-        handleSetTime(index)
-      }
-    },
-    [step, handleSetCurrentBlock, handleSetTime, onModalOpen]
-  )
-
   const handleClickReservationMarker = useCallback(
     (reservationId: number) => {
       if (step === 1) {
@@ -127,7 +115,14 @@ const TimeTable = ({ isToday, timeSlot, onModalOpen, onModalClose }: Props) => {
             hasReservation={item.hasReservation}
             selected={startIndex === index}
             step={step}
-            onClick={handleClickBlock}
+            onClick={(index) => {
+              onModalOpen()
+              if (step === 1) {
+                handleSetCurrentBlock(index)
+              } else {
+                handleSetTime(index)
+              }
+            }}
             disabled={
               isToday &&
               currentTimeIndex !== null &&

@@ -14,12 +14,7 @@ interface Props {
 }
 // 아바타 + 이름 + 버튼
 
-const UserListItem: React.FC<Props> = ({
-  className,
-  style,
-  isFollowed,
-  user,
-}) => {
+const UserListItem = ({ className, style, isFollowed, user }: Props) => {
   const { sendFollow, sendFollowCancel } = useSocketContext()
 
   const { id, nickname, profileImage } = user

@@ -1,10 +1,14 @@
-import type { FC } from "react"
+import type { ReactNode } from "react"
 import { useCallback, useReducer, useEffect } from "react"
 import type { ContextProps } from "./context"
 import Context from "./context"
 import { reducer, initialData } from "./reducer"
 
-const NavigationProvider: FC = ({ children }) => {
+interface Props {
+  children: ReactNode
+}
+
+const NavigationProvider = ({ children }: Props) => {
   const [navigationProps, dispatch] = useReducer(reducer, initialData)
 
   const setTopNavIsShrink = (isShrink: boolean) => {

@@ -7,7 +7,11 @@ import { useNavigationContext } from "~/contexts/hooks"
 import { useIntersectionObserver } from "~/hooks"
 import Container from "./Container"
 
-const DefaultLayout: React.FC = ({ children }) => {
+interface Props {
+  children: React.ReactNode
+}
+
+const DefaultLayout = ({ children }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { navigationProps, setTopNavIsShrink } = useNavigationContext()

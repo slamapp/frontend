@@ -1,5 +1,5 @@
 import React from "react"
-import type { ReactNode, CSSProperties } from "react"
+import type { ReactNode, CSSProperties, HTMLAttributes } from "react"
 import Link from "next/link"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
@@ -25,7 +25,7 @@ interface Props {
   containerStyle?: CSSProperties
 }
 
-const BottomFixedButton: React.FC<Props> = ({
+const BottomFixedButton = ({
   children,
   type,
   disabled,
@@ -36,7 +36,7 @@ const BottomFixedButton: React.FC<Props> = ({
   iconButton,
   custom = false,
   containerStyle,
-}) => {
+}: Props) => {
   return typeof document !== "undefined" ? (
     ReactDOM.createPortal(
       <Background bottom={bottom} custom={custom} style={containerStyle}>
@@ -66,22 +66,6 @@ const BottomFixedButton: React.FC<Props> = ({
     <></>
   )
 }
-
-export const BottomFixedContainer: React.FC = ({
-  custom,
-  children,
-  className,
-}: any) =>
-  typeof document !== "undefined" ? (
-    ReactDOM.createPortal(
-      <Background custom={custom} className={className}>
-        {children}
-      </Background>,
-      document.querySelector("#scrolled-container")!
-    )
-  ) : (
-    <></>
-  )
 
 const Background = styled.div<Pick<Props, "bottom"> & { custom?: boolean }>`
   display: flex;

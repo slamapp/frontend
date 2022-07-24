@@ -2,18 +2,17 @@ import type { ComponentProps } from "react"
 import styled from "@emotion/styled"
 import Sheet from "react-modal-sheet"
 
-type Props = Pick<
-  ComponentProps<typeof CustomSheet>,
-  "isOpen" | "onClose" | "onSnap" | "onCloseStart"
->
-
-const ModalSheet: React.FC<Props> = ({
+const ModalSheet = ({
   isOpen,
   onClose,
   children,
   onSnap,
   onCloseStart,
-}) => {
+}: Pick<ComponentProps<typeof Sheet.Content>, "children"> &
+  Pick<
+    ComponentProps<typeof CustomSheet>,
+    "isOpen" | "onClose" | "onSnap" | "onCloseStart"
+  >) => {
   return (
     <CustomSheet
       isOpen={isOpen}
@@ -23,9 +22,9 @@ const ModalSheet: React.FC<Props> = ({
       onSnap={onSnap}
       onCloseStart={onCloseStart}
     >
-      <Sheet.Container onViewportBoxUpdate={() => {}}>
-        <Sheet.Header onViewportBoxUpdate={() => {}} />
-        <Sheet.Content onViewportBoxUpdate={() => {}}>{children}</Sheet.Content>
+      <Sheet.Container>
+        <Sheet.Header />
+        <Sheet.Content>{children}</Sheet.Content>
       </Sheet.Container>
     </CustomSheet>
   )

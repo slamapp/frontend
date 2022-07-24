@@ -167,10 +167,9 @@ const CreateCourt: NextPage = () => {
         disableDrag={true}
         onClose={() => setOpen(false)}
       >
-        <Sheet.Container onViewportBoxUpdate={() => {}}>
-          <Sheet.Header onViewportBoxUpdate={() => {}} />
+        <Sheet.Container>
+          <Sheet.Header />
           <Sheet.Content
-            onViewportBoxUpdate={() => {}}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -212,7 +211,7 @@ const CreateCourt: NextPage = () => {
             </BottomFixedButton>
           </Sheet.Content>
         </Sheet.Container>
-        <Sheet.Backdrop onViewportBoxUpdate={() => {}} />
+        <Sheet.Backdrop />
       </CustomSheet>
 
       <form>

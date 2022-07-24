@@ -7,7 +7,6 @@ interface Props {
   lineHeight?: number
   stepPercentage?: number
   lineBreak?: number
-  [x: string]: any
 }
 
 const Paragraph = ({
@@ -16,7 +15,6 @@ const Paragraph = ({
   lineHeight = 1.6,
   stepPercentage = 10,
   lineBreak = 4,
-  ...props
 }: Props) => {
   const stepWidth = useCallback(
     (ratio: number) => Math.floor(ratio / stepPercentage) * stepPercentage,
@@ -34,7 +32,7 @@ const Paragraph = ({
   )
 
   return (
-    <div {...props} style={{ fontSize, lineHeight }}>
+    <div style={{ fontSize, lineHeight }}>
       {Array.from(Array(line), (_, index) =>
         index === line - 1 ? (
           <Box

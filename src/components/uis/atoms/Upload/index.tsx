@@ -115,7 +115,7 @@ const Upload = ({
         accept={accept}
         onChange={handleFileChange}
       />
-      {typeof children === "function" ? children(file, dragging) : children}
+      {children}
     </div>
   )
 }

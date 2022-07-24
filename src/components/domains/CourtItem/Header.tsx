@@ -1,7 +1,11 @@
 import styled from "@emotion/styled"
 import { Spacer, Icon, Text } from "~/components/uis/atoms"
 
-const Header: React.FC = ({ children }) => {
+interface Props {
+  children: React.ReactNode
+}
+
+const Header = ({ children }: Props) => {
   return (
     <Spacer gap="xxs" type="horizontal">
       <Icon name="map-pin" color="#FE6D04" />

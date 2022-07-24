@@ -1,16 +1,16 @@
 import { useCallback, useEffect } from "react"
 import type { EventKeyValue } from "./EventKeyValueType"
 
-type KeyEvent = "keydown" | "keyup"
+type Event = "keydown" | "keyup"
 type Handler = () => void
 
 const useKey = (
   targetKey: EventKeyValue,
   handler: Handler,
-  event: KeyEvent = "keydown"
+  event: Event = "keydown"
 ) => {
   const handleKey = useCallback(
-    ({ key }) => {
+    ({ key }: KeyboardEvent) => {
       if (key === targetKey) {
         handler()
       }

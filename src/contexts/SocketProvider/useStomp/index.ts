@@ -12,7 +12,7 @@ const useStomp: UseStomp = (token: string) => {
   const [isLoading, setIsLoading] = useState(true)
   const { authProps, unshiftNotification } = useAuthContext()
 
-  const handleError = useCallback((e) => {
+  const handleError = useCallback((e: any) => {
     console.log(e)
     setIsLoading(false)
   }, [])
