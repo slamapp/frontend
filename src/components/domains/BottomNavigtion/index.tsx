@@ -1,4 +1,5 @@
 import React from "react"
+import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import { useAuthContext } from "~/contexts/hooks"
 import NavIcon from "./NavIcon"
@@ -50,7 +51,9 @@ const Container = styled.nav`
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-around;
+  margin: 0 16px;
   align-items: center;
-  height: 56px;
+  height: 52px;
+
   flex: 1;
 `
