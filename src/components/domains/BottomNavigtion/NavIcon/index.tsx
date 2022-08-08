@@ -1,10 +1,9 @@
 import type { ComponentProps } from "react"
 import { useCallback } from "react"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
-import { Icon } from "~/components/uis/atoms"
+import { Icon, Spacer } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
 import type { PageType } from "~/contexts/NavigationProvider/actionTypes"
 
@@ -14,9 +13,10 @@ interface Props {
   href: string
   iconName: ComponentProps<typeof Icon>["name"]
   pageTypes: PageType[]
+  label: string
 }
 
-const NavIcon = ({ href, iconName, pageTypes }: Props) => {
+const NavIcon = ({ href, iconName, pageTypes, label = "이름" }: Props) => {
   const router = useRouter()
   const { navigationProps } = useNavigationContext()
   const { currentPage } = navigationProps
@@ -25,13 +25,25 @@ const NavIcon = ({ href, iconName, pageTypes }: Props) => {
 
   return (
     <S.MotionAnchor onTapStart={handleClick} whileTap={tap}>
-      <Icon
-        name={iconName}
-        size={24}
-        color={
-          pageTypes.some((item) => item === currentPage) ? "black" : "#cfcfcf"
-        }
-      />
+      <Spacer align="center" gap={2}>
+        <Icon
+          name={iconName}
+          size={18}
+          color={
+            pageTypes.some((item) => item === currentPage) ? "black" : "#cfcfcf"
+          }
+        />
+        <S.Text
+          style={{
+            color: pageTypes.some((item) => item === currentPage)
+              ? "black"
+              : "#cfcfcf",
+            fontSize: 10,
+          }}
+        >
+          {label}
+        </S.Text>
+      </Spacer>
     </S.MotionAnchor>
   )
 }
@@ -44,15 +56,25 @@ const S = {
     height: 50px;
     width: 50px;
   `,
+
+  Text: styled.span`
+    pointer-events: none;
+  `,
 }
 
 NavIcon.Favorites = () => (
-  <NavIcon href="/" iconName="star" pageTypes={["PAGE_FAVORITES"]} />
+  <NavIcon
+    href="/"
+    iconName="star"
+    label="즐겨찾기"
+    pageTypes={["PAGE_FAVORITES"]}
+  />
 )
 NavIcon.Map = () => (
   <NavIcon
     href="/courts"
     iconName="map"
+    label="지도"
     pageTypes={["PAGE_MAP", "PAGE_RESERVATIONS_COURTS"]}
   />
 )
@@ -60,6 +82,7 @@ NavIcon.Reservations = () => (
   <NavIcon
     href="/reservations"
     iconName="calendar"
+    label="예약"
     pageTypes={["PAGE_RESERVATIONS"]}
   />
 )
@@ -67,6 +90,7 @@ NavIcon.Chat = () => (
   <NavIcon
     href="/chat/list"
     iconName="message-circle"
+    label="채팅"
     pageTypes={[
       "PAGE_USER_CHATROOM",
       "PAGE_COURT_CHATROOM",
@@ -78,11 +102,17 @@ NavIcon.newCourt = () => (
   <NavIcon
     href="/admin/newcourts"
     iconName="check-square"
+    label="새 농구장"
     pageTypes={["PAGE_ADMIN_NEWCOURTS"]}
   />
 )
 NavIcon.Login = () => (
-  <NavIcon href="/login" iconName="log-in" pageTypes={["PAGE_LOGIN"]} />
+  <NavIcon
+    href="/login"
+    iconName="log-in"
+    label="로그인"
+    pageTypes={["PAGE_LOGIN"]}
+  />
 )
 
 export default NavIcon

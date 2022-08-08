@@ -62,7 +62,7 @@ const FavoriteList = () => {
   }
 
   return (
-    <Spacer gap="base" style={{ marginTop: 24 }}>
+    <Spacer gap="base" style={{ marginTop: 24, marginBottom: 16 }}>
       {favorites.map(({ id, court }) => (
         <FavoriteItem key={id}>
           <CourtItem.Header>{court.name}</CourtItem.Header>
