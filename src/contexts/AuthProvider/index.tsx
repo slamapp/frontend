@@ -45,8 +45,37 @@ const AuthProvider = ({ children }: Props) => {
     useCallback(async () => {
       dispatch({ type: "LOADING_ON" })
       try {
-        const { data } = await userApi.getUserData()
-        setCurrentUser(data)
+        const {
+          data: {
+            id,
+            createdAt,
+            description,
+            email,
+            nickname,
+            positions,
+            proficiency,
+            profileImage,
+            role,
+            updatedAt,
+            notifications,
+          },
+        } = await userApi.getUserData()
+
+        setCurrentUser({
+          user: {
+            id,
+            createdAt,
+            description,
+            email,
+            nickname,
+            positions,
+            proficiency,
+            profileImage,
+            role,
+            updatedAt,
+          },
+          notifications,
+        })
       } catch (error) {
         Toast.show("유저 정보를 받아오는 데에 실패했어요")
 
@@ -66,7 +95,7 @@ const AuthProvider = ({ children }: Props) => {
       dispatch({ type: "LOADING_ON" })
       try {
         const { data } = await userApi.updateMyProfile(editedUserProfile)
-        const { description, nickname, positions, proficiency } = data.user
+        const { description, nickname, positions, proficiency } = data
 
         dispatch({
           type: "UPDATE_MY_PROFILE",

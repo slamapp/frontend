@@ -1,22 +1,21 @@
 import type { ApiPromise } from "~/service/type"
-import type { APINotification, APIUser } from "~/types/domains"
+import type { APICourt, APINotification, APIUser } from "~/types/domains"
 
 export interface UserApi {
-  getUserData: () => ApiPromise<{
-    user: APIUser
-    notifications: APINotification[]
-  }>
-  getMyProfile: () => ApiPromise<{
-    followerCount: number
-    followingCount: number
-    user: APIUser
-  }>
+  getUserData: () => ApiPromise<
+    APIUser & {
+      notifications: APINotification[]
+    }
+  >
+  getMyProfile: () => ApiPromise<
+    APIUser & {
+      followerCount: number
+      followingCount: number
+    }
+  >
   getUserProfile: (userId: APIUser["id"]) => ApiPromise<
-    Pick<
-      APIUser,
-      "nickname" | "description" | "profileImage" | "proficiency" | "positions"
-    > & {
-      userId: APIUser["id"]
+    APIUser & {
+      favoriteCourts: Pick<APICourt, "id" | "name">[]
       followerCount: number
       followingCount: number
       isFollowing: boolean
@@ -27,9 +26,7 @@ export interface UserApi {
       APIUser,
       "nickname" | "description" | "proficiency" | "positions"
     >
-  ) => ApiPromise<{
-    user: Omit<APIUser, "id"> & { id: number }
-  }>
+  ) => ApiPromise<APIUser>
   updateMyProfileImage: (
     editedProfileImageFile: FormData
   ) => ApiPromise<{ profileImage: APIUser["profileImage"] }>

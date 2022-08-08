@@ -22,7 +22,7 @@ import { withRouteGuard } from "~/hocs"
 import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
 import Custom404 from "~/pages/404"
 import userApi from "~/service/userApi"
-import type { APIFavorite, APIUser } from "~/types/domains"
+import type { APICourt, APIUser } from "~/types/domains"
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
@@ -52,28 +52,44 @@ const User: NextPage = () => {
   const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
     null
   )
-  const [pageFavorites, setPageFavorites] = useState<APIFavorite[]>([])
+  const [pageFavorites, setPageFavorites] = useState<
+    Pick<APICourt, "id" | "name">[]
+  >([])
   const [isFollowing, setIsFollowing] = useState(false)
 
   const [isError, setIsError] = useState(false)
 
   const getMyProfile = useCallback(async () => {
     try {
-      setPageFavorites([...authProps.favorites])
+      setPageFavorites([
+        ...authProps.favorites.map(({ court }) => ({
+          id: court.id,
+          name: court.name,
+        })),
+      ])
 
       const {
-        data: { followerCount, followingCount, user },
+        data: {
+          id,
+          description,
+          nickname,
+          positions,
+          proficiency,
+          profileImage,
+          followerCount,
+          followingCount,
+        },
       } = await userApi.getMyProfile()
 
       setPageUserInfo({
-        description: user.description,
+        description,
         followerCount,
         followingCount,
-        nickname: user.nickname,
-        positions: user.positions,
-        proficiency: user.proficiency,
-        profileImage: user.profileImage,
-        userId: user.id,
+        nickname,
+        positions,
+        proficiency,
+        profileImage,
+        userId: id,
       })
     } catch (error) {
       console.error(error)
@@ -82,11 +98,33 @@ const User: NextPage = () => {
 
   const getOtherProfile = useCallback(async () => {
     try {
-      const { data } = await userApi.getUserProfile(`${stringQueryUserId}`)
-      setPageUserInfo(data)
-      setIsFollowing(data.isFollowing)
+      const {
+        data: {
+          description,
+          followerCount,
+          followingCount,
+          id,
+          isFollowing,
+          nickname,
+          positions,
+          proficiency,
+          profileImage,
+          favoriteCourts,
+        },
+      } = await userApi.getUserProfile(`${stringQueryUserId}`)
+      setPageUserInfo({
+        description,
+        followerCount,
+        followingCount,
+        nickname,
+        positions,
+        proficiency,
+        profileImage,
+        userId: id,
+      })
+      setIsFollowing(isFollowing)
       // TODO: 즐겨찾기 API수정시 주석 풀고 디버깅 필요!
-      // setPageFavorites([...data.favorites]);
+      setPageFavorites([...favoriteCourts])
     } catch (error) {
       console.error(error)
       const { message } = error as AxiosError
@@ -259,9 +297,9 @@ const User: NextPage = () => {
         <div>
           <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
           {pageFavorites.length ? (
-            pageFavorites.map(({ court }) => (
-              <ProfileFavoritesListItem key={court.id} courtId={court.id}>
-                {court.name}
+            pageFavorites.map(({ id, name }) => (
+              <ProfileFavoritesListItem key={id} courtId={id}>
+                {name}
               </ProfileFavoritesListItem>
             ))
           ) : (

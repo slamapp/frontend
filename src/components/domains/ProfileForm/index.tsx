@@ -105,17 +105,11 @@ const ProfileForm = () => {
 
   const getMyProfile = useCallback(async () => {
     try {
-      const { data } = await userApi.getMyProfile()
-      const { description, nickname, positions, proficiency, profileImage } =
-        data.user
+      const {
+        data: { description, nickname, positions, proficiency, profileImage },
+      } = await userApi.getMyProfile()
 
-      setValues({
-        description,
-        nickname,
-        positions,
-        proficiency,
-      })
-
+      setValues({ description, nickname, positions, proficiency })
       setProfileImage(profileImage)
 
       setIsFetching(false)
