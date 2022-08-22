@@ -24,7 +24,6 @@ import {
 import { useLocalStorage } from "~/hooks"
 import { useLocalToken } from "~/hooks/domain"
 import { courtApi } from "~/service"
-import type { CourtApi } from "~/service/courtApi/type"
 import type { APICourt, Coord } from "~/types/domains"
 import {
   getTimezoneCurrentDate,
@@ -58,7 +57,7 @@ const Courts: NextPage = () => {
   const currentDate = useMemo(() => getTimezoneCurrentDate(), [])
 
   const [courts, setCourts] = useState<
-    Awaited<ReturnType<CourtApi["getCourtsByCoordsAndDate"]>>["data"]
+    Awaited<ReturnType<typeof courtApi["getCourtsByCoordsAndDate"]>>["data"]
   >([])
 
   const [mapInitialCenter, setMapInitialCenter] = useLocalStorage(

@@ -16,7 +16,7 @@ const FollowingPage: NextPage = () => {
     ["users", query.userId, "followings"],
     async () => {
       const { data } = await followAPI.getUserFollowings({
-        userId: `${query.userId}`,
+        id: `${query.userId}`,
         isFirst: true,
         lastId: null,
       })

@@ -1,12 +1,18 @@
+import type { ListDTO } from "~/types/common"
+import type { APICourt, APIFavorite } from "~/types/domains"
 import { authRequest } from "../fetcher"
-import type { FavoriteApi } from "./type"
+import type { ApiPromise } from "../type"
 
-const favoriteAPI: FavoriteApi = {
-  getMyFavorites: () => authRequest.get("/favorites"),
+const favoriteAPI = {
+  getMyFavorites: (): ApiPromise<ListDTO<APIFavorite>> =>
+    authRequest.get("/favorites"),
 
-  createMyFavorite: (courtId) => authRequest.post("/favorites", { courtId }),
+  createMyFavorite: (
+    courtId: APICourt["id"]
+  ): ApiPromise<Omit<APIFavorite, "court">> =>
+    authRequest.post("/favorites", { courtId }),
 
-  deleteMyFavorite: (favoriteId) =>
+  deleteMyFavorite: (favoriteId: APIFavorite["id"]): ApiPromise<void> =>
     authRequest.delete(`/favorites/${favoriteId}`),
 }
 

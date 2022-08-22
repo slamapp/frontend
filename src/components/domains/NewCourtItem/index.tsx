@@ -8,22 +8,12 @@ import managementApi from "~/service/managementApi"
 import type { APINewCourt } from "~/types/domains"
 
 interface Props {
-  data: Pick<
-    APINewCourt,
-    | "basketCount"
-    | "createdAt"
-    | "updatedAt"
-    | "longitude"
-    | "latitude"
-    | "texture"
-    | "status"
-    | "image"
-  > & { newCourtId: number; courtName: string }
+  newCourt: APINewCourt
   state: "READY" | "DONE"
   [x: string]: any
 }
 const NewCourtItem = ({
-  data,
+  newCourt,
   state,
   style,
   setIsOpenDenyModal,
@@ -34,7 +24,7 @@ const NewCourtItem = ({
   const handleDeny = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-      await managementApi.denyNewCourt(data.newCourtId)
+      await managementApi.denyNewCourt(newCourt.id)
       setIsOpenDenyModal(true)
       setTimeout(() => {
         setIsOpenDenyModal(false)
@@ -48,7 +38,7 @@ const NewCourtItem = ({
   const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-      await managementApi.acceptNewCourt(data.newCourtId)
+      await managementApi.acceptNewCourt(newCourt.id)
       setIsOpenAcceptModal(true)
       setTimeout(() => {
         setIsOpenAcceptModal(false)
@@ -60,10 +50,10 @@ const NewCourtItem = ({
   }
 
   return (
-    <Link href={`/admin/newcourts/${data.newCourtId}`} passHref>
+    <Link href={`/admin/newcourts/${newCourt.id}`} passHref>
       <Container style={style}>
         <CourtName strong block>
-          {data.courtName}
+          {newCourt.newCourt.name}
         </CourtName>
         {state === "READY" ? (
           <ButtonContainer>
@@ -74,7 +64,7 @@ const NewCourtItem = ({
               승인하기
             </Button>
           </ButtonContainer>
-        ) : data.status === "ACCEPT" ? (
+        ) : newCourt.newCourt.status === "ACCEPT" ? (
           <StatusBar fullWidth className="accept">
             승인됨
           </StatusBar>

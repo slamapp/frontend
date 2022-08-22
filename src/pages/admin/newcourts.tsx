@@ -8,34 +8,28 @@ import { useNavigationContext } from "~/contexts/hooks"
 import managementApi from "~/service/managementApi"
 import type { APINewCourt } from "~/types/domains"
 
-type OldNewCourt = Pick<
-  APINewCourt,
-  | "basketCount"
-  | "createdAt"
-  | "updatedAt"
-  | "longitude"
-  | "latitude"
-  | "texture"
-  | "status"
-  | "image"
-> & { newCourtId: number; courtName: string }
-
 const NewCourtsPage: NextPage = () => {
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_ADMIN_NEWCOURTS")
 
-  const [readyData, setReadyData] = useState<OldNewCourt[]>([])
-  const [doneData, setDoneData] = useState<OldNewCourt[]>([])
-  const [currentLastId, setCurrentLastId] = useState<number | null>(0)
+  const [readyNewCourtData, setReadyNewCourtData] = useState<APINewCourt[]>([])
+  const [doneData, setDoneData] = useState<APINewCourt[]>([])
+  const [currentLastId, setCurrentLastId] = useState<APINewCourt["id"] | null>(
+    null
+  )
   const [activeStatus, setActiveStatus] =
-    useState<OldNewCourt["status"]>("READY")
+    useState<APINewCourt["newCourt"]["status"]>("READY")
   const [isFetching, setIsFetching] = useState(false)
   const [isOpenDenyModal, setIsOpenDenyModal] = useState(false)
   const [isOpenAcceptModal, setIsOpenAcceptModal] = useState(false)
 
   const loadMore = useCallback(
-    async (status: OldNewCourt["status"]) => {
-      if (readyData.length === 0 || isFetching || currentLastId === null) {
+    async (status: APINewCourt["newCourt"]["status"]) => {
+      if (
+        readyNewCourtData.length === 0 ||
+        isFetching ||
+        currentLastId === null
+      ) {
         return
       }
 
@@ -43,13 +37,9 @@ const NewCourtsPage: NextPage = () => {
         setIsFetching(true)
         const {
           data: { contents, lastId },
-        } = await managementApi.getNewCourts(
-          status,
-          !currentLastId,
-          currentLastId
-        )
+        } = await managementApi.getReadyNewCourts(!currentLastId, currentLastId)
         if (status === "READY") {
-          setReadyData((prev) => [...prev, ...contents])
+          setReadyNewCourtData((prev) => [...prev, ...contents])
         } else {
           setDoneData((prev) => [...prev, ...contents])
         }
@@ -60,22 +50,18 @@ const NewCourtsPage: NextPage = () => {
 
       setIsFetching(false)
     },
-    [currentLastId, isFetching, readyData.length]
+    [currentLastId, isFetching, readyNewCourtData.length]
   )
 
   const getNewCourts = useCallback(
-    async (status: OldNewCourt["status"]) => {
+    async (status: APINewCourt["newCourt"]["status"]) => {
       try {
         setIsFetching(true)
         const {
           data: { contents, lastId },
-        } = await managementApi.getNewCourts(
-          status,
-          !currentLastId,
-          currentLastId
-        )
+        } = await managementApi.getReadyNewCourts(!currentLastId, currentLastId)
         if (status === "READY") {
-          setReadyData((prev) => [...prev, ...contents])
+          setReadyNewCourtData((prev) => [...prev, ...contents])
         } else {
           setDoneData((prev) => [...prev, ...contents])
         }
@@ -86,16 +72,16 @@ const NewCourtsPage: NextPage = () => {
 
       setIsFetching(false)
     },
-    [currentLastId, isFetching, readyData.length]
+    [currentLastId, isFetching, readyNewCourtData.length]
   )
 
-  const handleClick = (status: OldNewCourt["status"]) => {
+  const handleClick = (status: APINewCourt["newCourt"]["status"]) => {
     if (activeStatus === status) {
       return
     }
 
-    setCurrentLastId(0)
-    setReadyData([])
+    setCurrentLastId(null)
+    setReadyNewCourtData([])
     setDoneData([])
     setActiveStatus(status)
   }
@@ -131,10 +117,10 @@ const NewCourtsPage: NextPage = () => {
         <Tab.Item title="처리 대기" index="READY">
           <Container>
             <Spacer gap="base">
-              {readyData.map((court) => (
+              {readyNewCourtData.map((newCourt) => (
                 <NewCourtItem
-                  key={court.newCourtId}
-                  data={court}
+                  key={newCourt.id}
+                  newCourt={newCourt}
                   state="READY"
                   setIsOpenAcceptModal={setIsOpenAcceptModal}
                   setIsOpenDenyModal={setIsOpenDenyModal}
@@ -146,10 +132,10 @@ const NewCourtsPage: NextPage = () => {
         <Tab.Item title="처리 완료" index="DONE">
           <Container>
             <Spacer gap="base">
-              {doneData.map((court) => (
+              {doneData.map((newCourt) => (
                 <NewCourtItem
-                  key={court.newCourtId}
-                  data={court}
+                  key={newCourt.id}
+                  newCourt={newCourt}
                   state="DONE"
                 />
               ))}
@@ -157,7 +143,7 @@ const NewCourtsPage: NextPage = () => {
           </Container>
         </Tab.Item>
       </Tab>
-      {readyData.length === 0 ||
+      {readyNewCourtData.length === 0 ||
         (doneData.length === 0 && <div style={{ flex: 1 }}></div>)}
       <div ref={ref} style={{ height: 10 }}></div>
 

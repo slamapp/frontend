@@ -19,7 +19,7 @@ import { withRouteGuard } from "~/hocs"
 import { useForm } from "~/hooks"
 import { courtApi } from "~/service"
 import type { Keyof } from "~/types/common"
-import type { APICourt, APINewCourt, Coord } from "~/types/domains"
+import type { APICourt, Coord } from "~/types/domains"
 import { getCurrentLocation } from "~/utils/geolocation"
 
 interface Geocoder extends kakao.maps.services.Geocoder {
@@ -110,7 +110,7 @@ const CreateCourt: NextPage = () => {
 
   const { values, errors, isLoading, setValues, handleSubmit } = useForm<
     Pick<
-      APINewCourt,
+      APICourt,
       "longitude" | "latitude" | "image" | "texture" | "basketCount" | "name"
     >
   >({

@@ -1,4 +1,4 @@
-import type { InfiniteScrollDTO, ListDTO } from "~/types/common"
+import type { InfiniteScrollResponse, ListDTO } from "~/types/common"
 import type { APICourt, APIReservation, APIUser } from "~/types/domains"
 import { authRequest } from "../fetcher"
 import type { ApiPromise } from "../type"
@@ -13,7 +13,7 @@ const reservationApi = {
   }:
     | { isFirst: true; lastId: null }
     | { isFirst: false; lastId: APIReservation["id"] | null }): ApiPromise<
-    InfiniteScrollDTO<APIReservation>
+    InfiniteScrollResponse<APIReservation>
   > =>
     authRequest.get("/reservations/expired", {
       params: {

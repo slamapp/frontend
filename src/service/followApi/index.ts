@@ -9,23 +9,23 @@ import type { ApiPromise } from "../type"
 
 const followAPI = {
   getUserFollowings: ({
-    userId,
+    id,
     isFirst = false,
     lastId = null,
-  }: InfiniteScrollRequestParams<{ userId: APIUser["id"] }>): ApiPromise<
+  }: InfiniteScrollRequestParams<{ id: APIUser["id"] }>): ApiPromise<
     InfiniteScrollResponse<APIFollowing>
   > =>
-    authRequest.get(`/follow/${userId}/followings`, {
+    authRequest.get(`/follow/${id}/followings`, {
       params: { isFirst, lastId, size: 10 },
     }),
   getUserFollowers: ({
-    userId,
+    id,
     isFirst = false,
     lastId = null,
-  }: InfiniteScrollRequestParams<{ userId: APIUser["id"] }>): ApiPromise<
+  }: InfiniteScrollRequestParams<{ id: APIUser["id"] }>): ApiPromise<
     InfiniteScrollResponse<APIFollower>
   > =>
-    authRequest.get(`/follow/${userId}/followers`, {
+    authRequest.get(`/follow/${id}/followers`, {
       params: { isFirst, lastId, size: 10 },
     }),
 

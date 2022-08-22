@@ -1,8 +1,20 @@
+import type { APINotification } from "~/types/domains"
 import { authRequest } from "../fetcher"
-import type { NotificationApi } from "./type"
+import type { ApiPromise } from "../type"
 
-const notificationApi: NotificationApi = {
-  getNotifications: ({ size = 3, lastId, isFirst = false }) =>
+const notificationApi = {
+  getNotifications: ({
+    size = 3,
+    lastId,
+    isFirst = false,
+  }: {
+    size?: number
+    lastId?: APINotification["id"] | null
+    isFirst?: boolean
+  }): ApiPromise<{
+    contents: APINotification[]
+    lastId: APINotification["id"] | null
+  }> =>
     authRequest.get("/notifications", {
       params: {
         size,
@@ -11,7 +23,8 @@ const notificationApi: NotificationApi = {
       },
     }),
 
-  readAllNotifications: () => authRequest.put("/notifications/read"),
+  readAllNotifications: (): ApiPromise =>
+    authRequest.put("/notifications/read"),
 }
 
 export default notificationApi
