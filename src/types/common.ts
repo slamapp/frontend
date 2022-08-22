@@ -27,8 +27,12 @@ export interface APIIdObject {
 export type ISOString = string
 export type OmitAt<T> = Omit<T, "createdAt" | "updatedAt">
 
-export interface InfiniteScrollDTO<T> extends ListDTO<T> {
-  lastId: APICommon["id"]
+export type InfiniteScrollRequestParams<T extends object> =
+  | (T & { isFirst: true; lastId: null })
+  | (T & { isFirst: false; lastId: null })
+  | (T & { isFirst: false; lastId: APICommon["id"] })
+export interface InfiniteScrollResponse<T> extends ListDTO<T> {
+  lastId: APICommon["id"] | null
 }
 export interface ListDTO<T> {
   contents: T[]

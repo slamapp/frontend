@@ -1,11 +1,8 @@
-import { useEffect, useState, useCallback } from "react"
-import type { NextPage } from "next"
-import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
-import type { AxiosError } from "axios"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import {
   ProfileFavoritesListItem,
   BasketballLoading,
@@ -13,250 +10,120 @@ import {
 import { Text, Button, Spacer } from "~/components/uis/atoms"
 import { Label, Chip, Avatar } from "~/components/uis/molecules"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
-import {
-  useNavigationContext,
-  useAuthContext,
-  useSocketContext,
-} from "~/contexts/hooks"
+import { useNavigationContext, useAuthContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
-import Custom404 from "~/pages/404"
+import followAPI from "~/service/followApi"
 import userApi from "~/service/userApi"
-import type { APICourt, APIUser } from "~/types/domains"
+import type { APIUser } from "~/types/domains"
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
 } from "~/utils/userInfo"
 
-interface ResponseUserProfile
-  extends Pick<
-    APIUser,
-    "nickname" | "description" | "profileImage" | "proficiency" | "positions"
-  > {
-  userId: APIUser["id"]
-  followerCount: number
-  followingCount: number
-}
-
-const User: NextPage = () => {
+const User = withRouteGuard("private", () => {
   const { useMountPage, setNavigationTitle } = useNavigationContext()
-  const { sendFollow, sendFollowCancel } = useSocketContext()
+
   const { authProps } = useAuthContext()
 
   useMountPage("PAGE_USER")
 
-  const { query } = useRouter()
-  const { userId: stringQueryUserId } = query
+  const router = useRouter()
 
-  const [isMe, setIsMe] = useState(false)
-  const [pageUserInfo, setPageUserInfo] = useState<ResponseUserProfile | null>(
-    null
+  const { userId: pageUserId } = router.query
+
+  const isMe = pageUserId === authProps.currentUser?.id
+
+  const myProfileQuery = useQuery(
+    ["myProfile", pageUserId],
+    async () => {
+      const { data } = await userApi.getMyProfile()
+
+      return data
+    },
+    { enabled: router.isReady && isMe }
   )
-  const [pageFavorites, setPageFavorites] = useState<
-    Pick<APICourt, "id" | "name">[]
-  >([])
-  const [isFollowing, setIsFollowing] = useState(false)
 
-  const [isError, setIsError] = useState(false)
+  const userProfileQuery = useQuery(
+    ["otherProfile", pageUserId],
+    async () => {
+      const { data } = await userApi.getUserProfile({ id: `${pageUserId}` })
 
-  const getMyProfile = useCallback(async () => {
-    try {
-      setPageFavorites([
-        ...authProps.favorites.map(({ court }) => ({
-          id: court.id,
-          name: court.name,
-        })),
-      ])
-
-      const {
-        data: {
-          id,
-          description,
-          nickname,
-          positions,
-          proficiency,
-          profileImage,
-          followerCount,
-          followingCount,
-        },
-      } = await userApi.getMyProfile()
-
-      setPageUserInfo({
-        description,
-        followerCount,
-        followingCount,
-        nickname,
-        positions,
-        proficiency,
-        profileImage,
-        userId: id,
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }, [])
-
-  const getOtherProfile = useCallback(async () => {
-    try {
-      const {
-        data: {
-          description,
-          followerCount,
-          followingCount,
-          id,
-          isFollowing,
-          nickname,
-          positions,
-          proficiency,
-          profileImage,
-          favoriteCourts,
-        },
-      } = await userApi.getUserProfile(`${stringQueryUserId}`)
-      setPageUserInfo({
-        description,
-        followerCount,
-        followingCount,
-        nickname,
-        positions,
-        proficiency,
-        profileImage,
-        userId: id,
-      })
-      setIsFollowing(isFollowing)
-      // TODO: 즐겨찾기 API수정시 주석 풀고 디버깅 필요!
-      setPageFavorites([...favoriteCourts])
-    } catch (error) {
-      console.error(error)
-      const { message } = error as AxiosError
-      if (message === "Entity Not Found") {
-        setIsError(true)
-      }
-    }
-  }, [stringQueryUserId])
-
-  const handleClickFollow = (prevIsFollowing: boolean) => {
-    if (pageUserInfo) {
-      if (prevIsFollowing) {
-        sendFollowCancel({ receiverId: pageUserInfo.userId })
-      } else {
-        sendFollow({ receiverId: pageUserInfo.userId })
-      }
-      setPageUserInfo((prevState) =>
-        prevState
-          ? {
-              ...prevState,
-              followerCount: prevIsFollowing
-                ? prevState.followerCount - 1
-                : prevState.followerCount + 1,
-            }
-          : null
-      )
-      setIsFollowing((prev) => !prev)
-    }
-  }
+      return data
+    },
+    { enabled: router.isReady && !isMe }
+  )
 
   useIsomorphicLayoutEffect(() => {
-    setNavigationTitle(`${pageUserInfo?.nickname}`)
-  }, [pageUserInfo?.nickname, setNavigationTitle])
-
-  useEffect(() => {
-    if (stringQueryUserId && authProps.currentUser) {
-      if (stringQueryUserId === authProps.currentUser.id) {
-        setIsMe(true)
-        getMyProfile()
-      } else {
-        getOtherProfile()
-      }
-    }
-  }, [authProps.currentUser, getMyProfile, getOtherProfile, stringQueryUserId])
-
-  if (pageUserInfo === null) {
-    if (isError) {
-      return <Custom404 />
+    if (myProfileQuery.isSuccess) {
+      setNavigationTitle(`${myProfileQuery.data.nickname}`)
     }
 
+    if (userProfileQuery.isSuccess) {
+      setNavigationTitle(`${userProfileQuery.data.nickname}`)
+    }
+  }, [setNavigationTitle, myProfileQuery.isSuccess, userProfileQuery.isSuccess])
+
+  if (
+    (isMe && myProfileQuery.isLoading) ||
+    (!isMe && userProfileQuery.isLoading)
+  ) {
     return <BasketballLoading />
   }
 
-  if (!authProps.currentUser) {
-    return null
-  }
+  if (myProfileQuery.isSuccess) {
+    const {
+      description,
+      followerCount,
+      followingCount,
+      id,
+      nickname,
+      positions,
+      proficiency,
+      profileImage,
+    } = myProfileQuery.data
 
-  const {
-    nickname,
-    profileImage,
-    followingCount,
-    followerCount,
-    description,
-    positions,
-    proficiency,
-  } = pageUserInfo
-
-  return (
-    <div>
-      <Head>
-        <title>{nickname}님의 프로필 | Slam - 우리 주변 농구장을 빠르게</title>
-        <meta name="description" content="혼자서도 농구를 더 빠르게" />
-      </Head>
-
-      <MainInfoContainer>
-        <MainInfoArea>
-          <Avatar
-            src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
-            shape="circle"
-          />
-          <StatBar>
-            <div>
-              <Link href={`/user/${pageUserInfo.userId}/following`}>
-                <a>
-                  <dt>팔로잉</dt>
-                  <dd>
-                    <Text strong>{followingCount}</Text>
-                  </dd>
-                </a>
-              </Link>
-            </div>
-            <div>
-              <Link href={`/user/${pageUserInfo.userId}/follower`}>
-                <a>
-                  <dt>팔로워</dt>
-                  <dd>
-                    <Text strong>{followerCount}</Text>
-                  </dd>
-                </a>
-              </Link>
-            </div>
-            <div>
-              <dt>평가 점수</dt>
-              <dd
-                onClick={() => alert("개발 예정")}
-                style={{ cursor: "pointer" }}
-              >
-                6.3
-              </dd>
-            </div>
-          </StatBar>
-        </MainInfoArea>
-        <Description>{description}</Description>
-        {!isMe ? (
-          <ButtonContainer>
-            <Link href={`/chat/${authProps.currentUser.id}`} passHref>
-              <a style={{ width: "100%" }}>
-                <Button fullWidth secondary>
-                  메시지
-                </Button>
-              </a>
-            </Link>
-
-            <Button
-              fullWidth
-              tertiary={isFollowing}
-              onClick={() => handleClickFollow(isFollowing)}
-            >
-              {isFollowing ? `팔로잉` : `팔로우`}
-            </Button>
-          </ButtonContainer>
-        ) : (
+    return (
+      <div>
+        <MainInfoContainer>
+          <MainInfoArea>
+            <Avatar
+              src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
+              shape="circle"
+            />
+            <StatBar>
+              <div>
+                <Link href={`/user/${id}/following`}>
+                  <a>
+                    <dt>팔로잉</dt>
+                    <dd>
+                      <Text strong>{followingCount}</Text>
+                    </dd>
+                  </a>
+                </Link>
+              </div>
+              <div>
+                <Link href={`/user/${id}/follower`}>
+                  <a>
+                    <dt>팔로워</dt>
+                    <dd>
+                      <Text strong>{followerCount}</Text>
+                    </dd>
+                  </a>
+                </Link>
+              </div>
+              <div>
+                <dt>평가 점수</dt>
+                <dd
+                  onClick={() => alert("개발 예정")}
+                  style={{ cursor: "pointer" }}
+                >
+                  6.3
+                </dd>
+              </div>
+            </StatBar>
+          </MainInfoArea>
+          <Description>{description}</Description>
           <div>
             <Link href="/user/edit" passHref>
               <a>
@@ -266,52 +133,214 @@ const User: NextPage = () => {
               </a>
             </Link>
           </div>
-        )}
-      </MainInfoContainer>
+        </MainInfoContainer>
 
-      <AdditionalInfoSpacer gap="base" type="vertical">
-        <div>
-          <Label>포지션</Label>
-          <Spacer type="horizontal" gap="xs">
-            {positions.length ? (
-              getTranslatedPositions(positions).map(({ english, korean }) => (
-                <Chip key={english} secondary>
-                  {korean}
+        <AdditionalInfoSpacer gap="base" type="vertical">
+          <div>
+            <Label>포지션</Label>
+            <Spacer type="horizontal" gap="xs">
+              {positions.length ? (
+                getTranslatedPositions(positions).map(({ english, korean }) => (
+                  <Chip key={english} secondary>
+                    {korean}
+                  </Chip>
+                ))
+              ) : (
+                <Chip key="no_position" secondary>
+                  선택한 포지션이 없습니다
                 </Chip>
+              )}
+            </Spacer>
+          </div>
+          <div>
+            <Label>숙련도</Label>
+            <Chip secondary>
+              {proficiency === null
+                ? "미정"
+                : getTranslatedProficiency(proficiency).korean}
+            </Chip>
+          </div>
+          <div>
+            <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
+            {authProps.favorites.length ? (
+              authProps.favorites.map(({ id, court }) => (
+                <ProfileFavoritesListItem key={id} courtId={court.id}>
+                  {court.name}
+                </ProfileFavoritesListItem>
               ))
             ) : (
-              <Chip key="no_position" secondary>
-                선택한 포지션이 없습니다
-              </Chip>
+              <Chip secondary>즐겨찾기한 농구장이 없습니다</Chip>
             )}
-          </Spacer>
-        </div>
-        <div>
-          <Label>숙련도</Label>
-          <Chip secondary>
-            {proficiency === null
-              ? "미정"
-              : getTranslatedProficiency(proficiency).korean}
-          </Chip>
-        </div>
-        <div>
-          <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
-          {pageFavorites.length ? (
-            pageFavorites.map(({ id, name }) => (
-              <ProfileFavoritesListItem key={id} courtId={id}>
-                {name}
-              </ProfileFavoritesListItem>
-            ))
+          </div>
+        </AdditionalInfoSpacer>
+      </div>
+    )
+  }
+
+  if (userProfileQuery.isSuccess) {
+    const {
+      description,
+      followerCount,
+      followingCount,
+      id,
+      nickname,
+      positions,
+      proficiency,
+      profileImage,
+      favoriteCourts,
+      isFollowing,
+    } = userProfileQuery.data
+
+    return (
+      <div>
+        <MainInfoContainer>
+          <MainInfoArea>
+            <Avatar
+              src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
+              shape="circle"
+            />
+            <StatBar>
+              <div>
+                <Link href={`/user/${id}/following`}>
+                  <a>
+                    <dt>팔로잉</dt>
+                    <dd>
+                      <Text strong>{followingCount}</Text>
+                    </dd>
+                  </a>
+                </Link>
+              </div>
+              <div>
+                <Link href={`/user/${id}/follower`}>
+                  <a>
+                    <dt>팔로워</dt>
+                    <dd>
+                      <Text strong>{followerCount}</Text>
+                    </dd>
+                  </a>
+                </Link>
+              </div>
+              <div>
+                <dt>평가 점수</dt>
+                <dd
+                  onClick={() => alert("개발 예정")}
+                  style={{ cursor: "pointer" }}
+                >
+                  6.3
+                </dd>
+              </div>
+            </StatBar>
+          </MainInfoArea>
+          <Description>{description}</Description>
+          {!isMe ? (
+            <ButtonContainer>
+              <Link href={`/chat/${id}`} passHref>
+                <a style={{ width: "100%" }}>
+                  <Button fullWidth secondary>
+                    메시지
+                  </Button>
+                </a>
+              </Link>
+              <FollowButton
+                isFollowing={isFollowing}
+                receiverId={id}
+                refetch={userProfileQuery.refetch}
+              />
+            </ButtonContainer>
           ) : (
-            <Chip secondary>등록한 농구장이 없습니다</Chip>
+            <div>
+              <Link href="/user/edit" passHref>
+                <a>
+                  <Button fullWidth secondary>
+                    프로필 편집
+                  </Button>
+                </a>
+              </Link>
+            </div>
           )}
-        </div>
-      </AdditionalInfoSpacer>
-    </div>
+        </MainInfoContainer>
+
+        <AdditionalInfoSpacer gap="base" type="vertical">
+          <div>
+            <Label>포지션</Label>
+            <Spacer type="horizontal" gap="xs">
+              {positions.length ? (
+                getTranslatedPositions(positions).map(({ english, korean }) => (
+                  <Chip key={english} secondary>
+                    {korean}
+                  </Chip>
+                ))
+              ) : (
+                <Chip key="no_position" secondary>
+                  선택한 포지션이 없습니다
+                </Chip>
+              )}
+            </Spacer>
+          </div>
+          <div>
+            <Label>숙련도</Label>
+            <Chip secondary>
+              {proficiency === null
+                ? "미정"
+                : getTranslatedProficiency(proficiency).korean}
+            </Chip>
+          </div>
+          <div>
+            <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
+            {favoriteCourts.length ? (
+              favoriteCourts.map(({ id, name }) => (
+                <ProfileFavoritesListItem key={id} courtId={id}>
+                  {name}
+                </ProfileFavoritesListItem>
+              ))
+            ) : (
+              <Chip secondary>등록한 농구장이 없습니다</Chip>
+            )}
+          </div>
+        </AdditionalInfoSpacer>
+      </div>
+    )
+  }
+
+  return null
+})
+
+export default User
+
+const FollowButton = ({
+  isFollowing,
+  receiverId,
+  refetch,
+}: {
+  isFollowing: boolean
+  receiverId: APIUser["id"]
+  refetch: () => void
+}) => {
+  const follow = useMutation(() => followAPI.postFollow({ receiverId }), {
+    onSuccess: () => refetch(),
+  })
+  const cancelFollow = useMutation(
+    () => followAPI.deleteFollow({ receiverId }),
+    { onSuccess: () => refetch() }
+  )
+
+  return (
+    <Button
+      fullWidth
+      disabled={follow.isLoading || cancelFollow.isLoading}
+      tertiary={isFollowing}
+      onClick={() => {
+        if (isFollowing) {
+          cancelFollow.mutate()
+        } else {
+          follow.mutate()
+        }
+      }}
+    >
+      {isFollowing ? `팔로잉` : `팔로우`}
+    </Button>
   )
 }
-
-export default withRouteGuard("private", User)
 
 const MainInfoContainer = styled.div`
   ${({ theme }) => css`

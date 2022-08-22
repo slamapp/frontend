@@ -1,7 +1,7 @@
 import React from "react"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { UserListItem } from "~/components/domains"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
@@ -12,18 +12,21 @@ const FollowerPage: NextPage = () => {
   useMountPage("PAGE_USER_FOLLOWER")
   const { query } = useRouter()
 
-  const userFollowerQuery = useQuery(
+  const userFollowerQuery = useInfiniteQuery(
     ["users", query.userId, "followers"],
-    async () => {
+    async ({ queryKey }) => {
       const { data } = await followAPI.getUserFollowers({
-        userId: `${query.userId}`,
+        userId: `${queryKey[1]}`,
         isFirst: true,
         lastId: null,
       })
 
       return data
     },
-    { enabled: !!query.userId }
+    {
+      enabled: !!query.userId,
+      getNextPageParam: ({ lastId }) => lastId,
+    }
   )
 
   if (userFollowerQuery.isLoading) {
@@ -36,19 +39,33 @@ const FollowerPage: NextPage = () => {
 
   return (
     <div>
-      {userFollowerQuery.data.contents.map(({ id, creator }) => (
-        <UserListItem
-          key={id}
-          user={{
-            id: creator.id,
-            nickname: creator.nickname,
-            profileImage: creator.profileImage,
-          }}
-          isFollowed
-        />
-      ))}
+      {userFollowerQuery.data.pages.map(({ contents, lastId }, index) =>
+        contents.map(({ id, creator }, index) => (
+          <>
+            <UserListItem
+              key={id}
+              user={{
+                id: creator.id,
+                nickname: creator.nickname,
+                profileImage: creator.profileImage,
+              }}
+              isFollowed
+            />
+            {index === userFollowerQuery.data.pages.length - 1 &&
+              (lastId ? (
+                <InfiniteScrollSensor />
+              ) : (
+                "더 받아올 내용이 없습니다."
+              ))}
+          </>
+        ))
+      )}
     </div>
   )
 }
 
 export default withRouteGuard("private", FollowerPage)
+
+const InfiniteScrollSensor = () => {
+  return <>bottom</>
+}

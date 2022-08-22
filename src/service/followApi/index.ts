@@ -1,10 +1,9 @@
-import type { InfiniteScrollDTO } from "~/types/common"
-import type { APIUser } from "~/types/domains"
 import type {
-  APIFollowing,
-  APIFollower,
-  APIFollow,
-} from "~/types/domains/follow"
+  InfiniteScrollResponse,
+  InfiniteScrollRequestParams,
+} from "~/types/common"
+import type { APIUser } from "~/types/domains"
+import type { APIFollowing, APIFollower } from "~/types/domains/follow"
 import { authRequest } from "../fetcher"
 import type { ApiPromise } from "../type"
 
@@ -13,17 +12,9 @@ const followAPI = {
     userId,
     isFirst = false,
     lastId = null,
-  }:
-    | {
-        userId: APIUser["id"]
-        isFirst: true
-        lastId: null
-      }
-    | {
-        userId: APIUser["id"]
-        isFirst: false
-        lastId: APIFollow["id"]
-      }): ApiPromise<InfiniteScrollDTO<APIFollowing>> =>
+  }: InfiniteScrollRequestParams<{ userId: APIUser["id"] }>): ApiPromise<
+    InfiniteScrollResponse<APIFollowing>
+  > =>
     authRequest.get(`/follow/${userId}/followings`, {
       params: { isFirst, lastId, size: 10 },
     }),
@@ -31,27 +22,26 @@ const followAPI = {
     userId,
     isFirst = false,
     lastId = null,
-  }:
-    | {
-        userId: APIUser["id"]
-        isFirst: true
-        lastId: null
-      }
-    | {
-        userId: APIUser["id"]
-        isFirst: false
-        lastId: APIFollow["id"]
-      }): ApiPromise<InfiniteScrollDTO<APIFollower>> =>
+  }: InfiniteScrollRequestParams<{ userId: APIUser["id"] }>): ApiPromise<
+    InfiniteScrollResponse<APIFollower>
+  > =>
     authRequest.get(`/follow/${userId}/followers`, {
       params: { isFirst, lastId, size: 10 },
     }),
 
-  followUser: ({
+  postFollow: ({
     receiverId,
   }: {
     receiverId: APIUser["id"]
-  }): ApiPromise<null> =>
-    authRequest.post(`/notifications/follow`, { receiverId }),
+  }): ApiPromise<void> =>
+    authRequest.post(`/notifications/follow`, {}, { params: { receiverId } }),
+
+  deleteFollow: ({
+    receiverId,
+  }: {
+    receiverId: APIUser["id"]
+  }): ApiPromise<void> =>
+    authRequest.delete(`/notifications/follow`, { params: { receiverId } }),
 } as const
 
 export default followAPI
