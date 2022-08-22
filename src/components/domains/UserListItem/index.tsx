@@ -55,7 +55,7 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0px;
+  padding: 8px 16px;
 `
 
 export default UserListItem

@@ -4,7 +4,15 @@ export type ValueOf<T> = T[keyof T]
 export type Keyof<T> = keyof T
 
 export interface APISend extends APICommon {
-  sender: OmitAt<APIUser>
+  sender: Pick<APIUser, "id" | "nickname" | "profileImage">
+}
+
+export interface APICreate extends APICommon {
+  creator: Pick<APIUser, "id" | "nickname" | "profileImage">
+}
+
+export interface APIReceive extends APICommon {
+  receiver: Pick<APIUser, "id" | "nickname" | "profileImage">
 }
 
 export interface APICommon extends APIIdObject {
@@ -23,5 +31,5 @@ export interface InfiniteScrollDTO<T> extends ListDTO<T> {
   lastId: APICommon["id"]
 }
 export interface ListDTO<T> {
-  contents: T
+  contents: T[]
 }

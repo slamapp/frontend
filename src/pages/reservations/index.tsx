@@ -20,16 +20,15 @@ const Reservations: NextPage = () => {
   const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">("UPCOMING")
   const [expiredReservations, setExpiredReservations] = useState<any[]>([])
   const [currentLastId, setCurrentLastId] = useState<any>()
-  const [isFetching, setIsFetching] = useState(false)
 
   const handleClickExpiredTab = useCallback(async () => {
     setActiveTab("EXPIRED")
 
     if (currentLastId !== null) {
-      const { data } = await reservationApi.getMyExpiredReservations(
-        !currentLastId,
-        currentLastId
-      )
+      const { data } = await reservationApi.getMyExpiredReservations({
+        isFirst: !currentLastId,
+        lastId: currentLastId,
+      })
       const { contents, lastId } = data
       setExpiredReservations((prev) => [...prev, ...contents])
       setCurrentLastId(lastId)
@@ -38,10 +37,10 @@ const Reservations: NextPage = () => {
 
   const loadMore = useCallback(async () => {
     if (expiredReservations.length !== 0 && currentLastId !== null) {
-      const { data } = await reservationApi.getMyExpiredReservations(
-        !currentLastId,
-        currentLastId
-      )
+      const { data } = await reservationApi.getMyExpiredReservations({
+        isFirst: !currentLastId,
+        lastId: currentLastId,
+      })
       const { contents, lastId } = data
       setExpiredReservations((prev) => [...prev, ...contents])
       setCurrentLastId(lastId)
@@ -53,9 +52,7 @@ const Reservations: NextPage = () => {
       (entries) => {
         entries.forEach(async (entry) => {
           if (entry.isIntersecting) {
-            setIsFetching(false)
             await loadMore()
-            setIsFetching(true)
           }
         })
       },

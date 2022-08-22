@@ -5,7 +5,7 @@ import { UserListItem } from "~/components/domains"
 import { Text, Icon, Button } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
 import reservationAPI from "~/service/reservationApi"
-import type { ReservationApi } from "~/service/reservationApi/type"
+import type reservationApi from "~/service/reservationApi"
 import type { APICourt, APIReservation } from "~/types/domains"
 
 interface Props {
@@ -24,7 +24,7 @@ const ReservationItemBottom = ({
   const [visible, setVisible] = useState(false)
   const [participants, setParticipants] = useState<
     Awaited<
-      ReturnType<ReservationApi["getMyReservationParticipants"]>
+      ReturnType<typeof reservationApi["getMyReservationParticipants"]>
     >["data"]["participants"]
   >([])
 

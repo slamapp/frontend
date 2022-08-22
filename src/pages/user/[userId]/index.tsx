@@ -207,7 +207,7 @@ const User: NextPage = () => {
           />
           <StatBar>
             <div>
-              <Link href={`/user/${authProps.currentUser.id}/following`}>
+              <Link href={`/user/${pageUserInfo.userId}/following`}>
                 <a>
                   <dt>팔로잉</dt>
                   <dd>
@@ -217,7 +217,7 @@ const User: NextPage = () => {
               </Link>
             </div>
             <div>
-              <Link href={`/user/${authProps.currentUser.id}/follower`}>
+              <Link href={`/user/${pageUserInfo.userId}/follower`}>
                 <a>
                   <dt>팔로워</dt>
                   <dd>
