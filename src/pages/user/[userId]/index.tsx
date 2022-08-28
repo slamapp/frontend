@@ -316,10 +316,11 @@ const FollowButton = ({
   receiverId: APIUser["id"]
   refetch: () => void
 }) => {
-  const follow = useMutation(() => followAPI.postFollow({ receiverId }), {
-    onSuccess: () => refetch(),
-  })
-  const cancelFollow = useMutation(
+  const followMutation = useMutation(
+    () => followAPI.postFollow({ receiverId }),
+    { onSuccess: () => refetch() }
+  )
+  const followCancelMutation = useMutation(
     () => followAPI.deleteFollow({ receiverId }),
     { onSuccess: () => refetch() }
   )
@@ -327,13 +328,14 @@ const FollowButton = ({
   return (
     <Button
       fullWidth
-      disabled={follow.isLoading || cancelFollow.isLoading}
+      loading={followMutation.isLoading || followCancelMutation.isLoading}
+      disabled={followMutation.isLoading || followCancelMutation.isLoading}
       tertiary={isFollowing}
       onClick={() => {
         if (isFollowing) {
-          cancelFollow.mutate()
+          followCancelMutation.mutate()
         } else {
-          follow.mutate()
+          followMutation.mutate()
         }
       }}
     >

@@ -1,6 +1,7 @@
 import type { ReactNode, MouseEvent, CSSProperties } from "react"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
+import Spinner from "../Spinner"
 
 type Size = "sm" | "md" | "lg"
 
@@ -13,6 +14,7 @@ interface Props {
   tertiary?: boolean
   fullWidth?: boolean
   block?: boolean
+  loading?: boolean
   disabled?: boolean
   style?: CSSProperties
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void
@@ -23,6 +25,7 @@ const Button = ({
   children,
   fullWidth = false,
   block = false,
+  loading = false,
   disabled = false,
   secondary = false,
   tertiary = false,
@@ -44,7 +47,16 @@ const Button = ({
       style={style}
       disabled={disabled}
     >
-      {children}
+      <div
+        css={css`
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+        `}
+      >
+        {loading && <Spinner />} {children}
+      </div>
     </StyledButton>
   )
 }

@@ -1,86 +1,53 @@
+import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 
-const Icon = styled.i`
-  display: inline-block;
-  vertical-align: middle;
+type Props = {
+  size?: number
+}
+const Spinner = ({ size = 24 }: Props) => {
+  const theme = useTheme()
+
+  return (
+    <div
+      css={css`
+        border: 3px solid ${theme.colors.gray0100};
+        border-top: 3px solid ${theme.colors.gray0200};
+        border-radius: 50%;
+        width: ${size}px;
+        height: ${size}px;
+        animation: spin 1s linear infinite;
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}
+    />
+  )
+}
+
+const FullPage = () => (
+  <Background>
+    <Spinner />
+  </Background>
+)
+
+const Background = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
 `
 
-interface Props {
-  size?: number
-  color?: string
-  loading?: boolean
-}
-
-const Spinner = ({ size = 24, color = "#919EAB", loading = true }: Props) => {
-  const sizeStyle = {
-    width: size,
-    heigth: size,
-  }
-
-  return loading ? (
-    <Icon>
-      <svg
-        version="1.1"
-        id="L2"
-        xmlns="http://www.w3.org/2000/svg"
-        x="0px"
-        y="0px"
-        viewBox="0 0 100 100"
-        enableBackground="new 0 0 100 100"
-        style={sizeStyle}
-      >
-        <circle
-          fill="none"
-          stroke={color}
-          strokeWidth={4}
-          strokeMiterlimit={10}
-          cx="50"
-          cy="50"
-          r="48"
-        />
-        <line
-          fill="none"
-          strokeLinecap="round"
-          stroke={color}
-          strokeWidth={4}
-          strokeMiterlimit={10}
-          x1="50"
-          y1="50"
-          x2="85"
-          y2="50.5"
-        >
-          <animateTransform
-            attributeName="transform"
-            dur="2s"
-            type="rotate"
-            from="0 50 50"
-            to="360 50 50"
-            repeatCount="indefinite"
-          />
-        </line>
-        <line
-          fill="none"
-          strokeLinecap="round"
-          stroke={color}
-          strokeWidth={4}
-          strokeMiterlimit={10}
-          x1="50"
-          y1="50"
-          x2="49.5"
-          y2="74"
-        >
-          <animateTransform
-            attributeName="transform"
-            dur="15s"
-            type="rotate"
-            from="0 50 50"
-            to="360 50 50"
-            repeatCount="indefinite"
-          />
-        </line>
-      </svg>
-    </Icon>
-  ) : null
-}
+Spinner.FullPage = FullPage
 
 export default Spinner
