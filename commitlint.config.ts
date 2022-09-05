@@ -1,5 +1,5 @@
-import type { UserConfig } from "@commitlint/types";
-import commitizenConfig from "./.cz-config";
+import type { UserConfig } from "@commitlint/types"
+import commitizenConfig from "./.cz-config"
 
 const Configuration: UserConfig = {
   extends: ["@commitlint/config-conventional"],
@@ -12,6 +12,6 @@ const Configuration: UserConfig = {
     "type-case": [2, "always", "lower-case"],
     "scope-empty": [2, "never"],
   },
-};
+}
 
-export default Configuration;
+export default Configuration

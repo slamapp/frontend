@@ -18,7 +18,7 @@ const handleShareClick = (
   } else {
     const copyText = CLIENT_DOMAIN + templateArgs.path
     copy(copyText)
-    Toast.show(`🔗 공유하실 링크를 복사했습니다 (${copyText})`, 4000)
+    Toast.show(`🔗 공유하실 링크를 복사했습니다 (${copyText})`)
   }
 }
 

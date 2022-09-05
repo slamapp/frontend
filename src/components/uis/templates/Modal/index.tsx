@@ -1,8 +1,10 @@
 import type { ReactNode } from "react"
 import { useEffect, useMemo, useState } from "react"
+import { ThemeProvider } from "@emotion/react"
 import styled from "@emotion/styled"
-import ReactDom from "react-dom"
+import { createRoot } from "react-dom/client"
 import { useIsomorphicLayoutEffect, useClickAway } from "~/hooks"
+import emotionTheme from "~/styles/emotionTheme"
 
 interface Props {
   children?: ReactNode
@@ -22,14 +24,6 @@ const Modal = ({
   onClose = () => {},
   ...props
 }: Props) => {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-
-    return () => setMounted(false)
-  }, [])
-
   const ref = useClickAway<HTMLDivElement>(() => {
     onClose()
   })
@@ -39,10 +33,15 @@ const Modal = ({
     [width, maxWidth, height]
   )
 
-  const el = useMemo(() => {
+  const { root, el } = useMemo(() => {
+    let el = null
+    let root = null
     if (typeof document !== "undefined") {
-      return document.createElement("div")
+      el = document.createElement("div")
+      root = createRoot(el)
     }
+
+    return { root, el }
   }, [])
 
   useIsomorphicLayoutEffect(() => {
@@ -57,8 +56,9 @@ const Modal = ({
     }
   })
 
-  return mounted
-    ? ReactDom.createPortal(
+  return (
+    root?.render(
+      <ThemeProvider theme={emotionTheme}>
         <BackgroundDim style={{ display: visible ? "block" : "none" }}>
           <ModalContainer
             ref={ref}
@@ -67,10 +67,10 @@ const Modal = ({
           >
             {children}
           </ModalContainer>
-        </BackgroundDim>,
-        el!
-      )
-    : null
+        </BackgroundDim>
+      </ThemeProvider>
+    ) || <></>
+  )
 }
 
 const BackgroundDim = styled.div`

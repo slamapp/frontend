@@ -70,7 +70,7 @@ const ProfileForm = () => {
           }
           await updateMyProfile(values)
           router.replace(`/user/${authProps.currentUser.id}`)
-          Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳", 3000)
+          Toast.show("성공적으로 사용자 정보를 변경했습니다. 🥳")
         } catch (error) {
           console.error(error)
         }
