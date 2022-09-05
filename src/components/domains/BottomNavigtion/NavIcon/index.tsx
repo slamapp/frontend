@@ -1,9 +1,9 @@
 import type { ComponentProps } from "react"
-import { useCallback } from "react"
-import { useRouter } from "next/router"
+import { useRef, useEffect, useState, useCallback } from "react"
+import { Router, useRouter } from "next/router"
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
-import { Icon, Spacer } from "~/components/uis/atoms"
+import { Icon, Spacer, Spinner } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
 import type { PageType } from "~/contexts/NavigationProvider/actionTypes"
 
@@ -20,30 +20,50 @@ const NavIcon = ({ href, iconName, pageTypes, label = "이름" }: Props) => {
   const router = useRouter()
   const { navigationProps } = useNavigationContext()
   const { currentPage } = navigationProps
+  const [isPageLoading, setIsPageLoading] = useState(false)
+  const isClicked = useRef(false)
 
-  const handleClick = useCallback(() => router.push(href), [href, router])
+  useEffect(() => {
+    Router.events.on("routeChangeComplete", () => setIsPageLoading(false))
+    Router.events.on("routeChangeError", () => setIsPageLoading(false))
+  }, [])
+
+  const handleTap = useCallback(() => {
+    if (!isClicked.current) {
+      setIsPageLoading(true)
+    }
+    router.push(href)
+
+    isClicked.current = true
+  }, [href, router])
 
   return (
-    <S.MotionAnchor onTapStart={handleClick} whileTap={tap}>
-      <Spacer align="center" gap={2}>
-        <Icon
-          name={iconName}
-          size={18}
-          color={
-            pageTypes.some((item) => item === currentPage) ? "black" : "#cfcfcf"
-          }
-        />
-        <S.Text
-          style={{
-            color: pageTypes.some((item) => item === currentPage)
-              ? "black"
-              : "#cfcfcf",
-            fontSize: 10,
-          }}
-        >
-          {label}
-        </S.Text>
-      </Spacer>
+    <S.MotionAnchor onTapStart={handleTap} whileTap={tap}>
+      {isPageLoading ? (
+        <Spinner size={16} />
+      ) : (
+        <Spacer align="center" gap={2}>
+          <Icon
+            name={iconName}
+            size={18}
+            color={
+              pageTypes.some((item) => item === currentPage)
+                ? "black"
+                : "#cfcfcf"
+            }
+          />
+          <S.Text
+            style={{
+              color: pageTypes.some((item) => item === currentPage)
+                ? "black"
+                : "#cfcfcf",
+              fontSize: 10,
+            }}
+          >
+            {label}
+          </S.Text>
+        </Spacer>
+      )}
     </S.MotionAnchor>
   )
 }
