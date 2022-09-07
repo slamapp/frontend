@@ -2,6 +2,7 @@ import type { AppProps } from "next/app"
 import Head from "next/head"
 import { ThemeProvider } from "@emotion/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { DefaultLayout } from "~/components/domains/layout"
 import { Image } from "~/components/uis/atoms"
 import Providers from "~/contexts/Providers"
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </DefaultLayout>
           </Providers>
         </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </>
   )
