@@ -6,9 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { DefaultLayout } from "~/components/domains/layout"
 import { Image } from "~/components/uis/atoms"
 import Providers from "~/contexts/Providers"
-import emotionTheme from "~/styles/emotionTheme"
-
-import "~/styles/global.css"
+import { emotionTheme, GlobalCSS } from "~/styles"
 
 const queryClient = new QueryClient()
 
@@ -37,6 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Image key={url} src={url} lazy width={1} height={1} alt={url} />
           ))}
         </div>
+        <GlobalCSS />
         <ThemeProvider theme={emotionTheme}>
           <Providers>
             <DefaultLayout>
