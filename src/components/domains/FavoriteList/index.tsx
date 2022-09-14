@@ -67,7 +67,14 @@ const FavoriteList = () => {
         <FavoriteItem key={id}>
           <CourtItem.Header>{court.name}</CourtItem.Header>
 
-          <Actions gap="xs" type="horizontal">
+          <Spacer
+            gap="xs"
+            type="horizontal"
+            style={{
+              marginTop: 40,
+              flexFlow: "row wrap",
+            }}
+          >
             <Spacer gap="xs" type="horizontal">
               <CourtItem.FavoritesToggle courtId={court.id} />
               <CourtItem.Share
@@ -97,17 +104,12 @@ const FavoriteList = () => {
                 </Button>
               </a>
             </Link>
-          </Actions>
+          </Spacer>
         </FavoriteItem>
       ))}
     </Spacer>
   )
 }
-
-const Actions = styled(Spacer)`
-  margin-top: 40px;
-  flex-flow: row wrap;
-`
 
 const FavoriteItem = styled.div`
   background-color: ${({ theme }) => theme.previousTheme.colors.white};

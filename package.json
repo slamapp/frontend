@@ -8,6 +8,7 @@
     "test": "jest",
     "commit": "cz-customizable",
     "lint": "eslint .",
+    "lint:error": "eslint . --quiet",
     "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
     "prepare": "husky install",
     "type": "tsc --noEmit"

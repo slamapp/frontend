@@ -1,4 +1,4 @@
-import type { MouseEvent } from "react"
+import type { CSSProperties, MouseEvent } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { css } from "@emotion/react"
@@ -10,7 +10,9 @@ import type { APINewCourt } from "~/types/domains"
 interface Props {
   newCourt: APINewCourt
   state: "READY" | "DONE"
-  [x: string]: any
+  setIsOpenDenyModal?: React.Dispatch<React.SetStateAction<boolean>>
+  setIsOpenAcceptModal?: React.Dispatch<React.SetStateAction<boolean>>
+  style?: CSSProperties
 }
 const NewCourtItem = ({
   newCourt,
@@ -25,9 +27,9 @@ const NewCourtItem = ({
     e.preventDefault()
     try {
       await managementApi.denyNewCourt(newCourt.id)
-      setIsOpenDenyModal(true)
+      setIsOpenDenyModal?.(true)
       setTimeout(() => {
-        setIsOpenDenyModal(false)
+        setIsOpenDenyModal?.(false)
         router.reload()
       }, 1000)
     } catch (error) {
@@ -39,9 +41,9 @@ const NewCourtItem = ({
     e.preventDefault()
     try {
       await managementApi.acceptNewCourt(newCourt.id)
-      setIsOpenAcceptModal(true)
+      setIsOpenAcceptModal?.(true)
       setTimeout(() => {
-        setIsOpenAcceptModal(false)
+        setIsOpenAcceptModal?.(false)
         router.reload()
       }, 1000)
     } catch (error) {

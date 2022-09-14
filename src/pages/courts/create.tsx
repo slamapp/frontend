@@ -56,11 +56,11 @@ const CreateCourt: NextPage = () => {
         if (status === kakao.maps.services.Status.OK) {
           // 도로명 주소
           if (result[0].road_address) {
-            setAddress(result[0].road_address.address_name)
+            setAddress(result[0].road_address.address_name as string)
           }
           // 법정 주소
           else if (result[0].address.address_name) {
-            setAddress(result[0].address.address_name)
+            setAddress(result[0].address.address_name as string)
           }
           // 주소가 없는 경우
           else {
@@ -183,7 +183,7 @@ const CreateCourt: NextPage = () => {
             {center && isOpen ? (
               <Map.KakaoMap
                 level={level}
-                center={center!}
+                center={center}
                 draggable={true}
                 zoomable={true}
                 onClick={handleClickKakaoMap}

@@ -95,9 +95,9 @@ const NewCourtsPage: NextPage = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(async (entry) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            await loadMore(activeStatus)
+            loadMore(activeStatus)
           }
         })
       },

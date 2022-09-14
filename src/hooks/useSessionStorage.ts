@@ -1,22 +1,25 @@
 import { useState } from "react"
 
-const useSessionStorage = (
+const useLocalStorage = <T = any>(
   key: string,
-  initialValue: any
-): [storedValue: any, setValue: (value: any) => void] => {
+  initialValue: T
+): [storedValue: T, setValue: (value: T) => void] => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = sessionStorage.getItem(key)
 
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
-      console.error(error)
+      // 서버사이드에서 실행되지 않도록 처리
+      if (typeof document !== "undefined") {
+        console.error(error)
+      }
 
       return initialValue
     }
   })
 
-  const setValue = (value: any) => {
+  const setValue = (value: T) => {
     try {
       const valueToStore =
         typeof value === "function" ? value(storedValue) : value
@@ -31,4 +34,4 @@ const useSessionStorage = (
   return [storedValue, setValue]
 }
 
-export default useSessionStorage
+export default useLocalStorage

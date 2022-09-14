@@ -2,6 +2,8 @@ import type { ReactElement } from "react"
 import type { DocumentContext, DocumentInitialProps } from "next/document"
 import Document, { Html, Head, Main, NextScript } from "next/document"
 
+const kakaoSdkAppKey = process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string
+
 class MyDocument extends Document {
   static async getInitialProps(
     ctx: DocumentContext
@@ -28,12 +30,12 @@ class MyDocument extends Document {
           <script
             defer
             type="text/javascript"
-            src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}&autoload=false&libraries=services`}
+            src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoSdkAppKey}&autoload=false&libraries=services`}
           />
           <script
             defer
             src="https://developers.kakao.com/sdk/js/kakao.min.js"
-          ></script>
+          />
         </Head>
         <body>
           <Main />

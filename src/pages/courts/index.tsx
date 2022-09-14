@@ -3,7 +3,7 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { css } from "@emotion/react"
+import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
 import { motion } from "framer-motion"
@@ -40,6 +40,8 @@ interface Geocoder extends kakao.maps.services.Geocoder {
 }
 
 const Courts: NextPage = () => {
+  const theme = useTheme()
+
   const isMountedRef = useRef(false)
   const router = useRouter()
 
@@ -190,18 +192,16 @@ const Courts: NextPage = () => {
     }
   }, [isOpen])
 
-  const handleGetCurrentLocation = useCallback(async () => {
-    getCurrentLocation(async ([latitude, longitude]) => {
+  const handleGetCurrentLocation = useCallback(() => {
+    getCurrentLocation(([latitude, longitude]) => {
       setCenter([latitude, longitude])
     })
   }, [])
 
   useEffect(() => {
     if (router.isReady) {
-      const { courtId } = router.query
-
-      if (courtId) {
-        restoreCourts(`${courtId}`, true)
+      if (typeof router.query.courtId === "string") {
+        restoreCourts(`${router.query.courtId}`, true)
       } else {
         // handleGetCurrentLocation();
       }
@@ -218,12 +218,12 @@ const Courts: NextPage = () => {
         (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
             // 도로명 주소
-            if (result[0].road_address) {
-              setAddress(result[0].road_address.address_name)
+            if (result[0].road_address.address_name) {
+              setAddress(result[0].road_address.address_name as string)
             }
             // 법정 주소
             else if (result[0].address.address_name) {
-              setAddress(result[0].address.address_name)
+              setAddress(result[0].address.address_name as string)
             }
             // 주소가 없는 경우
             else {
@@ -335,7 +335,11 @@ const Courts: NextPage = () => {
             <Text block strong size="lg">
               {selectedMarker.reservationMaxCount} 명
             </Text>
-            <Actions type="horizontal" gap="xs">
+            <Spacer
+              type="horizontal"
+              gap="xs"
+              style={{ marginTop: theme.gaps.sm }}
+            >
               <CourtItem.FavoritesToggle courtId={selectedMarker.court.id} />
               <CourtItem.Share
                 court={{
@@ -379,7 +383,7 @@ const Courts: NextPage = () => {
                   </a>
                 </Link>
               )}
-            </Actions>
+            </Spacer>
           </BottomModalContainer>
         )}
         {!selectedMarker && (
@@ -433,10 +437,6 @@ const Courts: NextPage = () => {
 }
 
 export default Courts
-
-const Actions = styled(Spacer)`
-  margin-top: ${({ theme }) => theme.gaps.sm};
-`
 
 const BottomModal = styled.div<{ isOpen: boolean }>`
   ${({ theme, isOpen }) => css`

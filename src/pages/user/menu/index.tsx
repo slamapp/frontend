@@ -110,7 +110,7 @@ const MenuItem = styled.div`
   }
 `
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getStaticProps: GetStaticProps<Props> = () => {
   return {
     props: {
       buildTime: new Date().toISOString(),

@@ -24,7 +24,6 @@ const Cell = ({
 }: Props) => {
   const { tableCellHeight } = useReservationTableContext()
   const router = useRouter()
-  const { courtId } = router.query
 
   const { setNavigationTitle } = useNavigationContext()
   const ref = useRef<HTMLDivElement>(null)
@@ -33,13 +32,17 @@ const Cell = ({
   useEffect(() => {
     if (isTop && entry?.isIntersecting) {
       router.replace(
-        `/reservations/courts/${courtId}?date=${intersectingTitle}`
+        `/reservations/courts/${
+          router.query.courtId as string
+        }?date=${intersectingTitle}`
       )
       setNavigationTitle(intersectingTitle)
     }
     if (timeNumber === 36 && entry?.isIntersecting) {
       router.replace(
-        `/reservations/courts/${courtId}?date=${intersectingTitle}`
+        `/reservations/courts/${
+          router.query.courtId as string
+        }?date=${intersectingTitle}`
       )
       setNavigationTitle(intersectingTitle)
     }

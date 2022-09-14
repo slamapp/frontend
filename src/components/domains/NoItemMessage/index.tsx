@@ -21,7 +21,12 @@ const NoItemMessage = ({
   type,
 }: Props) => {
   return (
-    <WrapperSpacer gap="base" type="vertical" style={style}>
+    <Spacer
+      align="center"
+      justify="center"
+      gap="base"
+      style={{ ...style, height: "80%" }}
+    >
       <Image
         width={90}
         height={170}
@@ -50,7 +55,7 @@ const NoItemMessage = ({
         </a>
       </Link>
       <div style={{ height: 40 }}></div>
-    </WrapperSpacer>
+    </Spacer>
   )
 }
 
@@ -68,10 +73,4 @@ const SearchButton = styled(Button)`
 
 const SearchIcon = styled(Icon)`
   margin-right: 5px;
-`
-
-const WrapperSpacer = styled(Spacer)`
-  height: 80%;
-  align-items: center;
-  justify-content: center;
 `

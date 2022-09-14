@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import React, { useMemo, useCallback, useState, useEffect, useRef } from "react"
+import { useMemo, useCallback, useState, useEffect, useRef } from "react"
 import { useRouter } from "next/router"
 import dayjs from "dayjs"
 import { Spacer } from "~/components/uis/atoms"
@@ -20,7 +20,6 @@ interface Props {
 
 const ReservationTable = ({ children }: Props) => {
   const router = useRouter()
-  const { courtId, date } = router.query
 
   const [intersectingTitleCountMap, setIntersectingTitleCountMap] = useState<{
     [date: string]: number
@@ -28,7 +27,7 @@ const ReservationTable = ({ children }: Props) => {
 
   const dayjsToday = dayjs()
   const dayjsDate = {
-    Current: dayjs(`${date}`),
+    Current: dayjs(`${router.query.date as string}`),
     Min: dayjsToday,
     Max: dayjs(dayjsToday.clone()).add(13, "day"),
   }
@@ -81,20 +80,20 @@ const ReservationTable = ({ children }: Props) => {
   useEffect(() => {
     if (dayjsDate.Current.isBefore(dayjsDate.Min.subtract(1, "day"))) {
       router.replace(
-        `/reservations/courts/${courtId}?date=${dayjsDate.Min.format(
-          DATE_QUERY_STRING_FORMAT
-        )}`
+        `/reservations/courts/${
+          router.query.courtId as string
+        }?date=${dayjsDate.Min.format(DATE_QUERY_STRING_FORMAT)}`
       )
     }
 
     if (dayjsDate.Current.isAfter(dayjsDate.Max.add(1, "day"))) {
       router.replace(
-        `/reservations/courts/${courtId}?date=${dayjsDate.Max.format(
-          DATE_QUERY_STRING_FORMAT
-        )}`
+        `/reservations/courts/${
+          router.query.courtId as string
+        }?date=${dayjsDate.Max.format(DATE_QUERY_STRING_FORMAT)}`
       )
     }
-  }, [date, courtId, router])
+  }, [router.query.date, router.query.courtId, router])
 
   return (
     <ReservationTableContext.Provider

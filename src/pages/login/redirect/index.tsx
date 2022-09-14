@@ -11,10 +11,9 @@ const RedirectPage = () => {
   const [, setToken] = useLocalToken()
   const { authProviderInit } = useAuthContext()
   const router = useRouter()
-  const { token } = router.query
 
   const getCurrentUserData = useCallback(async () => {
-    setToken(token)
+    setToken(router.query.token as string)
     try {
       await authProviderInit()
       router.replace("/")
@@ -22,13 +21,13 @@ const RedirectPage = () => {
       console.error(error)
       setIsNeedReLogin(true)
     }
-  }, [token, authProviderInit, setToken])
+  }, [router.query.token, authProviderInit, setToken])
 
   useEffect(() => {
-    if (token) {
+    if (router.query.token) {
       getCurrentUserData()
     }
-  }, [token])
+  }, [router.query.token])
 
   const NeedReLoginMarkUp = () => {
     return (

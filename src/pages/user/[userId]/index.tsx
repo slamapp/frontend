@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { css } from "@emotion/react"
+import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import {
@@ -22,6 +22,7 @@ import {
 } from "~/utils/userInfo"
 
 const User = withRouteGuard("private", () => {
+  const theme = useTheme()
   const { useMountPage, setNavigationTitle } = useNavigationContext()
 
   const { authProps } = useAuthContext()
@@ -30,12 +31,10 @@ const User = withRouteGuard("private", () => {
 
   const router = useRouter()
 
-  const { userId: pageUserId } = router.query
-
-  const isMe = pageUserId === authProps.currentUser?.id
+  const isMe = router.query.userId === authProps.currentUser?.id
 
   const myProfileQuery = useQuery(
-    ["myProfile", pageUserId],
+    ["myProfile", router.query.userId] as const,
     async () => {
       const { data } = await userApi.getMyProfile()
 
@@ -45,9 +44,11 @@ const User = withRouteGuard("private", () => {
   )
 
   const userProfileQuery = useQuery(
-    ["otherProfile", pageUserId],
+    ["otherProfile", router.query.userId] as const,
     async () => {
-      const { data } = await userApi.getUserProfile({ id: `${pageUserId}` })
+      const { data } = await userApi.getUserProfile({
+        id: `${router.query.userId as string}`,
+      })
 
       return data
     },
@@ -135,7 +136,11 @@ const User = withRouteGuard("private", () => {
           </div>
         </MainInfoContainer>
 
-        <AdditionalInfoSpacer gap="base" type="vertical">
+        <Spacer
+          gap="base"
+          type="vertical"
+          style={{ padding: `${theme.gaps.md} ${theme.gaps.base}` }}
+        >
           <div>
             <Label>포지션</Label>
             <Spacer type="horizontal" gap="xs">
@@ -172,7 +177,7 @@ const User = withRouteGuard("private", () => {
               <Chip secondary>즐겨찾기한 농구장이 없습니다</Chip>
             )}
           </div>
-        </AdditionalInfoSpacer>
+        </Spacer>
       </div>
     )
   }
@@ -244,7 +249,9 @@ const User = withRouteGuard("private", () => {
               <FollowButton
                 isFollowing={isFollowing}
                 receiverId={id}
-                refetch={userProfileQuery.refetch}
+                refetch={() => {
+                  userProfileQuery.refetch()
+                }}
               />
             </ButtonContainer>
           ) : (
@@ -260,7 +267,11 @@ const User = withRouteGuard("private", () => {
           )}
         </MainInfoContainer>
 
-        <AdditionalInfoSpacer gap="base" type="vertical">
+        <Spacer
+          gap="base"
+          type="vertical"
+          style={{ padding: `${theme.gaps.md} ${theme.gaps.base}` }}
+        >
           <div>
             <Label>포지션</Label>
             <Spacer type="horizontal" gap="xs">
@@ -297,7 +308,7 @@ const User = withRouteGuard("private", () => {
               <Chip secondary>등록한 농구장이 없습니다</Chip>
             )}
           </div>
-        </AdditionalInfoSpacer>
+        </Spacer>
       </div>
     )
   }
@@ -348,12 +359,6 @@ const MainInfoContainer = styled.div`
   ${({ theme }) => css`
     padding: ${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md};
     transition: background 200ms;
-  `}
-`
-
-const AdditionalInfoSpacer = styled(Spacer)`
-  ${({ theme }) => css`
-    padding: ${theme.gaps.md} ${theme.gaps.base};
   `}
 `
 

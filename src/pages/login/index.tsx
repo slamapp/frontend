@@ -7,13 +7,15 @@ import { Spacer } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 
+const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string
+
 const Login: NextPage = () => {
   const router = useRouter()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_LOGIN")
 
   const endpoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string
-  const kakaoUrl = `${endpoint}/oauth2/authorization/kakao?redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}`
+  const kakaoUrl = `${endpoint}/oauth2/authorization/kakao?redirect_uri=${redirectUri}`
 
   const handleClickLogin = () => {
     router.replace(kakaoUrl)

@@ -1,4 +1,4 @@
-import type { ChangeEvent, DragEvent, ReactNode } from "react"
+import type { ChangeEvent, DragEvent, ReactNode, RefObject } from "react"
 import { useState } from "react"
 import styled from "@emotion/styled"
 
@@ -9,6 +9,7 @@ interface Props {
   value?: File
   onChange?: (file: File) => void
   onChangeFileSrc?: (fileSrc: string) => void
+  inputRef: RefObject<HTMLInputElement>
   [x: string]: any
 }
 

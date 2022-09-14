@@ -5,7 +5,7 @@ export type Error<T> = { [P in keyof T]?: string }
 
 interface Options<T> {
   initialValues: T
-  onSubmit(values: T): void
+  onSubmit(values: T): void | Promise<void>
   validate(values: T): Error<T>
 }
 

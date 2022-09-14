@@ -13,7 +13,12 @@ interface Props {
 
 const ErrorMessage = ({ title, description, buttonTitle, style }: Props) => {
   return (
-    <WrapperSpacer gap="base" style={style}>
+    <Spacer
+      align="center"
+      justify="center"
+      gap="base"
+      style={{ ...style, height: "80%" }}
+    >
       <Image src="/assets/error.svg" alt="error" />
       <Spacer gap="xxs" style={{ textAlign: "center" }}>
         <Text size="md" block strong>
@@ -28,7 +33,7 @@ const ErrorMessage = ({ title, description, buttonTitle, style }: Props) => {
         </SearchButton>
       </Link>
       <div style={{ height: 40 }}></div>
-    </WrapperSpacer>
+    </Spacer>
   )
 }
 
@@ -46,10 +51,4 @@ const SearchButton = styled(Button)`
 
 const SearchIcon = styled(Icon)`
   margin-right: 5px;
-`
-
-const WrapperSpacer = styled(Spacer)`
-  height: 80%;
-  align-items: center;
-  justify-content: center;
 `

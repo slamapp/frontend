@@ -24,10 +24,10 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.css",
-    "next.config.js"
+    "src/**/*",
+    "commitlint.config.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

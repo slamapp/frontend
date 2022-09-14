@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react"
 import { useCallback, useRef, useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import { css } from "@emotion/react"
+import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import {
   BottomFixedButton,
@@ -34,6 +34,7 @@ const ProfileForm = () => {
     updateMyProfile,
   } = useAuthContext()
 
+  const theme = useTheme()
   const router = useRouter()
 
   const [isFetching, setIsFetching] = useState(true)
@@ -190,7 +191,10 @@ const ProfileForm = () => {
             )}
           </Spacer>
         </Center>
-        <Container gap="md" type="vertical">
+        <Spacer
+          gap="md"
+          style={{ padding: `30px ${theme.previousTheme.gaps.base} 120px` }}
+        >
           <div>
             <Input
               autoFocus
@@ -258,7 +262,7 @@ const ProfileForm = () => {
               {errors.proficiency}
             </ErrorMessage>
           </div>
-        </Container>
+        </Spacer>
         <BottomFixedButton
           disabled={!!Object.keys(errors).length}
           type="submit"
@@ -346,10 +350,6 @@ const Center = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const Container = styled(Spacer)`
-  padding: ${({ theme }) => `30px ${theme.previousTheme.gaps.base} 120px`};
 `
 
 const UploadableArea = styled(Upload)`

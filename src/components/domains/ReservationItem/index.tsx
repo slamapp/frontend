@@ -1,4 +1,5 @@
 import React from "react"
+import { useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { CourtItem } from "~/components/domains"
 import { Spacer } from "~/components/uis/atoms"
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const ReservationItemComponent = ({ reservation }: Props) => {
+  const theme = useTheme()
+
   return (
     <ReservationItem>
       <HeaderContainer>
@@ -28,7 +31,14 @@ const ReservationItemComponent = ({ reservation }: Props) => {
         />
       </HeaderContainer>
 
-      <Actions gap="xs">
+      <Spacer
+        justify="flex-end"
+        align="center"
+        gap="xs"
+        style={{
+          margin: `${theme.previousTheme.gaps.sm} 0 ${theme.previousTheme.gaps.base} 0`,
+        }}
+      >
         <CourtItem.FavoritesToggle courtId={reservation.court.id} />
         <CourtItem.Share
           court={{
@@ -50,7 +60,7 @@ const ReservationItemComponent = ({ reservation }: Props) => {
           courtName={reservation.court.name}
           type="findRoad"
         />
-      </Actions>
+      </Spacer>
       <ReservationItemBottom
         courtId={reservation.court.id}
         startTime={reservation.startTime}
@@ -70,13 +80,6 @@ const ReservationItem = styled.div`
   background-color: ${({ theme }) => theme.previousTheme.colors.white};
   border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
   padding: 20px;
-`
-
-const Actions = styled(Spacer)`
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: ${({ theme }) => theme.previousTheme.gaps.sm};
-  margin-bottom: ${({ theme }) => theme.previousTheme.gaps.base};
 `
 
 const HeaderContainer = styled.div`
