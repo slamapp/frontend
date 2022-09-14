@@ -2,7 +2,6 @@ const typeEnums = {
   feat: "새로운 기능 추가 시",
   fix: "버그 해결 / 수정 시",
   docs: "도큐멘테이션 추가 또는 수정 시",
-  revert: "작업 되돌리기 시",
   style: "스타일 추가시",
   remove: "불필요한 파일 제거 시",
   perf: "성능 개선 시",
