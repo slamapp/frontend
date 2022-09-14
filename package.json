@@ -7,6 +7,8 @@
   },
   "packageManager": "yarn@3.2.3",
   "scripts": {
+    "build:web": "yarn workspace web build",
+    "build:common": "yarn workspace common build",
     "commit": "cz-customizable",
     "lint": "eslint .",
     "lint:error": "eslint . --quiet",
@@ -16,7 +18,6 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@types/node": "^18.7.18",
     "axios": "^0.27.2",
     "emotion-normalize": "^11.0.1",
     "feather-icons": "^4.29.0",
