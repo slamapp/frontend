@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "private": true,
   "workspaces": {
     "packages": [
       "packages/*"
@@ -7,8 +8,8 @@
   },
   "packageManager": "yarn@3.2.3",
   "scripts": {
-    "build:web": "yarn workspace web build",
-    "build:common": "yarn workspace common build",
+    "build": "yarn workspaces foreach -ptiv run build",
+    "dev:web": "yarn workspace web run dev",
     "commit": "cz-customizable",
     "lint": "eslint .",
     "lint:error": "eslint . --quiet",
