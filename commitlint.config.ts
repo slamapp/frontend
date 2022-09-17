@@ -1,13 +1,13 @@
-import type { UserConfig } from "@commitlint/types"
+// @ts-ignore
 import commitizenConfig from "./.cz-config"
 
-const Configuration: UserConfig = {
+const Configuration = {
   extends: ["@commitlint/config-conventional"],
   rules: {
     "type-enum": [
       2,
       "always",
-      commitizenConfig.types.map(({ value }) => value),
+      commitizenConfig.types.map(({ value }: { value: string }) => value),
     ],
     "type-case": [2, "always", "lower-case"],
     "scope-empty": [2, "never"],
