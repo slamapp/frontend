@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "lint:error": "eslint . --quiet",
     "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "type": "yarn workspaces foreach run type"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -42,6 +43,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.1",
+    "kakao.maps.d.ts": "^0.1.33",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "typescript": "^4.8.3"

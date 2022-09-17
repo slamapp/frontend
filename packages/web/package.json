@@ -6,19 +6,44 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:error": "eslint . --quiet",
+    "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
+    "type": "tsc --noEmit"
   },
   "dependencies": {
+    "@egjs/react-flicking": "^4.10.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@stomp/stompjs": "^6.1.2",
+    "@tanstack/react-query": "^4.3.4",
+    "@tanstack/react-query-devtools": "^4.3.5",
+    "axios": "^0.27.2",
+    "copy-to-clipboard": "^3.3.2",
+    "dayjs": "^1.11.5",
+    "emotion-normalize": "^11.0.1",
+    "feather-icons": "^4.29.0",
+    "framer-motion": "^7.3.5",
     "next": "12.3.0",
+    "prop-types": "^15.8.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-ga4": "^1.4.1",
+    "react-modal-sheet": "^1.5.2",
+    "sockjs-client": "^1.6.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/feather-icons": "^4.7.0",
     "@types/node": "18.7.18",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
+    "@types/react-lottie": "^1.2.6",
+    "@types/sockjs-client": "^1.5.1",
+    "@types/uuid": "^8.3.4",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.0",
+    "kakao.maps.d.ts": "^0.1.33",
     "typescript": "4.8.3"
   }
 }
