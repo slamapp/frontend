@@ -1,11 +1,4 @@
-## 배포상태
-- main: [![Netlify Status](https://api.netlify.com/api/v1/badges/87c0390f-8dbe-4a17-bfc3-966c79692a93/deploy-status)](https://app.netlify.com/sites/slamsapp/deploys)
-- develop: [![Netlify Status](https://api.netlify.com/api/v1/badges/4e0f99d7-eb95-45ab-8aa1-cdafc08fbfe6/deploy-status)](https://app.netlify.com/sites/developslamsapp/deploys)
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-
-# 📼 슬램 발표 영상 (아래를 클릭하세요)
+## 📼 슬램 발표 영상 (아래를 클릭하세요)
 [![Slam 슬램 발표](http://img.youtube.com/vi/V5akCEYSyGQ/0.jpg)](https://youtu.be/V5akCEYSyGQ)
 
 <div align="center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
@@ -24,7 +17,7 @@
 
 <br>
 
-# 🏀 프로젝트 소개
+## 🏀 프로젝트 소개
 
 *Slam*은 길거리 농구인들이 쉽고 빠르게 게임할 수 있도록 주변 농구장의 인원 현황을 제공하는 커뮤니티 웹앱 서비스입니다.
 
@@ -112,6 +105,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
