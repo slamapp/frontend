@@ -9,9 +9,7 @@ const defaultOptions = {
 
 const LoaderBasketball = () => {
   return (
-    <LottieWrapper>
-      {/* <Lottie options={defaultOptions} /> */}
-    </LottieWrapper>
+    <LottieWrapper>{/* <Lottie options={defaultOptions} /> */}</LottieWrapper>
   )
 }
 

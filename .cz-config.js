@@ -19,8 +19,9 @@ const maxSpaceLength = Object.keys(typeEnums).reduce(
 const commitizenConfig = {
   types: Object.entries(typeEnums).map(([type, description]) => ({
     value: type,
-    name:
-      `${type}:     ${" ".repeat(maxSpaceLength - type.length)}` + description,
+    name: `${type}:     ${" ".repeat(
+      maxSpaceLength - type.length
+    )}${description}`,
   })),
   allowBreakingChanges: ["feat", "fix", "remove"],
   messages: {

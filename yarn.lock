@@ -2100,7 +2100,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:12.3.0":
+"eslint-config-next@npm:12.3.0, eslint-config-next@npm:^12.3.0":
   version: 12.3.0
   resolution: "eslint-config-next@npm:12.3.0"
   dependencies:
@@ -2680,14 +2680,15 @@ __metadata:
     eslint: ^8.23.1
     eslint-config-airbnb-base: ^15.0.0
     eslint-config-airbnb-typescript: ^17.0.0
+    eslint-config-next: ^12.3.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-import: ^2.26.0
     eslint-plugin-prettier: ^4.2.1
     feather-icons: ^4.29.0
     framer-motion: ^7.3.5
     husky: ^8.0.1
-    kakao.maps.d.ts: ^0.1.33
     lint-staged: ^13.0.3
+    next: ^12.3.0
     prettier: ^2.7.1
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -3756,7 +3757,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:12.3.0":
+"next@npm:12.3.0, next@npm:^12.3.0":
   version: 12.3.0
   resolution: "next@npm:12.3.0"
   dependencies:

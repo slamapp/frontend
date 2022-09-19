@@ -197,7 +197,10 @@ const CreateCourt: NextPage = () => {
                   onGetCurrentLocation={handleGetCurrentLocation}
                 />
                 {position ? (
-                  <GeneralMarker map={map!} position={position} />
+                  <GeneralMarker
+                    map={map as kakao.maps.Map}
+                    position={position}
+                  />
                 ) : null}
               </Map.KakaoMap>
             ) : null}
@@ -258,7 +261,7 @@ const CreateCourt: NextPage = () => {
                         }}
                       >
                         <GeneralMarker
-                          map={map!}
+                          map={map as kakao.maps.Map}
                           position={[values.latitude, values.longitude]}
                         />
                       </Map.KakaoMap>
