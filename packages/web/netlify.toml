@@ -1,7 +1,3 @@
-[build]
-  command = "yarn workspace web build"
-  publish = ".next"
-
 [build.environment]
   NETLIFY_USE_YARN = "true"
   YARN_VERSION = "3.2.3"
