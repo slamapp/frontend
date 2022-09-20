@@ -52,6 +52,7 @@ module.exports = {
     "@typescript-eslint/await-thenable": "warn",
     "@typescript-eslint/restrict-plus-operands": "warn",
     "@typescript-eslint/restrict-template-expressions": "warn",
+    "@typescript-eslint/require-await": "warn",
     "import/order": [
       "error",
       {

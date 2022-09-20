@@ -1,5 +1,5 @@
+import type { GetServerSideProps } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -21,7 +21,11 @@ import {
   getTranslatedProficiency,
 } from "~/utils/userInfo"
 
-const User = withRouteGuard("private", () => {
+type Props = {
+  query: { userId: string }
+}
+
+const User = withRouteGuard("private", ({ query }: Props) => {
   const theme = useTheme()
   const { useMountPage, setNavigationTitle } = useNavigationContext()
 
@@ -29,30 +33,28 @@ const User = withRouteGuard("private", () => {
 
   useMountPage("PAGE_USER")
 
-  const router = useRouter()
-
-  const isMe = router.query.userId === authProps.currentUser?.id
+  const isMe = query.userId === authProps.currentUser?.id
 
   const myProfileQuery = useQuery(
-    ["myProfile", router.query.userId] as const,
+    ["myProfile", query.userId] as const,
     async () => {
       const { data } = await userApi.getMyProfile()
 
       return data
     },
-    { enabled: router.isReady && isMe }
+    { enabled: isMe }
   )
 
   const userProfileQuery = useQuery(
-    ["otherProfile", router.query.userId] as const,
+    ["otherProfile", query.userId] as const,
     async () => {
       const { data } = await userApi.getUserProfile({
-        id: `${router.query.userId as string}`,
+        id: `${query.userId}`,
       })
 
       return data
     },
-    { enabled: router.isReady && !isMe }
+    { enabled: !isMe }
   )
 
   useIsomorphicLayoutEffect(() => {
@@ -317,6 +319,16 @@ const User = withRouteGuard("private", () => {
 })
 
 export default User
+
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context
+) => {
+  const { query } = context
+
+  return {
+    props: { query: query as { userId: string } }, // will be passed to the page component as props
+  }
+}
 
 const FollowButton = ({
   isFollowing,
