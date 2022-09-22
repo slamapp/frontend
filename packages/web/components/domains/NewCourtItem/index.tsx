@@ -3,8 +3,8 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
+import { api } from "~/api"
 import { Text, Button } from "~/components/uis/atoms"
-import managementApi from "~/service/managementApi"
 import type { APINewCourt } from "~/types/domains"
 
 interface Props {
@@ -26,7 +26,7 @@ const NewCourtItem = ({
   const handleDeny = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-      await managementApi.denyNewCourt(newCourt.id)
+      await api.management.denyNewCourt(newCourt.id)
       setIsOpenDenyModal?.(true)
       setTimeout(() => {
         setIsOpenDenyModal?.(false)
@@ -40,7 +40,7 @@ const NewCourtItem = ({
   const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-      await managementApi.acceptNewCourt(newCourt.id)
+      await api.management.acceptNewCourt(newCourt.id)
       setIsOpenAcceptModal?.(true)
       setTimeout(() => {
         setIsOpenAcceptModal?.(false)

@@ -1,11 +1,10 @@
-import React from "react"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useInfiniteQuery } from "@tanstack/react-query"
+import { api } from "~/api"
 import { UserListItem } from "~/components/domains"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
-import followAPI from "~/service/followApi"
 
 const FollowerPage: NextPage = () => {
   const { useMountPage } = useNavigationContext()
@@ -15,7 +14,7 @@ const FollowerPage: NextPage = () => {
   const userFollowerQuery = useInfiniteQuery(
     ["users", query.userId, "followers"],
     async ({ queryKey }) => {
-      const { data } = await followAPI.getUserFollowers({
+      const { data } = await api.follow.getUserFollowers({
         id: `${queryKey[1] as string}`,
         isFirst: true,
         lastId: null,

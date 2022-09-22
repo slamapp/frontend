@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import type { NextPage } from "next"
 import styled from "@emotion/styled"
+import { api } from "~/api"
 import { NewCourtItem, Modal } from "~/components/domains"
 import { Spacer } from "~/components/uis/atoms"
 import { Tab } from "~/components/uis/templates"
 import { useNavigationContext } from "~/contexts/hooks"
-import managementApi from "~/service/managementApi"
 import type { APINewCourt } from "~/types/domains"
 
 const NewCourtsPage: NextPage = () => {
@@ -37,7 +37,10 @@ const NewCourtsPage: NextPage = () => {
         setIsFetching(true)
         const {
           data: { contents, lastId },
-        } = await managementApi.getReadyNewCourts(!currentLastId, currentLastId)
+        } = await api.management.getReadyNewCourts(
+          !currentLastId,
+          currentLastId
+        )
         if (status === "READY") {
           setReadyNewCourtData((prev) => [...prev, ...contents])
         } else {
@@ -59,7 +62,10 @@ const NewCourtsPage: NextPage = () => {
         setIsFetching(true)
         const {
           data: { contents, lastId },
-        } = await managementApi.getReadyNewCourts(!currentLastId, currentLastId)
+        } = await api.management.getReadyNewCourts(
+          !currentLastId,
+          currentLastId
+        )
         if (status === "READY") {
           setReadyNewCourtData((prev) => [...prev, ...contents])
         } else {

@@ -4,6 +4,7 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
 import Sheet from "react-modal-sheet"
+import { api } from "~/api"
 import {
   Map,
   GeneralMarker,
@@ -17,7 +18,6 @@ import { Input } from "~/components/uis/organisms"
 import { useMapContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 import { useForm } from "~/hooks"
-import { courtApi } from "~/service"
 import type { Keyof } from "~/types/common"
 import type { APICourt, Coord } from "~/types/domains"
 import { getCurrentLocation } from "~/utils/geolocation"
@@ -124,7 +124,7 @@ const CreateCourt: NextPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        await courtApi.createNewCourt(values)
+        await api.court.createNewCourt(values)
         router.push("/courts")
       } catch (error) {
         console.error(error)

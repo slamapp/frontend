@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import styled from "@emotion/styled"
+import { api } from "~/api"
 import { CourtItem, NoItemMessage } from "~/components/domains"
 import { Button, Skeleton, Spacer } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
-import favoriteAPI from "~/service/favoriteApi"
 import type { APIFavorite } from "~/types/domains"
 
 const FavoriteList = () => {
@@ -15,7 +15,7 @@ const FavoriteList = () => {
 
   const getPageFavorites = async () => {
     try {
-      const { data } = await favoriteAPI.getMyFavorites()
+      const { data } = await api.favorite.getMyFavorites()
       setFavorites(data.contents)
       setIsLoading(false)
     } catch (error) {

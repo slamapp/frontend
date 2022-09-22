@@ -17,10 +17,6 @@ const Spacer = forwardRef<HTMLDivElement, Props>(
   ({ children, type = "vertical", align, justify, gap = 0, style }, ref) => {
     const theme = useTheme()
 
-    console.log(
-      typeof gap === "string" ? theme.previousTheme.gaps[gap] : `${gap}px`
-    )
-
     return (
       <div
         ref={ref}

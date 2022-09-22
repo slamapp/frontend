@@ -7,6 +7,7 @@ import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
 import { motion } from "framer-motion"
+import { api } from "~/api"
 import {
   DatePicker,
   BasketballMarker,
@@ -23,7 +24,6 @@ import {
 } from "~/contexts/hooks"
 import { useLocalStorage } from "~/hooks"
 import { useLocalToken } from "~/hooks/domain"
-import { courtApi } from "~/service"
 import type { APICourt, Coord } from "~/types/domains"
 import {
   getTimezoneCurrentDate,
@@ -59,7 +59,7 @@ const Courts: NextPage = () => {
   const currentDate = useMemo(() => getTimezoneCurrentDate(), [])
 
   const [courts, setCourts] = useState<
-    Awaited<ReturnType<typeof courtApi["getCourtsByCoordsAndDate"]>>["data"]
+    Awaited<ReturnType<typeof api.court["getCourtsByCoordsAndDate"]>>["data"]
   >([])
 
   const [mapInitialCenter, setMapInitialCenter] = useLocalStorage(
@@ -71,7 +71,7 @@ const Courts: NextPage = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(currentDate)
 
   const [selectedMarker, setSelectedMarker] = useState<
-    Awaited<ReturnType<typeof courtApi.getCourtDetail>>["data"] | null
+    Awaited<ReturnType<typeof api.court.getCourtDetail>>["data"] | null
   >(null)
   const [address, setAddress] = useState<string | null>(null)
 
@@ -112,7 +112,7 @@ const Courts: NextPage = () => {
       const endLongitude = neLatLng.getLng()
 
       try {
-        const { data } = await courtApi.getCourtsByCoordsAndDate({
+        const { data } = await api.court.getCourtsByCoordsAndDate({
           date: getTimezoneDateStringFromDate(selectedDate),
           startLatitude,
           startLongitude,
@@ -133,7 +133,7 @@ const Courts: NextPage = () => {
       try {
         const {
           data: { court, reservationMaxCount },
-        } = await courtApi.getCourtDetail(
+        } = await api.court.getCourtDetail(
           courtId,
           getTimezoneDateStringFromDate(selectedDate),
           "morning"
@@ -263,7 +263,7 @@ const Courts: NextPage = () => {
       if (selectedMarker) {
         const {
           data: { court, reservationMaxCount },
-        } = await courtApi.getCourtDetail(
+        } = await api.court.getCourtDetail(
           selectedMarker.court.id,
           getTimezoneDateStringFromDate(selectedDate),
           "morning"

@@ -3,6 +3,7 @@ import { useCallback, useRef, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
+import { api } from "~/api"
 import {
   BottomFixedButton,
   PositionsPicker,
@@ -17,7 +18,6 @@ import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext } from "~/contexts/hooks"
 import useForm from "~/hooks/useForm"
 import type { Error } from "~/hooks/useForm"
-import { userApi } from "~/service"
 import type { Keyof } from "~/types/common"
 import type { APIUser, proficiencyType } from "~/types/domains"
 import type { positionType } from "~/types/domains/user"
@@ -108,7 +108,7 @@ const ProfileForm = () => {
     try {
       const {
         data: { description, nickname, positions, proficiency, profileImage },
-      } = await userApi.getMyProfile()
+      } = await api.user.getMyProfile()
 
       setValues({ description, nickname, positions, proficiency })
       setProfileImage(profileImage)

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { api } from "~/api"
 import {
   ProfileFavoritesListItem,
   BasketballLoading,
@@ -13,8 +14,6 @@ import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useNavigationContext, useAuthContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
-import followAPI from "~/service/followApi"
-import userApi from "~/service/userApi"
 import type { APIUser } from "~/types/domains"
 import {
   getTranslatedPositions,
@@ -38,7 +37,7 @@ const User = withRouteGuard("private", ({ query }: Props) => {
   const myProfileQuery = useQuery(
     ["myProfile", query.userId] as const,
     async () => {
-      const { data } = await userApi.getMyProfile()
+      const { data } = await api.user.getMyProfile()
 
       return data
     },
@@ -48,7 +47,7 @@ const User = withRouteGuard("private", ({ query }: Props) => {
   const userProfileQuery = useQuery(
     ["otherProfile", query.userId] as const,
     async () => {
-      const { data } = await userApi.getUserProfile({
+      const { data } = await api.user.getUserProfile({
         id: `${query.userId}`,
       })
 
@@ -340,11 +339,11 @@ const FollowButton = ({
   refetch: () => void
 }) => {
   const followMutation = useMutation(
-    () => followAPI.postFollow({ receiverId }),
+    () => api.follow.postFollow({ receiverId }),
     { onSuccess: () => refetch() }
   )
   const followCancelMutation = useMutation(
-    () => followAPI.deleteFollow({ receiverId }),
+    () => api.follow.deleteFollow({ receiverId }),
     { onSuccess: () => refetch() }
   )
 

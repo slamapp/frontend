@@ -1,11 +1,10 @@
 import { useCallback, useState } from "react"
 import Link from "next/link"
 import styled from "@emotion/styled"
+import { api } from "~/api"
 import { UserListItem } from "~/components/domains"
 import { Text, Icon, Button } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
-import reservationAPI from "~/service/reservationApi"
-import type reservationApi from "~/service/reservationApi"
 import type { APICourt, APIReservation } from "~/types/domains"
 
 interface Props {
@@ -24,13 +23,13 @@ const ReservationItemBottom = ({
   const [visible, setVisible] = useState(false)
   const [participants, setParticipants] = useState<
     Awaited<
-      ReturnType<typeof reservationApi["getMyReservationParticipants"]>
+      ReturnType<typeof api.reservation["getMyReservationParticipants"]>
     >["data"]["participants"]
   >([])
 
   const handleClick = useCallback(async () => {
     setVisible((prev) => !prev)
-    const { data } = await reservationAPI.getMyReservationParticipants({
+    const { data } = await api.reservation.getMyReservationParticipants({
       courtId,
       startTime,
       endTime,

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import type { CompatClient } from "@stomp/stompjs"
+import { api } from "~/api"
 import { useAuthContext } from "~/contexts/hooks"
-import { socketApi } from "~/service"
 import type { APINotification } from "~/types/domains"
 import type { SendAuth, UseStomp } from "./type"
 import { subscribe } from "./utils"
@@ -19,7 +19,7 @@ const useStomp: UseStomp = (token: string) => {
 
   useEffect(() => {
     if (authProps.currentUser) {
-      const newClient = socketApi.getCompatClient()
+      const newClient = api.socket.getCompatClient()
       newClient.connect(
         { Authorization: { token: `Bearer ${token}` } },
         () => {

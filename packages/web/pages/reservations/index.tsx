@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import type { NextPage } from "next"
 import styled from "@emotion/styled"
+import { api } from "~/api"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
 import { Text, Spacer } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
-import { reservationApi } from "~/service"
 
 const Reservations: NextPage = () => {
   const { authProps, getMyReservations } = useAuthContext()
@@ -25,7 +25,7 @@ const Reservations: NextPage = () => {
     setActiveTab("EXPIRED")
 
     if (currentLastId !== null) {
-      const { data } = await reservationApi.getMyExpiredReservations({
+      const { data } = await api.reservation.getMyExpiredReservations({
         isFirst: !currentLastId,
         lastId: currentLastId,
       })
@@ -37,7 +37,7 @@ const Reservations: NextPage = () => {
 
   const loadMore = useCallback(async () => {
     if (expiredReservations.length !== 0 && currentLastId !== null) {
-      const { data } = await reservationApi.getMyExpiredReservations({
+      const { data } = await api.reservation.getMyExpiredReservations({
         isFirst: !currentLastId,
         lastId: currentLastId,
       })
