@@ -95,7 +95,7 @@ const TopNavigation = () => {
           </IconGroup>
         </Wrapper>
 
-        <AnimatePresence exitBeforeEnter>
+        <AnimatePresence mode="wait">
           <TitleWrapper
             variants={titleWrapperVariants}
             initial="notShrink"

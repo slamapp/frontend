@@ -1,6 +1,6 @@
 import { css, ThemeProvider } from "@emotion/react"
 import styled from "@emotion/styled"
-import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion"
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion"
 import Toast from "~/libs/Toast"
 import emotionTheme from "~/styles/emotionTheme"
 
@@ -20,7 +20,7 @@ export default new Toast<ExtraOptions>({
   defaultOptions: { duration: 4000, delay: 100, status: "info" },
   Adapter: ({ children }) => (
     <ThemeProvider theme={emotionTheme}>
-      <AnimateSharedLayout>{children}</AnimateSharedLayout>
+      <LayoutGroup>{children}</LayoutGroup>
     </ThemeProvider>
   ),
   Template: ({
@@ -36,7 +36,7 @@ export default new Toast<ExtraOptions>({
     close,
   }) => {
     return (
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence mode="wait">
         {isShow && (
           <motion.div
             layout

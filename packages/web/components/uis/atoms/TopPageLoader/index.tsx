@@ -33,7 +33,7 @@ const TopPageLoader = () => {
 
   return (
     <Container>
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence mode="wait">
         {isProgressBar && (
           <ProgressBar
             initial={{ width: `0%` }}
