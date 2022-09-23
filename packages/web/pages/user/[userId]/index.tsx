@@ -14,7 +14,6 @@ import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useNavigationContext, useAuthContext } from "~/contexts/hooks"
 import { useMyProfileQuery, useUserProfileQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
-import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
 import type { APIUser } from "~/types/domains"
 import {
   getTranslatedPositions,
@@ -34,18 +33,18 @@ const User = withRouteGuard("private", ({ query }: Props) => {
   useMountPage("PAGE_USER")
 
   const isMe = query.userId === authProps.currentUser?.id
-  const myProfileQuery = useMyProfileQuery(query.userId, { enabled: isMe })
-  const userProfileQuery = useUserProfileQuery(query.userId, { enabled: !isMe })
-
-  useIsomorphicLayoutEffect(() => {
-    if (myProfileQuery.isSuccess) {
-      setNavigationTitle(`${myProfileQuery.data.nickname}`)
-    }
-
-    if (userProfileQuery.isSuccess) {
-      setNavigationTitle(`${userProfileQuery.data.nickname}`)
-    }
-  }, [setNavigationTitle, myProfileQuery.isSuccess, userProfileQuery.isSuccess])
+  const myProfileQuery = useMyProfileQuery(query.userId, {
+    enabled: isMe,
+    onSuccess: (data) => {
+      setNavigationTitle(data.nickname)
+    },
+  })
+  const userProfileQuery = useUserProfileQuery(query.userId, {
+    enabled: !isMe,
+    onSuccess: ({ nickname }) => {
+      setNavigationTitle(nickname)
+    },
+  })
 
   if (
     (isMe && myProfileQuery.isLoading) ||
