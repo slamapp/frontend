@@ -291,11 +291,13 @@ const Courts: NextPage = () => {
       <Head>
         <title>탐색 | Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
-      <DatePicker
-        startDate={currentDate}
-        selectedDate={selectedDate}
-        onClick={handleDateClick}
-      />
+      <div>
+        <DatePicker
+          startDate={currentDate}
+          selectedDate={selectedDate}
+          onClick={handleDateClick}
+        />
+      </div>
 
       <Map.KakaoMap
         level={5}

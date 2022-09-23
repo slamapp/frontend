@@ -190,16 +190,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@cfcs/core", [\
-        ["npm:0.0.4", {\
-          "packageLocation": "./.yarn/cache/@cfcs-core-npm-0.0.4-924e478c05-12f8b33094.zip/node_modules/@cfcs/core/",\
-          "packageDependencies": [\
-            ["@cfcs/core", "npm:0.0.4"],\
-            ["@egjs/component", "npm:3.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@commitlint/cli", [\
         ["npm:17.1.2", {\
           "packageLocation": "./.yarn/cache/@commitlint-cli-npm-17.1.2-8a99e7ce6e-2f87c560ed.zip/node_modules/@commitlint/cli/",\
@@ -415,79 +405,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@cspotcode/source-map-support", "npm:0.8.1"],\
             ["@jridgewell/trace-mapping", "npm:0.3.9"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@egjs/agent", [\
-        ["npm:2.4.3", {\
-          "packageLocation": "./.yarn/cache/@egjs-agent-npm-2.4.3-44b804869b-4f2654ba7a.zip/node_modules/@egjs/agent/",\
-          "packageDependencies": [\
-            ["@egjs/agent", "npm:2.4.3"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@egjs/axes", [\
-        ["npm:3.8.1", {\
-          "packageLocation": "./.yarn/cache/@egjs-axes-npm-3.8.1-acf5361745-56c6ecd99b.zip/node_modules/@egjs/axes/",\
-          "packageDependencies": [\
-            ["@egjs/axes", "npm:3.8.1"],\
-            ["@cfcs/core", "npm:0.0.4"],\
-            ["@egjs/agent", "npm:2.4.3"],\
-            ["@egjs/component", "npm:3.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@egjs/component", [\
-        ["npm:3.0.2", {\
-          "packageLocation": "./.yarn/cache/@egjs-component-npm-3.0.2-8e73e96c87-4fd8854192.zip/node_modules/@egjs/component/",\
-          "packageDependencies": [\
-            ["@egjs/component", "npm:3.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@egjs/flicking", [\
-        ["npm:4.10.0", {\
-          "packageLocation": "./.yarn/cache/@egjs-flicking-npm-4.10.0-f3ca2e8fcf-fbac1dddf9.zip/node_modules/@egjs/flicking/",\
-          "packageDependencies": [\
-            ["@egjs/flicking", "npm:4.10.0"],\
-            ["@egjs/axes", "npm:3.8.1"],\
-            ["@egjs/component", "npm:3.0.2"],\
-            ["@egjs/imready", "npm:1.3.0"],\
-            ["@egjs/list-differ", "npm:1.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@egjs/imready", [\
-        ["npm:1.3.0", {\
-          "packageLocation": "./.yarn/cache/@egjs-imready-npm-1.3.0-92c63e255c-207736c758.zip/node_modules/@egjs/imready/",\
-          "packageDependencies": [\
-            ["@egjs/imready", "npm:1.3.0"],\
-            ["@egjs/component", "npm:3.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@egjs/list-differ", [\
-        ["npm:1.0.0", {\
-          "packageLocation": "./.yarn/cache/@egjs-list-differ-npm-1.0.0-f4b91781db-d1827d134d.zip/node_modules/@egjs/list-differ/",\
-          "packageDependencies": [\
-            ["@egjs/list-differ", "npm:1.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@egjs/react-flicking", [\
-        ["npm:4.10.0", {\
-          "packageLocation": "./.yarn/cache/@egjs-react-flicking-npm-4.10.0-6fd837f42c-5b5e27a8e6.zip/node_modules/@egjs/react-flicking/",\
-          "packageDependencies": [\
-            ["@egjs/react-flicking", "npm:4.10.0"],\
-            ["@egjs/flicking", "npm:4.10.0"],\
-            ["@egjs/list-differ", "npm:1.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6665,7 +6582,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/web/",\
           "packageDependencies": [\
             ["web", "workspace:packages/web"],\
-            ["@egjs/react-flicking", "npm:4.10.0"],\
             ["@emotion/react", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:11.10.4"],\
             ["@emotion/styled", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:11.10.4"],\
             ["@stomp/stompjs", "npm:6.1.2"],\

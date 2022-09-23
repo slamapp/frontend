@@ -1,85 +1,76 @@
-import React, { useMemo } from "react"
-import styled from "@emotion/styled"
+import { css, useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import { Text } from "~/components/uis/atoms"
 import { week } from "~/utils/date"
 
 interface Props {
+  width: number
   date: Dayjs
   selected: boolean
   onClick: (date: Dayjs) => void
 }
 
-const DateItem = React.memo(
-  React.forwardRef<HTMLDivElement, Props>(
-    ({ date, onClick, selected }, ref) => {
-      const dayOfWeekIndex = useMemo(() => date.day(), [date])
-
-      return (
-        <DateItemContainer ref={ref} onClick={() => onClick(date)}>
-          <DayOfTheWeek block index={dayOfWeekIndex}>
-            {week[dayOfWeekIndex]}
-          </DayOfTheWeek>
-          <Day selected={selected}>
-            <span>{date.date()}</span>
-          </Day>
-        </DateItemContainer>
-      )
-    }
-  )
-)
-
-export default DateItem
-
-const DateItemContainer = styled.div`
-  margin-top: ${({ theme }) => theme.previousTheme.gaps.md};
-  margin-bottom: ${({ theme }) => theme.previousTheme.gaps.xs};
-  margin-right: 10px;
-  display: "flex";
-  flex-direction: column;
-  text-align: center;
-  cursor: pointer;
-`
-
 const SUNDAY_INDEX = 0
 const SATURDAY_INDEX = 6
 
-const DayOfTheWeek = styled(Text)<{ index: number }>`
-  margin-bottom: 10px;
-  color: ${({ index, theme }) => {
-    if (index === SUNDAY_INDEX) {
-      return theme.previousTheme.colors.red.middle
-    } else if (index === SATURDAY_INDEX) {
-      return theme.previousTheme.colors.blue.middle
-    } else {
-      return theme.previousTheme.colors.gray700
-    }
-  }};
-  font-size: ${({ theme }) => theme.previousTheme.fontSizes.xs};
-`
+const DateItem = ({ width, date, onClick, selected }: Props) => {
+  const dayOfWeekIndex = date.day()
 
-const Day = styled(Text)<{ selected: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  font-size: ${({ theme }) => theme.previousTheme.fontSizes.sm};
-  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
-  background: ${({ theme, selected }) =>
-    selected ? theme.previousTheme.colors.gray900 : "none"};
-  color: ${({ theme, selected }) =>
-    selected
-      ? theme.previousTheme.colors.white
-      : theme.previousTheme.colors.gray900};
+  const theme = useTheme()
 
-  transition: all 200ms;
+  return (
+    <div
+      css={css`
+        width: ${width}px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        gap: 8px;
+      `}
+      onClick={() => onClick(date)}
+    >
+      <div
+        css={css`
+          background-color: ${selected
+            ? theme.colors.gray0900
+            : theme.colors.white};
+          width: ${width}px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 12px;
+          flex-direction: column;
+          gap: 4px;
+          box-shadow: 0 0 32px -16px ${theme.colors.gray0300};
+        `}
+      >
+        <Text
+          strong
+          color={
+            dayOfWeekIndex === SUNDAY_INDEX
+              ? theme.colors.red0300
+              : dayOfWeekIndex === SATURDAY_INDEX
+              ? theme.colors.blue0300
+              : selected
+              ? "white"
+              : theme.colors.gray0700
+          }
+          size="xs"
+        >
+          {week[dayOfWeekIndex]}
+        </Text>
+        <Text
+          strong
+          color={selected ? theme.colors.white : theme.colors.gray0900}
+        >
+          {date.date()}
+        </Text>
+      </div>
+    </div>
+  )
+}
 
-  :hover {
-    background: ${({ theme, selected }) =>
-      selected
-        ? theme.previousTheme.colors.gray900
-        : theme.previousTheme.colors.gray700};
-    color: ${({ theme }) => theme.previousTheme.colors.white};
-  }
-`
+export default DateItem

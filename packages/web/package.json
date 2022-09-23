@@ -12,7 +12,6 @@
     "type": "tsc --noEmit"
   },
   "dependencies": {
-    "@egjs/react-flicking": "^4.10.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@stomp/stompjs": "^6.1.2",

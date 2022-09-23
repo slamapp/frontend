@@ -1,6 +1,7 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Variants } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
@@ -96,7 +97,15 @@ const TopNavigation = () => {
         </Wrapper>
 
         <AnimatePresence mode="wait">
-          <TitleWrapper
+          <motion.div
+            css={css`
+              font-size: 28px;
+              font-weight: 700;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              padding-left: 22px;
+            `}
             variants={titleWrapperVariants}
             initial="notShrink"
             animate={
@@ -108,7 +117,7 @@ const TopNavigation = () => {
             }
           >
             {title}
-          </TitleWrapper>
+          </motion.div>
         </AnimatePresence>
       </Container>
     </>
@@ -141,15 +150,6 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 0px 12px;
   height: 50px;
-`
-
-const TitleWrapper = styled(motion.div)`
-  font-size: 28px;
-  font-weight: 700;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 22px;
 `
 
 const IconGroup = styled.div`
