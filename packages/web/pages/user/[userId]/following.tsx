@@ -1,9 +1,8 @@
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useQuery } from "@tanstack/react-query"
-import { api } from "~/api"
 import { UserListItem } from "~/components/domains"
 import { useNavigationContext } from "~/contexts/hooks"
+import { useUserFollowingQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
 
 const FollowingPage: NextPage = () => {
@@ -11,19 +10,7 @@ const FollowingPage: NextPage = () => {
   useMountPage("PAGE_USER_FOLLOWING")
   const { query } = useRouter()
 
-  const userFollowingQuery = useQuery(
-    ["users", query.userId, "followings"],
-    async () => {
-      const { data } = await api.follows.getUserFollowings({
-        id: `${query.userId as string}`,
-        isFirst: true,
-        lastId: null,
-      })
-
-      return data
-    },
-    { enabled: !!query.userId }
-  )
+  const userFollowingQuery = useUserFollowingQuery(query.userId as string)
 
   if (userFollowingQuery.isLoading) {
     return <>...loadng</>

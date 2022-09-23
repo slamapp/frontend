@@ -2,7 +2,7 @@ import type { GetServerSideProps } from "next"
 import Link from "next/link"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { api } from "~/api"
 import {
   ProfileFavoritesListItem,
@@ -12,6 +12,7 @@ import { Text, Button, Spacer } from "~/components/uis/atoms"
 import { Label, Chip, Avatar } from "~/components/uis/molecules"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useNavigationContext, useAuthContext } from "~/contexts/hooks"
+import { useMyProfileQuery, useUserProfileQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
 import useIsomorphicLayoutEffect from "~/hooks/useIsomorphicLayoutEffect"
 import type { APIUser } from "~/types/domains"
@@ -33,28 +34,8 @@ const User = withRouteGuard("private", ({ query }: Props) => {
   useMountPage("PAGE_USER")
 
   const isMe = query.userId === authProps.currentUser?.id
-
-  const myProfileQuery = useQuery(
-    ["myProfile", query.userId] as const,
-    async () => {
-      const { data } = await api.users.getMyProfile()
-
-      return data
-    },
-    { enabled: isMe }
-  )
-
-  const userProfileQuery = useQuery(
-    ["otherProfile", query.userId] as const,
-    async () => {
-      const { data } = await api.users.getUserProfile({
-        id: `${query.userId}`,
-      })
-
-      return data
-    },
-    { enabled: !isMe }
-  )
+  const myProfileQuery = useMyProfileQuery(query.userId, { enabled: isMe })
+  const userProfileQuery = useUserProfileQuery(query.userId, { enabled: !isMe })
 
   useIsomorphicLayoutEffect(() => {
     if (myProfileQuery.isSuccess) {
