@@ -169,7 +169,7 @@ const AuthProvider = ({ children }: Props) => {
   const createFavorite: ContextProps["createFavorite"] = useCallback(
     async (courtId) => {
       try {
-        const { data: favorite } = await api.favorite.createMyFavorite(courtId)
+        const { data: favorite } = await api.favorite.createFavorite(courtId)
         dispatch({ type: "CREATE_FAVORITE", payload: { favorite } })
       } catch (error) {
         console.error(error)
@@ -181,7 +181,7 @@ const AuthProvider = ({ children }: Props) => {
   const deleteFavorite: ContextProps["deleteFavorite"] = useCallback(
     async (favoriteId) => {
       try {
-        await api.favorite.deleteMyFavorite(favoriteId)
+        await api.favorite.deleteFavorite(favoriteId)
         dispatch({
           type: "DELETE_FAVORITE",
           payload: { deletedFavoriteId: favoriteId },
