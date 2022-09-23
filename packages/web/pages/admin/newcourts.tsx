@@ -37,7 +37,7 @@ const NewCourtsPage: NextPage = () => {
         setIsFetching(true)
         const {
           data: { contents, lastId },
-        } = await api.management.getReadyNewCourts(
+        } = await api.managements.getReadyNewCourts(
           !currentLastId,
           currentLastId
         )
@@ -62,7 +62,7 @@ const NewCourtsPage: NextPage = () => {
         setIsFetching(true)
         const {
           data: { contents, lastId },
-        } = await api.management.getReadyNewCourts(
+        } = await api.managements.getReadyNewCourts(
           !currentLastId,
           currentLastId
         )

@@ -124,7 +124,7 @@ const CreateCourt: NextPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        await api.court.createNewCourt(values)
+        await api.courts.createNewCourt(values)
         router.push("/courts")
       } catch (error) {
         console.error(error)

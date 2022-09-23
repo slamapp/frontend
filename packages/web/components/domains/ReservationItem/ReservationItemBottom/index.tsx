@@ -23,13 +23,13 @@ const ReservationItemBottom = ({
   const [visible, setVisible] = useState(false)
   const [participants, setParticipants] = useState<
     Awaited<
-      ReturnType<typeof api.reservation["getMyReservationParticipants"]>
+      ReturnType<typeof api.reservations["getMyReservationParticipants"]>
     >["data"]["participants"]
   >([])
 
   const handleClick = useCallback(async () => {
     setVisible((prev) => !prev)
-    const { data } = await api.reservation.getMyReservationParticipants({
+    const { data } = await api.reservations.getMyReservationParticipants({
       courtId,
       startTime,
       endTime,

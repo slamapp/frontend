@@ -25,7 +25,7 @@ const Reservations: NextPage = () => {
     setActiveTab("EXPIRED")
 
     if (currentLastId !== null) {
-      const { data } = await api.reservation.getMyExpiredReservations({
+      const { data } = await api.reservations.getMyExpiredReservations({
         isFirst: !currentLastId,
         lastId: currentLastId,
       })
@@ -37,7 +37,7 @@ const Reservations: NextPage = () => {
 
   const loadMore = useCallback(async () => {
     if (expiredReservations.length !== 0 && currentLastId !== null) {
-      const { data } = await api.reservation.getMyExpiredReservations({
+      const { data } = await api.reservations.getMyExpiredReservations({
         isFirst: !currentLastId,
         lastId: currentLastId,
       })

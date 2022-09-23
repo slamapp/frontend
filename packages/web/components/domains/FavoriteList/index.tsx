@@ -15,7 +15,7 @@ const FavoriteList = () => {
 
   const getPageFavorites = async () => {
     try {
-      const { data } = await api.favorite.getMyFavorites()
+      const { data } = await api.favorites.getMyFavorites()
       setFavorites(data.contents)
       setIsLoading(false)
     } catch (error) {

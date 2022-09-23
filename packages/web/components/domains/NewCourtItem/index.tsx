@@ -26,7 +26,7 @@ const NewCourtItem = ({
   const handleDeny = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-      await api.management.denyNewCourt(newCourt.id)
+      await api.managements.denyNewCourt(newCourt.id)
       setIsOpenDenyModal?.(true)
       setTimeout(() => {
         setIsOpenDenyModal?.(false)
@@ -40,7 +40,7 @@ const NewCourtItem = ({
   const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-      await api.management.acceptNewCourt(newCourt.id)
+      await api.managements.acceptNewCourt(newCourt.id)
       setIsOpenAcceptModal?.(true)
       setTimeout(() => {
         setIsOpenAcceptModal?.(false)

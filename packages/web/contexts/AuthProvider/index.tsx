@@ -54,7 +54,7 @@ const AuthProvider = ({ children }: Props) => {
             updatedAt,
             notifications,
           },
-        } = await api.user.getUserData()
+        } = await api.users.getUserData()
 
         setCurrentUser({
           user: {
@@ -89,7 +89,7 @@ const AuthProvider = ({ children }: Props) => {
 
       dispatch({ type: "LOADING_ON" })
       try {
-        const { data } = await api.user.updateMyProfile(editedUserProfile)
+        const { data } = await api.users.updateMyProfile(editedUserProfile)
         const { description, nickname, positions, proficiency } = data
 
         dispatch({
@@ -110,7 +110,7 @@ const AuthProvider = ({ children }: Props) => {
     useCallback(async (editedProfileImageFile) => {
       dispatch({ type: "LOADING_ON" })
       try {
-        const { data: userProfileImage } = await api.user.updateMyProfileImage(
+        const { data: userProfileImage } = await api.users.updateMyProfileImage(
           editedProfileImageFile
         )
         dispatch({ type: "SET_MY_PROFILE_IMAGE", payload: userProfileImage })
@@ -125,7 +125,7 @@ const AuthProvider = ({ children }: Props) => {
     useCallback(async () => {
       dispatch({ type: "LOADING_ON" })
       try {
-        const { data } = await api.user.deleteMyProfileImage()
+        const { data } = await api.users.deleteMyProfileImage()
         const { profileImage } = data
         dispatch({
           type: "SET_MY_PROFILE_IMAGE",
@@ -141,7 +141,7 @@ const AuthProvider = ({ children }: Props) => {
   const getMyReservations: ContextProps["getMyReservations"] =
     useCallback(async () => {
       try {
-        const { data } = await api.reservation.getMyUpcomingReservations()
+        const { data } = await api.reservations.getMyUpcomingReservations()
 
         dispatch({
           type: "SET_MY_RESERVATIONS",
@@ -155,7 +155,7 @@ const AuthProvider = ({ children }: Props) => {
   const getMyFavorites: ContextProps["getMyFavorites"] =
     useCallback(async () => {
       try {
-        const { data } = await api.favorite.getMyFavorites()
+        const { data } = await api.favorites.getMyFavorites()
 
         dispatch({
           type: "GET_MY_FAVORITES",
@@ -169,7 +169,7 @@ const AuthProvider = ({ children }: Props) => {
   const createFavorite: ContextProps["createFavorite"] = useCallback(
     async (courtId) => {
       try {
-        const { data: favorite } = await api.favorite.createFavorite(courtId)
+        const { data: favorite } = await api.favorites.createFavorite(courtId)
         dispatch({ type: "CREATE_FAVORITE", payload: { favorite } })
       } catch (error) {
         console.error(error)
@@ -181,7 +181,7 @@ const AuthProvider = ({ children }: Props) => {
   const deleteFavorite: ContextProps["deleteFavorite"] = useCallback(
     async (favoriteId) => {
       try {
-        await api.favorite.deleteFavorite(favoriteId)
+        await api.favorites.deleteFavorite(favoriteId)
         dispatch({
           type: "DELETE_FAVORITE",
           payload: { deletedFavoriteId: favoriteId },
@@ -196,7 +196,7 @@ const AuthProvider = ({ children }: Props) => {
   const readAllNotifications: ContextProps["readAllNotifications"] =
     async () => {
       try {
-        await api.notification.readAllNotifications()
+        await api.notifications.readAllNotifications()
         dispatch({ type: "READ_ALL_NOTIFICATIONS" })
       } catch (error) {
         console.error(error)
@@ -208,7 +208,7 @@ const AuthProvider = ({ children }: Props) => {
       if (authProps.notificationLastId) {
         const {
           data: { contents, lastId: fetchedLastId },
-        } = await api.notification.getNotifications({
+        } = await api.notifications.getNotifications({
           lastId: authProps.notificationLastId,
         })
 

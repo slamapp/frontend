@@ -19,7 +19,7 @@ const useStomp: UseStomp = (token: string) => {
 
   useEffect(() => {
     if (authProps.currentUser) {
-      const newClient = api.socket.getCompatClient()
+      const newClient = api.sockets.getCompatClient()
       newClient.connect(
         { Authorization: { token: `Bearer ${token}` } },
         () => {

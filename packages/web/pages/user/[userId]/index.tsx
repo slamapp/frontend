@@ -37,7 +37,7 @@ const User = withRouteGuard("private", ({ query }: Props) => {
   const myProfileQuery = useQuery(
     ["myProfile", query.userId] as const,
     async () => {
-      const { data } = await api.user.getMyProfile()
+      const { data } = await api.users.getMyProfile()
 
       return data
     },
@@ -47,7 +47,7 @@ const User = withRouteGuard("private", ({ query }: Props) => {
   const userProfileQuery = useQuery(
     ["otherProfile", query.userId] as const,
     async () => {
-      const { data } = await api.user.getUserProfile({
+      const { data } = await api.users.getUserProfile({
         id: `${query.userId}`,
       })
 
@@ -339,11 +339,11 @@ const FollowButton = ({
   refetch: () => void
 }) => {
   const followMutation = useMutation(
-    () => api.follow.postFollow({ receiverId }),
+    () => api.follows.postFollow({ receiverId }),
     { onSuccess: () => refetch() }
   )
   const followCancelMutation = useMutation(
-    () => api.follow.deleteFollow({ receiverId }),
+    () => api.follows.deleteFollow({ receiverId }),
     { onSuccess: () => refetch() }
   )
 

@@ -108,7 +108,7 @@ const ProfileForm = () => {
     try {
       const {
         data: { description, nickname, positions, proficiency, profileImage },
-      } = await api.user.getMyProfile()
+      } = await api.users.getMyProfile()
 
       setValues({ description, nickname, positions, proficiency })
       setProfileImage(profileImage)

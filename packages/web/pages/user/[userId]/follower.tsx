@@ -14,7 +14,7 @@ const FollowerPage: NextPage = () => {
   const userFollowerQuery = useInfiniteQuery(
     ["users", query.userId, "followers"],
     async ({ queryKey }) => {
-      const { data } = await api.follow.getUserFollowers({
+      const { data } = await api.follows.getUserFollowers({
         id: `${queryKey[1] as string}`,
         isFirst: true,
         lastId: null,

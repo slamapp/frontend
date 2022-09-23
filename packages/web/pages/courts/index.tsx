@@ -59,7 +59,7 @@ const Courts: NextPage = () => {
   const currentDate = useMemo(() => getTimezoneCurrentDate(), [])
 
   const [courts, setCourts] = useState<
-    Awaited<ReturnType<typeof api.court["getCourtsByCoordsAndDate"]>>["data"]
+    Awaited<ReturnType<typeof api.courts["getCourtsByCoordsAndDate"]>>["data"]
   >([])
 
   const [mapInitialCenter, setMapInitialCenter] = useLocalStorage(
@@ -71,7 +71,7 @@ const Courts: NextPage = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(currentDate)
 
   const [selectedMarker, setSelectedMarker] = useState<
-    Awaited<ReturnType<typeof api.court.getCourtDetail>>["data"] | null
+    Awaited<ReturnType<typeof api.courts.getCourtDetail>>["data"] | null
   >(null)
   const [address, setAddress] = useState<string | null>(null)
 
@@ -112,7 +112,7 @@ const Courts: NextPage = () => {
       const endLongitude = neLatLng.getLng()
 
       try {
-        const { data } = await api.court.getCourtsByCoordsAndDate({
+        const { data } = await api.courts.getCourtsByCoordsAndDate({
           date: getTimezoneDateStringFromDate(selectedDate),
           startLatitude,
           startLongitude,
@@ -133,7 +133,7 @@ const Courts: NextPage = () => {
       try {
         const {
           data: { court, reservationMaxCount },
-        } = await api.court.getCourtDetail(
+        } = await api.courts.getCourtDetail(
           courtId,
           getTimezoneDateStringFromDate(selectedDate),
           "morning"
@@ -263,7 +263,7 @@ const Courts: NextPage = () => {
       if (selectedMarker) {
         const {
           data: { court, reservationMaxCount },
-        } = await api.court.getCourtDetail(
+        } = await api.courts.getCourtDetail(
           selectedMarker.court.id,
           getTimezoneDateStringFromDate(selectedDate),
           "morning"

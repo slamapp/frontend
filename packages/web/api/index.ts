@@ -1,19 +1,19 @@
-import court from "./court"
-import favorite from "./favorite"
-import follow from "./follow"
-import management from "./management"
-import notification from "./notification"
-import reservation from "./reservation"
-import socket from "./socket"
-import user from "./user"
+import courts from "./courts"
+import favorites from "./favorites"
+import follows from "./follows"
+import managements from "./managements"
+import notifications from "./notifications"
+import reservations from "./reservations"
+import sockets from "./sockets"
+import users from "./users"
 
 export const api = {
-  user,
-  socket,
-  court,
-  favorite,
-  reservation,
-  notification,
-  management,
-  follow,
+  courts,
+  favorites,
+  follows,
+  managements,
+  notifications,
+  reservations,
+  sockets,
+  users,
 }
