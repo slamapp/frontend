@@ -154,10 +154,6 @@ const Courts: NextPage = () => {
     [selectedDate]
   )
 
-  const handleDateClick = useCallback((selectedDate: Dayjs) => {
-    setSelectedDate(selectedDate)
-  }, [])
-
   const handleMarkerClick = useCallback(
     (court: APICourt) => {
       setIsOpen(true)
@@ -293,9 +289,8 @@ const Courts: NextPage = () => {
       </Head>
       <div>
         <DatePicker
-          startDate={currentDate}
-          selectedDate={selectedDate}
-          onClick={handleDateClick}
+          initialValue={selectedDate}
+          onChange={(date) => setSelectedDate(date)}
         />
       </div>
 

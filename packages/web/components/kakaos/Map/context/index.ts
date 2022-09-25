@@ -1,0 +1,12 @@
+import type { RefObject } from "react"
+import { createContext, useContext } from "react"
+
+export const Context = createContext({
+  map: null,
+  mapRef: { current: null },
+} as {
+  map: kakao.maps.Map | null
+  mapRef: RefObject<HTMLDivElement>
+})
+
+export const useMap = () => useContext(Context)

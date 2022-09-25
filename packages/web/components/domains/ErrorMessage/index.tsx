@@ -26,7 +26,7 @@ const ErrorMessage = ({ title, description, buttonTitle, style }: Props) => {
         </Text>
         <TextGray size="xs">{description}</TextGray>
       </Spacer>
-      <Link href="/courts" passHref>
+      <Link href="/map" passHref>
         <SearchButton fullWidth>
           <SearchIcon name="map" size="sm" color="white" />
           {buttonTitle}

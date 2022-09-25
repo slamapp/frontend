@@ -35,7 +35,7 @@ const Login: NextPage = () => {
 
       <KaKaoLoginButton
         onClick={handleClickLogin}
-        iconButton={{ icon: "map", href: "/courts" }}
+        iconButton={{ icon: "map", href: "/map" }}
         custom
         style={{ flex: 1 }}
       >

@@ -1,24 +1,33 @@
-import { useMemo, useRef } from "react"
+import { useMemo, useRef, useState } from "react"
 import { css } from "@emotion/react"
 import type { Dayjs } from "dayjs"
+import dayjs from "dayjs"
 import { motion } from "framer-motion"
 import DateItem from "./DateItem"
 
 const DAY_RANGE = 14
 
 interface Props {
-  onClick: (date: Dayjs) => void
-  selectedDate: Dayjs
-  startDate: Dayjs
+  initialValue?: Dayjs
+  onChange: (date: Dayjs) => void
 }
 
-const DatePicker = ({ startDate, onClick, selectedDate }: Props) => {
+const DatePicker = ({ initialValue, onChange }: Props) => {
+  const [selectedDate, setSelectedDate] = useState(
+    initialValue ||
+      (() => {
+        const timezone = "Asia/Seoul"
+
+        return dayjs().tz(timezone).hour(0).minute(0).second(0).millisecond(0)
+      })
+  )
+
   const twoWeekDates = useMemo(
     () =>
       Array.from({ length: DAY_RANGE }, (_, index) =>
-        startDate.add(index, "day")
+        selectedDate.add(index, "day")
       ),
-    [startDate]
+    []
   )
 
   const gap = 16
@@ -48,7 +57,7 @@ const DatePicker = ({ startDate, onClick, selectedDate }: Props) => {
               width={dateItemWidth}
               key={date.toISOString()}
               date={date}
-              onClick={onClick}
+              onClick={(date) => setSelectedDate(date)}
               selected={date.isSame(selectedDate)}
             />
           )

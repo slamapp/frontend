@@ -46,7 +46,7 @@ const NoItemMessage = ({
         </Text>
         <TextGray size="xs">{description}</TextGray>
       </Spacer>
-      <Link href="/courts" passHref>
+      <Link href="/map" passHref>
         <a>
           <SearchButton fullWidth>
             <SearchIcon name="map" size="sm" color="white" />

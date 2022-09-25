@@ -92,7 +92,7 @@ NavIcon.Favorites = () => (
 )
 NavIcon.Map = () => (
   <NavIcon
-    href="/courts"
+    href="/map"
     iconName="map"
     label="지도"
     pageTypes={["PAGE_MAP", "PAGE_RESERVATIONS_COURTS"]}

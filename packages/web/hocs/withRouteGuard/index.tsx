@@ -4,7 +4,7 @@ import { useAuthContext } from "~/contexts/hooks"
 import { useLocalToken } from "~/hooks/domain"
 
 // TODO: Version2에서 private / prevented RedirectPath Props로 받아오도록 변경하기
-const privateRedirectPath = "/courts"
+const privateRedirectPath = "/map"
 const preventedRedirectPath = "/"
 
 type RouteOption = "private" | "prevented"
