@@ -59,7 +59,7 @@ const CreateCourt: NextPage = () => {
             setAddress(result[0].road_address.address_name as string)
           }
           // 법정 주소
-          else if (result[0].address.address_name) {
+          else if (result[0].address) {
             setAddress(result[0].address.address_name as string)
           }
           // 주소가 없는 경우

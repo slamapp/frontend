@@ -218,7 +218,7 @@ const Courts: NextPage = () => {
         (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
             // 도로명 주소
-            if (result[0].road_address.address_name) {
+            if (result[0].road_address) {
               setAddress(result[0].road_address.address_name as string)
             }
             // 법정 주소

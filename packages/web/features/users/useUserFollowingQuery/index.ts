@@ -3,7 +3,7 @@ import { api } from "~/api"
 import type { APIUser } from "~/types/domains"
 import { queryKey } from "../../queryKey"
 
-const useUserFolloingQuery = (userId: APIUser["id"]) =>
+const useUserFollowingQuery = (userId: APIUser["id"]) =>
   useQuery(
     queryKey.users.oneFollowings(userId as string),
     async () => {
@@ -18,4 +18,4 @@ const useUserFolloingQuery = (userId: APIUser["id"]) =>
     { enabled: !!userId }
   )
 
-export default useUserFolloingQuery
+export default useUserFollowingQuery
