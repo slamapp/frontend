@@ -97,7 +97,15 @@ const FavoriteList = () => {
                 courtName={court.name}
               />
             </Spacer>
-            <Link href={`/courts?courtId=${court.id}`} passHref>
+            <Link
+              href={{
+                pathname: "/map",
+                query: {
+                  courtId: court.id,
+                },
+              }}
+              passHref
+            >
               <a style={{ flex: 1, display: "flex" }}>
                 <Button size="lg" style={{ flex: 1 }}>
                   예약하기

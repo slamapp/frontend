@@ -1,37 +1,36 @@
 import { useCallback, useEffect, useMemo } from "react"
 import { useAuthContext } from "~/contexts/hooks"
 import type { APICourt } from "~/types/domains"
+import { useMap } from "../context"
 
-interface Props {
-  map: kakao.maps.Map
+type Props = {
+  onClick?: (court: APICourt) => void
   court: APICourt
-  reservationMaxCourt: number
-  onClick: (court: any) => void
+  reservationMaxCount: number
 }
 
 const PAUSE_COURT_NUMBER = 0
 const FIRE_COURT_NUMBER = 6
 
-const BasketballMarker = ({
-  map,
-  court,
-  reservationMaxCourt,
-  onClick,
-}: Props): JSX.Element => {
+const Basketball = ({ onClick, court, reservationMaxCount }: Props) => {
+  const { map } = useMap()
+
   const { authProps } = useAuthContext()
   const { favorites, reservations } = authProps
 
-  const marker = useMemo(() => {
-    return new kakao.maps.Marker({
-      position: new kakao.maps.LatLng(0, 0),
-      clickable: true,
-      title: court.name,
-    })
-  }, [])
+  const marker = useMemo(
+    () =>
+      new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(0, 0),
+        clickable: true,
+        title: court.name,
+      }),
+    []
+  )
 
   const handleClick = useCallback(() => {
-    onClick(court)
-  }, [court, onClick])
+    onClick?.(court)
+  }, [court.id, onClick])
 
   useEffect(() => {
     if (map) {
@@ -49,8 +48,8 @@ const BasketballMarker = ({
       }
 
       if (
-        reservationMaxCourt > PAUSE_COURT_NUMBER &&
-        reservationMaxCourt < FIRE_COURT_NUMBER
+        reservationMaxCount > PAUSE_COURT_NUMBER &&
+        reservationMaxCount < FIRE_COURT_NUMBER
       ) {
         if (isReservatedCourt && isFavoritedCourt) {
           imageSrc = "/assets/basketball/fire_off_all_tagged.gif"
@@ -63,7 +62,7 @@ const BasketballMarker = ({
         }
       }
 
-      if (reservationMaxCourt >= FIRE_COURT_NUMBER) {
+      if (reservationMaxCount >= FIRE_COURT_NUMBER) {
         if (isReservatedCourt && isFavoritedCourt) {
           imageSrc = "/assets/basketball/fire_on_all_tagged.gif"
         } else if (isReservatedCourt) {
@@ -100,10 +99,10 @@ const BasketballMarker = ({
       kakao.maps.event.removeListener(marker, "click", handleClick)
       marker.setMap(null)
     }
-  }, [map, court, handleClick, marker])
+  }, [map, court.id, handleClick, marker, favorites.length])
 
   // TODO: 일단 반환 해놓은 더미 없애기
-  return <div></div>
+  return <></>
 }
 
-export default BasketballMarker
+export default Basketball

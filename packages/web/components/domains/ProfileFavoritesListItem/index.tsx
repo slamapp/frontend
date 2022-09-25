@@ -24,7 +24,15 @@ const ProfileFavoritesListItem: React.FC<Props> = ({
       </Spacer>
       <div>
         <Button secondary>
-          <Link href={`/courts?courtId=${courtId}`} passHref>
+          <Link
+            href={{
+              pathname: "/map",
+              query: {
+                courtId,
+              },
+            }}
+            passHref
+          >
             <a>지도 보기</a>
           </Link>
         </Button>

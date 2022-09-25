@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { css } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
@@ -34,6 +34,10 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
   const dateItemWidth = 50
 
   const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    onChange(selectedDate)
+  }, [selectedDate])
 
   return (
     <motion.div ref={ref} whileTap={{ cursor: "grabbing" }}>

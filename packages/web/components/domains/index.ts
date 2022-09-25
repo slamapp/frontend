@@ -1,7 +1,7 @@
 export { default as BottomNavigation } from "./BottomNavigtion"
 export { default as DatePicker } from "./DatePicker"
 export { default as Map } from "./KakaoMap"
-export { GeneralMarker, BasketballMarker } from "./KakaoMapMarker"
+export { GeneralMarker } from "./KakaoMapMarker"
 export { default as BottomFixedButton } from "./BottomFixedButton"
 export { default as Logo } from "./Logo"
 export { default as LoudSpeaker } from "./ReservationItem/Loudspeaker"

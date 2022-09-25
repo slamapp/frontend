@@ -1,24 +1,27 @@
-import { useCallback, useEffect } from "react"
+import { useEffect } from "react"
 import { useMap } from "../context"
 
 const useMapEvent = (
+  target: kakao.maps.event.EventTarget | null,
   type: string,
-  callback?: (target: kakao.maps.Map) => void
+  callback?: (map: kakao.maps.Map) => void
 ) => {
-  const { map } = useMap()
-  const handler = useCallback(() => {
+  const { map, setRender } = useMap()
+  const handler = () => {
     if (map) {
       callback?.(map)
     }
-  }, [callback, map])
+
+    setRender((prev) => ({ ...prev }))
+  }
 
   useEffect(() => {
-    if (map) {
-      kakao.maps.event.addListener(map, type, handler)
+    if (target) {
+      kakao.maps.event.addListener(target, type, handler)
 
-      return () => kakao.maps.event.removeListener(map, type, handler)
+      return () => kakao.maps.event.removeListener(target, type, handler)
     }
-  }, [handler, map, type])
+  }, [handler, target, type])
 }
 
 export default useMapEvent

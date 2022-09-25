@@ -12,7 +12,7 @@ const useCourtsQuery = (
   return useQuery<
     Awaited<ReturnType<typeof api.courts.getCourtsByCoordsAndDate>>["data"]
   >(
-    queryKey.courts.filtered(filter),
+    queryKey.courts.all,
     async () => {
       const { data } = await api.courts.getCourtsByCoordsAndDate(filter)
 

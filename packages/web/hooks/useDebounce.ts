@@ -1,13 +1,17 @@
-import { useEffect } from "react"
-import useTimeoutFn from "./useTimeoutFn"
+import { useEffect, useState } from "react"
 
-const useDebounce = (fn: () => void, ms: number, deps: any[] | undefined) => {
-  const [run, clear] = useTimeoutFn(fn, ms)
+function useDebounce<T>(value: T, delay?: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
-  // eslint-disable-next-line
-  useEffect(run, deps)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay || 500)
 
-  return clear
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [value, delay])
+
+  return debouncedValue
 }
 
 export default useDebounce

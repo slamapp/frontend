@@ -32,13 +32,13 @@ const Container = ({
     map?.relayout()
   }, [map, center, style])
 
-  useMapEvent("click", onClick)
-  useMapEvent("dragstart", onDragStart)
-  useMapEvent("dragend", onDragEnd)
-  useMapEvent("zoom_changed", onZoomChanged)
+  useMapEvent(map, "click", onClick)
+  useMapEvent(map, "dragstart", onDragStart)
+  useMapEvent(map, "dragend", onDragEnd)
+  useMapEvent(map, "zoom_changed", onZoomChanged)
 
   return (
-    <div ref={mapRef} style={style}>
+    <div ref={mapRef} style={{ zIndex: 0, ...style }}>
       {children}
     </div>
   )

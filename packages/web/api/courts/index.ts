@@ -22,7 +22,7 @@ const courtApi = {
     endLongitude: APICourt["longitude"]
     time: "dawn" | "morning" | "afternoon" | "night"
   }) =>
-    http.default.get<{ court: APICourt; reservationMaxCourt: number }[]>(
+    http.default.get<{ court: APICourt; reservationMaxCount: number }[]>(
       `/courts`,
       {
         params: {
@@ -43,8 +43,13 @@ const courtApi = {
 
   getCourtDetail: (
     courtId: APICourt["id"],
-    date: string,
-    time: "dawn" | "morning" | "afternoon" | "night"
+    {
+      date,
+      time,
+    }: {
+      date: string
+      time: "dawn" | "morning" | "afternoon" | "night"
+    }
   ) =>
     http.default.get<{
       reservationMaxCount: number

@@ -1,11 +1,8 @@
-import type { api } from "~/api"
 import type { APICourt, APIUser } from "~/types/domains"
 
 const courts = {
   all: ["courts"] as const,
-  filtered: (
-    filter: Parameters<typeof api.courts.getCourtsByCoordsAndDate>[0]
-  ) => [...courts.all, filter] as const,
+  one: (courtId: APICourt["id"]) => [...courts.all, courtId] as const,
 } as const
 
 const favorites = {

@@ -56,7 +56,7 @@ const ProgressBar = styled(motion.div)`
   animation-name: placeHolderShimmer;
   animation-timing-function: linear;
   background-color: #f6f7f8;
-  background: linear-gradient(to right, #f6f4f1 8%, #e9e5e1 18%, #f6f4f1 33%);
+  background: linear-gradient(to right, #f6f4f1 8%, #c7c3c0 18%, #f6f4f1 33%);
   background-size: 800px 104px;
   position: relative;
   @keyframes placeHolderShimmer {
@@ -71,6 +71,10 @@ const ProgressBar = styled(motion.div)`
 
 const Container = styled.div`
   width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 `
 
 export default TopPageLoader

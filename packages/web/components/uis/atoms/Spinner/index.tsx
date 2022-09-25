@@ -10,8 +10,8 @@ const Spinner = ({ size = 24 }: Props) => {
   return (
     <div
       css={css`
-        border: 3px solid ${theme.colors.gray0100};
-        border-top: 3px solid ${theme.colors.gray0200};
+        border: 3px solid ${theme.colors.gray0900};
+        border-top: 3px solid transparent;
         border-radius: 50%;
         width: ${size}px;
         height: ${size}px;
