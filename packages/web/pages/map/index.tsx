@@ -101,7 +101,9 @@ const MapPage = () => {
   )
 
   useEffect(() => {
-    courtsQuery.refetch()
+    requestAnimationFrame(() => {
+      courtsQuery.refetch()
+    })
   }, [bounds])
 
   useEffect(() => {
@@ -202,9 +204,10 @@ const BottomModal = ({
       enabled: !!courtId,
       onSuccess: ({ court }) => {
         setTimeout(() => {
+          map?.relayout()
           map?.panTo(new kakao.maps.LatLng(court.latitude, court.longitude))
           courtsRefetch()
-        }, 100)
+        }, 0)
       },
     }
   )

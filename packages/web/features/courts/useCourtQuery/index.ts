@@ -28,8 +28,6 @@ const useCourtQuery = (
 
       const address: string = await new Promise((resolve) => {
         searchAddrFromCoords(latLng, (result, status) => {
-          console.log(result, status)
-
           if (status === kakao.maps.services.Status.OK) {
             // 도로명 주소
             if (result[0]) {
