@@ -1,6 +1,8 @@
 import type { ReactElement } from "react"
 import type { DocumentContext, DocumentInitialProps } from "next/document"
 import Document, { Html, Head, Main, NextScript } from "next/document"
+import { ColorModeScript } from "@chakra-ui/react"
+import { chakraTheme } from "~/styles"
 
 const kakaoSdkAppKey = process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string
 
@@ -38,6 +40,9 @@ class MyDocument extends Document {
           />
         </Head>
         <body>
+          <ColorModeScript
+            initialColorMode={chakraTheme.config.initialColorMode}
+          />
           <Main />
           <NextScript />
         </body>

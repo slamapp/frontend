@@ -1,5 +1,6 @@
 import { css, useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
+import { motion } from "framer-motion"
 import { Text } from "~/components/uis/atoms"
 import { week } from "~/utils/date"
 
@@ -31,7 +32,10 @@ const DateItem = ({ width, date, onClick, selected }: Props) => {
       `}
       onClick={() => onClick(date)}
     >
-      <div
+      <motion.div
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1 }}
+        whileTap={{ scale: 0.9 }}
         css={css`
           background-color: ${selected
             ? theme.colors.gray0900
@@ -68,7 +72,7 @@ const DateItem = ({ width, date, onClick, selected }: Props) => {
         >
           {date.date()}
         </Text>
-      </div>
+      </motion.div>
     </div>
   )
 }

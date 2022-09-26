@@ -3082,16 +3082,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emotion-normalize@npm:^11.0.1":
-  version: 11.0.1
-  resolution: "emotion-normalize@npm:11.0.1"
-  peerDependencies:
-    "@emotion/react": ^11.0.0
-    react: ">=16.3.0"
-  checksum: f33c6ac75eca2d52d84cad99e359c0e73f78f814377121743c6002edb903864d8ad0adaf2a760dfac5a9c18dc5591ef01a7985f5c223973b10e7d20fa706f226
-  languageName: node
-  linkType: hard
-
 "error-ex@npm:^1.3.1":
   version: 1.3.2
   resolution: "error-ex@npm:1.3.2"
@@ -3818,7 +3808,6 @@ __metadata:
     "@typescript-eslint/parser": ^5.37.0
     axios: ^0.27.2
     cz-customizable: ^7.0.0
-    emotion-normalize: ^11.0.1
     eslint: ^8.23.1
     eslint-config-airbnb-base: ^15.0.0
     eslint-config-airbnb-typescript: ^17.0.0
@@ -6601,7 +6590,6 @@ __metadata:
     axios: ^0.27.2
     copy-to-clipboard: ^3.3.2
     dayjs: ^1.11.5
-    emotion-normalize: ^11.0.1
     eslint: 8.23.1
     eslint-config-next: 12.3.0
     feather-icons: ^4.29.0

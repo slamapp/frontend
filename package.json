@@ -23,7 +23,6 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "axios": "^0.27.2",
-    "emotion-normalize": "^11.0.1",
     "feather-icons": "^4.29.0",
     "framer-motion": "^7.3.5",
     "react": "^18.2.0",

@@ -1,17 +1,14 @@
 import { css, Global } from "@emotion/react"
-import normalize from "emotion-normalize"
 
 const GlobalCSS = () => {
   return (
     <Global
       styles={css`
-        ${normalize}
-
         h1,
         h2,
         h3,
         h4,
-        h5, 
+        h5,
         h6 {
           font-size: 1em;
           font-weight: normal;
@@ -22,6 +19,11 @@ const GlobalCSS = () => {
             Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
             "Noto Sans KR", "Malgun Gothic", sans-serif;
           box-sizing: border-box;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
         }
 
         a {

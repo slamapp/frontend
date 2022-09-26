@@ -1,4 +1,5 @@
 import { css } from "@emotion/react"
+import { motion } from "framer-motion"
 import { IconButton } from "~/components/uis/molecules"
 import { useMap } from "../../context"
 
@@ -18,7 +19,9 @@ const ZoomInOut = () => {
   }
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
       css={css`
         position: absolute;
         top: 100px;
@@ -43,7 +46,7 @@ const ZoomInOut = () => {
         onClick={handleClickZoomOut}
         noOutlined
       />
-    </div>
+    </motion.div>
   )
 }
 

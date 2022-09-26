@@ -1,4 +1,5 @@
 import { css } from "@emotion/react"
+import { motion } from "framer-motion"
 import { IconButton } from "~/components/uis/molecules"
 import type { Coord } from "~/types/domains"
 import { useMap } from "../../context"
@@ -45,7 +46,9 @@ const CurrentLocationButton = () => {
   }
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
       css={css`
         position: absolute;
         top: 15px;
@@ -60,7 +63,7 @@ const CurrentLocationButton = () => {
         onClick={handleClick}
         noOutlined
       />
-    </div>
+    </motion.div>
   )
 }
 

@@ -127,7 +127,7 @@ const MapPage = () => {
           )
         }}
       />
-      {!bounds && <Skeleton.Box style={{ flex: 1 }} />}
+      {!bounds && <Skeleton.Box style={{ height: "100%" }} />}
       <Map
         onClick={() => {
           router.replace({ pathname: "/map" })

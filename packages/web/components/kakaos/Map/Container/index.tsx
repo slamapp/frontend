@@ -39,7 +39,7 @@ const Container = ({
 
   return (
     <div ref={mapRef} style={{ zIndex: 0, ...style }}>
-      {children}
+      {map ? children : null}
     </div>
   )
 }

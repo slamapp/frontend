@@ -1,23 +1,13 @@
 import type { AppProps } from "next/app"
 import Head from "next/head"
-import { ChakraProvider, extendTheme } from "@chakra-ui/react"
+import { ChakraProvider } from "@chakra-ui/react"
 import { ThemeProvider } from "@emotion/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { DefaultLayout } from "~/components/domains/layout"
 import { Image } from "~/components/uis/atoms"
 import Providers from "~/contexts/Providers"
-import { emotionTheme, GlobalCSS } from "~/styles"
-
-const theme = extendTheme({
-  colors: {
-    brand: {
-      900: "#1a365d",
-      800: "#153e75",
-      700: "#2a69ac",
-    },
-  },
-})
+import { chakraTheme, emotionTheme, GlobalCSS } from "~/styles"
 
 const queryClient = new QueryClient()
 
@@ -46,9 +36,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Image key={url} src={url} lazy width={1} height={1} alt={url} />
           ))}
         </div>
-        <ChakraProvider resetCSS theme={theme}>
-          <GlobalCSS />
+        <ChakraProvider resetCSS theme={chakraTheme}>
           <ThemeProvider theme={emotionTheme}>
+            <GlobalCSS />
             <Providers>
               <DefaultLayout>
                 <Component {...pageProps} />
