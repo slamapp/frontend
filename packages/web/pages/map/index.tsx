@@ -104,7 +104,7 @@ const MapPage = () => {
     requestAnimationFrame(() => {
       courtsQuery.refetch()
     })
-  }, [bounds])
+  }, [bounds, selectedDate])
 
   useEffect(() => {
     setSelectedCourtId((router.query.courtId as string) || null)
