@@ -114,7 +114,18 @@ const MapPage = () => {
     <>
       <DatePicker
         initialValue={selectedDate}
-        onChange={(date) => setSelectedDate(date)}
+        onChange={(date) => {
+          setSelectedDate(date)
+          Toast.show(
+            <>
+              {`${date.format("MM/DD")}`}
+              <>{`${date.format("(dd)")}`}</>의 농구장을 보고 있어요
+            </>,
+            {
+              duration: 1000,
+            }
+          )
+        }}
       />
       {!bounds && <Skeleton.Box style={{ flex: 1 }} />}
       <Map
@@ -219,7 +230,7 @@ const BottomModal = ({
         height: ${courtId ? 210 : 0}px;
         background-color: ${theme.colors.white};
         display: flex;
-        z-index: 100;
+        z-index: 0;
         border-radius: 16px 16px 0 0;
         box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.3);
         transition: height 100ms ease-in-out;
