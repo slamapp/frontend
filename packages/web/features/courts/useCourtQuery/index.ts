@@ -21,10 +21,7 @@ const useCourtQuery = (
     async () => {
       const { data } = await api.courts.getCourtDetail(courtId, filter)
 
-      const latLng = new kakao.maps.LatLng(
-        data.court.latitude,
-        data.court.longitude
-      )
+      const latLng = new kakao.maps.LatLng(data.latitude, data.longitude)
 
       const address: string = await new Promise((resolve) => {
         searchAddrFromCoords(latLng, (result, status) => {

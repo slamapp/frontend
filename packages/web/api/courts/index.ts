@@ -51,10 +51,22 @@ const courtApi = {
       time: "dawn" | "morning" | "afternoon" | "night"
     }
   ) =>
-    http.default.get<{
-      reservationMaxCount: number
-      court: APICourt
-    }>(`/courts/${courtId}/detail`, {
+    http.default.get<
+      Pick<
+        APICourt,
+        | "basketCount"
+        | "createdAt"
+        | "id"
+        | "image"
+        | "latitude"
+        | "longitude"
+        | "name"
+        | "texture"
+        | "updatedAt"
+      > & {
+        reservationMaxCount: number
+      }
+    >(`/courts/${courtId}/detail`, {
       params: {
         date,
         time,

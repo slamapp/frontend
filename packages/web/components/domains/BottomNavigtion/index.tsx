@@ -24,7 +24,6 @@ const BottomNavigation = () => {
           <NavIcon.Map />
           <NavIcon.Chat />
           <NavIcon.Reservations />
-          {authProps.currentUser.role === "ADMIN" && <NavIcon.newCourt />}
         </Wrapper>
       </Container>
     )

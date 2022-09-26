@@ -13,10 +13,6 @@ const follows = {
   all: ["follows"] as const,
 } as const
 
-const managements = {
-  all: ["managements"] as const,
-} as const
-
 const notifications = {
   all: ["notifications"] as const,
 } as const
@@ -40,7 +36,6 @@ export const queryKey = {
   courts,
   favorites,
   follows,
-  managements,
   notifications,
   reservations,
   users,

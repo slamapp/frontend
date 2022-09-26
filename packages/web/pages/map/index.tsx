@@ -213,10 +213,10 @@ const BottomModal = ({
     { date: getTimezoneDateStringFromDate(selectedDate), time: "morning" },
     {
       enabled: !!courtId,
-      onSuccess: ({ court }) => {
+      onSuccess: (data) => {
         setTimeout(() => {
           map?.relayout()
-          map?.panTo(new kakao.maps.LatLng(court.latitude, court.longitude))
+          map?.panTo(new kakao.maps.LatLng(data.latitude, data.longitude))
           courtsRefetch()
         }, 0)
       },
@@ -239,7 +239,7 @@ const BottomModal = ({
       {courtQuery.isSuccess && (
         <BottomModalContainer>
           <Spacer gap="xs">
-            <CourtItem.Header>{courtQuery.data.court.name}</CourtItem.Header>
+            <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
             <CourtItem.Address>{courtQuery.data.address}</CourtItem.Address>
           </Spacer>
           <Spacer
@@ -247,13 +247,13 @@ const BottomModal = ({
             gap="xs"
             style={{ marginTop: theme.gaps.sm }}
           >
-            <CourtItem.FavoritesToggle courtId={courtQuery.data.court.id} />
+            <CourtItem.FavoritesToggle courtId={courtQuery.data.id} />
             <CourtItem.Share
               court={{
-                id: courtQuery.data.court.id,
-                latitude: courtQuery.data.court.latitude,
-                longitude: courtQuery.data.court.longitude,
-                name: courtQuery.data.court.name,
+                id: courtQuery.data.id,
+                latitude: courtQuery.data.latitude,
+                longitude: courtQuery.data.longitude,
+                name: courtQuery.data.name,
               }}
             />
             <CourtItem.ChatLink
@@ -263,15 +263,15 @@ const BottomModal = ({
               }
             />
             <CourtItem.KakaoMapLink
-              latitude={courtQuery.data.court.latitude}
-              longitude={courtQuery.data.court.longitude}
-              courtName={courtQuery.data.court.name}
+              latitude={courtQuery.data.latitude}
+              longitude={courtQuery.data.longitude}
+              courtName={courtQuery.data.name}
             />
 
             {getLocalToken() ? (
               <Link
                 href={`reservations/courts/${
-                  courtQuery.data.court.id
+                  courtQuery.data.id
                 }?date=${getTimezoneDateStringFromDate(selectedDate)}`}
                 passHref
               >
