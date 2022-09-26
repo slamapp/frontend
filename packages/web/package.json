@@ -12,6 +12,8 @@
     "type": "tsc --noEmit"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.3.4",
+    "@chakra-ui/styled-system": "^2.3.3",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@stomp/stompjs": "^6.1.2",
@@ -22,7 +24,7 @@
     "dayjs": "^1.11.5",
     "emotion-normalize": "^11.0.1",
     "feather-icons": "^4.29.0",
-    "framer-motion": "^7.3.5",
+    "framer-motion": "^7.3.6",
     "next": "12.3.0",
     "prop-types": "^15.8.1",
     "react": "18.2.0",

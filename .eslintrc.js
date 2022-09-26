@@ -84,6 +84,11 @@ module.exports = {
             position: "before",
           },
           {
+            pattern: "@chakra-ui/**",
+            group: "external",
+            position: "before",
+          },
+          {
             pattern: "@emotion/**",
             group: "external",
             position: "before",

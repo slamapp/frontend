@@ -19,6 +19,7 @@
     "type": "yarn workspaces foreach run type"
   },
   "dependencies": {
+    "@chakra-ui/styled-system": "^2.3.3",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "axios": "^0.27.2",
