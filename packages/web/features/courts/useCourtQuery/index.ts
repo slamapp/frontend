@@ -17,14 +17,10 @@ const useCourtQuery = (
 ) =>
   useQuery(
     key.courts.oneFilter(courtId, filter),
-    async () => {
-      const { data } = await api.courts.getCourtDetail(courtId, filter)
-
-      const latLng = new kakao.maps.LatLng(data.latitude, data.longitude)
-
-      return {
-        ...data,
-        address: await new Promise<string>((resolve) => {
+    () =>
+      api.courts.getCourtDetail(courtId, filter).then(({ data }) =>
+        new Promise<string>((resolve) => {
+          const latLng = new kakao.maps.LatLng(data.latitude, data.longitude)
           searchAddrFromCoords(latLng, (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
               // 도로명 주소
@@ -39,9 +35,8 @@ const useCourtQuery = (
             // 주소가 없는 경우
             resolve("주소가 존재하지 않습니다.")
           })
-        }),
-      }
-    },
+        }).then((address) => ({ ...data, address }))
+      ),
     { ...options }
   )
 
