@@ -66,20 +66,24 @@ const MapPage = () => {
   useMountPage("PAGE_MAP")
 
   useEffect(() => {
-    const titleText = selectedCourtId
-      ? "여기에서 농구할까요?"
-      : "어디서 농구할까요?"
     setNavigationTitle(
       <motion.span
-        key={titleText}
+        key={selectedCourtId}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         style={{ wordBreak: "keep-all" }}
       >
-        {titleText}
+        {selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?"}
       </motion.span>
     )
+
+    if (selectedCourtId === null) {
+      setTimeout(() => {
+        mapRef.current?.relayout()
+        courtsQuery.refetch()
+      }, 200)
+    }
   }, [selectedCourtId, setNavigationTitle])
 
   useMountCustomButtonEvent(
