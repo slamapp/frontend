@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from "react"
-import type { Coord } from "~/types/domains"
+import type { Coord } from "~/types/domains/objects/court"
 
 interface Props {
   map: kakao.maps.Map

@@ -1,5 +1,9 @@
 import { http } from "~/api/core"
-import type { APICourt, APINotification, APIUser } from "~/types/domains"
+import type {
+  APICourt,
+  APINotification,
+  APIUser,
+} from "~/types/domains/objects"
 
 export default {
   getUserData: () =>

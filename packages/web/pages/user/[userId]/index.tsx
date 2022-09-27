@@ -14,7 +14,7 @@ import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useNavigationContext, useAuthContext } from "~/contexts/hooks"
 import { useMyProfileQuery, useUserProfileQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
-import type { APIUser } from "~/types/domains"
+import type { APIUser } from "~/types/domains/objects"
 import {
   getTranslatedPositions,
   getTranslatedProficiency,

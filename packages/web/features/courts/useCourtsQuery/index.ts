@@ -1,7 +1,7 @@
 import type { UseQueryOptions } from "@tanstack/react-query"
 import { useQuery } from "@tanstack/react-query"
 import { api } from "~/api"
-import { queryKey } from "~/features/queryKey"
+import key from "~/features/key"
 
 const useCourtsQuery = (
   filter: Parameters<typeof api.courts.getCourtsByCoordsAndDate>[0],
@@ -12,7 +12,7 @@ const useCourtsQuery = (
   return useQuery<
     Awaited<ReturnType<typeof api.courts.getCourtsByCoordsAndDate>>["data"]
   >(
-    queryKey.courts.all,
+    key.courts.all,
     async () => {
       const { data } = await api.courts.getCourtsByCoordsAndDate(filter)
 

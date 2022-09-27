@@ -1,4 +1,4 @@
-import type { Coord } from "~/types/domains"
+import type { Coord } from "~/types/domains/objects/court"
 
 // 서울의 경도, 위도
 export const DEFAULT_POSITION: Coord = [37.5665, 126.978]

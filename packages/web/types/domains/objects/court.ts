@@ -1,6 +1,7 @@
-import type { APICommon, Keyof } from "~/types/common"
+import type { Keyof } from "~/types/helpers"
+import type { Default } from "./abstracts"
 
-export interface APICourt extends APICommon {
+export interface APICourt extends Default {
   name: string
   latitude: number
   longitude: number

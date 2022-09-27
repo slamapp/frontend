@@ -18,9 +18,12 @@ import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext } from "~/contexts/hooks"
 import useForm from "~/hooks/useForm"
 import type { Error } from "~/hooks/useForm"
-import type { Keyof } from "~/types/common"
-import type { APIUser, proficiencyType } from "~/types/domains"
-import type { positionType } from "~/types/domains/user"
+import type { APIUser } from "~/types/domains/objects"
+import type {
+  positionType,
+  proficiencyType,
+} from "~/types/domains/objects/user"
+import type { Keyof } from "~/types/helpers"
 import { appendImageFileToFormData } from "~/utils"
 
 const LENGTH_LIMIT_NICKNAME = 15

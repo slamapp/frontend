@@ -14,7 +14,7 @@ import { useNavigationContext } from "~/contexts/hooks"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useLocalStorage } from "~/hooks"
 import { useLocalToken } from "~/hooks/domain"
-import type { APICourt } from "~/types/domains"
+import type { APICourt } from "~/types/domains/objects"
 import { getLocalToken } from "~/utils"
 import { getTimezoneDateStringFromDate } from "~/utils/date"
 

@@ -1,44 +1,26 @@
 import type { NextPage } from "next"
-import { useRouter } from "next/router"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { api } from "~/api"
 import { UserListItem } from "~/components/domains"
 import { useNavigationContext } from "~/contexts/hooks"
+import { useUserFollowerInfiniteQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
 
 const FollowerPage: NextPage = () => {
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_USER_FOLLOWER")
-  const { query } = useRouter()
 
-  const userFollowerQuery = useInfiniteQuery(
-    ["users", query.userId, "followers"],
-    async ({ queryKey }) => {
-      const { data } = await api.follows.getUserFollowers({
-        id: `${queryKey[1] as string}`,
-        isFirst: true,
-        lastId: null,
-      })
+  const userFollowerInfiniteQuery = useUserFollowerInfiniteQuery()
 
-      return data
-    },
-    {
-      enabled: !!query.userId,
-      getNextPageParam: ({ lastId }) => lastId,
-    }
-  )
-
-  if (userFollowerQuery.isLoading) {
+  if (userFollowerInfiniteQuery.isLoading) {
     return <>...loadng</>
   }
 
-  if (userFollowerQuery.isError) {
-    return <>{JSON.stringify(userFollowerQuery.error)}</>
+  if (userFollowerInfiniteQuery.isError) {
+    return <>{JSON.stringify(userFollowerInfiniteQuery.error)}</>
   }
 
   return (
     <div>
-      {userFollowerQuery.data.pages.map(({ contents, lastId }, index) =>
+      {userFollowerInfiniteQuery.data.pages.map(({ contents, lastId }, index) =>
         contents.map(({ id, creator }, index) => (
           <>
             <UserListItem
@@ -50,7 +32,7 @@ const FollowerPage: NextPage = () => {
               }}
               isFollowed
             />
-            {index === userFollowerQuery.data.pages.length - 1 &&
+            {index === userFollowerInfiniteQuery.data.pages.length - 1 &&
               (lastId ? (
                 <InfiniteScrollSensor />
               ) : (

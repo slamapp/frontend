@@ -86,10 +86,12 @@ const Bottom = () => {
   )
 }
 
-export default {
+const MoreCellSensor = {
   Top,
   Bottom,
 }
+
+export default MoreCellSensor
 
 const MoreTableMaker = styled.div<{
   tableCellHeight: number

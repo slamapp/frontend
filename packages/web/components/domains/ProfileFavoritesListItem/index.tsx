@@ -3,7 +3,7 @@ import type { ReactNode, HTMLAttributes } from "react"
 import Link from "next/link"
 import styled from "@emotion/styled"
 import { Spacer, Text, Icon, Button } from "~/components/uis/atoms"
-import type { APIFavorite } from "~/types/domains"
+import type { APIFavorite } from "~/types/domains/objects"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode

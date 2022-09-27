@@ -1,35 +1,33 @@
 import { http } from "~/api/core"
-import type {
-  InfiniteScrollResponse,
-  InfiniteScrollRequestParams,
-} from "~/types/common"
-import type { APIUser } from "~/types/domains"
-import type { APIFollowing, APIFollower } from "~/types/domains/follow"
+import type { CursorList } from "~/types/domains/lists"
+import type { CursorListRequestOption } from "~/types/domains/lists/CursorList"
+import type { APIUser } from "~/types/domains/objects"
+import type { APIFollower, APIFollowing } from "~/types/domains/objects/follow"
 
 export default {
-  getUserFollowings: ({
-    id,
-    isFirst = false,
-    lastId = null,
-  }: InfiniteScrollRequestParams<{ id: APIUser["id"] }>) =>
-    http.auth.get<InfiniteScrollResponse<APIFollowing>>(
-      `/follow/${id}/followings`,
-      {
-        params: { isFirst, lastId, size: 10 },
-      }
-    ),
+  getUserFollowings: (
+    userId: APIUser["id"],
+    {
+      isFirst = false,
+      lastId = null,
+      size = 10,
+    }: CursorListRequestOption<APIUser>
+  ) =>
+    http.auth.get<CursorList<APIFollowing>>(`/follow/${userId}/followings`, {
+      params: { isFirst, lastId, size },
+    }),
 
-  getUserFollowers: ({
-    id,
-    isFirst = false,
-    lastId = null,
-  }: InfiniteScrollRequestParams<{ id: APIUser["id"] }>) =>
-    http.auth.get<InfiniteScrollResponse<APIFollower>>(
-      `/follow/${id}/followers`,
-      {
-        params: { isFirst, lastId, size: 10 },
-      }
-    ),
+  getUserFollowers: (
+    userId: APIUser["id"],
+    {
+      isFirst = false,
+      lastId = null,
+      size = 10,
+    }: CursorListRequestOption<APIUser>
+  ) =>
+    http.auth.get<CursorList<APIFollower>>(`/follow/${userId}/followers`, {
+      params: { isFirst, lastId, size },
+    }),
 
   postFollow: ({ receiverId }: { receiverId: APIUser["id"] }) =>
     http.auth.post<void>(`/notifications/follow`, {

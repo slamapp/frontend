@@ -3,7 +3,7 @@ import { useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { CourtItem } from "~/components/domains"
 import { Spacer } from "~/components/uis/atoms"
-import type { APIReservation } from "~/types/domains"
+import type { APIReservation } from "~/types/domains/objects"
 import Loudspeaker from "./Loudspeaker"
 import ReservationItemBottom from "./ReservationItemBottom"
 

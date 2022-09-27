@@ -4,7 +4,7 @@ import type {
   APIFavorite,
   APINotification,
   APIUser,
-} from "~/types/domains"
+} from "~/types/domains/objects"
 import type { DataProps } from "./reducer"
 
 export interface ContextProps {

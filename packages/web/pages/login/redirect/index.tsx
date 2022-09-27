@@ -21,13 +21,13 @@ const RedirectPage = () => {
       console.error(error)
       setIsNeedReLogin(true)
     }
-  }, [router.query.token, authProviderInit, setToken])
+  }, [router.query.token as string, authProviderInit, setToken])
 
   useEffect(() => {
     if (router.query.token) {
       getCurrentUserData()
     }
-  }, [router.query.token])
+  }, [router.query.token as string])
 
   const NeedReLoginMarkUp = () => {
     return (

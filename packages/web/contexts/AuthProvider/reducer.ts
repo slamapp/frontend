@@ -1,11 +1,11 @@
 import type { Reducer } from "react"
-import type { OmitAt } from "~/types/common"
+import type { OmitAt } from "~/types/domains/helpers"
 import type {
   APINotification,
   APIUser,
   APIFavorite,
   APIReservation,
-} from "~/types/domains"
+} from "~/types/domains/objects"
 import type { ActionUnion } from "./actionTypes"
 
 export interface DataProps {

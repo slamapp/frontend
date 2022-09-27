@@ -1,6 +1,7 @@
-import type { APICommon, Keyof } from "~/types/common"
+import type { Keyof } from "~/types/helpers"
+import type { Default } from "./abstracts"
 
-export interface APIUser extends APICommon {
+export interface APIUser extends Default {
   description: string | null
   email: string | null
   profileImage: string | null

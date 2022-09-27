@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import type { CompatClient } from "@stomp/stompjs"
 import { api } from "~/api"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APINotification } from "~/types/domains"
+import type { APINotification } from "~/types/domains/objects"
 import type { SendAuth, UseStomp } from "./type"
 import { subscribe } from "./utils"
 

@@ -5,7 +5,7 @@ import { api } from "~/api"
 import { UserListItem } from "~/components/domains"
 import { Text, Icon, Button } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APICourt, APIReservation } from "~/types/domains"
+import type { APICourt, APIReservation } from "~/types/domains/objects"
 
 interface Props {
   courtId: APICourt["id"]

@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react"
 import { forwardRef } from "react"
 import { css, useTheme } from "@emotion/react"
 import type previousTheme from "~/styles/emotionTheme/previousTheme"
-import type { Keyof } from "~/types/common"
+import type { Keyof } from "~/types/helpers"
 
 type Props = {
   gap?: Keyof<typeof previousTheme["gaps"]> | number

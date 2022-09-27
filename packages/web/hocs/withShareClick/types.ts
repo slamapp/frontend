@@ -1,5 +1,9 @@
-import type { OmitAt } from "~/types/common"
-import type { APICourt, APICourtChatroom, APIUser } from "~/types/domains"
+import type { OmitAt } from "~/types/domains/helpers"
+import type {
+  APICourt,
+  APICourtChatroom,
+  APIUser,
+} from "~/types/domains/objects"
 
 export type ShareArgs = CourtArgs | CourtChatroomArgs | UserArgs
 

@@ -1,27 +1,20 @@
 import { http } from "~/api/core"
-import type { InfiniteScrollResponse, ListDTO } from "~/types/common"
-import type { APICourt, APIReservation, APIUser } from "~/types/domains"
+import type { CursorList, List } from "~/types/domains/lists"
+import type { CursorListRequestOption } from "~/types/domains/lists/CursorList"
+import type { APICourt, APIReservation, APIUser } from "~/types/domains/objects"
 
 export default {
   getMyUpcomingReservations: () =>
-    http.auth.get<ListDTO<APIReservation>>("/reservations/upcoming"),
+    http.auth.get<List<APIReservation>>("/reservations/upcoming"),
 
   getMyExpiredReservations: ({
     isFirst,
-    lastId,
-  }:
-    | { isFirst: true; lastId: null }
-    | { isFirst: false; lastId: APIReservation["id"] | null }) =>
-    http.auth.get<InfiniteScrollResponse<APIReservation>>(
-      "/reservations/expired",
-      {
-        params: {
-          isFirst,
-          lastId: isFirst ? null : lastId,
-          size: 5,
-        },
-      }
-    ),
+    lastId = null,
+    size = 5,
+  }: CursorListRequestOption<APIReservation>) =>
+    http.auth.get<CursorList<APIReservation>>("/reservations/expired", {
+      params: { isFirst, lastId, size },
+    }),
 
   getMyReservationParticipants: ({
     courtId,

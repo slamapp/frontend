@@ -18,8 +18,9 @@ import { Input } from "~/components/uis/organisms"
 import { useMapContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 import { useForm } from "~/hooks"
-import type { Keyof } from "~/types/common"
-import type { APICourt, Coord } from "~/types/domains"
+import type { APICourt } from "~/types/domains/objects"
+import type { Coord } from "~/types/domains/objects/court"
+import type { Keyof } from "~/types/helpers"
 import { getCurrentLocation } from "~/utils/geolocation"
 
 interface Geocoder extends kakao.maps.services.Geocoder {

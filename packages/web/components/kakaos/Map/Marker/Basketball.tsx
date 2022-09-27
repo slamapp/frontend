@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APICourt } from "~/types/domains"
+import type { APICourt } from "~/types/domains/objects"
 import { useMap } from "../context"
 
 type Props = {

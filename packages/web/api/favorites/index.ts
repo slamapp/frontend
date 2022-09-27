@@ -1,9 +1,9 @@
 import { http } from "~/api/core"
-import type { ListDTO } from "~/types/common"
-import type { APICourt, APIFavorite } from "~/types/domains"
+import type { List } from "~/types/domains/lists"
+import type { APICourt, APIFavorite } from "~/types/domains/objects"
 
 export default {
-  getMyFavorites: () => http.auth.get<ListDTO<APIFavorite>>("/favorites"),
+  getMyFavorites: () => http.auth.get<List<APIFavorite>>("/favorites"),
 
   createFavorite: (courtId: APICourt["id"]) =>
     http.auth.post<Omit<APIFavorite, "court">>("/favorites", {

@@ -5,7 +5,7 @@ import { api } from "~/api"
 import { CourtItem, NoItemMessage } from "~/components/domains"
 import { Button, Skeleton, Spacer } from "~/components/uis/atoms"
 import { useAuthContext } from "~/contexts/hooks"
-import type { APIFavorite } from "~/types/domains"
+import type { APIFavorite } from "~/types/domains/objects"
 
 const FavoriteList = () => {
   const { authProps } = useAuthContext()

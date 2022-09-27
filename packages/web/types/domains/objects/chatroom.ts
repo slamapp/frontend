@@ -1,7 +1,10 @@
-import type { APICommon, Keyof } from "~/types/common"
-import type { APICourt, APIUser, APIChat } from "~/types/domains"
+import type { Keyof } from "~/types/helpers"
+import type { Default } from "./abstracts"
+import type { APIChat } from "./chat"
+import type { APICourt } from "./court"
+import type { APIUser } from "./user"
 
-export interface APIChatRoom extends APICommon {
+export interface APIChatRoom extends Default {
   admins: Admin[]
   type: Keyof<typeof chatroomType>
   participants: APIUser[]

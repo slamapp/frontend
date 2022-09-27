@@ -1,8 +1,8 @@
 import type { UseQueryOptions } from "@tanstack/react-query"
 import { useQuery } from "@tanstack/react-query"
 import { api } from "~/api"
-import { queryKey } from "~/features/queryKey"
-import type { APIUser } from "~/types/domains"
+import { key } from "~/features"
+import type { APIUser } from "~/types/domains/objects"
 
 const useUserProfileQuery = (
   userId: APIUser["id"],
@@ -11,7 +11,7 @@ const useUserProfileQuery = (
   >
 ) =>
   useQuery<Awaited<ReturnType<typeof api.users.getUserProfile>>["data"]>(
-    queryKey.users.otherProfile(userId),
+    key.users.otherProfile(userId),
     async () => {
       const { data } = await api.users.getUserProfile({ id: userId })
 

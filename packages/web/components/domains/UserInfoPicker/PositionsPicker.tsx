@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react"
 import { Radio } from "~/components/uis/atoms"
-import type { Keyof, ValueOf } from "~/types/common"
-import type { positionType } from "~/types/domains"
+import type { positionType } from "~/types/domains/objects/user"
+import type { Keyof, ValueOf } from "~/types/helpers"
 
 const positionItems: {
   value: Keyof<typeof positionType>

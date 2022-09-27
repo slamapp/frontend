@@ -1,5 +1,8 @@
-import type { Keyof, ValueOf } from "~/types/common"
-import type { proficiencyType, positionType } from "~/types/domains"
+import type {
+  positionType,
+  proficiencyType,
+} from "~/types/domains/objects/user"
+import type { Keyof, ValueOf } from "~/types/helpers"
 
 const getKoreanProficiency = (
   englishProficiency: Keyof<typeof proficiencyType>

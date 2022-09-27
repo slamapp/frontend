@@ -1,6 +1,6 @@
 import type { AxiosPromise } from "axios"
 import { http } from "~/api/core"
-import type { APINotification } from "~/types/domains"
+import type { APINotification } from "~/types/domains/objects"
 
 export default {
   getNotifications: ({

@@ -1,24 +1,15 @@
 import type { ChangeEvent } from "react"
 import { Radio } from "~/components/uis/atoms"
-import type { ValueOf } from "~/types/common"
-import type { APIUser, proficiencyType } from "~/types/domains"
+import type { APIUser, proficiencyType } from "~/types/domains/objects/user"
+import type { ValueOf } from "~/types/helpers"
 
 const proficiencyItems: {
   value: APIUser["proficiency"]
   text: ValueOf<typeof proficiencyType>
 }[] = [
-  {
-    value: "BEGINNER",
-    text: "뉴비",
-  },
-  {
-    value: "INTERMEDIATE",
-    text: "중수",
-  },
-  {
-    value: "MASTER",
-    text: "고수",
-  },
+  { value: "BEGINNER", text: "뉴비" },
+  { value: "INTERMEDIATE", text: "중수" },
+  { value: "MASTER", text: "고수" },
 ]
 
 interface Props {

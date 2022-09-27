@@ -1,7 +1,7 @@
 import { css } from "@emotion/react"
 import { motion } from "framer-motion"
 import { IconButton } from "~/components/uis/molecules"
-import type { Coord } from "~/types/domains"
+import type { Coord } from "~/types/domains/objects/court"
 import { useMap } from "../../context"
 
 // 서울의 경도, 위도

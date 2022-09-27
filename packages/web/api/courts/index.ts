@@ -4,7 +4,7 @@ import type {
   APINewCourt,
   APIReservation,
   APIUser,
-} from "~/types/domains"
+} from "~/types/domains/objects"
 
 const courtApi = {
   getCourtsByCoordsAndDate: ({

@@ -1,7 +1,8 @@
-import type { APICreate, Keyof } from "~/types/common"
-import type { APICourt } from "~/types/domains"
+import type { Keyof } from "~/types/helpers"
+import type { Create } from "./abstracts"
+import type { APICourt } from "./court"
 
-export type APINewCourt = APICreate &
+export type APINewCourt = Create &
   Pick<
     APICourt,
     "basketCount" | "image" | "latitude" | "longitude" | "name" | "texture"
