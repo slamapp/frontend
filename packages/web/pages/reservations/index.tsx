@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect, useRef } from "react"
-import type { NextPage } from "next"
 import styled from "@emotion/styled"
 import { api } from "~/api"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
@@ -7,7 +6,7 @@ import { Text, Spacer } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 
-const Reservations: NextPage = () => {
+const Page = withRouteGuard("private", () => {
   const { authProps, getMyReservations } = useAuthContext()
   const { reservations: upcomingReservations } = authProps
   const { useMountPage } = useNavigationContext()
@@ -126,7 +125,9 @@ const Reservations: NextPage = () => {
       <div ref={ref} style={{ height: 20 }} />
     </PageContainer>
   )
-}
+})
+
+export default Page
 
 const TabContainer = styled.div`
   display: flex;
@@ -148,5 +149,3 @@ const TabContentsWrapper = styled.div`
   flex: 1;
   margin-top: 16px;
 `
-
-export default withRouteGuard("private", Reservations)

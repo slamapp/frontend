@@ -1,76 +1,47 @@
-import React from "react"
-import type { CSSProperties } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import styled from "@emotion/styled"
-import { Spacer, Icon, Text, Button } from "~/components/uis/atoms"
+import { VStack, Text, Heading } from "@chakra-ui/react"
+import { Icon, Button } from "~/components/uis/atoms"
 
-interface Props {
+type Props = {
   title: string
   description: string
   buttonTitle: string
-  style?: CSSProperties
-  type: "reservation" | "favorite" | "notification"
+  type: "reservation" | "favorite" | "notification" | "follow"
 }
 
-const NoItemMessage = ({
-  title,
-  description,
-  buttonTitle,
-  style,
-  type,
-}: Props) => {
+const NoItemMessage = ({ title, description, buttonTitle, type }: Props) => {
+  const src =
+    type === "favorite"
+      ? "/assets/basketball/fire_off_favorited.gif"
+      : type === "reservation"
+      ? "/assets/basketball/fire_off_reservated.gif"
+      : type === "notification"
+      ? "/assets/basketball/animation_off_400.png"
+      : "/assets/basketball/fire_off_400.gif"
+
   return (
-    <Spacer
-      align="center"
-      justify="center"
-      gap="base"
-      style={{ ...style, height: "80%" }}
-    >
-      <Image
-        width={90}
-        height={170}
-        unoptimized
-        src={
-          type === "favorite"
-            ? "/assets/basketball/fire_off_favorited.gif"
-            : type === "reservation"
-            ? "/assets/basketball/fire_off_reservated.gif"
-            : "/assets/basketball/animation_off_400.png"
-        }
-        alt="basketball"
-      />
-      <Spacer gap="xxs" style={{ textAlign: "center" }}>
-        <Text size="md" block strong>
+    <VStack spacing={3}>
+      <Image width={90} height={170} unoptimized src={src} alt="basketball" />
+      <VStack spacing={1}>
+        <Heading as="h5" fontSize="16px">
           {title}
+        </Heading>
+        <Text color="gray.500" fontSize="12px">
+          {description}
         </Text>
-        <TextGray size="xs">{description}</TextGray>
-      </Spacer>
+      </VStack>
       <Link href="/map" passHref>
         <a>
-          <SearchButton fullWidth>
-            <SearchIcon name="map" size="sm" color="white" />
+          <Button fullWidth>
+            <Icon name="map" size="sm" color="white" />
             {buttonTitle}
-          </SearchButton>
+          </Button>
         </a>
       </Link>
       <div style={{ height: 40 }}></div>
-    </Spacer>
+    </VStack>
   )
 }
 
 export default NoItemMessage
-
-const TextGray = styled(Text)`
-  color: ${({ theme }) => theme.previousTheme.colors.gray700};
-`
-
-const SearchButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const SearchIcon = styled(Icon)`
-  margin-right: 5px;
-`

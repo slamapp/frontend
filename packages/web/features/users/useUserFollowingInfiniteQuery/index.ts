@@ -3,14 +3,14 @@ import { api } from "~/api"
 import key from "~/features/key"
 import type { APIUser } from "~/types/domains/objects"
 
-const useUserFollowerInfiniteQuery = (
+const useUserFollowingInfiniteQuery = (
   userId: APIUser["id"],
   options: { enabled: boolean }
 ) =>
   useInfiniteQuery(
-    key.users.oneFollowers(userId),
+    key.users.oneFollowings(userId),
     ({ pageParam = { isFirst: true, lastId: null } }) =>
-      api.follows.getUserFollowers(userId, pageParam).then(({ data }) => data),
+      api.follows.getUserFollowings(userId, pageParam).then(({ data }) => data),
     {
       cacheTime: 0,
       getNextPageParam: (lastPage) => ({
@@ -21,4 +21,4 @@ const useUserFollowerInfiniteQuery = (
     }
   )
 
-export default useUserFollowerInfiniteQuery
+export default useUserFollowingInfiniteQuery

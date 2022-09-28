@@ -1,8 +1,7 @@
-import type { NextPage } from "next"
 import Head from "next/head"
 import { withRouteGuard } from "~/hocs"
 
-const Clubs: NextPage = withRouteGuard("private", () => {
+const Page = withRouteGuard("private", () => {
   return (
     <div>
       <Head>
@@ -13,4 +12,4 @@ const Clubs: NextPage = withRouteGuard("private", () => {
   )
 })
 
-export default Clubs
+export default Page

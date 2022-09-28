@@ -1,9 +1,8 @@
-import type { NextPage } from "next"
 import { ReservationTable } from "~/components/domains"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 
-const ReservationOfCourtPage: NextPage = withRouteGuard("private", () => {
+const Page = withRouteGuard("private", () => {
   const { useMountPage } = useNavigationContext()
 
   useMountPage("PAGE_RESERVATIONS_COURTS")
@@ -16,4 +15,4 @@ const ReservationOfCourtPage: NextPage = withRouteGuard("private", () => {
   )
 })
 
-export default ReservationOfCourtPage
+export default Page

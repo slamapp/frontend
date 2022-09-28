@@ -1,6 +1,6 @@
+import { Spinner } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Spinner } from "~/components/uis/atoms"
 
 type Props = { isLoading: boolean }
 
@@ -23,7 +23,7 @@ const LoadingIndicator = ({ isLoading }: Props) => {
               gap: 8px;
             `}
           >
-            <Spinner size={24} />
+            <Spinner />
           </motion.div>
         </AnimatePresence>
       )}

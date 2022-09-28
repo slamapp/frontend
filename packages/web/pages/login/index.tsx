@@ -1,4 +1,3 @@
-import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
@@ -9,7 +8,7 @@ import { withRouteGuard } from "~/hocs"
 
 const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string
 
-const Login: NextPage = () => {
+const Page = withRouteGuard("prevented", () => {
   const router = useRouter()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_LOGIN")
@@ -43,9 +42,9 @@ const Login: NextPage = () => {
       </KaKaoLoginButton>
     </PageContainer>
   )
-}
+})
 
-export default withRouteGuard("prevented", Login)
+export default Page
 
 const PageContainer = styled.div`
   display: flex;

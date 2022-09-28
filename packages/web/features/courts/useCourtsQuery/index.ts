@@ -15,7 +15,7 @@ const useCourtsQuery = (
   useQuery(
     key.courts.all,
     () => api.courts.getCourtsByCoordsAndDate(filter).then(({ data }) => data),
-    options
+    { ...options }
   )
 
 export default useCourtsQuery

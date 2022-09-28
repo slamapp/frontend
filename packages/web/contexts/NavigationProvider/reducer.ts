@@ -191,6 +191,34 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         title: "프로필 편집",
       }
     }
+    case "PAGE_USER_FOLLOWER": {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: false,
+        currentPage: action.type,
+        isBack: true,
+        isNotifications: false,
+        isProfile: false,
+        isNext: false,
+        isMenu: false,
+        title: "팔로워",
+      }
+    }
+    case "PAGE_USER_FOLLOWING": {
+      return {
+        ...prevState,
+        isTopNavigation: true,
+        isBottomNavigation: false,
+        currentPage: action.type,
+        isBack: true,
+        isNotifications: false,
+        isProfile: false,
+        isNext: false,
+        isMenu: false,
+        title: "팔로잉",
+      }
+    }
     case "PAGE_CHATROOM_LIST": {
       return {
         ...prevState,

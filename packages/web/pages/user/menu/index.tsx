@@ -11,7 +11,7 @@ interface Props {
   buildTime: string
 }
 
-const Menu = withRouteGuard(
+const Page = withRouteGuard(
   "private",
   ({ buildTime }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const { logout } = useAuthContext()
@@ -84,7 +84,7 @@ const Menu = withRouteGuard(
   }
 )
 
-export default Menu
+export default Page
 
 const MenuList = styled.div`
   margin-top: 24px;

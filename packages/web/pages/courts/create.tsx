@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react"
-import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import styled from "@emotion/styled"
@@ -31,7 +30,7 @@ interface Geocoder extends kakao.maps.services.Geocoder {
   ) => string
 }
 
-const CreateCourt: NextPage = () => {
+const Page = withRouteGuard("private", () => {
   const { map } = useMapContext()
 
   const router = useRouter()
@@ -357,9 +356,9 @@ const CreateCourt: NextPage = () => {
       />
     </div>
   )
-}
+})
 
-export default withRouteGuard("private", CreateCourt)
+export default Page
 
 const MainContainer = styled.div`
   padding: ${({ theme }) => `30px ${theme.previousTheme.gaps.base}`};

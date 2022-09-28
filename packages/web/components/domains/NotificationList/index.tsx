@@ -15,7 +15,6 @@ const NotificationList = () => {
           title="알림이 없습니다"
           description="유용한 정보를 알림에서 모아 보실 수 있어요"
           buttonTitle="지도에서 내 주변 농구장 찾기"
-          style={{ height: "65vh" }}
         />
       )}
       {authProps.notifications.map((notification) => (

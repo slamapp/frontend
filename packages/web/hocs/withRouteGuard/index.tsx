@@ -12,7 +12,7 @@ type RouteOption = "private" | "prevented"
 const withRouteGuard = <P extends object>(
   option: RouteOption,
   Page: NextPage<P>
-) => {
+): NextPage<P> => {
   return (props: P) => {
     const { authProps } = useAuthContext()
     const [localToken] = useLocalToken()

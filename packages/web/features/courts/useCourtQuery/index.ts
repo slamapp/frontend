@@ -6,7 +6,7 @@ import { key } from "~/features"
 const useCourtQuery = (
   courtId: Parameters<typeof api.courts.getCourtDetail>[0],
   filter: Parameters<typeof api.courts.getCourtDetail>[1],
-  options: Pick<
+  options?: Pick<
     UseQueryOptions<
       Awaited<ReturnType<typeof api.courts.getCourtDetail>>["data"] & {
         address: string

@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useMemo } from "react"
-import type { NextPage } from "next"
-import styled from "@emotion/styled"
+import { useRef, useEffect, useMemo } from "react"
+import { css } from "@emotion/react"
 import { NoItemMessage } from "~/components/domains"
 import NotificationList from "~/components/domains/NotificationList"
 import { Skeleton } from "~/components/uis/atoms"
@@ -8,7 +7,7 @@ import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 import { useIntersectionObserver } from "~/hooks"
 
-const NotificationsPage: NextPage = () => {
+const Page = withRouteGuard("private", () => {
   const { authProps, getMoreNotifications, readAllNotifications } =
     useAuthContext()
   const { useMountPage } = useNavigationContext()
@@ -39,7 +38,11 @@ const NotificationsPage: NextPage = () => {
   }
 
   return (
-    <PageConainer>
+    <div
+      css={css`
+        flex: 1;
+      `}
+    >
       <NotificationList />
       <div ref={ref} style={{ minHeight: 200 }}>
         {authProps.notificationLastId ? (
@@ -54,20 +57,15 @@ const NotificationsPage: NextPage = () => {
               title="더 받아올 알림이 없습니다"
               description="유용한 정보를 알림에서 모아 보실 수 있어요"
               buttonTitle="지도에서 내 주변 농구장 찾기"
-              style={{ marginLeft: 16, marginRight: 16 }}
             />
           )
         )}
       </div>
-    </PageConainer>
+    </div>
   )
-}
+})
 
-export default withRouteGuard("private", NotificationsPage)
-
-const PageConainer = styled.div`
-  flex: 1;
-`
+export default Page
 
 const SkeletonNotification = () => (
   <div style={{ padding: 12 }}>

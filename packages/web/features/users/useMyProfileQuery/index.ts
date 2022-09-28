@@ -6,16 +6,15 @@ import type { APIUser } from "~/types/domains/objects"
 
 const useMyProfileQuery = (
   userId: APIUser["id"],
-  options: Pick<
+  options?: Pick<
     UseQueryOptions<Awaited<ReturnType<typeof api.users.getMyProfile>>["data"]>,
     "onSuccess" | "enabled"
   >
-) => {
-  return useQuery(
+) =>
+  useQuery(
     key.users.myProfile(userId),
     () => api.users.getMyProfile().then(({ data }) => data),
-    options
+    { ...options }
   )
-}
 
 export default useMyProfileQuery
