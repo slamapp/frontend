@@ -74,7 +74,24 @@ const TopNavigation = () => {
               <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
                 <Link href="/notifications" passHref>
                   <a>
-                    <Icon name="bell" size={24} />
+                    <motion.div
+                      initial={{ rotateZ: 0 }}
+                      animate={
+                        unreadNotificationsCount > 0
+                          ? {
+                              rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
+                              transition: {
+                                repeat: Infinity,
+                                repeatDelay: 3,
+                              },
+                            }
+                          : {
+                              rotateZ: 0,
+                            }
+                      }
+                    >
+                      <Icon name="bell" size={24} />
+                    </motion.div>
                   </a>
                 </Link>
               </Badge>

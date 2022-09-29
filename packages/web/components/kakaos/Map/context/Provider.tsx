@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react"
 import { useDebounce } from "~/hooks"
 import { Context } from "."
 
-const DEFAULT_LATITUDE = 37.5665
-const DEFAULT_LONGITUDE = 126.978
-
 type Props = {
+  initialCenter: { latitude: number; longitude: number }
+  initialLevel?: number
+  maxLevel?: number
   onLoaded?: (map: kakao.maps.Map) => void
   onBoundChange?: (map: kakao.maps.Map) => void
   debounceDelay?: number
@@ -14,6 +14,9 @@ type Props = {
 }
 
 export const Provider = ({
+  initialCenter,
+  initialLevel,
+  maxLevel,
   onLoaded,
   onBoundChange,
   debounceDelay = 200,
@@ -23,13 +26,19 @@ export const Provider = ({
   const [map, setMap] = useState<kakao.maps.Map | null>(null)
   const mapRef = useRef<HTMLDivElement>(null)
 
+  const render = () => setRender(() => {})
+
   useEffect(() => {
     kakao.maps.load(() => {
       if (mapRef.current) {
         const newMap = new window.kakao.maps.Map(mapRef.current, {
-          center: new kakao.maps.LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
-          level: 6,
+          center: new kakao.maps.LatLng(
+            initialCenter.latitude,
+            initialCenter.longitude
+          ),
+          level: initialLevel,
         })
+        newMap.setMaxLevel(maxLevel)
 
         setMap(newMap)
         onLoaded?.(newMap)
@@ -60,7 +69,7 @@ export const Provider = ({
   ])
 
   return (
-    <Context.Provider value={{ map, mapRef, setRender }}>
+    <Context.Provider value={{ map, mapRef, render }}>
       {children}
     </Context.Provider>
   )

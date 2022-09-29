@@ -6,6 +6,9 @@ import LoadingIndicator from "./LoadingIndicator"
 import Marker from "./Marker"
 
 type Props = {
+  initialCenter: { latitude: number; longitude: number }
+  initialLevel?: number
+  maxLevel?: number
   center?: { latitude: number; longitude: number }
   onClick?: (target: kakao.maps.Map) => void
   onDragStart?: (target: kakao.maps.Map) => void
@@ -19,6 +22,9 @@ type Props = {
 }
 
 const Map = ({
+  initialCenter,
+  initialLevel = 6,
+  maxLevel = 8,
   center,
   onClick,
   onDragStart,
@@ -30,7 +36,13 @@ const Map = ({
   children,
 }: Props) => {
   return (
-    <Provider onLoaded={onLoaded} onBoundChange={onBoundChange}>
+    <Provider
+      initialCenter={initialCenter}
+      initialLevel={initialLevel}
+      maxLevel={maxLevel}
+      onLoaded={onLoaded}
+      onBoundChange={onBoundChange}
+    >
       <Container
         center={center}
         onClick={onClick}

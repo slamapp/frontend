@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef } from "react"
 import { useRef, useEffect, Fragment } from "react"
 import type { GetServerSideProps } from "next"
-import { Box, HStack, Spinner, Text, VStack } from "@chakra-ui/react"
+import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { NoItemMessage, ProfileAvatar } from "~/components/domains"
 import { Button, Skeleton } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
@@ -32,7 +32,7 @@ const Page = withRouteGuard<{
   })
 
   return (
-    <VStack>
+    <VStack spacing="16px" mt="16px">
       {userFollowerInfiniteQuery.isSuccess &&
         userFollowerInfiniteQuery.data.pages.map(
           ({ contents, lastId }, pageIndex) => (
@@ -107,7 +107,7 @@ const FollowListItem = ({
   isFollowed: boolean
   user: Pick<APIUser, "profileImage" | "nickname" | "id">
 }) => (
-  <HStack width="100%" px="4" my="4">
+  <HStack width="100%" px="4">
     <ProfileAvatar
       profileImage={user.profileImage}
       userId={user.id}

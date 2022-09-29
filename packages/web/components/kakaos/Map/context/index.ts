@@ -1,4 +1,4 @@
-import type { Dispatch, RefObject, SetStateAction } from "react"
+import type { RefObject } from "react"
 import { createContext, useContext } from "react"
 
 export const Context = createContext({
@@ -7,7 +7,7 @@ export const Context = createContext({
 } as {
   map: kakao.maps.Map | null
   mapRef: RefObject<HTMLDivElement>
-  setRender: Dispatch<SetStateAction<object>>
+  render: () => void
 })
 
 export const useMap = () => useContext(Context)

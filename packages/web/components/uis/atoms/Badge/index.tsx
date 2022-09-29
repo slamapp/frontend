@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 
 interface Props {
@@ -45,19 +46,19 @@ const Badge = ({
   }
 
   return (
-    <BadgeContainer>
+    <div
+      css={css`
+        position: relative;
+        display: inline-block;
+      `}
+    >
       {children}
       {badge}
-    </BadgeContainer>
+    </div>
   )
 }
 
 export default Badge
-
-const BadgeContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`
 
 const Super = styled.sup`
   position: absolute;

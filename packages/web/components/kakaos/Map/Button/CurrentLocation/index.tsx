@@ -35,12 +35,12 @@ const getCurrentLocation = (callback: (coord: Coord) => void) => {
 }
 
 const CurrentLocationButton = () => {
-  const { map, setRender } = useMap()
+  const { map, render } = useMap()
   const handleClick = () => {
     getCurrentLocation(([latitude, longitude]) => {
       map?.panTo(new kakao.maps.LatLng(latitude, longitude))
       setTimeout(() => {
-        setRender((prev) => ({ ...prev }))
+        render()
       }, 400)
     })
   }

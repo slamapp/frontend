@@ -6,13 +6,13 @@ const useMapEvent = (
   type: string,
   callback?: (map: kakao.maps.Map) => void
 ) => {
-  const { map, setRender } = useMap()
+  const { map, render } = useMap()
   const handler = () => {
     if (map) {
       callback?.(map)
     }
 
-    setRender((prev) => ({ ...prev }))
+    render()
   }
 
   useEffect(() => {
