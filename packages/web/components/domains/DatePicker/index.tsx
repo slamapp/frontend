@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react"
-import { css } from "@emotion/react"
+import { css, useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { motion } from "framer-motion"
@@ -36,7 +36,13 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <motion.div ref={ref} whileTap={{ cursor: "grabbing" }}>
+    <motion.div
+      ref={ref}
+      whileTap={{ cursor: "grabbing" }}
+      css={css`
+        position: relative;
+      `}
+    >
       <motion.div
         css={css`
           display: flex;
@@ -66,8 +72,30 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
           )
         })}
       </motion.div>
+      <GradientCover position="left" />
+      <GradientCover position="right" />
     </motion.div>
   )
 }
 
 export default DatePicker
+
+const GradientCover = ({ position }: { position: "left" | "right" }) => {
+  const theme = useTheme()
+
+  return (
+    <motion.div
+      css={css`
+        width: 16px;
+        position: absolute;
+        ${position}: 0;
+        top: 0;
+        bottom: 0;
+        background: ${position === "left"
+          ? `linear-gradient(0.25turn,${theme.previousTheme.colors.gray50},transparent)`
+          : `linear-gradient(0.25turn,transparent,${theme.previousTheme.colors.gray50})`};
+        pointer-events: none;
+      `}
+    />
+  )
+}

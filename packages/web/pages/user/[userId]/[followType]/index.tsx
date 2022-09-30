@@ -38,9 +38,7 @@ const Page = withRouteGuard<{
           ({ contents, lastId }, pageIndex) => (
             <Fragment key={pageIndex}>
               {contents.map(({ id, creator }) => (
-                <Fragment key={id}>
-                  <FollowListItem user={creator} isFollowed />
-                </Fragment>
+                <FollowListItem key={id} user={creator} isFollowed />
               ))}
               {pageIndex !==
               userFollowerInfiniteQuery.data.pages.length -
@@ -64,9 +62,7 @@ const Page = withRouteGuard<{
           ({ contents, lastId }, pageIndex) => (
             <Fragment key={pageIndex}>
               {contents.map(({ id, receiver }) => (
-                <Fragment key={id}>
-                  <FollowListItem user={receiver} isFollowed />
-                </Fragment>
+                <FollowListItem key={id} user={receiver} isFollowed />
               ))}
               {pageIndex !==
               userFollowingInfiniteQuery.data.pages.length -

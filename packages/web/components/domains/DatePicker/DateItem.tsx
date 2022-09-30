@@ -35,6 +35,7 @@ const DateItem = ({ width, date, onClick, selected }: Props) => {
       <motion.div
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
+        whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 0.9 }}
         css={css`
           background-color: ${selected
@@ -48,7 +49,9 @@ const DateItem = ({ width, date, onClick, selected }: Props) => {
           border-radius: 12px;
           flex-direction: column;
           gap: 4px;
-          box-shadow: 0 0 32px -16px ${theme.colors.gray0300};
+          box-shadow: 0 0 32px -12px ${theme.colors.gray0500};
+          cursor: pointer;
+          transition: background-color 200ms;
         `}
       >
         <Text

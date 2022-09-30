@@ -1,5 +1,5 @@
 import type { MouseEvent } from "react"
-import styled from "@emotion/styled"
+import { css } from "@emotion/react"
 import { IconButton } from "~/components/uis/molecules"
 
 interface Props {
@@ -7,7 +7,14 @@ interface Props {
 }
 
 const CurrentLocationButton: React.FC<Props> = ({ onGetCurrentLocation }) => (
-  <PositionAction>
+  <div
+    css={css`
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 10;
+    `}
+  >
     <IconButton
       name="crosshair"
       type="button"
@@ -15,14 +22,7 @@ const CurrentLocationButton: React.FC<Props> = ({ onGetCurrentLocation }) => (
       onClick={onGetCurrentLocation}
       noOutlined
     />
-  </PositionAction>
+  </div>
 )
 
 export default CurrentLocationButton
-
-const PositionAction = styled.div`
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  z-index: 10;
-`

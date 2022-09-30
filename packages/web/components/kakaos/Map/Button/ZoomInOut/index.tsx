@@ -1,3 +1,4 @@
+import type { ComponentProps, ReactNode } from "react"
 import { css } from "@emotion/react"
 import { motion } from "framer-motion"
 import { IconButton } from "~/components/uis/molecules"
@@ -5,16 +6,15 @@ import { useMap } from "../../context"
 
 const ZoomInOut = () => {
   const { map } = useMap()
-  const currentLevel = map?.getLevel() || 0
 
   const handleClickZoomIn = () => {
-    if (currentLevel > 1) {
-      map?.setLevel(currentLevel - 1, { animate: true })
+    if (map?.getLevel() || 0 > 1) {
+      map?.setLevel(map?.getLevel() - 1, { animate: true })
     }
   }
   const handleClickZoomOut = () => {
-    if (currentLevel < 7) {
-      map?.setLevel(currentLevel + 1, { animate: true })
+    if (map?.getLevel() || 0 < 7) {
+      map?.setLevel(map?.getLevel() + 1, { animate: true })
     }
   }
 
@@ -22,6 +22,7 @@ const ZoomInOut = () => {
     <motion.div
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
+      whileHover={{ scale: 1.1 }}
       css={css`
         position: absolute;
         top: 100px;
@@ -32,22 +33,32 @@ const ZoomInOut = () => {
         gap: 8px;
       `}
     >
-      <IconButton
-        name="plus"
-        type="button"
-        iconColor="#6B94E5"
-        onClick={handleClickZoomIn}
-        noOutlined
-      />
-      <IconButton
-        name="minus"
-        type="button"
-        iconColor="#6B94E5"
-        onClick={handleClickZoomOut}
-        noOutlined
-      />
+      <TapAnimate onTapStart={handleClickZoomIn}>
+        <IconButton name="plus" type="button" iconColor="#6B94E5" noOutlined />
+      </TapAnimate>
+      <TapAnimate onTapStart={handleClickZoomOut}>
+        <IconButton name="minus" type="button" iconColor="#6B94E5" noOutlined />
+      </TapAnimate>
     </motion.div>
   )
 }
 
 export default ZoomInOut
+
+const TapAnimate = ({
+  onTapStart,
+  children,
+}: {
+  onTapStart: ComponentProps<typeof motion.div>["onTapStart"]
+  children: ReactNode
+}) => {
+  return (
+    <motion.div
+      onTapStart={onTapStart}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.8 }}
+    >
+      {children}
+    </motion.div>
+  )
+}

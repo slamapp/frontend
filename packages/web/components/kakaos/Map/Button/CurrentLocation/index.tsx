@@ -49,6 +49,9 @@ const CurrentLocationButton = () => {
     <motion.div
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
+      whileHover={{ scale: 1.2 }}
+      whileTap={{ scale: 0.9 }}
+      onTapStart={handleClick}
       css={css`
         position: absolute;
         top: 15px;
@@ -60,7 +63,6 @@ const CurrentLocationButton = () => {
         name="crosshair"
         type="button"
         iconColor="#6B94E5"
-        onClick={handleClick}
         noOutlined
       />
     </motion.div>

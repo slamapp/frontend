@@ -219,18 +219,11 @@ const MapPage = () => {
                   longitude: court.longitude,
                 }}
               >
-                <Flex
-                  as={motion.div}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  whileTap={{ scale: 0.6 }}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    position: "relative",
-                    borderRadius: 25,
-                  }}
-                  justify="center"
+                <motion.div
+                  css={css`
+                    width: 50;
+                    height: 50;
+                  `}
                   onTap={() => {
                     router.replace({
                       pathname: "/map",
@@ -242,29 +235,46 @@ const MapPage = () => {
                     })
                   }}
                 >
-                  <Box
+                  <Flex
+                    as={motion.div}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
                     style={{
-                      position: "absolute",
-                      bottom: -4,
-                      backgroundColor: "rgba(0,0,0,0.6)",
-                      filter: "blur(4px)",
-                      width: 45,
-                      height: 45,
+                      width: 50,
+                      height: 50,
+                      position: "relative",
                       borderRadius: 25,
-                      overflow: "visible",
+                      cursor: "pointer",
                     }}
-                  />
-                  <img
-                    src={imageSrc}
-                    style={{
-                      position: "absolute",
-                      bottom: -8,
-                      minWidth: 100,
-                      minHeight: 150,
-                      pointerEvents: "none",
-                    }}
-                  />
-                </Flex>
+                    justify="center"
+                  >
+                    <Box
+                      style={{
+                        position: "absolute",
+                        bottom: -4,
+                        backgroundColor: "rgba(0,0,0,0.6)",
+                        filter: "blur(4px)",
+                        width: 45,
+                        height: 45,
+                        borderRadius: 25,
+                        overflow: "visible",
+                      }}
+                    />
+                    <img
+                      src={imageSrc}
+                      style={{
+                        position: "absolute",
+                        bottom: -8,
+                        minWidth: 100,
+                        minHeight: 150,
+                        pointerEvents: "none",
+                        userSelect: "none",
+                      }}
+                    />
+                  </Flex>
+                </motion.div>
               </Map.Marker.CustomMarkerOverlay>
             )
           })}
