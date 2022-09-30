@@ -5,7 +5,7 @@ import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { api } from "~/api"
 import {
-  BottomFixedButton,
+  BottomFixedGradient,
   PositionsPicker,
   ProficiencyPicker,
   BasketballLoading,
@@ -266,13 +266,13 @@ const ProfileForm = () => {
             </ErrorMessage>
           </div>
         </Spacer>
-        <BottomFixedButton
+        <BottomFixedGradient
           disabled={!!Object.keys(errors).length}
           type="submit"
           onClick={() => setIsOpenEditConfirmModal(true)}
         >
           프로필 편집 완료하기
-        </BottomFixedButton>
+        </BottomFixedGradient>
       </form>
 
       <LeadToLoginModal

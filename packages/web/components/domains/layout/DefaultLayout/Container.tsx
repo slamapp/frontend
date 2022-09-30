@@ -1,9 +1,10 @@
 import type { ReactNode } from "react"
 import { forwardRef, useEffect, useState } from "react"
-import styled from "@emotion/styled"
+import { css, useTheme } from "@emotion/react"
 
 const Container = forwardRef<HTMLDivElement, { children: ReactNode }>(
   ({ children }, ref) => {
+    const theme = useTheme()
     const [height, setHeight] = useState<number>(0)
 
     const handleResize = () => setHeight(window.innerHeight)
@@ -16,26 +17,28 @@ const Container = forwardRef<HTMLDivElement, { children: ReactNode }>(
     }, [])
 
     return (
-      <StyledContainer ref={ref} height={height} id="scrolled-container">
+      <div
+        ref={ref}
+        id="scrolled-container"
+        css={css`
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          overflow-x: hidden;
+          max-width: 640px;
+          margin: auto;
+          background-color: ${theme.previousTheme.colors.gray50};
+          height: ${`${height}`}px;
+
+          ::-webkit-scrollbar {
+            width: 0px;
+          }
+        `}
+      >
         {children}
-      </StyledContainer>
+      </div>
     )
   }
 )
 
 export default Container
-
-const StyledContainer = styled.div<{ height: number }>`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow-x: hidden;
-  max-width: 640px;
-  margin: auto;
-  background-color: ${({ theme }) => theme.previousTheme.colors.gray50};
-  height: ${({ height }) => `${height}`}px;
-
-  ::-webkit-scrollbar {
-    width: 0px;
-  }
-`

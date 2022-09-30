@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import { css } from "@emotion/react"
 import { useAuthContext } from "~/contexts/hooks"
 import NavIcon from "./NavIcon"
 
@@ -6,26 +6,39 @@ const BottomNavigation = () => {
   const { authProps } = useAuthContext()
 
   if (!authProps.currentUser) {
-    return (
-      <Container>
-        <Wrapper>
-          <NavIcon.Map />
-          <NavIcon.Login />
-        </Wrapper>
-      </Container>
-    )
+    return null
   }
 
   if (authProps.currentUser) {
     return (
-      <Container>
-        <Wrapper>
+      <nav
+        css={css`
+          position: sticky;
+          background: white;
+          display: flex;
+          align-items: center;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 2000;
+        `}
+      >
+        <div
+          css={css`
+            display: flex;
+            justify-content: space-around;
+            margin: 0 16px;
+            align-items: center;
+            height: 52px;
+            flex: 1;
+          `}
+        >
           <NavIcon.Favorites />
           <NavIcon.Map />
           <NavIcon.Chat />
           <NavIcon.Reservations />
-        </Wrapper>
-      </Container>
+        </div>
+      </nav>
     )
   }
 
@@ -33,24 +46,3 @@ const BottomNavigation = () => {
 }
 
 export default BottomNavigation
-
-const Container = styled.nav`
-  position: sticky;
-  background: white;
-  display: flex;
-  align-items: center;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2000;
-`
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin: 0 16px;
-  align-items: center;
-  height: 52px;
-
-  flex: 1;
-`

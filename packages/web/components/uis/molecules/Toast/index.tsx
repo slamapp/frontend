@@ -43,7 +43,7 @@ export default new Toast<ExtraOptions>({
             style={{
               maxWidth: 640,
               margin: "0 auto",
-              padding: "0 0 16px 0",
+              padding: "0 16px 16px 16px",
             }}
             initial={{ y: 40, opacity: 0 }}
             animate={{

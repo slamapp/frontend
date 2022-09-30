@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import type { GetStaticProps, InferGetStaticPropsType } from "next"
 import styled from "@emotion/styled"
 import dayjs from "dayjs"
@@ -21,11 +21,6 @@ const Page = withRouteGuard(
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const list = [
-      // {
-      //   title: "다크 모드",
-      //   onClick: () => console.log("dark Mode clicked"),
-      //   icon: "moon",
-      // },
       {
         title: "로그아웃",
         onClick: () => setIsModalOpen(true),

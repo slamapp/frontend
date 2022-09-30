@@ -3460,16 +3460,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/react-lottie", [\
-        ["npm:1.2.6", {\
-          "packageLocation": "./.yarn/cache/@types-react-lottie-npm-1.2.6-cf3b4d2494-7930bad2cc.zip/node_modules/@types/react-lottie/",\
-          "packageDependencies": [\
-            ["@types/react-lottie", "npm:1.2.6"],\
-            ["@types/react", "npm:18.0.20"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@types/scheduler", [\
         ["npm:0.16.2", {\
           "packageLocation": "./.yarn/cache/@types-scheduler-npm-0.16.2-ba3a7d8c68-b6b4dcfeae.zip/node_modules/@types/scheduler/",\
@@ -6805,6 +6795,42 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["lottie-react", [\
+        ["npm:2.3.1", {\
+          "packageLocation": "./.yarn/cache/lottie-react-npm-2.3.1-2c42200039-3f83511eec.zip/node_modules/lottie-react/",\
+          "packageDependencies": [\
+            ["lottie-react", "npm:2.3.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:2.3.1", {\
+          "packageLocation": "./.yarn/__virtual__/lottie-react-virtual-8a6b224d74/0/cache/lottie-react-npm-2.3.1-2c42200039-3f83511eec.zip/node_modules/lottie-react/",\
+          "packageDependencies": [\
+            ["lottie-react", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:2.3.1"],\
+            ["@types/react", "npm:18.0.20"],\
+            ["@types/react-dom", "npm:18.0.6"],\
+            ["lottie-web", "npm:5.9.6"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:94de940a12aebd19f10e0a5b5702e435ff38d3f2a1b8621121e35f085410d4e466a0d0951ce6ee0822f9dc2cc191756fd20ef02eac83de5ee242939c7842ffa5#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["lottie-web", [\
+        ["npm:5.9.6", {\
+          "packageLocation": "./.yarn/cache/lottie-web-npm-5.9.6-93f381883a-aed6a1d0c2.zip/node_modules/lottie-web/",\
+          "packageDependencies": [\
+            ["lottie-web", "npm:5.9.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["lru-cache", [\
         ["npm:6.0.0", {\
           "packageLocation": "./.yarn/cache/lru-cache-npm-6.0.0-b4c8668fe1-f97f499f89.zip/node_modules/lru-cache/",\
@@ -9052,7 +9078,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:18.7.18"],\
             ["@types/react", "npm:18.0.20"],\
             ["@types/react-dom", "npm:18.0.6"],\
-            ["@types/react-lottie", "npm:1.2.6"],\
             ["@types/sockjs-client", "npm:1.5.1"],\
             ["@types/uuid", "npm:8.3.4"],\
             ["axios", "npm:0.27.2"],\
@@ -9063,8 +9088,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["feather-icons", "npm:4.29.0"],\
             ["framer-motion", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:7.3.6"],\
             ["kakao.maps.d.ts", "npm:0.1.33"],\
+            ["lottie-react", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:2.3.1"],\
             ["next", "virtual:94de940a12aebd19f10e0a5b5702e435ff38d3f2a1b8621121e35f085410d4e466a0d0951ce6ee0822f9dc2cc191756fd20ef02eac83de5ee242939c7842ffa5#npm:12.3.0"],\
-            ["prop-types", "npm:15.8.1"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:94de940a12aebd19f10e0a5b5702e435ff38d3f2a1b8621121e35f085410d4e466a0d0951ce6ee0822f9dc2cc191756fd20ef02eac83de5ee242939c7842ffa5#npm:18.2.0"],\
             ["react-ga4", "npm:1.4.1"],\

@@ -7,7 +7,7 @@ import { api } from "~/api"
 import {
   Map,
   GeneralMarker,
-  BottomFixedButton,
+  BottomFixedGradient,
   LeadToLoginModal,
   BasketballLoading,
 } from "~/components/domains"
@@ -204,14 +204,14 @@ const Page = withRouteGuard("private", () => {
                 ) : null}
               </Map.KakaoMap>
             ) : null}
-            <BottomFixedButton
+            <BottomFixedGradient
               type="button"
               disabled={!center}
               onClick={handleClickSaveLocationButton}
               containerStyle={{ zIndex: 10000000 }}
             >
               농구장 위치 저장하기
-            </BottomFixedButton>
+            </BottomFixedGradient>
           </Sheet.Content>
         </Sheet.Container>
         <Sheet.Backdrop />
@@ -306,13 +306,13 @@ const Page = withRouteGuard("private", () => {
             </div>
           </Spacer>
         </MainContainer>
-        <BottomFixedButton
+        <BottomFixedGradient
           type="submit"
           onClick={() => setIsOpenConfirmModal(true)}
           disabled={!!Object.keys(errors).length}
         >
           {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
-        </BottomFixedButton>
+        </BottomFixedGradient>
       </form>
 
       <LeadToLoginModal

@@ -6,8 +6,12 @@ import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
-import { motion } from "framer-motion"
-import { CourtItem, DatePicker } from "~/components/domains"
+import { AnimatePresence, motion } from "framer-motion"
+import {
+  BottomFixedGradient,
+  CourtItem,
+  DatePicker,
+} from "~/components/domains"
 import Map from "~/components/kakaos/Map/Map"
 import { Button, Icon, Skeleton, Spacer, Text } from "~/components/uis/atoms"
 import { Toast } from "~/components/uis/molecules"
@@ -29,6 +33,7 @@ const DEFAULT_POSITION = {
 }
 
 const MapPage = () => {
+  const theme = useTheme()
   const router = useRouter()
   const [localToken] = useLocalToken()
   const { authProps } = useAuthContext()
@@ -121,173 +126,202 @@ const MapPage = () => {
   }, [router.isReady, router.query.courtId])
 
   return (
-    <Flex direction="column" flex={1}>
-      <DatePicker
-        initialValue={selectedDate}
-        onChange={(date) => {
-          setSelectedDate(date)
-          Toast.show(
-            <>
-              {`${date.format("MM/DD")}`}
-              <>{`${date.format("(dd)")}`}</>의 농구장을 보고 있어요
-            </>,
-            {
-              duration: 1000,
-            }
-          )
-        }}
-      />
+    <>
+      <Flex direction="column" flex={1}>
+        <DatePicker
+          initialValue={selectedDate}
+          onChange={(date) => {
+            setSelectedDate(date)
+            Toast.show(
+              <>
+                {`${date.format("MM/DD")}`}
+                <>{`${date.format("(dd)")}`}</>의 농구장을 보고 있어요
+              </>,
+              {
+                duration: 1000,
+              }
+            )
+          }}
+        />
 
-      <Map
-        initialCenter={{
-          latitude: mapInitialCenter.latitude,
-          longitude: mapInitialCenter.longitude,
-        }}
-        initialLevel={6}
-        onClick={() => {
-          router.replace({ pathname: "/map" })
-        }}
-        onDragStart={() => {
-          router.replace({ pathname: "/map" })
+        <Map
+          initialCenter={{
+            latitude: mapInitialCenter.latitude,
+            longitude: mapInitialCenter.longitude,
+          }}
+          initialLevel={6}
+          onClick={() => {
+            router.replace({ pathname: "/map" })
+          }}
+          onDragStart={() => {
+            router.replace({ pathname: "/map" })
 
-          isFetchDisabled.current = true
-        }}
-        onDragEnd={() => {
-          isFetchDisabled.current = false
-        }}
-        onLoaded={(map) => {
-          setBounds(map.getBounds())
-          mapRef.current = map
-        }}
-        onBoundChange={(map) => {
-          if (!isFetchDisabled.current) {
+            isFetchDisabled.current = true
+          }}
+          onDragEnd={() => {
+            isFetchDisabled.current = false
+          }}
+          onLoaded={(map) => {
             setBounds(map.getBounds())
-          }
-        }}
-        style={{ flex: 1 }}
-      >
-        <Map.Button.CurrentLocation />
-        <Map.Button.ZoomInOut />
-        <Map.LoadingIndicator isLoading={courtsQuery.isFetching} />
-        {courtsQuery.isSuccess &&
-          courtsQuery.data.map(({ court, reservationMaxCount }) => {
-            let imageSrc = "/assets/basketball/animation_off_400.png"
-
-            const isReservatedCourt = reservations.some(
-              ({ court: { id } }) => id === court.id
-            )
-            const isFavoritedCourt = favorites.some(
-              ({ court: { id } }) => id === court.id
-            )
-
-            if (isFavoritedCourt) {
-              imageSrc = "/assets/basketball/animation_off_favorited.png"
+            mapRef.current = map
+          }}
+          onBoundChange={(map) => {
+            if (!isFetchDisabled.current) {
+              setBounds(map.getBounds())
             }
+          }}
+          style={{ flex: 1 }}
+        >
+          <Map.Button.CurrentLocation />
+          <Map.Button.ZoomInOut />
+          <Map.LoadingIndicator isLoading={courtsQuery.isFetching} />
+          {courtsQuery.isSuccess &&
+            courtsQuery.data.map(({ court, reservationMaxCount }) => {
+              let imageSrc = "/assets/basketball/animation_off_400.png"
 
-            if (
-              reservationMaxCount > PAUSE_COURT_NUMBER &&
-              reservationMaxCount < FIRE_COURT_NUMBER
-            ) {
-              if (isReservatedCourt && isFavoritedCourt) {
-                imageSrc = "/assets/basketball/fire_off_all_tagged.gif"
-              } else if (isReservatedCourt) {
-                imageSrc = "/assets/basketball/fire_off_reservated.gif"
-              } else if (isFavoritedCourt) {
-                imageSrc = "/assets/basketball/fire_off_favorited.gif"
-              } else {
-                imageSrc = "/assets/basketball/fire_off_400.gif"
+              const isReservatedCourt = reservations.some(
+                ({ court: { id } }) => id === court.id
+              )
+              const isFavoritedCourt = favorites.some(
+                ({ court: { id } }) => id === court.id
+              )
+
+              if (isFavoritedCourt) {
+                imageSrc = "/assets/basketball/animation_off_favorited.png"
               }
-            }
 
-            if (reservationMaxCount >= FIRE_COURT_NUMBER) {
-              if (isReservatedCourt && isFavoritedCourt) {
-                imageSrc = "/assets/basketball/fire_on_all_tagged.gif"
-              } else if (isReservatedCourt) {
-                imageSrc = "/assets/basketball/fire_on_reservated.gif"
-              } else if (isFavoritedCourt) {
-                imageSrc = "/assets/basketball/fire_on_favorited.gif"
-              } else {
-                imageSrc = "/assets/basketball/fire_on_400.gif"
+              if (
+                reservationMaxCount > PAUSE_COURT_NUMBER &&
+                reservationMaxCount < FIRE_COURT_NUMBER
+              ) {
+                if (isReservatedCourt && isFavoritedCourt) {
+                  imageSrc = "/assets/basketball/fire_off_all_tagged.gif"
+                } else if (isReservatedCourt) {
+                  imageSrc = "/assets/basketball/fire_off_reservated.gif"
+                } else if (isFavoritedCourt) {
+                  imageSrc = "/assets/basketball/fire_off_favorited.gif"
+                } else {
+                  imageSrc = "/assets/basketball/fire_off_400.gif"
+                }
               }
-            }
 
-            return (
-              <Map.Marker.CustomMarkerOverlay
-                key={court.id}
-                position={{
-                  latitude: court.latitude,
-                  longitude: court.longitude,
-                }}
-              >
-                <motion.div
-                  css={css`
-                    width: 50;
-                    height: 50;
-                  `}
-                  onTap={() => {
-                    router.replace({
-                      pathname: "/map",
-                      query: { courtId: court.id },
-                    })
-                    setMapInitialCenter({
-                      latitude: court.latitude,
-                      longitude: court.longitude,
-                    })
+              if (reservationMaxCount >= FIRE_COURT_NUMBER) {
+                if (isReservatedCourt && isFavoritedCourt) {
+                  imageSrc = "/assets/basketball/fire_on_all_tagged.gif"
+                } else if (isReservatedCourt) {
+                  imageSrc = "/assets/basketball/fire_on_reservated.gif"
+                } else if (isFavoritedCourt) {
+                  imageSrc = "/assets/basketball/fire_on_favorited.gif"
+                } else {
+                  imageSrc = "/assets/basketball/fire_on_400.gif"
+                }
+              }
+
+              return (
+                <Map.Marker.CustomMarkerOverlay
+                  key={court.id}
+                  position={{
+                    latitude: court.latitude,
+                    longitude: court.longitude,
                   }}
                 >
-                  <Flex
-                    as={motion.div}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.9 }}
-                    style={{
-                      width: 50,
-                      height: 50,
-                      position: "relative",
-                      borderRadius: 25,
-                      cursor: "pointer",
+                  <motion.div
+                    css={css`
+                      width: 50;
+                      height: 50;
+                    `}
+                    onTap={() => {
+                      router.replace({
+                        pathname: "/map",
+                        query: { courtId: court.id },
+                      })
+                      setMapInitialCenter({
+                        latitude: court.latitude,
+                        longitude: court.longitude,
+                      })
                     }}
-                    justify="center"
                   >
-                    <Box
+                    <Flex
+                      as={motion.div}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
                       style={{
-                        position: "absolute",
-                        bottom: -4,
-                        backgroundColor: "rgba(0,0,0,0.6)",
-                        filter: "blur(4px)",
-                        width: 45,
-                        height: 45,
+                        width: 50,
+                        height: 50,
+                        position: "relative",
                         borderRadius: 25,
-                        overflow: "visible",
+                        cursor: "pointer",
                       }}
-                    />
-                    <img
-                      src={imageSrc}
-                      style={{
-                        position: "absolute",
-                        bottom: -8,
-                        minWidth: 100,
-                        minHeight: 150,
-                        pointerEvents: "none",
-                        userSelect: "none",
-                      }}
-                    />
-                  </Flex>
-                </motion.div>
-              </Map.Marker.CustomMarkerOverlay>
-            )
-          })}
-      </Map>
-      <BottomModal
-        selectedDate={selectedDate}
-        courtId={selectedCourtId}
-        map={mapRef.current}
-        courtsRefetch={() => {
-          courtsQuery.refetch()
-        }}
-      />
-    </Flex>
+                      justify="center"
+                    >
+                      <Box
+                        style={{
+                          position: "absolute",
+                          bottom: -4,
+                          backgroundColor: "rgba(0,0,0,0.6)",
+                          filter: "blur(4px)",
+                          width: 45,
+                          height: 45,
+                          borderRadius: 25,
+                          overflow: "visible",
+                        }}
+                      />
+                      <img
+                        src={imageSrc}
+                        style={{
+                          position: "absolute",
+                          bottom: -8,
+                          minWidth: 100,
+                          minHeight: 150,
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        }}
+                      />
+                    </Flex>
+                  </motion.div>
+                </Map.Marker.CustomMarkerOverlay>
+              )
+            })}
+        </Map>
+        <BottomModal
+          selectedDate={selectedDate}
+          courtId={selectedCourtId}
+          map={mapRef.current}
+          courtsRefetch={() => {
+            courtsQuery.refetch()
+          }}
+        />
+      </Flex>
+      <AnimatePresence mode="wait">
+        {selectedCourtId ??
+          (authProps.currentUser === null && (
+            <BottomFixedGradient
+              as={motion.div}
+              initial={{ y: 300 }}
+              animate={{ y: 0, transition: { type: "ease" } }}
+              exit={{ y: 300 }}
+            >
+              <Box p="16px">
+                <Link href="/login" passHref>
+                  <a>
+                    <Button
+                      fullWidth
+                      css={css`
+                        background-color: ${theme.colors.kakaoYellow};
+                        color: ${theme.colors.kakaoBrown};
+                      `}
+                    >
+                      로그인하기
+                    </Button>
+                  </a>
+                </Link>
+              </Box>
+            </BottomFixedGradient>
+          ))}
+      </AnimatePresence>
+    </>
   )
 }
 

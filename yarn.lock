@@ -2024,15 +2024,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-lottie@npm:^1.2.6":
-  version: 1.2.6
-  resolution: "@types/react-lottie@npm:1.2.6"
-  dependencies:
-    "@types/react": "*"
-  checksum: 7930bad2cc998d62c3be4a0c66edfcbf1d87af6ffca5befa860acec706fd62e6e1e964ecffe88c3ed5a42668606e9ff1f43cc1beff764c679f68aa05166ce746
-  languageName: node
-  linkType: hard
-
 "@types/react@npm:*, @types/react@npm:18.0.20":
   version: 18.0.20
   resolution: "@types/react@npm:18.0.20"
@@ -4712,6 +4703,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lottie-react@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "lottie-react@npm:2.3.1"
+  dependencies:
+    lottie-web: ^5.9.4
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 3f83511eec9ef80c6500658fcb188f757c663c5de49de5cfd55d061d5de72b9242fd0a3b7ec7ce84bbad5acbcd7293468228a0f6cbe28e50e4c44e5b25df1c8d
+  languageName: node
+  linkType: hard
+
+"lottie-web@npm:^5.9.4":
+  version: 5.9.6
+  resolution: "lottie-web@npm:5.9.6"
+  checksum: aed6a1d0c24eefb6c42a42aae18f29737746551cfdc86319f1b9675f5bc276ba26971e8d2b0e1498df880571fe4bfe2fc87885a1d4f8a318d5e4e5b939b7a474
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
@@ -6584,7 +6594,6 @@ __metadata:
     "@types/node": 18.7.18
     "@types/react": 18.0.20
     "@types/react-dom": 18.0.6
-    "@types/react-lottie": ^1.2.6
     "@types/sockjs-client": ^1.5.1
     "@types/uuid": ^8.3.4
     axios: ^0.27.2
@@ -6595,8 +6604,8 @@ __metadata:
     feather-icons: ^4.29.0
     framer-motion: ^7.3.6
     kakao.maps.d.ts: ^0.1.33
+    lottie-react: ^2.3.1
     next: 12.3.0
-    prop-types: ^15.8.1
     react: 18.2.0
     react-dom: 18.2.0
     react-ga4: ^1.4.1

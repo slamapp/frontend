@@ -89,7 +89,7 @@ const StyledButton = styled.button<Omit<Props, "children">>`
       border: 1px solid ${theme.previousTheme.colors.gray200};
 
       :hover {
-        background-color: ${theme.previousTheme.colors.gray700};
+        opacity: 0.8;
       }
     `}
 
@@ -106,7 +106,7 @@ const StyledButton = styled.button<Omit<Props, "children">>`
       border: 1px solid ${theme.previousTheme.colors.gray200};
 
       :hover {
-        background-color: ${theme.previousTheme.colors.gray200};
+        opacity: 0.8;
       }
     `}
 
@@ -118,7 +118,7 @@ const StyledButton = styled.button<Omit<Props, "children">>`
       border: 1px solid ${theme.previousTheme.colors.gray300};
 
       :hover {
-        background-color: ${theme.previousTheme.colors.gray400};
+        opacity: 0.8;
       }
     `}
 

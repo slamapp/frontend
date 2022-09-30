@@ -1,14 +1,26 @@
 import type { FC, ReactNode } from "react"
-import styled from "@emotion/styled"
-import LoaderBasketball from "./LoaderBasketball"
+import { css } from "@emotion/react"
+import Lottie from "lottie-react"
+import * as animationData from "../../../public/assets/lottie/loader-basketball.json"
 
-interface Props {
+type Props = {
   children?: ReactNode
 }
 
 const BasketballLoading: FC<Props> = ({ children }) => {
   return (
-    <LoadingWrapper>
+    <div
+      css={css`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1000;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.6);
+      `}
+    >
       <div
         style={{
           display: "flex",
@@ -17,22 +29,19 @@ const BasketballLoading: FC<Props> = ({ children }) => {
           marginTop: -90,
         }}
       >
-        {/* <LoaderBasketball /> */}
+        <div
+          css={css`
+            width: 150px;
+            height: 150px;
+            z-index: 1;
+          `}
+        >
+          <Lottie animationData={animationData} />
+        </div>
         {children}
       </div>
-    </LoadingWrapper>
+    </div>
   )
 }
-
-const LoadingWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 1000;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.6);
-`
 
 export default BasketballLoading

@@ -1,14 +1,18 @@
 import Head from "next/head"
+import Link from "next/link"
 import { useRouter } from "next/router"
-import styled from "@emotion/styled"
-import { BottomFixedButton, Logo } from "~/components/domains"
-import { Spacer } from "~/components/uis/atoms"
+import { HStack, VStack } from "@chakra-ui/react"
+import { css, useTheme } from "@emotion/react"
+import { BottomFixedGradient, Logo } from "~/components/domains"
+import { Button } from "~/components/uis/atoms"
+import { IconButton } from "~/components/uis/molecules"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 
 const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string
 
 const Page = withRouteGuard("prevented", () => {
+  const theme = useTheme()
   const router = useRouter()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_LOGIN")
@@ -21,49 +25,54 @@ const Page = withRouteGuard("prevented", () => {
   }
 
   return (
-    <PageContainer>
-      <Head>
-        <title>로그인 | Slam - 우리 주변 농구장을 빠르게</title>
-        <meta name="description" content="혼자서도 농구를 더 빠르게" />
-      </Head>
-
-      <Spacer gap={6} align="center">
-        <Logo width={160} />
-        <DescriptionText>같이 농구할 사람이 없다고?</DescriptionText>
-      </Spacer>
-
-      <KaKaoLoginButton
-        onClick={handleClickLogin}
-        iconButton={{ icon: "map", href: "/map" }}
-        custom
-        style={{ flex: 1 }}
+    <>
+      <div
+        css={css`
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 90%;
+        `}
       >
-        카카오 로그인
-      </KaKaoLoginButton>
-    </PageContainer>
+        <Head>
+          <title>로그인 | Slam - 우리 주변 농구장을 빠르게</title>
+          <meta name="description" content="혼자서도 농구를 더 빠르게" />
+        </Head>
+
+        <VStack>
+          <Logo width={130} />
+          <span
+            css={css`
+              font-size: 16;
+              font-weight: 900;
+            `}
+          >
+            같이 농구할 사람이 없다고?
+          </span>
+        </VStack>
+      </div>
+      <BottomFixedGradient>
+        <HStack m="16px" spacing="8px">
+          <Link href="/map" passHref>
+            <a>
+              <IconButton name="map" />
+            </a>
+          </Link>
+          <Button
+            onClick={handleClickLogin}
+            size="lg"
+            style={{
+              flex: 1,
+              backgroundColor: theme.colors.kakaoYellow,
+              color: theme.colors.kakaoBrown,
+            }}
+          >
+            카카오 로그인
+          </Button>
+        </HStack>
+      </BottomFixedGradient>
+    </>
   )
 })
 
 export default Page
-
-const PageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90%;
-`
-
-const DescriptionText = styled.span`
-  font-size: 16;
-  font-weight: 900;
-`
-
-const KaKaoLoginButton = styled(BottomFixedButton)`
-  background-color: ${({ theme }) =>
-    theme.previousTheme.colors.kakao.yellow.strong};
-  color: ${({ theme }) => theme.previousTheme.colors.kakao.brown.strong};
-  :hover {
-    background-color: ${({ theme }) =>
-      theme.previousTheme.colors.kakao.yellow.middle};
-  }
-`

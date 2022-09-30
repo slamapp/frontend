@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react"
 import { css } from "@emotion/react"
-import styled from "@emotion/styled"
 import { BottomNavigation, TopNavigation } from "~/components/domains"
 import { TopPageLoader } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
@@ -34,40 +33,26 @@ const DefaultLayout = ({ children }: Props) => {
     <Container ref={containerRef}>
       <TopPageLoader />
       {isTopNavigation && <TopNavigation />}
-      <TopIntersectionObserver ref={topIntersectionObserverRef} />
-      <StyledMain>{children}</StyledMain>
-      <ToastPortal
-        id="toast-portal"
-        isBottomNavigation={isBottomNavigation}
-        containerRect={containerRef.current?.getClientRects()[0]}
+      <div
+        ref={topIntersectionObserverRef}
+        css={css`
+          position: absolute;
+          min-height: 30px;
+          width: 100%;
+        `}
       />
+      <main
+        css={css`
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        `}
+      >
+        {children}
+      </main>
       {isBottomNavigation && <BottomNavigation />}
     </Container>
   )
 }
 
 export default DefaultLayout
-
-const ToastPortal = styled.div<{
-  isBottomNavigation?: boolean
-  containerRect?: DOMRect
-}>`
-  ${({ isBottomNavigation, containerRect }) => css`
-    position: fixed;
-    left: ${(containerRect?.left || 0) + 16}px;
-    width: ${(containerRect?.width || 0) - 32}px;
-    bottom: ${isBottomNavigation ? 72 : 16}px;
-  `}
-`
-
-const StyledMain = styled.main`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`
-
-const TopIntersectionObserver = styled.div`
-  position: absolute;
-  min-height: 30px;
-  width: 100%;
-`
