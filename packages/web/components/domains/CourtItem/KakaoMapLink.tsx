@@ -1,4 +1,3 @@
-import React from "react"
 import { IconButton } from "~/components/uis/molecules"
 
 type KakaoMapButtonType = "information" | "findRoad"

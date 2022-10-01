@@ -1,17 +1,19 @@
-## 📼 슬램 발표 영상 (아래를 클릭하세요)
+## 📼 슬램 발표 영상
 [![Slam 슬램 발표](http://img.youtube.com/vi/V5akCEYSyGQ/0.jpg)](https://youtu.be/V5akCEYSyGQ)
 
 <div align="center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
 
 <div align="center">
-<div>같이 농구할 사람이 없다고?<br />나랑 슬램하러 가자 ⛹🏻‍♀️</div>
-<div><a href="https://slams.app/">👉 https://slams.app 👈</a></div>
+<div>같이 농구할 사람이 없다고? ⛹🏻‍♀️</div>
+
 <br>
-<div><img src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
-<img src="https://img.shields.io/badge/emotion-C43BAD?style=for-the-badge&logoColor=white">
-<img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"></div>
+<div>
+<img alt="React" src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img alt="Next" src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
+<img alt="TypeScript" src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img alt="React-Query" src="https://img.shields.io/badge/reactquery-111827.svg?&style=for-the-badge&logo=reactquery&logoColor=EF4444">
+<img alt="Vercel" src="https://img.shields.io/badge/Vercel-000000.svg?&style=for-the-badge&logo=Vercel&logoColor=white">
+
 
 </div>
 
@@ -21,32 +23,16 @@
 
 *Slam*은 길거리 농구인들이 쉽고 빠르게 게임할 수 있도록 주변 농구장의 인원 현황을 제공하는 커뮤니티 웹앱 서비스입니다.
 
-<br>
-
-## ❓ 기획 배경
-
-길거리 농구를 하러 나가고 싶어도 현재 가려는 농구장에 사람이 몇 명인지 알 수 없다는 기존 문제점을 해결하기 위해 ‘슬램’ 프로젝트를 시작했습니다.
 
 <br>
 
 ## 📝 요구사항 명세
 
-💁‍ [요구사항 명세 보러가기](https://github.com/slamapp/client/wiki/%EC%8A%AC%EB%9E%A8-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%AA%85%EC%84%B8)
-
-
-## 🎯 타겟 유저
-
-- 동네 기반으로 길거리 농구를 즐기고 싶은 사람
-- 쉽고 빠르게 농구를 하고 싶은 사람
+💁‍ [요구사항 명세 보러가기](https://github.com/slamapp/frontend/wiki/%EC%8A%AC%EB%9E%A8-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%AA%85%EC%84%B8)
 
 <br>
 
-그럼 우리 다같이 슬램 하러 가볼까요? 🏃‍♂️
-
-
 # ✨ 주요 기능 및 페이지 소개
-
-📌 [자세한 기능이 보고 싶다면? Slam wiki에서 확인하세요!](https://github.com/slamapp/client/wiki)
 
 | 스플래시                                                                                                                                                | 로그인 페이지                                                                                                                                            |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -80,9 +66,6 @@
 
 
 <br>
-
-# 🔗 Server repo
-[Slam Server](https://github.com/slamapp/server)
 
 ## Contributors ✨
 
