@@ -1574,6 +1574,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^2.9.8":
+  version: 2.9.8
+  resolution: "@hookform/resolvers@npm:2.9.8"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 3b8389a32baa784916d75565db3a13979cf776cc5552055f851c99283070f76e9b70d760a3222031b79610cde033d8417d63408a3e02577651f899b228d544ef
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.10.4":
   version: 0.10.4
   resolution: "@humanwhocodes/config-array@npm:0.10.4"
@@ -5468,6 +5477,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:^7.36.1":
+  version: 7.36.1
+  resolution: "react-hook-form@npm:7.36.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: d41951685fe7d345997c1ac489ccc1a44d11cfa6021b0a39a449029ba3cd8e5824afe5f6464e8ff6fb7c01d1915627b53ec1e1bfee63a6b722b6855794dc0df9
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -6587,6 +6605,7 @@ __metadata:
     "@chakra-ui/styled-system": ^2.3.3
     "@emotion/react": ^11.10.4
     "@emotion/styled": ^11.10.4
+    "@hookform/resolvers": ^2.9.8
     "@stomp/stompjs": ^6.1.2
     "@tanstack/react-query": ^4.3.4
     "@tanstack/react-query-devtools": ^4.3.5
@@ -6609,10 +6628,12 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-ga4: ^1.4.1
+    react-hook-form: ^7.36.1
     react-modal-sheet: ^1.5.2
     sockjs-client: ^1.6.1
     typescript: 4.8.3
     uuid: ^9.0.0
+    zod: ^3.19.1
   languageName: unknown
   linkType: soft
 
@@ -6762,5 +6783,12 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.19.1":
+  version: 3.19.1
+  resolution: "zod@npm:3.19.1"
+  checksum: 56e420ea5845912324a8fc61833714a2aec84954e418b52660d76502183c6e62fef9447cbfa64349640c5ce190cf2c24267e006bb80f066183e2f3fa9fe11864
   languageName: node
   linkType: hard

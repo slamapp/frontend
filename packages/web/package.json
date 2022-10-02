@@ -16,6 +16,7 @@
     "@chakra-ui/styled-system": "^2.3.3",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@hookform/resolvers": "^2.9.8",
     "@stomp/stompjs": "^6.1.2",
     "@tanstack/react-query": "^4.3.4",
     "@tanstack/react-query-devtools": "^4.3.5",
@@ -29,9 +30,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-ga4": "^1.4.1",
+    "react-hook-form": "^7.36.1",
     "react-modal-sheet": "^1.5.2",
     "sockjs-client": "^1.6.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/feather-icons": "^4.7.0",
