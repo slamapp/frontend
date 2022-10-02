@@ -307,6 +307,7 @@ const MapPage = () => {
                 <Link href="/login" passHref>
                   <a>
                     <Button
+                      size="lg"
                       fullWidth
                       css={css`
                         background-color: ${theme.colors.kakaoYellow};
