@@ -188,7 +188,7 @@ export const reducer: Reducer<DataProps, Action> = (prevState, action) => {
         isProfile: false,
         isNext: false,
         isMenu: false,
-        title: "프로필 편집",
+        title: "내 프로필 수정",
       }
     }
     case "PAGE_USER_FOLLOWER": {

@@ -1,7 +1,7 @@
 import type { FormEvent } from "react"
 import { useEffect, useState } from "react"
 
-export type Error<T> = { [P in keyof T]?: string }
+type Error<T> = { [P in keyof T]?: string }
 
 interface Options<T> {
   initialValues: T

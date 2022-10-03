@@ -34,7 +34,7 @@ const BottomFixedGradient = ({
         document.querySelector("#scrolled-container")!
       )
     )
-  }, [])
+  }, [children])
 
   return portal
 }

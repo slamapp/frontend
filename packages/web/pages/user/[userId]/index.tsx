@@ -32,7 +32,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
     useMountPage("PAGE_USER")
 
     const isMe = userId === authProps.currentUser?.id
-    const myProfileQuery = useMyProfileQuery(userId, {
+    const myProfileQuery = useMyProfileQuery({
       enabled: isMe,
       onSuccess: ({ nickname }) => setNavigationTitle(nickname),
     })

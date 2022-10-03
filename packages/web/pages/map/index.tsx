@@ -175,7 +175,7 @@ const MapPage = () => {
         >
           <Map.Button.CurrentLocation />
           <Map.Button.ZoomInOut />
-          <Map.LoadingIndicator isLoading={courtsQuery.isFetching} />
+          {courtsQuery.isFetching && <Map.LoadingIndicator />}
           {courtsQuery.isSuccess &&
             courtsQuery.data.map(({ court, reservationMaxCount }) => {
               let imageSrc = "/assets/basketball/animation_off_400.png"
