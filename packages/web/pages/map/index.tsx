@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { Box, Flex } from "@chakra-ui/react"
@@ -311,10 +312,16 @@ const MapPage = () => {
                       fullWidth
                       css={css`
                         background-color: ${theme.colors.kakaoYellow};
-                        color: ${theme.colors.kakaoBrown};
+                        color: ${theme.colors.kakaoLoginBrown};
                       `}
                     >
-                      로그인하기
+                      <Image
+                        src="/assets/icon-kakao.svg"
+                        alt="카카오 로그인 로고"
+                        width={21}
+                        height={19}
+                      />
+                      3초만에 로그인하기
                     </Button>
                   </a>
                 </Link>

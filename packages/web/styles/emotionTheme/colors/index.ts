@@ -102,6 +102,7 @@ const colors = {
   skyblue1000: "#58A9E0",
   kakaoYellow: "#fee102",
   kakaoBrown: "#3d1e1e",
+  kakaoLoginBrown: "#191600",
 } as const
 
 export default colors

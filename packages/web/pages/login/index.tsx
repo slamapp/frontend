@@ -1,4 +1,5 @@
 import Head from "next/head"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { HStack, VStack } from "@chakra-ui/react"
@@ -64,9 +65,15 @@ const Page = withRouteGuard("prevented", () => {
             style={{
               flex: 1,
               backgroundColor: theme.colors.kakaoYellow,
-              color: theme.colors.kakaoBrown,
+              color: theme.colors.kakaoLoginBrown,
             }}
           >
+            <Image
+              src="/assets/icon-kakao.svg"
+              alt="카카오 로그인 로고"
+              width={21}
+              height={19}
+            />
             카카오 로그인
           </Button>
         </HStack>
