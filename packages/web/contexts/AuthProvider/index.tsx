@@ -81,31 +81,6 @@ const AuthProvider = ({ children }: Props) => {
       }
     }, [logout, setCurrentUser])
 
-  const updateMyProfile: ContextProps["updateMyProfile"] = useCallback(
-    async (editedUserProfile) => {
-      if (!authProps.currentUser) {
-        return
-      }
-
-      dispatch({ type: "LOADING_ON" })
-      try {
-        const { data } = await api.users.updateMyProfile(editedUserProfile)
-        const { description, nickname, positions, proficiency } = data
-
-        dispatch({
-          type: "UPDATE_MY_PROFILE",
-          payload: { description, nickname, positions, proficiency },
-        })
-        router.replace(`/user/${authProps.currentUser.id}`)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        dispatch({ type: "LOADING_OFF" })
-      }
-    },
-    [authProps.currentUser, router]
-  )
-
   const updateMyProfileImage: ContextProps["updateMyProfileImage"] =
     useCallback(async (editedProfileImageFile) => {
       dispatch({ type: "LOADING_ON" })
@@ -252,7 +227,6 @@ const AuthProvider = ({ children }: Props) => {
         deleteFavorite,
         getMyFavorites,
         getMyReservations,
-        updateMyProfile,
         updateMyProfileImage,
         deleteMyProfileImage,
         readAllNotifications,

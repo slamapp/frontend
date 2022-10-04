@@ -23,7 +23,7 @@ import type {
 } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
 import { useForm, Controller } from "react-hook-form"
-import { BottomFixedGradient, ProfileAvatar } from "~/components/domains"
+import { BottomFixedGradient } from "~/components/domains"
 import LoadingIndicator from "~/components/kakaos/Map/LoadingIndicator"
 import { Button } from "~/components/uis/atoms"
 import { Toast } from "~/components/uis/molecules"

@@ -13,10 +13,6 @@ export type ActionUnion =
   | ActionWithoutPayload<"CLEAR_CURRENT_USER">
   | ActionWithoutPayload<"LOADING_ON">
   | ActionWithoutPayload<"LOADING_OFF">
-  | ActionWithPayload<
-      "UPDATE_MY_PROFILE",
-      Pick<APIUser, "nickname" | "positions" | "proficiency" | "description">
-    >
   | ActionWithPayload<"SET_MY_PROFILE_IMAGE", Pick<APIUser, "profileImage">>
   | ActionWithPayload<"GET_MY_FAVORITES", { favorites: APIFavorite[] }>
   | ActionWithPayload<"SET_MY_FAVORITES", any>

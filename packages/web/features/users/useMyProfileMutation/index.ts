@@ -13,7 +13,7 @@ const useMyProfileMutation = () => {
     {
       onSuccess: () => {
         if (authProps.currentUser) {
-          queryClient.invalidateQueries(
+          return queryClient.invalidateQueries(
             key.users.myProfile(authProps.currentUser.id)
           )
         }

@@ -76,23 +76,6 @@ export const reducer: Reducer<DataProps, ActionUnion> = (prevState, action) => {
         isLoading: false,
       }
     }
-    case "UPDATE_MY_PROFILE": {
-      if (prevState.currentUser === null) {
-        return prevState
-      }
-      const { nickname, positions, proficiency, description } = action.payload
-
-      return {
-        ...prevState,
-        currentUser: {
-          ...prevState.currentUser,
-          nickname,
-          positions,
-          proficiency,
-          description,
-        },
-      }
-    }
 
     case "SET_MY_PROFILE_IMAGE": {
       if (prevState.currentUser === null) {
