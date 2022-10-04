@@ -48,7 +48,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
       return <BasketballLoading />
     }
 
-    if (myProfileQuery.isSuccess) {
+    if (isMe && myProfileQuery.isSuccess) {
       const {
         description,
         followerCount,
