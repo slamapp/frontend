@@ -25,7 +25,7 @@ import type {
   UseRadioGroupProps,
   UseRadioProps,
 } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
+import { useTheme } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
 import { Controller, useForm } from "react-hook-form"
 import { BottomFixedGradient } from "~/components/domains"
@@ -116,7 +116,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
       <form>
         <VStack px="16px" spacing="24px">
           <AvatarEdit
-            initialSrc={initialData.profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
+            src={initialData.profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
           />
           <FormControl isInvalid={!!errors.nickname}>
             <FormLabel htmlFor="nickname">닉네임</FormLabel>
@@ -370,12 +370,11 @@ const ChipRadio = ({
   )
 }
 
-const AvatarEdit = ({ initialSrc }: { initialSrc: string }) => {
+const AvatarEdit = ({ src }: { src: string }) => {
   const theme = useTheme()
 
   const updateMyProfileImageMutation = useUpdateMyProfileImageMutation()
   const [file, setFile] = useState<File>()
-  const [src, setSrc] = useState<string | undefined>(initialSrc)
 
   useEffect(() => {
     const fileReaderDataURL = new FileReader()
@@ -390,7 +389,6 @@ const AvatarEdit = ({ initialSrc }: { initialSrc: string }) => {
       if (file && newSrc) {
         await updateMyProfileImageMutation.mutateAsync(file)
         Toast.show("프로필 사진을 성공적으로 바꿨어요", { status: "success" })
-        setSrc(newSrc)
       }
     })
   }, [file])
