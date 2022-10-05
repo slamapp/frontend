@@ -1,35 +1,45 @@
 import type { ReactNode } from "react"
+import { forwardRef, useEffect, useState } from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import {
-  useCheckboxGroup,
-  Text,
+  Avatar,
   Box,
+  Center,
+  Flex,
   FormControl,
+  FormErrorMessage,
+  FormLabel,
   Input,
-  useCheckbox,
+  Text,
   VStack,
   chakra,
-  Flex,
-  useRadioGroup,
+  useCheckbox,
+  useCheckboxGroup,
   useRadio,
-  Avatar,
+  useRadioGroup,
 } from "@chakra-ui/react"
 import type {
   UseCheckboxGroupProps,
-  UseRadioGroupProps,
   UseCheckboxProps,
+  UseRadioGroupProps,
   UseRadioProps,
 } from "@chakra-ui/react"
-import { useTheme } from "@emotion/react"
-import { useForm, Controller } from "react-hook-form"
+import { css, useTheme } from "@emotion/react"
+import { DevTool } from "@hookform/devtools"
+import { Controller, useForm } from "react-hook-form"
 import { BottomFixedGradient } from "~/components/domains"
 import LoadingIndicator from "~/components/kakaos/Map/LoadingIndicator"
-import { Button } from "~/components/uis/atoms"
+import { Upload } from "~/components/uis"
+import { Button, Icon } from "~/components/uis/atoms"
 import { Toast } from "~/components/uis/molecules"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useNavigationContext } from "~/contexts/hooks"
-import { useMyProfileMutation, useMyProfileQuery } from "~/features/users"
+import {
+  useMyProfileMutation,
+  useMyProfileQuery,
+  useUpdateMyProfileImageMutation,
+} from "~/features/users"
 import { withRouteGuard } from "~/hocs"
 import type { APIUser } from "~/types/domains/objects"
 
@@ -56,7 +66,13 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
   const router = useRouter()
   const myProfileMutation = useMyProfileMutation()
 
-  const { register, control, handleSubmit, formState } = useForm({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isDirty, isSubmitting, isSubmitSuccessful, isValid },
+  } = useForm({
+    mode: "all",
     defaultValues: {
       description: initialData.description,
       email: initialData.email,
@@ -72,12 +88,13 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
     nickname,
     positions,
     proficiency,
-  }) => {
-    myProfileMutation.mutate(
+  }) =>
+    myProfileMutation.mutateAsync(
       { description, nickname, positions, proficiency },
       {
-        onSuccess: (data) => {
-          router.replace(`/user/${data.id}`)
+        onSuccess: async (data) => {
+          await router.replace(`/user/${data.id}`)
+
           Toast.show("성공적으로 내 프로필 정보를 수정했어요", {
             status: "success",
           })
@@ -89,7 +106,6 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
         },
       }
     )
-  }
 
   return (
     <>
@@ -99,54 +115,60 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
       </Head>
       <form>
         <VStack px="16px" spacing="24px">
-          <Box pt="24px">
-            <Avatar size="lg" src={DEFAULT_PROFILE_IMAGE_URL} />
-          </Box>
-          <FormControl>
-            <label htmlFor="nickname">닉네임</label>
+          <AvatarEdit
+            initialSrc={initialData.profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
+          />
+          <FormControl isInvalid={!!errors.nickname}>
+            <FormLabel htmlFor="nickname">닉네임</FormLabel>
             <Input
               id="nickname"
               placeholder="ex) 수도권 강백호"
               type="text"
               {...register("nickname", {
                 required: "닉네임을 채워주세요",
-                minLength: 2,
-                maxLength: 15,
+                minLength: {
+                  value: 2,
+                  message: "닉네임을 2자 이상 적어주세요",
+                },
+                maxLength: {
+                  value: 15,
+                  message: "닉네임을 15자 이하 적어주세요",
+                },
               })}
-              aria-invalid={formState.errors.nickname ? "true" : "false"}
+              aria-invalid={errors.nickname ? "true" : "false"}
             />
-            {formState.errors.nickname?.type === "required" && (
-              <p>{formState.errors.nickname.message}</p>
-            )}
-            {(formState.errors.nickname?.type === "minLength" ||
-              formState.errors.nickname?.type === "maxLength") && (
-              <p>닉네임을 2자에서 15자를 적어주세요</p>
+            {errors.nickname && (
+              <FormErrorMessage>{errors.nickname.message}</FormErrorMessage>
             )}
           </FormControl>
 
-          <FormControl>
-            <label htmlFor="description">나를 한 마디로 표현해주세요</label>
+          <FormControl isInvalid={!!errors.description}>
+            <FormLabel htmlFor="description">
+              나를 한 마디로 표현해주세요
+            </FormLabel>
             <Input
               id="description"
               placeholder="ex) 슬램에서 한판 기대하고 있을게요"
               type="text"
               {...register("description", {
                 required: "한마디를 채워주세요",
-                minLength: 3,
-                maxLength: 30,
+                minLength: {
+                  value: 2,
+                  message: "한마디를 2자 이상로 적어주세요",
+                },
+                maxLength: {
+                  value: 30,
+                  message: "한마디를 30자 이하로 적어주세요",
+                },
               })}
             />
-            {formState.errors.description?.type === "required" && (
-              <p>{formState.errors.description.message}</p>
-            )}
-            {(formState.errors.description?.type === "minLength" ||
-              formState.errors.description?.type === "maxLength") && (
-              <p>닉네임을 3자에서 30자를 적어주세요</p>
+            {errors.description && (
+              <FormErrorMessage>{errors.description.message}</FormErrorMessage>
             )}
           </FormControl>
 
           <FormControl>
-            <label htmlFor="positions">포지션</label>
+            <FormLabel htmlFor="positions">포지션</FormLabel>
             <Controller
               name="positions"
               control={control}
@@ -191,7 +213,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
           </FormControl>
 
           <FormControl>
-            <label htmlFor="proficiency">숙련도</label>
+            <FormLabel htmlFor="proficiency">숙련도</FormLabel>
             <Controller
               name="proficiency"
               control={control}
@@ -217,35 +239,46 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
           <Button
             fullWidth
             size="lg"
-            disabled={Object.keys(formState.errors).length >= 1}
+            loading={isSubmitting || isSubmitSuccessful}
+            disabled={!isDirty || !isValid || isSubmitSuccessful}
             onClick={handleSubmit(onSubmit)}
           >
-            프로필 수정 완료하기
+            {!isDirty || !isValid
+              ? "프로필을 먼저 수정하세요"
+              : isSubmitSuccessful
+              ? "내 프로필페이지로 이동 중이에요"
+              : "프로필 수정 완료하기"}
           </Button>
         </Box>
       </BottomFixedGradient>
+      <DevTool control={control} />
     </>
   )
 }
 
-const ChipCheckboxGroup = ({
-  options,
-  ...props
-}: UseCheckboxGroupProps & {
-  options: { value: string; label: string }[]
-}) => {
-  const { getCheckboxProps } = useCheckboxGroup(props)
+const ChipCheckboxGroup = forwardRef(
+  (
+    {
+      options,
+      ...props
+    }: UseCheckboxGroupProps & {
+      options: { value: string; label: string }[]
+    },
+    ref
+  ) => {
+    const { getCheckboxProps } = useCheckboxGroup(props)
 
-  return (
-    <Flex wrap="wrap" width="100%" gap="8px">
-      {options.map(({ value, label }) => (
-        <ChipCheckbox key={value} {...getCheckboxProps({ value })}>
-          {label}
-        </ChipCheckbox>
-      ))}
-    </Flex>
-  )
-}
+    return (
+      <Flex wrap="wrap" width="100%" gap="8px">
+        {options.map(({ value, label }) => (
+          <ChipCheckbox key={value} {...getCheckboxProps({ value })}>
+            {label}
+          </ChipCheckbox>
+        ))}
+      </Flex>
+    )
+  }
+)
 
 const ChipCheckbox = ({
   children,
@@ -280,24 +313,29 @@ const ChipCheckbox = ({
   )
 }
 
-const ChipRadioGroup = ({
-  options,
-  ...props
-}: UseRadioGroupProps & {
-  options: { value: string; label: string }[]
-}) => {
-  const { getRadioProps } = useRadioGroup(props)
+const ChipRadioGroup = forwardRef(
+  (
+    {
+      options,
+      ...props
+    }: UseRadioGroupProps & {
+      options: { value: string; label: string }[]
+    },
+    ref
+  ) => {
+    const { getRadioProps } = useRadioGroup(props)
 
-  return (
-    <Flex wrap="wrap" width="100%" gap="8px">
-      {options.map(({ value, label }) => (
-        <ChipRadio key={value} {...getRadioProps({ value })}>
-          {label}
-        </ChipRadio>
-      ))}
-    </Flex>
-  )
-}
+    return (
+      <Flex wrap="wrap" width="100%" gap="8px">
+        {options.map(({ value, label }) => (
+          <ChipRadio key={value} {...getRadioProps({ value })}>
+            {label}
+          </ChipRadio>
+        ))}
+      </Flex>
+    )
+  }
+)
 
 const ChipRadio = ({
   children,
@@ -329,5 +367,50 @@ const ChipRadio = ({
         </Text>
       </Box>
     </chakra.label>
+  )
+}
+
+const AvatarEdit = ({ initialSrc }: { initialSrc: string }) => {
+  const theme = useTheme()
+
+  const updateMyProfileImageMutation = useUpdateMyProfileImageMutation()
+  const [file, setFile] = useState<File>()
+  const [src, setSrc] = useState<string | undefined>(initialSrc)
+
+  useEffect(() => {
+    const fileReaderDataURL = new FileReader()
+    if (file) {
+      fileReaderDataURL.readAsDataURL(file)
+    }
+
+    fileReaderDataURL.addEventListener("load", async (e) => {
+      const newSrc =
+        typeof e.target?.result === "string" ? e.target?.result : undefined
+
+      if (file && newSrc) {
+        await updateMyProfileImageMutation.mutateAsync(file)
+        Toast.show("프로필 사진을 성공적으로 바꿨어요", { status: "success" })
+        setSrc(newSrc)
+      }
+    })
+  }, [file])
+
+  return (
+    <Box pt="24px">
+      <Upload droppable value={file} onChange={(file) => setFile(file)}>
+        {({ dragging }) => (
+          <Box pointerEvents="none" pos="relative">
+            <Avatar
+              size="lg"
+              src={src}
+              border={dragging ? "5px solid black" : undefined}
+            />
+            <Center pos="absolute" top={0} right={0} left={0} bottom={0}>
+              <Icon name="plus" color={theme.colors.gray0900} />
+            </Center>
+          </Box>
+        )}
+      </Upload>
+    </Box>
   )
 }

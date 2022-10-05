@@ -1,9 +1,13 @@
-import { css, Global } from "@emotion/react"
+import { Global, css } from "@emotion/react"
 
 const GlobalCSS = () => {
   return (
     <Global
       styles={css`
+        * {
+          user-select: none;
+        }
+
         h1,
         h2,
         h3,

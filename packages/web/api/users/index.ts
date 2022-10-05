@@ -37,13 +37,15 @@ export default {
       data,
     }),
 
-  updateMyProfileImage: (editedProfileImageFile: FormData) =>
-    http.authFile.put<{ profileImage: APIUser["profileImage"] }>(
+  updateMyProfileImage: (imageFile: File) => {
+    const formData = new FormData()
+    formData.append("profileImage", imageFile)
+
+    return http.authFile.put<{ profileImage: APIUser["profileImage"] }>(
       "/users/myprofile/image",
-      {
-        data: editedProfileImageFile,
-      }
-    ),
+      { data: formData }
+    )
+  },
 
   deleteMyProfileImage: () =>
     http.auth.delete<{

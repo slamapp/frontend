@@ -4,15 +4,13 @@ import { BottomNavigation, TopNavigation } from "~/components/domains"
 import { TopPageLoader } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
 import { useIntersectionObserver } from "~/hooks"
-import Container from "./Container"
+import ScrollContainer from "./ScrollContainer"
 
 interface Props {
   children: React.ReactNode
 }
 
 const DefaultLayout = ({ children }: Props) => {
-  const containerRef = useRef<HTMLDivElement>(null)
-
   const { navigationProps, setTopNavIsShrink } = useNavigationContext()
   const { isBottomNavigation, isTopNavigation } = navigationProps
 
@@ -30,7 +28,7 @@ const DefaultLayout = ({ children }: Props) => {
   }, [topIntersectionObserverEntry?.isIntersecting])
 
   return (
-    <Container ref={containerRef}>
+    <ScrollContainer>
       <TopPageLoader />
       {isTopNavigation && <TopNavigation />}
       <div
@@ -51,7 +49,7 @@ const DefaultLayout = ({ children }: Props) => {
         {children}
       </main>
       {isBottomNavigation && <BottomNavigation />}
-    </Container>
+    </ScrollContainer>
   )
 }
 

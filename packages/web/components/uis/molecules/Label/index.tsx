@@ -1,4 +1,4 @@
-import type { ReactNode, HTMLAttributes } from "react"
+import type { HTMLAttributes, ReactNode } from "react"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import { Text } from "~/components/uis/atoms"

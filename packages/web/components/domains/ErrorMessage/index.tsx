@@ -1,8 +1,7 @@
-import React from "react"
 import type { CSSProperties } from "react"
 import Link from "next/link"
 import styled from "@emotion/styled"
-import { Icon, Text, Image, Button, Spacer } from "~/components/uis/atoms"
+import { Button, Icon, Image, Spacer, Text } from "~/components/uis/atoms"
 
 interface Props {
   title: string

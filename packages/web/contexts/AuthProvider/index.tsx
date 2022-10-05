@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { useReducer, useEffect, useCallback } from "react"
+import { useCallback, useEffect, useReducer } from "react"
 import { useRouter } from "next/router"
 import type { AxiosError } from "axios"
 import { api } from "~/api"
@@ -80,21 +80,6 @@ const AuthProvider = ({ children }: Props) => {
         dispatch({ type: "LOADING_OFF" })
       }
     }, [logout, setCurrentUser])
-
-  const updateMyProfileImage: ContextProps["updateMyProfileImage"] =
-    useCallback(async (editedProfileImageFile) => {
-      dispatch({ type: "LOADING_ON" })
-      try {
-        const { data: userProfileImage } = await api.users.updateMyProfileImage(
-          editedProfileImageFile
-        )
-        dispatch({ type: "SET_MY_PROFILE_IMAGE", payload: userProfileImage })
-      } catch (error) {
-        console.error(error)
-      } finally {
-        dispatch({ type: "LOADING_OFF" })
-      }
-    }, [])
 
   const deleteMyProfileImage: ContextProps["deleteMyProfileImage"] =
     useCallback(async () => {
@@ -227,7 +212,6 @@ const AuthProvider = ({ children }: Props) => {
         deleteFavorite,
         getMyFavorites,
         getMyReservations,
-        updateMyProfileImage,
         deleteMyProfileImage,
         readAllNotifications,
         getMoreNotifications,

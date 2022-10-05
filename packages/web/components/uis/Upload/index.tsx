@@ -1,56 +1,42 @@
-import type { ChangeEvent, DragEvent, ReactNode, RefObject } from "react"
-import { useState } from "react"
-import styled from "@emotion/styled"
+import type {
+  ChangeEvent,
+  DragEvent,
+  InputHTMLAttributes,
+  ReactNode,
+} from "react"
+import { useEffect, useRef, useState } from "react"
+import { css } from "@emotion/react"
 
-interface Props {
-  children?: ReactNode
-  name?: string
-  accept?: any
+interface Props
+  extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    "value" | "onChange" | "children"
+  > {
+  children?:
+    | ((props: { file?: File; dragging: boolean }) => ReactNode)
+    | ReactNode
+  droppable?: boolean
   value?: File
   onChange?: (file: File) => void
-  onChangeFileSrc?: (fileSrc: string) => void
-  inputRef: RefObject<HTMLInputElement>
-  [x: string]: any
 }
 
 const Upload = ({
   children,
-  droppable,
+  droppable = false,
   name,
   accept,
   value,
   onChange,
-  onChangeFileSrc,
-  inputRef,
+  className,
   ...props
 }: Props) => {
   const [file, setFile] = useState(value)
   const [dragging, setDragging] = useState(false)
+  const ref = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const changedFile: File = (target.files as FileList)[0]
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const changedFile = (e.target.files as FileList)[0]
     setFile(changedFile)
-    getFileSrc(changedFile)
-  }
-
-  const getFileSrc = (fileBlob: File) => {
-    if (fileBlob) {
-      const reader = new FileReader()
-
-      const onFileLoadEnd = () => {
-        reader.removeEventListener("loadend", onFileLoadEnd, false)
-        if (typeof reader.result === "string") {
-          onChangeFileSrc?.(reader.result)
-        }
-      }
-
-      reader.addEventListener("loadend", onFileLoadEnd, false)
-      reader.readAsDataURL(fileBlob)
-    }
-  }
-
-  const handleChooseFile = () => {
-    inputRef.current?.click()
   }
 
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
@@ -91,38 +77,45 @@ const Upload = ({
     e.preventDefault()
     e.stopPropagation()
 
-    const { files } = e.dataTransfer
-    const changedFile = files[0]
+    const changedFile = e.dataTransfer.files[0]
     setFile(changedFile)
-    if (onChange) {
-      onChange(changedFile)
-    }
+    onChange?.(changedFile)
     setDragging(false)
   }
 
+  useEffect(() => {
+    if (file) {
+      onChange?.(file)
+    }
+  }, [file])
+
   return (
     <div
-      onClick={handleChooseFile}
-      {...props}
+      className={className}
+      css={css`
+        display: inline-block;
+        cursor: pointer;
+      `}
+      onClick={() => ref.current?.click()}
       onDrop={handleFileDrop}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
+      {...props}
     >
-      <Input
-        ref={inputRef}
+      <input
+        css={css`
+          display: none;
+        `}
+        ref={ref}
         type="file"
         name={name}
         accept={accept}
         onChange={handleFileChange}
       />
-      {children}
+      {typeof children === "function" ? children({ file, dragging }) : children}
     </div>
   )
 }
 
 export default Upload
-
-const Input = styled.input`
-  display: none;
-`

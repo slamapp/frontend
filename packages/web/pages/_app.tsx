@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { DefaultLayout } from "~/components/domains/layout"
 import { Image } from "~/components/uis/atoms"
 import Providers from "~/contexts/Providers"
-import { chakraTheme, emotionTheme, GlobalCSS } from "~/styles"
+import { GlobalCSS, chakraTheme, emotionTheme } from "~/styles"
 
 const queryClient = new QueryClient()
 

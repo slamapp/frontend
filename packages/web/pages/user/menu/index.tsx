@@ -3,7 +3,7 @@ import type { GetStaticProps, InferGetStaticPropsType } from "next"
 import styled from "@emotion/styled"
 import dayjs from "dayjs"
 import { Modal } from "~/components/domains"
-import { Icon, Button, Spacer } from "~/components/uis/atoms"
+import { Button, Icon, Spacer } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 

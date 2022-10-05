@@ -16,7 +16,6 @@ export interface ContextProps {
   }) => void
   getCurrentUser: () => Promise<void>
   logout: () => void
-  updateMyProfileImage: (editedProfileImageFile: FormData) => Promise<void>
   deleteMyProfileImage: () => Promise<void>
   createFavorite: (courtId: APICourt["id"]) => Promise<void>
   deleteFavorite: (favoriteId: APIFavorite["id"]) => Promise<void>

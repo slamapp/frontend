@@ -6,13 +6,13 @@ import styled from "@emotion/styled"
 import { useMutation } from "@tanstack/react-query"
 import { api } from "~/api"
 import {
-  ProfileFavoritesListItem,
   BasketballLoading,
+  ProfileFavoritesListItem,
 } from "~/components/domains"
-import { Text, Button, Spacer } from "~/components/uis/atoms"
-import { Label, Chip, Avatar } from "~/components/uis/molecules"
+import { Button, Spacer, Text } from "~/components/uis/atoms"
+import { Avatar, Chip, Label } from "~/components/uis/molecules"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
-import { useNavigationContext, useAuthContext } from "~/contexts/hooks"
+import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { useMyProfileQuery, useUserProfileQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
 import type { APIUser } from "~/types/domains/objects"

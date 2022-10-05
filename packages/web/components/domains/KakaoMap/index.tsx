@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react"
-import type { ReactNode, CSSProperties } from "react"
+import { useEffect, useRef } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import styled from "@emotion/styled"
 import { useMapContext } from "~/contexts/hooks"
 import type { Coord } from "~/types/domains/objects/court"

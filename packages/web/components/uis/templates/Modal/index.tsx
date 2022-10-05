@@ -1,9 +1,9 @@
 import type { ReactNode } from "react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 import { ThemeProvider } from "@emotion/react"
 import styled from "@emotion/styled"
 import { createRoot } from "react-dom/client"
-import { useIsomorphicLayoutEffect, useClickAway } from "~/hooks"
+import { useClickAway, useIsomorphicLayoutEffect } from "~/hooks"
 import emotionTheme from "~/styles/emotionTheme"
 
 interface Props {

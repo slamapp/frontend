@@ -1,5 +1,6 @@
-import styled from "@emotion/styled"
-import { Spacer, Icon, Text } from "~/components/uis/atoms"
+import { HStack } from "@chakra-ui/react"
+import { css } from "@emotion/react"
+import { Icon, Text } from "~/components/uis/atoms"
 
 interface Props {
   children: React.ReactNode
@@ -7,19 +8,21 @@ interface Props {
 
 const Header = ({ children }: Props) => {
   return (
-    <Spacer gap="xxs" type="horizontal">
+    <HStack spacing="4px">
       <Icon name="map-pin" color="#FE6D04" />
-      <HeaderText size="lg" strong>
+      <Text
+        size="lg"
+        strong
+        css={css`
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        `}
+      >
         {children}
-      </HeaderText>
-    </Spacer>
+      </Text>
+    </HStack>
   )
 }
 
 export default Header
-
-const HeaderText = styled(Text)`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`

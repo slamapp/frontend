@@ -1,11 +1,13 @@
 import type { ComponentProps } from "react"
-import { useRef, useEffect, useState, useCallback } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Router, useRouter } from "next/router"
+import { Spinner } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
-import { Icon, Spacer, Spinner } from "~/components/uis/atoms"
+import { Icon, Spacer } from "~/components/uis/atoms"
 import { useNavigationContext } from "~/contexts/hooks"
 import type { PageType } from "~/contexts/NavigationProvider/actionTypes"
+import { useScrollContainer } from "../../layout/DefaultLayout/ScrollContainer"
 
 const tap = { scale: 0.7 }
 
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const NavIcon = ({ href, iconName, pageTypes, label = "이름" }: Props) => {
+  const { scrollToTop } = useScrollContainer()
   const router = useRouter()
   const { navigationProps } = useNavigationContext()
   const { currentPage } = navigationProps
@@ -35,12 +38,13 @@ const NavIcon = ({ href, iconName, pageTypes, label = "이름" }: Props) => {
     router.push(href)
 
     isClicked.current = true
+    scrollToTop()
   }, [href, router])
 
   return (
     <S.MotionAnchor onTapStart={handleTap} whileTap={tap}>
       {isPageLoading ? (
-        <Spinner size={16} />
+        <Spinner w="16px" h="16px" />
       ) : (
         <Spacer align="center" gap={2}>
           <Icon

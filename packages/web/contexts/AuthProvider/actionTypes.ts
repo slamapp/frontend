@@ -1,4 +1,4 @@
-import type { ActionWithoutPayload, ActionWithPayload } from "~/contexts/type"
+import type { ActionWithPayload, ActionWithoutPayload } from "~/contexts/type"
 import type {
   APIFavorite,
   APINotification,

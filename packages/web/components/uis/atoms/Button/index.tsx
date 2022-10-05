@@ -1,7 +1,7 @@
-import type { ReactNode, MouseEvent, CSSProperties } from "react"
+import type { CSSProperties, MouseEvent, ReactNode } from "react"
+import { Spinner } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
-import Spinner from "../Spinner"
 
 type Size = "sm" | "md" | "lg"
 
@@ -125,6 +125,7 @@ const StyledButton = styled.button<Omit<Props, "children">>`
   &:disabled {
     cursor: not-allowed;
     filter: contrast(-0.8);
+    opacity: 0.8;
   }
 `
 

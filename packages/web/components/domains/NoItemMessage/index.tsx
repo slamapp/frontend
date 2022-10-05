@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-import { VStack, Text, Heading } from "@chakra-ui/react"
-import { Icon, Button } from "~/components/uis/atoms"
+import { Heading, Text, VStack } from "@chakra-ui/react"
+import { Button, Icon } from "~/components/uis/atoms"
 
 type Props = {
   title: string

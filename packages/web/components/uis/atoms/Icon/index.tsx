@@ -298,15 +298,16 @@ const Icon = ({
   fill = false,
   ...props
 }: Props) => {
-  const iconStyle = {
-    strokeWidth,
-    stroke: color,
-    width: size,
-    height: size,
-    fill: fill ? color : "transparent",
-  }
   const icon = Icons.icons[name]
-  const svg = icon ? icon.toSvg(iconStyle) : ""
+  const svg = icon
+    ? icon.toSvg({
+        strokeWidth,
+        stroke: color,
+        width: size,
+        height: size,
+        fill: fill ? color : "transparent",
+      })
+    : ""
   const base64 = Buffer.from(svg, "utf8").toString("base64")
 
   return (

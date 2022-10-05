@@ -1460,7 +1460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/react@npm:^11.10.4":
+"@emotion/react@npm:^11.1.5, @emotion/react@npm:^11.10.4":
   version: 11.10.4
   resolution: "@emotion/react@npm:11.10.4"
   dependencies:
@@ -1504,7 +1504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/styled@npm:^11.10.4":
+"@emotion/styled@npm:^11.10.4, @emotion/styled@npm:^11.3.0":
   version: 11.10.4
   resolution: "@emotion/styled@npm:11.10.4"
   dependencies:
@@ -1571,6 +1571,25 @@ __metadata:
     minimatch: ^3.1.2
     strip-json-comments: ^3.1.1
   checksum: 2074dca47d7e1c5c6323ff353f690f4b25d3ab53fe7d27337e2592d37a894cf60ca0e85ca66b50ff2db0bc7e630cc1e9c7347d65bb185b61416565584c38999c
+  languageName: node
+  linkType: hard
+
+"@hookform/devtools@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "@hookform/devtools@npm:4.2.2"
+  dependencies:
+    "@emotion/react": ^11.1.5
+    "@emotion/styled": ^11.3.0
+    "@types/lodash": ^4.14.168
+    little-state-machine: ^4.1.0
+    lodash: ^4.17.21
+    react-simple-animate: ^3.3.12
+    use-deep-compare-effect: ^1.8.1
+    uuid: ^8.3.2
+  peerDependencies:
+    react: ">=17.0.2"
+    react-dom: ">=17.0.2"
+  checksum: ba66205da7a68029b1f5cab7f590cb1a53cbf51c09afdfbccab25acd3d5f2a6f713f8766e969a64e7f29374523ed81d5c350761ade70d52e8db2b9bd114c8bd9
   languageName: node
   linkType: hard
 
@@ -1979,6 +1998,13 @@ __metadata:
   version: 4.14.185
   resolution: "@types/lodash@npm:4.14.185"
   checksum: f81d13da5ecab110ca9c5c7cc2bedc3c9802a6acf668576aecd1b8f4b134ed81d06c15f1e600fb08f05975098280a0d97d30cddfc2cb39ec1c6b56e971ca53b3
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.168":
+  version: 4.14.186
+  resolution: "@types/lodash@npm:4.14.186"
+  checksum: ee0c1368a8100bb6efb88335107473a41928fc307ff1ef4ff1278868ccddba9c04c68c36d1ffe3a0392ef4a956e1955f7de3203ec09df4f1655dd1b88485c549
   languageName: node
   linkType: hard
 
@@ -3001,6 +3027,13 @@ __metadata:
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
   checksum: 46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
+  languageName: node
+  linkType: hard
+
+"dequal@npm:^2.0.2":
+  version: 2.0.3
+  resolution: "dequal@npm:2.0.3"
+  checksum: 8679b850e1a3d0ebbc46ee780d5df7b478c23f335887464023a631d1b9af051ad4a6595a44220f9ff8ff95a8ddccf019b5ad778a976fd7bbf77383d36f412f90
   languageName: node
   linkType: hard
 
@@ -4650,6 +4683,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"little-state-machine@npm:^4.1.0":
+  version: 4.8.0
+  resolution: "little-state-machine@npm:4.8.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 80189e43c79896235a16a1700a40fc277be676d968f999c31039e3fea6ac21369de50a4f453c4c47eb272223b27e9c6256be98fb41dd930676a9808f9bc8c3c8
+  languageName: node
+  linkType: hard
+
 "locate-path@npm:^5.0.0":
   version: 5.0.0
   resolution: "locate-path@npm:5.0.0"
@@ -4682,7 +4724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.12, lodash@npm:^4.17.15, lodash@npm:^4.17.19":
+"lodash@npm:^4.17.12, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -5544,6 +5586,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 2c7fe9cbd766f5e54beb4bec2e2efb2de3583037b23fef8fa511ab426ed7f1ae992382db5acd8ab5bfb030a4b93a06a2ebca41377d6eeaf0e6791bb0a59616a4
+  languageName: node
+  linkType: hard
+
+"react-simple-animate@npm:^3.3.12":
+  version: 3.5.2
+  resolution: "react-simple-animate@npm:3.5.2"
+  peerDependencies:
+    react-dom: ^16.8.0 || ^17 || ^18
+  checksum: 9e892e95d5d0852384587a5aa6b9c2afade7f4796935f7f79cdb20f1649c909d3d8cea83c5a7784a5a6f78c0ab189bd7e786007f6b5d8bdab14685bd78767ed6
   languageName: node
   linkType: hard
 
@@ -6530,6 +6581,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-deep-compare-effect@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "use-deep-compare-effect@npm:1.8.1"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    dequal: ^2.0.2
+  peerDependencies:
+    react: ">=16.13"
+  checksum: 2b9b6291df3f772f44d259b352e5d998963ccee0db2efeb76bb05525d928064aeeb69bb0dee5a5e428fea7cf3db67c097a770ebd30caa080662b565f6ef02b2e
+  languageName: node
+  linkType: hard
+
 "use-sidecar@npm:^1.1.2":
   version: 1.1.2
   resolution: "use-sidecar@npm:1.1.2"
@@ -6571,6 +6634,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "uuid@npm:8.3.2"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
+  languageName: node
+  linkType: hard
+
 "uuid@npm:^9.0.0":
   version: 9.0.0
   resolution: "uuid@npm:9.0.0"
@@ -6605,6 +6677,7 @@ __metadata:
     "@chakra-ui/styled-system": ^2.3.3
     "@emotion/react": ^11.10.4
     "@emotion/styled": ^11.10.4
+    "@hookform/devtools": ^4.2.2
     "@hookform/resolvers": ^2.9.8
     "@stomp/stompjs": ^6.1.2
     "@tanstack/react-query": ^4.3.4

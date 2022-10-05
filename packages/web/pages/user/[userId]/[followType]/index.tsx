@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react"
-import { useRef, useEffect, Fragment } from "react"
+import { Fragment, useEffect, useRef } from "react"
 import type { GetServerSideProps } from "next"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { NoItemMessage, ProfileAvatar } from "~/components/domains"

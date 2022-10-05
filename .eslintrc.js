@@ -109,5 +109,11 @@ module.exports = {
         alphabetize: { order: "asc", caseInsensitive: true },
       },
     ],
+    "sort-imports": [
+      "error",
+      {
+        ignoreDeclarationSort: true,
+      },
+    ],
   },
 }

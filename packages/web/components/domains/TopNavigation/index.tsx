@@ -6,17 +6,19 @@ import styled from "@emotion/styled"
 import type { Variants } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
-import { Icon, Badge } from "~/components/uis/atoms"
+import { Badge, Icon } from "~/components/uis/atoms"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { useScrollContainer } from "../layout/DefaultLayout/ScrollContainer"
 
 const titleWrapperVariants: Variants = {
   notShrink: { originX: 0, x: 0, y: 0, scale: 1 },
-  shrink: { originX: 0, x: 6, y: -40, scale: 0.7 },
-  shrinkWithBack: { originX: 0, x: 30, y: -40, scale: 0.7 },
+  shrink: { originX: 0, x: 6, y: -45, scale: 0.7 },
+  shrinkWithBack: { originX: 0, x: 30, y: -45, scale: 0.7 },
 }
 
 const TopNavigation = () => {
   const { authProps } = useAuthContext()
+  const { scrollToTop } = useScrollContainer()
 
   const { navigationProps } = useNavigationContext()
 
@@ -47,97 +49,98 @@ const TopNavigation = () => {
   )
 
   return (
-    <>
-      <Container
-        initial={{ background: undefined }}
-        animate={
-          isTopNavShrink
-            ? {
-                background:
-                  "linear-gradient(#fafafa,#fafafa,#fafafa, transparent)",
-              }
-            : { background: undefined }
-        }
-      >
-        <Wrapper>
-          <IconGroup>
-            {isBack && (
-              <CursorIcon
-                name="chevron-left"
-                size={24}
-                onClick={handleClickBack || handleDefaultBack}
-              />
-            )}
-          </IconGroup>
-          <IconGroup>
-            {isNotifications && (
-              <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
-                <Link href="/notifications" passHref>
-                  <a>
-                    <motion.div
-                      initial={{ rotateZ: 0 }}
-                      animate={
-                        unreadNotificationsCount > 0
-                          ? {
-                              rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
-                              transition: {
-                                repeat: Infinity,
-                                repeatDelay: 3,
-                              },
-                            }
-                          : {
-                              rotateZ: 0,
-                            }
-                      }
-                    >
-                      <Icon name="bell" size={24} />
-                    </motion.div>
-                  </a>
-                </Link>
-              </Badge>
-            )}
-            {isProfile && <ProfileAvatar.Mine />}
-            {isMenu && (
-              <Link href="/user/menu" passHref>
+    <Container
+      initial={{ background: undefined }}
+      animate={
+        isTopNavShrink
+          ? {
+              background:
+                "linear-gradient(#fafafa,#fafafa,#fafafa, transparent)",
+            }
+          : { background: undefined }
+      }
+    >
+      <Wrapper>
+        <IconGroup>
+          {isBack && (
+            <CursorIcon
+              name="chevron-left"
+              size={24}
+              onClick={handleClickBack || handleDefaultBack}
+            />
+          )}
+        </IconGroup>
+        <IconGroup>
+          {isNotifications && (
+            <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
+              <Link href="/notifications" passHref>
                 <a>
-                  <Icon name="menu" size={24} />
+                  <motion.div
+                    initial={{ rotateZ: 0 }}
+                    animate={
+                      unreadNotificationsCount > 0
+                        ? {
+                            rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
+                            transition: {
+                              repeat: Infinity,
+                              repeatDelay: 3,
+                            },
+                          }
+                        : {
+                            rotateZ: 0,
+                          }
+                    }
+                  >
+                    <Icon name="bell" size={24} />
+                  </motion.div>
                 </a>
               </Link>
-            )}
+            </Badge>
+          )}
+          {isProfile && <ProfileAvatar.Mine />}
+          {isMenu && (
+            <Link href="/user/menu" passHref>
+              <a>
+                <Icon name="menu" size={24} />
+              </a>
+            </Link>
+          )}
 
-            {customButton && (
-              <CustomButton onClick={customButton.handleClick}>
-                {customButton.title}
-              </CustomButton>
-            )}
-          </IconGroup>
-        </Wrapper>
+          {customButton && (
+            <CustomButton onClick={customButton.handleClick}>
+              {customButton.title}
+            </CustomButton>
+          )}
+        </IconGroup>
+      </Wrapper>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            css={css`
-              font-size: 28px;
-              font-weight: 700;
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-              padding-left: 22px;
-            `}
-            variants={titleWrapperVariants}
-            initial="notShrink"
-            animate={
-              isTopNavShrink
-                ? isBack
-                  ? "shrinkWithBack"
-                  : "shrink"
-                : "notShrink"
-            }
-          >
-            {title}
-          </motion.div>
-        </AnimatePresence>
-      </Container>
-    </>
+      <AnimatePresence mode="wait">
+        <motion.div
+          onClick={scrollToTop}
+          css={css`
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 22px;
+            cursor: pointer;
+            user-select: none;
+          `}
+          variants={titleWrapperVariants}
+          initial="notShrink"
+          animate={
+            isTopNavShrink
+              ? isBack
+                ? "shrinkWithBack"
+                : "shrink"
+              : "notShrink"
+          }
+        >
+          {title}
+        </motion.div>
+      </AnimatePresence>
+    </Container>
   )
 }
 
