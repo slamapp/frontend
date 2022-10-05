@@ -1,10 +1,10 @@
 import type { Reducer } from "react"
 import type { OmitAt } from "~/types/domains/helpers"
 import type {
-  APINotification,
-  APIUser,
   APIFavorite,
+  APINotification,
   APIReservation,
+  APIUser,
 } from "~/types/domains/objects"
 import type { ActionUnion } from "./actionTypes"
 

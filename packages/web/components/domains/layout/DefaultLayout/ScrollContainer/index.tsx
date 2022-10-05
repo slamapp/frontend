@@ -5,6 +5,7 @@ import { css, useTheme } from "@emotion/react"
 type Value = {
   scrollToTop: () => void
   scrollContainerRef: RefObject<HTMLDivElement>
+  scrollContainerHeight: number
 }
 
 const Context = createContext({} as Value)
@@ -25,6 +26,8 @@ const ScrollContainer = ({ children }: Props) => {
     ref.current?.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  const scrollContainerHeight = ref.current?.getClientRects()[0].height ?? 0
+
   const handleResize = () => setHeight(window.innerHeight)
 
   useEffect(() => {
@@ -35,7 +38,9 @@ const ScrollContainer = ({ children }: Props) => {
   }, [])
 
   return (
-    <Context.Provider value={{ scrollContainerRef: ref, scrollToTop }}>
+    <Context.Provider
+      value={{ scrollContainerRef: ref, scrollToTop, scrollContainerHeight }}
+    >
       <div
         ref={ref}
         id="scrolled-container"

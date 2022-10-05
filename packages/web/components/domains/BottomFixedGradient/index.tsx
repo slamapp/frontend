@@ -1,13 +1,15 @@
 import type { ComponentPropsWithoutRef, ReactPortal } from "react"
 import { useEffect, useState } from "react"
+import type { Flex } from "@chakra-ui/react"
 import { Box } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
+import { useTheme } from "@emotion/react"
 import ReactDOM from "react-dom"
 
 const BottomFixedGradient = ({
   children,
+  className,
   ...props
-}: ComponentPropsWithoutRef<typeof Box>) => {
+}: ComponentPropsWithoutRef<typeof Flex>) => {
   const theme = useTheme()
 
   const [portal, setPortal] = useState<ReactPortal | null>(null)
@@ -15,22 +17,34 @@ const BottomFixedGradient = ({
   useEffect(() => {
     setPortal(
       ReactDOM.createPortal(
-        <Box
-          css={css`
-            display: flex;
-            align-items: flex-end;
-            box-sizing: border-box;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 120px;
-            background: ${`linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, ${theme.colors.white} 55%)`};
-            max-width: 640px;
-          `}
-          {...props}
-        >
-          <Box w="100%">{children}</Box>
-        </Box>,
+        <>
+          <Box
+            w="100%"
+            h="120px"
+            pos="fixed"
+            bottom={0}
+            maxW="640px"
+            zIndex={200000}
+            background={`linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0) 0%,
+            ${theme.colors.white} 55%
+            )`}
+            pointerEvents="none"
+            {...props}
+          />
+          <Box
+            w="100%"
+            pos="fixed"
+            bottom={0}
+            maxW="640px"
+            zIndex={200000}
+            {...props}
+          >
+            {children}
+          </Box>
+        </>,
+
         document.querySelector("#scrolled-container")!
       )
     )

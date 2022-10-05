@@ -1,58 +1,177 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Head from "next/head"
-import { useRouter } from "next/router"
-import styled from "@emotion/styled"
-import Sheet from "react-modal-sheet"
-import { api } from "~/api"
 import {
-  BasketballLoading,
-  BottomFixedGradient,
-  GeneralMarker,
-  LeadToLoginModal,
-  Map,
-} from "~/components/domains"
-import { Button, Icon, Spacer, Text } from "~/components/uis/atoms"
-import { Label } from "~/components/uis/molecules"
-import { Input } from "~/components/uis/organisms"
-import { useMapContext, useNavigationContext } from "~/contexts/hooks"
+  Box,
+  Center,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
+import { css } from "@emotion/react"
+import { DevTool } from "@hookform/devtools"
+import { AnimatePresence, motion } from "framer-motion"
+import { Controller, useForm } from "react-hook-form"
+import type { api } from "~/api"
+import { BottomFixedGradient } from "~/components/domains"
+import { useScrollContainer } from "~/components/domains/layout/DefaultLayout/ScrollContainer"
+import Map from "~/components/kakaos/Map/Map"
+import { Button, Icon } from "~/components/uis/atoms"
+import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
-import { useForm } from "~/hooks"
-import type { APICourt } from "~/types/domains/objects"
-import type { Coord } from "~/types/domains/objects/court"
-import type { Keyof } from "~/types/helpers"
-import { getCurrentLocation } from "~/utils/geolocation"
-
-interface Geocoder extends kakao.maps.services.Geocoder {
-  coord2Address: (
-    latitude: APICourt["latitude"],
-    longitude: APICourt["longitude"],
-    callback?: (result: any, status: kakao.maps.services.Status) => void
-  ) => string
-}
+import type { APICourt } from "~/types/domains/objects/court"
 
 const Page = withRouteGuard("private", () => {
-  const { map } = useMapContext()
-
-  const router = useRouter()
-
+  const { scrollContainerHeight } = useScrollContainer()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_COURT_CREATE")
 
-  const [isOpen, setOpen] = useState(false)
-  const [level, setLevel] = useState(3)
-  const [center, setCenter] = useState<Coord>()
-  const [position, setPosition] = useState<Coord>()
-  const [address, setAddress] = useState<string>()
-  const [validatedBasketCount, setValidatedBasketCount] = useState(1)
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    register,
+    watch,
+  } = useForm<
+    Pick<
+      Parameters<typeof api.courts.createNewCourt>[0],
+      "basketCount" | "image" | "name" | "texture"
+    > & {
+      position: Pick<
+        Parameters<typeof api.courts.createNewCourt>[0],
+        "latitude" | "longitude"
+      > | null
+    }
+  >({
+    mode: "all",
+    defaultValues: {
+      basketCount: 1,
+      image: null,
+      position: null,
+      name: "",
+      texture: "ETC",
+    },
+  })
 
-  const searchAddrFromCoords = ([latitude, longitude]: Coord) => {
-    const geocoder = new kakao.maps.services.Geocoder()
+  return (
+    <>
+      <Head>
+        <title>새 농구장 추가</title>
+      </Head>
 
-    ;(geocoder as Geocoder).coord2Address(
-      longitude,
+      <form>
+        <VStack mx="16px" mt="24px" spacing="24px">
+          <Controller
+            name="position"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <FormControl w="100%" isInvalid={!!errors.position}>
+                <FormLabel htmlFor="position">농구장 위치</FormLabel>
+                <Input
+                  display="none"
+                  id="position"
+                  {...register("position", {
+                    required: "농구장 위치를 등록해주세요",
+                  })}
+                />
+                <MapEditor
+                  onChange={(courtPosition) => field.onChange(courtPosition)}
+                />
+                <FormErrorMessage>{errors.position?.message}</FormErrorMessage>
+              </FormControl>
+            )}
+          />
+
+          <FormControl w="100%" isInvalid={!!errors.name}>
+            <FormLabel htmlFor="name">농구장 이름</FormLabel>
+            <Input
+              id="name"
+              placeholder="ex) 서울 광화문역 앞 농구장"
+              type="text"
+              {...register("name", {
+                required: "농구장 이름을 적어주세요",
+                minLength: { value: 2, message: "2자 이상으로 적어주세요" },
+                maxLength: { value: 15, message: "15자 이하로 적어주세요" },
+              })}
+            />
+            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl w="100%" isInvalid={!!errors.basketCount}>
+            <FormLabel htmlFor="basketCount">골대 개수</FormLabel>
+            <InputGroup>
+              <Input
+                id="basketCount"
+                type="number"
+                {...register("basketCount", {
+                  required: "농구장에 있는 골대개수를 적어주세요",
+                  max: { value: 10, message: "골대 개수는 10개 이하여야 해요" },
+                  min: { value: 1, message: "골대 개수는 1개 이상여야 해요" },
+                })}
+              />
+              <InputRightElement>
+                <Text>개</Text>
+              </InputRightElement>
+            </InputGroup>
+            <FormErrorMessage>{errors.basketCount?.message}</FormErrorMessage>
+          </FormControl>
+        </VStack>
+      </form>
+      <BottomFixedGradient>
+        <Box
+          as={motion.div}
+          initial={{ padding: 16 }}
+          animate={
+            scrollContainerHeight > 400 ? { padding: 16 } : { padding: 0 }
+          }
+        >
+          <Button
+            fullWidth
+            size="lg"
+            style={{ borderRadius: scrollContainerHeight > 400 ? 16 : 0 }}
+          >
+            새 농구장 추가 제안하기
+          </Button>
+        </Box>
+      </BottomFixedGradient>
+      <Box h="100px" />
+
+      <DevTool control={control} />
+    </>
+  )
+})
+
+export default Page
+
+const MapEditor = ({
+  onChange,
+}: {
+  onChange?: (position: Pick<APICourt, "latitude" | "longitude">) => void
+}) => {
+  const [mode, setMode] = useState<"beforeEdit" | "editing" | "complete">(
+    "beforeEdit"
+  )
+
+  const [courtPosition, setCourtPosition] =
+    useState<Pick<APICourt, "latitude" | "longitude">>()
+
+  const [address, setAddress] = useState<string | null>(null)
+
+  useEffect(() => {
+    const searchAddrFromCoords = ({
       latitude,
-      (result, status) => {
+      longitude,
+    }: Pick<APICourt, "latitude" | "longitude">) => {
+      setAddress(null)
+      const geocoder = new kakao.maps.services.Geocoder()
+
+      geocoder.coord2Address(longitude, latitude, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           // 도로명 주소
           if (result[0].road_address) {
@@ -67,371 +186,184 @@ const Page = withRouteGuard("private", () => {
             setAddress("주소가 존재하지 않습니다.")
           }
         }
-      }
-    )
-  }
-
-  const handleClickKakaoMap = (
-    _: kakao.maps.Map,
-    { latLng }: kakao.maps.event.MouseEvent
-  ) => {
-    if (latLng) {
-      setPosition([latLng.getLat(), latLng.getLng()])
-      searchAddrFromCoords([latLng.getLat(), latLng.getLng()])
+      })
     }
-  }
 
-  const handleGetCurrentLocation = useCallback(() => {
-    getCurrentLocation(([latitude, longitude]) => {
-      setCenter([latitude, longitude])
-    })
-  }, [])
-
-  const handleZoomIn = useCallback(() => {
-    setLevel((level) => level - 1)
-  }, [])
-
-  const handleZoomOut = useCallback(() => {
-    setLevel((level) => level + 1)
-  }, [])
-
-  const handleClickSaveLocationButton = () => {
-    setOpen(false)
-    if (position) {
-      const [latitude, longitude] = position
-      setValues((prev) => ({ ...prev, latitude, longitude }))
-      setCenter(position)
+    if (courtPosition) {
+      searchAddrFromCoords(courtPosition)
     }
-  }
-
-  useEffect(() => {
-    handleGetCurrentLocation()
-  }, [handleGetCurrentLocation])
-
-  const { values, errors, isLoading, setValues, handleSubmit } = useForm<
-    Pick<
-      APICourt,
-      "longitude" | "latitude" | "image" | "texture" | "basketCount" | "name"
-    >
-  >({
-    initialValues: {
-      longitude: 0,
-      latitude: 0,
-      image: null,
-      texture: "ETC",
-      basketCount: 1,
-      name: "",
-    },
-    onSubmit: async (values) => {
-      try {
-        await api.courts.createNewCourt(values)
-        router.push("/map")
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    validate: (values) => {
-      const errors: { [key in Keyof<typeof values>]?: string } = {}
-      const { basketCount, name, longitude, latitude } = values
-
-      if (!name) {
-        errors.name = "농구장 이름을 입력해주세요."
-      }
-      if (basketCount < 1) {
-        errors.basketCount = "골대 개수를 입력해주세요."
-      }
-      if (!longitude || !latitude) {
-        errors.longitude = "위치를 지정해주세요."
-      }
-
-      return errors
-    },
-  })
-
-  useEffect(() => {
-    if (values.basketCount > 99) {
-      setValidatedBasketCount(Number(values.basketCount.toString().slice(0, 2)))
-    } else {
-      setValidatedBasketCount(values.basketCount)
-    }
-  }, [values.basketCount])
+  }, [courtPosition])
 
   return (
-    <div>
-      <Head>
-        <title>새 농구장 추가</title>
-      </Head>
-
-      <CustomSheet
-        isOpen={isOpen}
-        disableDrag={true}
-        onClose={() => setOpen(false)}
-      >
-        <Sheet.Container>
-          <Sheet.Header />
-          <Sheet.Content
-            style={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <MapGuide size="md" strong>
-              <DecoIcon name="map-pin" color="#FE6D04" />
-              {address ?? `지도에서 위치를 선택해주세요`}
-            </MapGuide>
-            {!center && <BasketballLoading />}
-            {center && isOpen ? (
-              <Map.KakaoMap
-                level={level}
-                center={center}
-                draggable={true}
-                zoomable={true}
-                onClick={handleClickKakaoMap}
-              >
-                <Map.ZoomButton
-                  onZoomIn={handleZoomIn}
-                  onZoomOut={handleZoomOut}
-                  bottom={120}
-                />
-                <Map.CurrentLocationButton
-                  onGetCurrentLocation={handleGetCurrentLocation}
-                />
-                {position ? (
-                  <GeneralMarker
-                    map={map as kakao.maps.Map}
-                    position={position}
-                  />
-                ) : null}
-              </Map.KakaoMap>
-            ) : null}
-            <BottomFixedGradient
-              type="button"
-              disabled={!center}
-              onClick={handleClickSaveLocationButton}
-              containerStyle={{ zIndex: 10000000 }}
-            >
-              농구장 위치 저장하기
-            </BottomFixedGradient>
-          </Sheet.Content>
-        </Sheet.Container>
-        <Sheet.Backdrop />
-      </CustomSheet>
-
-      <form>
-        <MainContainer>
-          <Spacer gap="base">
-            <div>
-              <Input
-                label="농구장 이름"
-                type="text"
-                name="name"
-                onChange={({ target }) =>
-                  setValues((prev) => ({
-                    ...prev,
-                    [target.name]: target.value,
-                  }))
+    <>
+      <Map
+        zoomable={mode === "editing"}
+        draggable={mode === "editing"}
+        maxLevel={6}
+        center={courtPosition}
+        style={{
+          height: 400,
+          borderRadius: 16,
+          zIndex: 0,
+          pointerEvents: mode === "complete" ? "none" : "all",
+        }}
+        onClick={
+          mode === "editing"
+            ? (_, e) => {
+                const newCourtPosition = {
+                  latitude: e.latLng.getLat(),
+                  longitude: e.latLng.getLng(),
                 }
-                value={values.name}
-                placeholder="ex) 슬램대학교 상경대 앞 농구장"
-                isRequired
-                visibleError={!!errors.name}
-              />
-              <ErrorMessage size="sm" block>
-                {errors.name}
-              </ErrorMessage>
-            </div>
-            <div>
-              <Label isRequired>위치</Label>
-              <PreviewContainer>
-                {values.latitude && values.longitude && !isOpen ? (
-                  <div>
-                    <AddressGuide>
-                      <DecoIcon name="map-pin" color="#FE6D04" size="sm" />
-                      {address}
-                    </AddressGuide>
-                    <div style={{ position: "relative" }}>
-                      <Map.KakaoMap
-                        level={level}
-                        center={[values.latitude, values.longitude]}
-                        draggable={false}
-                        zoomable={false}
-                        style={{
-                          width: "100%",
-                          height: "150px",
-                        }}
-                      >
-                        <GeneralMarker
-                          map={map as kakao.maps.Map}
-                          position={[values.latitude, values.longitude]}
-                        />
-                      </Map.KakaoMap>
-                      <MoveToMap onClick={() => setOpen(true)} />
-                    </div>
-                  </div>
-                ) : (
-                  <PreviewBanner className={errors.longitude ? "error" : ""}>
-                    <Button
-                      size="sm"
-                      type="button"
-                      onClick={() => setOpen(true)}
-                      style={{ zIndex: 1 }}
-                    >
-                      지도에서 위치 찾기
-                    </Button>
-                  </PreviewBanner>
-                )}
-              </PreviewContainer>
-              <ErrorMessage size="sm" block>
-                {errors.longitude}
-              </ErrorMessage>
-            </div>
-            <div>
-              <Input
-                label="골대 개수"
-                type="number"
-                name="basketCount"
-                onChange={({ target }) =>
-                  setValues((prev) => ({
-                    ...prev,
-                    [target.name]: target.value,
-                  }))
-                }
-                isRequired
-                value={validatedBasketCount}
-                visibleError={!!errors.basketCount}
-              />
-              <ErrorMessage size="sm" block>
-                {errors.basketCount}
-              </ErrorMessage>
-            </div>
-          </Spacer>
-        </MainContainer>
-        <BottomFixedGradient
-          type="submit"
-          onClick={() => setIsOpenConfirmModal(true)}
-          disabled={!!Object.keys(errors).length}
-        >
-          {isLoading ? "Loading..." : "새 농구장 추가 제안하기"}
-        </BottomFixedGradient>
-      </form>
 
-      <LeadToLoginModal
-        headerContent={
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: 100,
-            }}
-          >
-            <Spacer gap={4}>
-              <Text size="md" strong block>
-                새 농구장 추가를 제안하시겠습니까?
-              </Text>
-              <SubText size="xs" block>
-                제출한 코트 정보는 관리자의 승인을 거쳐 반영됩니다.
-              </SubText>
-            </Spacer>
-          </div>
+                setCourtPosition(newCourtPosition)
+                onChange?.(newCourtPosition)
+              }
+            : undefined
         }
-        isOpen={isOpenConfirmModal}
-        cancel={{
-          content: "닫기",
-          handle: () => {
-            setIsOpenConfirmModal(false)
-          },
-        }}
-        confirm={{
-          content: "제출하기",
-          handle: (e) => {
-            try {
-              handleSubmit(e)
-              router.push("/map")
-            } catch (error) {
-              console.error(error)
-            }
-          },
-        }}
-      />
-    </div>
+      >
+        {mode === "beforeEdit" && (
+          <Center width="100%" height="100%">
+            <Button
+              secondary
+              type="button"
+              style={{
+                boxShadow: "0 0 32px rgba(0,0,0,0.3)",
+                zIndex: 1,
+              }}
+              onClick={() => setMode("editing")}
+            >
+              <Icon name="map" size="sm" />
+              지도에서 위치 찾기
+            </Button>
+          </Center>
+        )}
+        {mode === "editing" && (
+          <>
+            <Map.Button.CurrentLocation />
+            <Map.Button.ZoomInOut />
+          </>
+        )}
+        {courtPosition && (
+          <Map.Marker.CustomMarkerOverlay
+            position={{
+              latitude: courtPosition.latitude,
+              longitude: courtPosition.longitude,
+            }}
+          >
+            <motion.div
+              css={css`
+                width: 50;
+                height: 50;
+              `}
+            >
+              <Flex
+                as={motion.div}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                style={{
+                  width: 50,
+                  height: 50,
+                  position: "relative",
+                  borderRadius: 25,
+                  cursor: "pointer",
+                }}
+                justify="center"
+              >
+                <Box
+                  style={{
+                    position: "absolute",
+                    bottom: -4,
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    filter: "blur(4px)",
+                    width: 45,
+                    height: 45,
+                    borderRadius: 25,
+                    overflow: "visible",
+                  }}
+                />
+                <img
+                  src="/assets/basketball/animation_off_400.png"
+                  style={{
+                    position: "absolute",
+                    bottom: -8,
+                    minWidth: 100,
+                    minHeight: 150,
+                    pointerEvents: "none",
+                    userSelect: "none",
+                  }}
+                />
+              </Flex>
+            </motion.div>
+          </Map.Marker.CustomMarkerOverlay>
+        )}
+
+        {courtPosition && mode === "editing" && (
+          <Flex
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            direction="column"
+            justify="flex-end"
+            width="100%"
+            height="100%"
+            p="8px"
+          >
+            <Button
+              secondary
+              type="button"
+              style={{
+                boxShadow: "0 0 32px rgba(0,0,0,0.3)",
+                zIndex: 1,
+                bottom: 0,
+              }}
+              loading={address === null}
+              disabled={address === null}
+              onClick={() => {
+                setCourtPosition((prev) => (prev ? { ...prev } : prev))
+                setMode("complete")
+              }}
+            >
+              {address ? (
+                <>
+                  <Icon name="map-pin" size="sm" />
+                  {address}로 정하기
+                </>
+              ) : (
+                address
+              )}
+            </Button>
+          </Flex>
+        )}
+        {mode === "complete" && (
+          <Flex
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            direction="column"
+            justify="flex-end"
+            width="100%"
+            height="100%"
+            p="8px"
+          >
+            <Button
+              secondary
+              type="button"
+              style={{
+                boxShadow: "0 0 32px rgba(0,0,0,0.3)",
+                zIndex: 1,
+                bottom: 0,
+              }}
+            >
+              <Icon name="map-pin" size="sm" />
+              {address}
+            </Button>
+          </Flex>
+        )}
+      </Map>
+    </>
   )
-})
-
-export default Page
-
-const MainContainer = styled.div`
-  padding: ${({ theme }) => `30px ${theme.previousTheme.gaps.base}`};
-`
-
-const PreviewContainer = styled.div`
-  width: 100%;
-`
-
-const PreviewBanner = styled.div`
-  width: 100%;
-  height: 150px;
-  background-image: url("/assets/preview_map.png");
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: inset 0 0 20px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  &.error::before {
-    border: 1px solid ${({ theme }) => theme.previousTheme.colors.red.strong};
-  }
-`
-
-const CustomSheet = styled(Sheet)`
-  max-width: 640px;
-  margin: auto;
-`
-
-const MapGuide = styled(Text)`
-  margin: ${({ theme }) => theme.previousTheme.gaps.md};
-  margin-top: 0;
-`
-
-const DecoIcon = styled(Icon)`
-  vertical-align: text-bottom;
-  margin-right: ${({ theme }) => theme.previousTheme.gaps.xxs};
-`
-
-const AddressGuide = styled.p`
-  margin: 12px 0;
-`
-
-const MoveToMap = styled.a`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  cursor: pointer;
-`
-
-const SubText = styled(Text)`
-  color: ${({ theme }) => theme.previousTheme.colors.gray500};
-`
-
-const ErrorMessage = styled(Text)`
-  text-align: right;
-  flex-grow: 1;
-  margin: 4px 0;
-  color: ${({ theme }) => theme.previousTheme.colors.red.strong};
-`
+}

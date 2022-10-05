@@ -1,11 +1,6 @@
 import type { ReactNode } from "react"
 import AnalyticsProvider from "./AnalyticsProvider"
-import {
-  AuthProvider,
-  NavigationProvider,
-  SocketProvider,
-  MapProvider,
-} from "."
+import { AuthProvider, NavigationProvider, SocketProvider } from "."
 
 interface Props {
   children: ReactNode
@@ -16,9 +11,7 @@ const Providers = ({ children }: Props) => {
     <AuthProvider>
       <SocketProvider>
         <NavigationProvider>
-          <MapProvider>
-            <AnalyticsProvider>{children}</AnalyticsProvider>
-          </MapProvider>
+          <AnalyticsProvider>{children}</AnalyticsProvider>
         </NavigationProvider>
       </SocketProvider>
     </AuthProvider>

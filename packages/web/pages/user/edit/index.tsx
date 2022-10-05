@@ -27,8 +27,10 @@ import type {
 } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
+import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
 import { BottomFixedGradient } from "~/components/domains"
+import { useScrollContainer } from "~/components/domains/layout/DefaultLayout/ScrollContainer"
 import LoadingIndicator from "~/components/kakaos/Map/LoadingIndicator"
 import { Upload } from "~/components/uis"
 import { Button, Icon } from "~/components/uis/atoms"
@@ -63,6 +65,7 @@ const Page = withRouteGuard("private", () => {
 export default Page
 
 const EditForm = ({ initialData }: { initialData: APIUser }) => {
+  const { scrollContainerHeight } = useScrollContainer()
   const router = useRouter()
   const myProfileMutation = useMyProfileMutation()
 
@@ -137,9 +140,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               })}
               aria-invalid={errors.nickname ? "true" : "false"}
             />
-            {errors.nickname && (
-              <FormErrorMessage>{errors.nickname.message}</FormErrorMessage>
-            )}
+            <FormErrorMessage>{errors.nickname?.message}</FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={!!errors.description}>
@@ -162,9 +163,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
                 },
               })}
             />
-            {errors.description && (
-              <FormErrorMessage>{errors.description.message}</FormErrorMessage>
-            )}
+            <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
           </FormControl>
 
           <FormControl>
@@ -232,25 +231,32 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
           </FormControl>
           <Box h="100px" />
         </VStack>
+        <BottomFixedGradient>
+          <Box
+            as={motion.div}
+            initial={{ padding: 16 }}
+            animate={
+              scrollContainerHeight > 400 ? { padding: 16 } : { padding: 0 }
+            }
+          >
+            <Button
+              fullWidth
+              size="lg"
+              loading={isSubmitting || isSubmitSuccessful}
+              disabled={!isDirty || !isValid || isSubmitSuccessful}
+              onClick={handleSubmit(onSubmit)}
+              style={{ borderRadius: scrollContainerHeight > 400 ? 16 : 0 }}
+            >
+              {!isDirty || !isValid
+                ? "프로필을 먼저 수정하세요"
+                : isSubmitSuccessful
+                ? "내 프로필페이지로 이동 중이에요"
+                : "프로필 수정 완료하기"}
+            </Button>
+          </Box>
+        </BottomFixedGradient>
       </form>
 
-      <BottomFixedGradient>
-        <Box p="16px">
-          <Button
-            fullWidth
-            size="lg"
-            loading={isSubmitting || isSubmitSuccessful}
-            disabled={!isDirty || !isValid || isSubmitSuccessful}
-            onClick={handleSubmit(onSubmit)}
-          >
-            {!isDirty || !isValid
-              ? "프로필을 먼저 수정하세요"
-              : isSubmitSuccessful
-              ? "내 프로필페이지로 이동 중이에요"
-              : "프로필 수정 완료하기"}
-          </Button>
-        </Box>
-      </BottomFixedGradient>
       <DevTool control={control} />
     </>
   )

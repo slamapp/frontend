@@ -7879,42 +7879,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["react-merge-refs", [\
-        ["npm:1.1.0", {\
-          "packageLocation": "./.yarn/cache/react-merge-refs-npm-1.1.0-26c3215fdd-9088435299.zip/node_modules/react-merge-refs/",\
-          "packageDependencies": [\
-            ["react-merge-refs", "npm:1.1.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["react-modal-sheet", [\
-        ["npm:1.5.2", {\
-          "packageLocation": "./.yarn/cache/react-modal-sheet-npm-1.5.2-0cfaf36d1c-5c3c0a0dcf.zip/node_modules/react-modal-sheet/",\
-          "packageDependencies": [\
-            ["react-modal-sheet", "npm:1.5.2"]\
-          ],\
-          "linkType": "SOFT"\
-        }],\
-        ["virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:1.5.2", {\
-          "packageLocation": "./.yarn/__virtual__/react-modal-sheet-virtual-2fa31e99d9/0/cache/react-modal-sheet-npm-1.5.2-0cfaf36d1c-5c3c0a0dcf.zip/node_modules/react-modal-sheet/",\
-          "packageDependencies": [\
-            ["react-modal-sheet", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:1.5.2"],\
-            ["@types/framer-motion", null],\
-            ["@types/react", "npm:18.0.20"],\
-            ["framer-motion", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:7.3.6"],\
-            ["react", "npm:18.2.0"],\
-            ["react-merge-refs", "npm:1.1.0"]\
-          ],\
-          "packagePeers": [\
-            "@types/framer-motion",\
-            "@types/react",\
-            "framer-motion",\
-            "react"\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["react-remove-scroll", [\
         ["npm:2.5.5", {\
           "packageLocation": "./.yarn/cache/react-remove-scroll-npm-2.5.5-87479a3637-2c7fe9cbd7.zip/node_modules/react-remove-scroll/",\
@@ -9265,7 +9229,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:94de940a12aebd19f10e0a5b5702e435ff38d3f2a1b8621121e35f085410d4e466a0d0951ce6ee0822f9dc2cc191756fd20ef02eac83de5ee242939c7842ffa5#npm:18.2.0"],\
             ["react-ga4", "npm:1.4.1"],\
             ["react-hook-form", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:7.36.1"],\
-            ["react-modal-sheet", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:1.5.2"],\
             ["sockjs-client", "npm:1.6.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.3#~builtin<compat/typescript>::version=4.8.3&hash=a1c5e5"],\
             ["uuid", "npm:9.0.0"],\

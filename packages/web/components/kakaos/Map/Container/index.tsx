@@ -1,20 +1,18 @@
 import type { CSSProperties, ReactNode } from "react"
-import { useEffect } from "react"
 import { useMap } from "../context"
 import useMapEvent from "../hooks/useMapEvent"
 
 type Props = {
   center?: { latitude: number; longitude: number }
-  onClick?: (map: kakao.maps.Map) => void
-  onDragStart?: (map: kakao.maps.Map) => void
-  onDragEnd?: (map: kakao.maps.Map) => void
+  onClick?: (map: kakao.maps.Map, e: kakao.maps.event.MouseEvent) => void
+  onDragStart?: (map: kakao.maps.Map, e: kakao.maps.event.MouseEvent) => void
+  onDragEnd?: (map: kakao.maps.Map, e: kakao.maps.event.MouseEvent) => void
   onZoomChanged?: (map: kakao.maps.Map) => void
   style?: CSSProperties
   children?: ReactNode
 }
 
 const Container = ({
-  center,
   onClick,
   onDragStart,
   onDragEnd,
@@ -23,14 +21,6 @@ const Container = ({
   children,
 }: Props) => {
   const { map, mapRef } = useMap()
-
-  useEffect(() => {
-    if (center) {
-      map?.setCenter(new kakao.maps.LatLng(center.latitude, center.longitude))
-    }
-
-    map?.relayout()
-  }, [map, center, style])
 
   useMapEvent(map, "click", onClick)
   useMapEvent(map, "dragstart", onDragStart)

@@ -5,15 +5,20 @@ import { Provider } from "./context/Provider"
 import LoadingIndicator from "./LoadingIndicator"
 import Marker from "./Marker"
 
+// 서울의 경도, 위도
+export const DEFAULT_INITIAL_CENTER = { latitude: 37.5665, longitude: 126.978 }
+
 type Props = {
-  initialCenter: { latitude: number; longitude: number }
-  initialLevel?: number
-  maxLevel?: number
   center?: { latitude: number; longitude: number }
-  onClick?: (target: kakao.maps.Map) => void
-  onDragStart?: (target: kakao.maps.Map) => void
-  onDragEnd?: (target: kakao.maps.Map) => void
-  onZoomChanged?: (target: kakao.maps.Map) => void
+  level?: number
+  minLevel?: number
+  maxLevel?: number
+  draggable?: boolean
+  zoomable?: boolean
+  onClick?: (map: kakao.maps.Map, e: kakao.maps.event.MouseEvent) => void
+  onDragStart?: (map: kakao.maps.Map, e: kakao.maps.event.MouseEvent) => void
+  onDragEnd?: (map: kakao.maps.Map, e: kakao.maps.event.MouseEvent) => void
+  onZoomChanged?: (map: kakao.maps.Map) => void
   onLoaded?: (map: kakao.maps.Map) => void
   onBoundChange?: (map: kakao.maps.Map) => void
   style?: CSSProperties
@@ -22,10 +27,12 @@ type Props = {
 }
 
 const Map = ({
-  initialCenter,
-  initialLevel = 6,
+  center = DEFAULT_INITIAL_CENTER,
+  level = 6,
+  minLevel = 1,
   maxLevel = 8,
-  center,
+  draggable = false,
+  zoomable = false,
   onClick,
   onDragStart,
   onDragEnd,
@@ -37,11 +44,14 @@ const Map = ({
 }: Props) => {
   return (
     <Provider
-      initialCenter={initialCenter}
-      initialLevel={initialLevel}
+      center={center}
+      level={level}
+      minLevel={minLevel}
       maxLevel={maxLevel}
       onLoaded={onLoaded}
       onBoundChange={onBoundChange}
+      draggable={draggable}
+      zoomable={zoomable}
     >
       <Container
         center={center}

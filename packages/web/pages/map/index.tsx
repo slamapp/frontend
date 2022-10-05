@@ -19,7 +19,6 @@ import { Toast } from "~/components/uis/molecules"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useLocalStorage } from "~/hooks"
-import { useLocalToken } from "~/hooks/domain"
 import type { APICourt } from "~/types/domains/objects"
 import { getLocalToken } from "~/utils"
 import { getTimezoneDateStringFromDate } from "~/utils/date"
@@ -33,21 +32,17 @@ const DEFAULT_POSITION = {
   longitude: 126.978,
 }
 
-const MapPage = () => {
+const Page = () => {
   const theme = useTheme()
   const router = useRouter()
-  const [localToken] = useLocalToken()
   const { authProps } = useAuthContext()
-  const { favorites, reservations } = authProps
+  const { favorites, reservations, currentUser } = authProps
 
   const [selectedCourtId, setSelectedCourtId] = useState<APICourt["id"] | null>(
     null
   )
 
-  const [mapInitialCenter, setMapInitialCenter] = useLocalStorage(
-    "mapInitialCenter",
-    DEFAULT_POSITION
-  )
+  const [center, setCenter] = useLocalStorage("center", DEFAULT_POSITION)
 
   const [bounds, setBounds] = useState<kakao.maps.LatLngBounds>()
 
@@ -106,12 +101,10 @@ const MapPage = () => {
       <Icon name="plus-circle" size={24} />
     </Spacer>,
     () => {
-      if (localToken) {
+      if (currentUser) {
         router.push("/courts/create")
-        Toast.show("새 농구장을 제안하고 승인받으면 지도에서 보여요")
       } else {
         router.push("/login")
-        Toast.show("로그인 후에 새 농구장을 추가할 수 있어요")
       }
     }
   )
@@ -146,11 +139,9 @@ const MapPage = () => {
         />
 
         <Map
-          initialCenter={{
-            latitude: mapInitialCenter.latitude,
-            longitude: mapInitialCenter.longitude,
-          }}
-          initialLevel={6}
+          draggable
+          center={center}
+          level={6}
           onClick={() => {
             router.replace({ pathname: "/map" })
           }}
@@ -236,10 +227,6 @@ const MapPage = () => {
                         pathname: "/map",
                         query: { courtId: court.id },
                       })
-                      setMapInitialCenter({
-                        latitude: court.latitude,
-                        longitude: court.longitude,
-                      })
                     }}
                   >
                     <Flex
@@ -293,6 +280,12 @@ const MapPage = () => {
           courtsRefetch={() => {
             courtsQuery.refetch()
           }}
+          onCourtReady={({ latitude, longitude }) => {
+            setCenter({
+              latitude,
+              longitude,
+            })
+          }}
         />
       </Flex>
       <AnimatePresence mode="wait">
@@ -304,7 +297,7 @@ const MapPage = () => {
               animate={{ y: 0, transition: { type: "ease" } }}
               exit={{ y: 300 }}
             >
-              <Box p="16px">
+              <Box mx="16px" mb="16px">
                 <Link href="/login" passHref>
                   <a>
                     <Button
@@ -333,18 +326,20 @@ const MapPage = () => {
   )
 }
 
-export default MapPage
+export default Page
 
 const BottomModal = ({
   courtId,
   selectedDate,
   map,
   courtsRefetch,
+  onCourtReady,
 }: {
   courtId: APICourt["id"] | null
   selectedDate: Dayjs
   map?: kakao.maps.Map
   courtsRefetch: () => void
+  onCourtReady: (court: APICourt) => void
 }) => {
   const theme = useTheme()
 
@@ -359,6 +354,8 @@ const BottomModal = ({
           map?.panTo(new kakao.maps.LatLng(data.latitude, data.longitude))
           courtsRefetch()
         }, 0)
+
+        onCourtReady(data)
       },
     }
   )

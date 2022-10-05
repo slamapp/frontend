@@ -4,9 +4,12 @@ import { useDebounce } from "~/hooks"
 import { Context } from "."
 
 type Props = {
-  initialCenter: { latitude: number; longitude: number }
-  initialLevel?: number
-  maxLevel?: number
+  center: { latitude: number; longitude: number }
+  level: number
+  draggable: boolean
+  zoomable: boolean
+  maxLevel: number
+  minLevel: number
   onLoaded?: (map: kakao.maps.Map) => void
   onBoundChange?: (map: kakao.maps.Map) => void
   debounceDelay?: number
@@ -14,9 +17,12 @@ type Props = {
 }
 
 export const Provider = ({
-  initialCenter,
-  initialLevel,
+  center,
+  level,
+  draggable,
+  zoomable,
   maxLevel,
+  minLevel,
   onLoaded,
   onBoundChange,
   debounceDelay = 200,
@@ -32,19 +38,52 @@ export const Provider = ({
     kakao.maps.load(() => {
       if (mapRef.current) {
         const newMap = new window.kakao.maps.Map(mapRef.current, {
-          center: new kakao.maps.LatLng(
-            initialCenter.latitude,
-            initialCenter.longitude
-          ),
-          level: initialLevel,
+          draggable: true,
+          center: new kakao.maps.LatLng(center.latitude, center.longitude),
+          level,
         })
-        newMap.setMaxLevel(maxLevel)
+        if (maxLevel) {
+          newMap.setMaxLevel(maxLevel)
+        }
 
         setMap(newMap)
         onLoaded?.(newMap)
       }
     })
   }, [])
+
+  useEffect(() => {
+    map?.setZoomable(zoomable)
+
+    if (!zoomable) {
+      console.log("not zoomable")
+
+      map?.setLevel(map?.getLevel())
+      map?.setMaxLevel(map?.getLevel())
+      map?.setMinLevel(map?.getLevel())
+    }
+
+    if (zoomable) {
+      map?.setMaxLevel(maxLevel)
+      map?.setMinLevel(minLevel)
+    }
+  }, [map, zoomable, level, maxLevel, minLevel])
+
+  useEffect(() => {
+    map?.setDraggable(draggable)
+  }, [map, draggable])
+
+  useEffect(() => {
+    map?.setLevel(level)
+  }, [map, level])
+
+  useEffect(() => {
+    if (center) {
+      map?.panTo(new kakao.maps.LatLng(center.latitude, center.longitude))
+    }
+
+    map?.relayout()
+  }, [map, center])
 
   const bounds = map?.getBounds()
   const northEast = bounds?.getNorthEast()

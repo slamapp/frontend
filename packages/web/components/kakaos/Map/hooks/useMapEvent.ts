@@ -4,12 +4,12 @@ import { useMap } from "../context"
 const useMapEvent = (
   target: kakao.maps.event.EventTarget | null,
   type: string,
-  callback?: (map: kakao.maps.Map) => void
+  callback?: (map: kakao.maps.Map, e: kakao.maps.event.MouseEvent) => void
 ) => {
   const { map, render } = useMap()
-  const handler = () => {
+  const handler = (e: kakao.maps.event.MouseEvent) => {
     if (map) {
-      callback?.(map)
+      callback?.(map, e)
     }
 
     render()

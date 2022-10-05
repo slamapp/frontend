@@ -32,7 +32,6 @@
     "react-dom": "18.2.0",
     "react-ga4": "^1.4.1",
     "react-hook-form": "^7.36.1",
-    "react-modal-sheet": "^1.5.2",
     "sockjs-client": "^1.6.1",
     "uuid": "^9.0.0",
     "zod": "^3.19.1"

@@ -5535,25 +5535,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-merge-refs@npm:1.1.0":
-  version: 1.1.0
-  resolution: "react-merge-refs@npm:1.1.0"
-  checksum: 90884352999002d868ab9f1bcfe3222fb0f2178ed629f1da7e98e5a9b02a2c96b4aa72800db92aabd69d2483211b4be57a2088e89a11a0b660e7ada744d4ddf7
-  languageName: node
-  linkType: hard
-
-"react-modal-sheet@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "react-modal-sheet@npm:1.5.2"
-  dependencies:
-    react-merge-refs: 1.1.0
-  peerDependencies:
-    framer-motion: ">=2"
-    react: ">=16"
-  checksum: 5c3c0a0dcffae024d190935952a5648d69974308ac148a630f7649b8ed9d61f730d7fe8aade1b2cf266aa50f69b78a7009ccb480816b122480020ceabf7e3bf4
-  languageName: node
-  linkType: hard
-
 "react-remove-scroll-bar@npm:^2.3.3":
   version: 2.3.3
   resolution: "react-remove-scroll-bar@npm:2.3.3"
@@ -6702,7 +6683,6 @@ __metadata:
     react-dom: 18.2.0
     react-ga4: ^1.4.1
     react-hook-form: ^7.36.1
-    react-modal-sheet: ^1.5.2
     sockjs-client: ^1.6.1
     typescript: 4.8.3
     uuid: ^9.0.0
