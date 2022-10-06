@@ -49,7 +49,6 @@ const NavIcon = ({ href, iconName, pageTypes, label = "이름" }: Props) => {
         <Spacer align="center" gap={2}>
           <Icon
             name={iconName}
-            size={18}
             color={
               pageTypes.some((item) => item === currentPage)
                 ? "black"

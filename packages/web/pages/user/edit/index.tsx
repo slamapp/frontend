@@ -174,7 +174,6 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               rules={{ required: true }}
               render={({ field }) => (
                 <ChipCheckboxGroup
-                  {...field}
                   options={[
                     { value: "C", label: "센터" },
                     { value: "PF", label: "파워포워드" },
@@ -183,6 +182,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
                     { value: "PG", label: "포인트가드" },
                     { value: "TBD", label: "미정" },
                   ]}
+                  {...field}
                   onChange={(values) => {
                     field.onChange(
                       (() => {
@@ -205,6 +205,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
                         return [...values]
                       })()
                     )
+                    field.onBlur()
                   }}
                 />
               )}
@@ -219,12 +220,16 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               rules={{ required: true }}
               render={({ field }) => (
                 <ChipRadioGroup
-                  {...field}
                   options={[
                     { value: "BEGINNER", label: "뉴비" },
                     { value: "INTERMEDIATE", label: "중수" },
                     { value: "MASTER", label: "고수" },
                   ]}
+                  {...field}
+                  onChange={(value) => {
+                    field.onChange(value)
+                    field.onBlur()
+                  }}
                 />
               )}
             />

@@ -24,7 +24,6 @@ const BottomFixedGradient = ({
             pos="fixed"
             bottom={0}
             maxW="640px"
-            zIndex={200000}
             background={`linear-gradient(
             180deg,
             rgba(255, 255, 255, 0) 0%,
@@ -38,7 +37,7 @@ const BottomFixedGradient = ({
             pos="fixed"
             bottom={0}
             maxW="640px"
-            zIndex={200000}
+            zIndex={1}
             {...props}
           >
             {children}

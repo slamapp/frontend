@@ -98,7 +98,7 @@ const Page = () => {
       <Text color="lightgrey" size="xs">
         새 농구장을 추가해보세요
       </Text>
-      <Icon name="plus-circle" size={24} />
+      <Icon name="plus-circle" />
     </Spacer>,
     () => {
       if (currentUser) {
@@ -139,7 +139,6 @@ const Page = () => {
         />
 
         <Map
-          draggable
           center={center}
           level={6}
           onClick={() => {

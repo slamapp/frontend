@@ -1,3 +1,4 @@
+import type { ComponentPropsWithoutRef } from "react"
 import { useEffect, useState } from "react"
 import Head from "next/head"
 import {
@@ -7,21 +8,24 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  HStack,
   Input,
   InputGroup,
   InputRightElement,
   Text,
   VStack,
+  theme,
 } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
 import type { api } from "~/api"
 import { BottomFixedGradient } from "~/components/domains"
 import { useScrollContainer } from "~/components/domains/layout/DefaultLayout/ScrollContainer"
 import Map from "~/components/kakaos/Map/Map"
 import { Button, Icon } from "~/components/uis/atoms"
+import { Toast } from "~/components/uis/molecules"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 import type { APICourt } from "~/types/domains/objects/court"
@@ -71,17 +75,20 @@ const Page = withRouteGuard("private", () => {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl w="100%" isInvalid={!!errors.position}>
-                <FormLabel htmlFor="position">농구장 위치</FormLabel>
+              <FormControl w="100%" isInvalid={!!errors[field.name]}>
+                <FormLabel htmlFor={field.name}>농구장 위치</FormLabel>
                 <Input
                   display="none"
-                  id="position"
-                  {...register("position", {
+                  id={field.name}
+                  {...register(field.name, {
                     required: "농구장 위치를 등록해주세요",
                   })}
                 />
                 <MapEditor
-                  onChange={(courtPosition) => field.onChange(courtPosition)}
+                  onChange={(courtPosition) => {
+                    field.onChange(courtPosition)
+                    field.onBlur()
+                  }}
                 />
                 <FormErrorMessage>{errors.position?.message}</FormErrorMessage>
               </FormControl>
@@ -140,7 +147,7 @@ const Page = withRouteGuard("private", () => {
           </Button>
         </Box>
       </BottomFixedGradient>
-      <Box h="100px" />
+      <Box h="160px" />
 
       <DevTool control={control} />
     </>
@@ -154,9 +161,7 @@ const MapEditor = ({
 }: {
   onChange?: (position: Pick<APICourt, "latitude" | "longitude">) => void
 }) => {
-  const [mode, setMode] = useState<"beforeEdit" | "editing" | "complete">(
-    "beforeEdit"
-  )
+  const [mode, setMode] = useState<"beforeEdit" | "editing">("beforeEdit")
 
   const [courtPosition, setCourtPosition] =
     useState<Pick<APICourt, "latitude" | "longitude">>()
@@ -205,7 +210,6 @@ const MapEditor = ({
           height: 400,
           borderRadius: 16,
           zIndex: 0,
-          pointerEvents: mode === "complete" ? "none" : "all",
         }}
         onClick={
           mode === "editing"
@@ -230,138 +234,140 @@ const MapEditor = ({
                 boxShadow: "0 0 32px rgba(0,0,0,0.3)",
                 zIndex: 1,
               }}
-              onClick={() => setMode("editing")}
+              onClick={() => {
+                setMode("editing")
+                Toast.show("농구장이 있는 위치를 지도에서 클릭하세요")
+              }}
             >
               <Icon name="map" size="sm" />
               지도에서 위치 찾기
             </Button>
           </Center>
         )}
+
         {mode === "editing" && (
           <>
             <Map.Button.CurrentLocation />
             <Map.Button.ZoomInOut />
           </>
         )}
-        {courtPosition && (
-          <Map.Marker.CustomMarkerOverlay
-            position={{
-              latitude: courtPosition.latitude,
-              longitude: courtPosition.longitude,
-            }}
-          >
-            <motion.div
-              css={css`
-                width: 50;
-                height: 50;
-              `}
-            >
-              <Flex
-                as={motion.div}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                style={{
-                  width: 50,
-                  height: 50,
-                  position: "relative",
-                  borderRadius: 25,
-                  cursor: "pointer",
-                }}
-                justify="center"
-              >
-                <Box
-                  style={{
-                    position: "absolute",
-                    bottom: -4,
-                    backgroundColor: "rgba(0,0,0,0.6)",
-                    filter: "blur(4px)",
-                    width: 45,
-                    height: 45,
-                    borderRadius: 25,
-                    overflow: "visible",
-                  }}
-                />
-                <img
-                  src="/assets/basketball/animation_off_400.png"
-                  style={{
-                    position: "absolute",
-                    bottom: -8,
-                    minWidth: 100,
-                    minHeight: 150,
-                    pointerEvents: "none",
-                    userSelect: "none",
-                  }}
-                />
-              </Flex>
-            </motion.div>
-          </Map.Marker.CustomMarkerOverlay>
-        )}
 
-        {courtPosition && mode === "editing" && (
-          <Flex
-            as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            direction="column"
-            justify="flex-end"
-            width="100%"
-            height="100%"
-            p="8px"
-          >
-            <Button
-              secondary
-              type="button"
-              style={{
-                boxShadow: "0 0 32px rgba(0,0,0,0.3)",
-                zIndex: 1,
-                bottom: 0,
-              }}
-              loading={address === null}
-              disabled={address === null}
-              onClick={() => {
-                setCourtPosition((prev) => (prev ? { ...prev } : prev))
-                setMode("complete")
+        {mode === "editing" && courtPosition && (
+          <>
+            <Map.Marker.CustomMarkerOverlay
+              position={{
+                latitude: courtPosition.latitude,
+                longitude: courtPosition.longitude,
               }}
             >
-              {address ? (
-                <>
-                  <Icon name="map-pin" size="sm" />
-                  {address}로 정하기
-                </>
-              ) : (
-                address
-              )}
-            </Button>
-          </Flex>
-        )}
-        {mode === "complete" && (
-          <Flex
-            as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            direction="column"
-            justify="flex-end"
-            width="100%"
-            height="100%"
-            p="8px"
-          >
-            <Button
-              secondary
-              type="button"
-              style={{
-                boxShadow: "0 0 32px rgba(0,0,0,0.3)",
-                zIndex: 1,
-                bottom: 0,
-              }}
+              <motion.div
+                css={css`
+                  width: 50;
+                  height: 50;
+                `}
+              >
+                <Flex
+                  as={motion.div}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    position: "relative",
+                    borderRadius: 25,
+                    cursor: "pointer",
+                  }}
+                  justify="center"
+                >
+                  <Box
+                    style={{
+                      position: "absolute",
+                      bottom: -4,
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      filter: "blur(4px)",
+                      width: 45,
+                      height: 45,
+                      borderRadius: 25,
+                      overflow: "visible",
+                    }}
+                  />
+                  <img
+                    src="/assets/basketball/animation_off_400.png"
+                    style={{
+                      position: "absolute",
+                      bottom: -8,
+                      minWidth: 100,
+                      minHeight: 150,
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    }}
+                  />
+                  {address && (
+                    <HStack
+                      as={motion.div}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      pos="absolute"
+                      bottom="-34px"
+                      whiteSpace="nowrap"
+                      textAlign="center"
+                      bgColor="black"
+                      color="white"
+                      borderRadius="8px"
+                      py="4px"
+                      px="16px"
+                      pointerEvents="none"
+                      boxShadow="0 0 16px #00000040"
+                    >
+                      <Icon
+                        name="map-pin"
+                        size="sm"
+                        color={theme.colors.orange[500]}
+                      />
+                      <Text fontSize="16px" fontWeight="bold">
+                        {address}
+                      </Text>
+                    </HStack>
+                  )}
+                </Flex>
+              </motion.div>
+            </Map.Marker.CustomMarkerOverlay>
+            <Flex
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              direction="column"
+              justify="flex-end"
+              width="100%"
+              height="100%"
+              p="8px"
             >
-              <Icon name="map-pin" size="sm" />
-              {address}
-            </Button>
-          </Flex>
+              <Button
+                secondary
+                type="button"
+                style={{
+                  boxShadow: "0 0 32px rgba(0,0,0,0.3)",
+                  zIndex: 1,
+                  bottom: 0,
+                }}
+                loading={address === null}
+                disabled={address === null}
+                onClick={() => {
+                  setCourtPosition((prev) => (prev ? { ...prev } : prev))
+                }}
+              >
+                {address && (
+                  <>
+                    <Icon name="map-pin" size="sm" />
+                    농구장 위치로 돌아가기
+                  </>
+                )}
+              </Button>
+            </Flex>
+          </>
         )}
       </Map>
     </>

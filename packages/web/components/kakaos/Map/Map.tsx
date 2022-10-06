@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react"
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react"
 import Button from "./Button"
 import Container from "./Container"
 import { Provider } from "./context/Provider"
@@ -31,8 +31,8 @@ const Map = ({
   level = 6,
   minLevel = 1,
   maxLevel = 8,
-  draggable = false,
-  zoomable = false,
+  draggable = true,
+  zoomable = true,
   onClick,
   onDragStart,
   onDragEnd,

@@ -65,7 +65,6 @@ const TopNavigation = () => {
           {isBack && (
             <CursorIcon
               name="chevron-left"
-              size={24}
               onClick={handleClickBack || handleDefaultBack}
             />
           )}
@@ -91,7 +90,7 @@ const TopNavigation = () => {
                           }
                     }
                   >
-                    <Icon name="bell" size={24} />
+                    <Icon name="bell" />
                   </motion.div>
                 </a>
               </Link>
@@ -101,7 +100,7 @@ const TopNavigation = () => {
           {isMenu && (
             <Link href="/user/menu" passHref>
               <a>
-                <Icon name="menu" size={24} />
+                <Icon name="menu" />
               </a>
             </Link>
           )}

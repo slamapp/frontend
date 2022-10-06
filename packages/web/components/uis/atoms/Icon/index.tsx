@@ -281,7 +281,7 @@ type FeatherIconNameType =
 
 interface Props {
   name: FeatherIconNameType
-  size?: "sm" | "md" | "lg" | number
+  size?: "sm" | "md" | "lg"
   strokeWidth?: number
   rotate?: number
   color?: string
