@@ -1,11 +1,18 @@
 import { useMemo, useRef, useState } from "react"
+import { HStack, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { motion } from "framer-motion"
-import DateItem from "./DateItem"
+import { week } from "~/utils/date"
 
 const DAY_RANGE = 14
+
+const DATE_ITEM_GAP = 16
+const DATE_ITEM_WIDTH = 58
+
+const SUNDAY_INDEX = 0
+const SATURDAY_INDEX = 6
 
 interface Props {
   initialValue?: Dayjs
@@ -13,6 +20,7 @@ interface Props {
 }
 
 const DatePicker = ({ initialValue, onChange }: Props) => {
+  const theme = useTheme()
   const [selectedDate, setSelectedDate] = useState(
     initialValue ||
       (() => {
@@ -30,9 +38,6 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
     []
   )
 
-  const gap = 16
-  const dateItemWidth = 50
-
   const ref = useRef<HTMLDivElement>(null)
 
   return (
@@ -41,37 +46,77 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
       whileTap={{ cursor: "grabbing" }}
       css={css`
         position: relative;
+        margin: 12px 0;
       `}
     >
-      <motion.div
-        css={css`
-          display: flex;
-          gap: ${gap}px;
-          padding: ${gap}px;
-        `}
+      <HStack
+        as={motion.div}
+        ml={`${DATE_ITEM_GAP}px`}
+        spacing={`${DATE_ITEM_GAP}px`}
         drag="x"
         dragConstraints={{
           right: 0,
           left:
-            -(gap + (dateItemWidth + gap) * 14) +
+            -(DATE_ITEM_GAP * 3 + (DATE_ITEM_WIDTH + DATE_ITEM_GAP) * 14) +
             (ref.current?.offsetWidth || 0),
         }}
       >
-        {twoWeekDates.map((date) => {
+        {twoWeekDates.map((date, index) => {
+          const selected = date.isSame(selectedDate)
+          const dayOfWeekIndex = date.day()
+
           return (
-            <DateItem
-              width={dateItemWidth}
+            <VStack
               key={date.toISOString()}
-              date={date}
-              onClick={(date) => {
+              as={motion.div}
+              initial={{ scale: 0.9, x: 40, opacity: 0 }}
+              animate={{
+                scale: 1,
+                x: 0,
+                opacity: 1,
+                transition: { delay: index / 50 },
+              }}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              cursor="pointer"
+              bgColor={selected ? theme.colors.gray0900 : "#ffffff90"}
+              border={`1px solid ${selected ? theme.colors.gray0900 : "white"}`}
+              transition="background-color border 200ms"
+              boxShadow="0 8px 32px -16px #00000040"
+              borderRadius="12px"
+              onClick={() => {
                 setSelectedDate(date)
                 onChange(date)
               }}
-              selected={date.isSame(selectedDate)}
-            />
+            >
+              <VStack w={`${DATE_ITEM_WIDTH}px`} spacing="2px" py="8px">
+                <Text
+                  fontSize="16px"
+                  fontWeight="bold"
+                  color={
+                    dayOfWeekIndex === SUNDAY_INDEX
+                      ? theme.colors.red0300
+                      : dayOfWeekIndex === SATURDAY_INDEX
+                      ? theme.colors.blue0300
+                      : selected
+                      ? "white"
+                      : theme.colors.gray0700
+                  }
+                >
+                  {week[dayOfWeekIndex]}
+                </Text>
+                <Text
+                  fontSize="21px"
+                  fontWeight="bold"
+                  color={selected ? theme.colors.white : theme.colors.gray0900}
+                >
+                  {date.date()}
+                </Text>
+              </VStack>
+            </VStack>
           )
         })}
-      </motion.div>
+      </HStack>
       <GradientCover position="left" />
       <GradientCover position="right" />
     </motion.div>
@@ -86,14 +131,14 @@ const GradientCover = ({ position }: { position: "left" | "right" }) => {
   return (
     <motion.div
       css={css`
-        width: 16px;
+        width: ${DATE_ITEM_GAP}px;
         position: absolute;
         ${position}: 0;
         top: 0;
         bottom: 0;
         background: ${position === "left"
-          ? `linear-gradient(0.25turn,${theme.previousTheme.colors.gray50},transparent)`
-          : `linear-gradient(0.25turn,transparent,${theme.previousTheme.colors.gray50})`};
+          ? `linear-gradient(0.25turn,${theme.colors.gray0050},transparent)`
+          : `linear-gradient(0.25turn,transparent,${theme.colors.gray0050})`};
         pointer-events: none;
       `}
     />

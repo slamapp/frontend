@@ -1,6 +1,5 @@
-import { HStack } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { Icon, Text } from "~/components/uis"
+import { HStack, Text } from "@chakra-ui/react"
+import { Icon } from "~/components/uis"
 
 interface Props {
   children: React.ReactNode
@@ -11,13 +10,11 @@ const Header = ({ children }: Props) => {
     <HStack spacing="4px">
       <Icon name="map-pin" color="#FE6D04" />
       <Text
-        size="lg"
-        strong
-        css={css`
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        `}
+        fontSize="22px"
+        fontWeight="bold"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
       >
         {children}
       </Text>

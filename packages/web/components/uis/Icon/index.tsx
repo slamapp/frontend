@@ -365,9 +365,9 @@ const StyledIconToggleLabel = styled.label<{ size: "sm" | "md" | "lg" }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.previousTheme.colors.white};
-  border: 2px solid ${({ theme }) => theme.previousTheme.colors.gray100};
-  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.lg};
+  border-radius: 16px;
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 2px solid ${({ theme }) => theme.colors.gray0100};
   min-width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
   min-height: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
   width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};

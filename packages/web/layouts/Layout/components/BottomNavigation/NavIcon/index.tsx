@@ -31,11 +31,11 @@ const NavIcon = ({ href, iconName, pageTypes, label = "이름" }: Props) => {
     Router.events.on("routeChangeError", () => setIsPageLoading(false))
   }, [])
 
-  const handleTap = () => {
+  const handleTap = async () => {
     if (!isClicked.current) {
       setIsPageLoading(true)
     }
-    router.push(href)
+    await router.push(href)
 
     isClicked.current = true
     scrollToTop()

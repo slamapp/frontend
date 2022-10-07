@@ -160,7 +160,7 @@ const Page = withRouteGuard("private", () => {
 
                   Toast.show(
                     `농구장을 잘 등록했어요 (${data.name}, 골대 개수: ${data.basketCount})`,
-                    { status: "success" }
+                    { status: "success", marginBottom: "bottomFixedGradient" }
                   )
                 }
               }
@@ -262,7 +262,9 @@ const MapEditor = ({
               }}
               onClick={() => {
                 setMode("editing")
-                Toast.show("농구장이 있는 위치를 지도에서 클릭하세요")
+                Toast.show("농구장이 있는 위치를 지도에서 클릭하세요", {
+                  marginBottom: "bottomFixedGradient",
+                })
               }}
             >
               <Icon name="map" size="sm" />

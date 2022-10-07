@@ -4,6 +4,11 @@ import { AnimatePresence, LayoutGroup, motion } from "framer-motion"
 import Toast from "~/libs/Toast"
 import emotionTheme from "~/styles/emotionTheme"
 
+const marginBottoms = {
+  bottomNavigation: 52,
+  bottomFixedGradient: 74,
+} as const
+
 const badge = {
   success: "✅",
   error: "⛔️",
@@ -14,15 +19,35 @@ const badge = {
 interface ExtraOptions {
   isShowProgressBar?: boolean
   isShowClose?: boolean
+  marginBottom?: "bottomNavigation" | "bottomFixedGradient" | number
 }
 
 export default new Toast<ExtraOptions>({
-  defaultOptions: { duration: 4000, delay: 100, status: "info" },
+  defaultOptions: {
+    duration: 4000,
+    delay: 100,
+    status: "info",
+    marginBottom: 0,
+  },
   Adapter: ({ children }) => (
     <ThemeProvider theme={emotionTheme}>
       <LayoutGroup>{children}</LayoutGroup>
     </ThemeProvider>
   ),
+  List: ({ templates, options: { marginBottom } }) => {
+    return (
+      <motion.div
+        style={{
+          marginBottom:
+            typeof marginBottom === "string"
+              ? marginBottoms[marginBottom]
+              : marginBottom ?? 0,
+        }}
+      >
+        {templates}
+      </motion.div>
+    )
+  },
   Template: ({
     content,
     isShow,

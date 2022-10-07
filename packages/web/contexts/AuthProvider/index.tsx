@@ -81,23 +81,6 @@ const AuthProvider = ({ children }: Props) => {
       }
     }, [logout, setCurrentUser])
 
-  const deleteMyProfileImage: ContextProps["deleteMyProfileImage"] =
-    useCallback(async () => {
-      dispatch({ type: "LOADING_ON" })
-      try {
-        const { data } = await api.users.deleteMyProfileImage()
-        const { profileImage } = data
-        dispatch({
-          type: "SET_MY_PROFILE_IMAGE",
-          payload: { profileImage },
-        })
-      } catch (error) {
-        console.error(error)
-      } finally {
-        dispatch({ type: "LOADING_OFF" })
-      }
-    }, [router])
-
   const getMyReservations: ContextProps["getMyReservations"] =
     useCallback(async () => {
       try {
@@ -212,7 +195,6 @@ const AuthProvider = ({ children }: Props) => {
         deleteFavorite,
         getMyFavorites,
         getMyReservations,
-        deleteMyProfileImage,
         readAllNotifications,
         getMoreNotifications,
         unshiftNotification,

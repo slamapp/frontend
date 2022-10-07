@@ -1,32 +1,31 @@
-import React from "react"
-import styled from "@emotion/styled"
-import { Text } from "~/components/uis"
+import type { ReactNode } from "react"
+import { Box, Text } from "@chakra-ui/react"
+import { css, useTheme } from "@emotion/react"
 
-interface Props {
-  children: React.ReactNode
+type Props = {
+  children: ReactNode
 }
 
 const Address = ({ children }: Props) => {
+  const theme = useTheme()
+
   return (
-    <S.SubHeaderArea>
-      <S.AddressText>{children}</S.AddressText>
-    </S.SubHeaderArea>
+    <Box h="50px">
+      <Text
+        color={theme.colors.gray0700}
+        css={css`
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-wrap: break-word;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        `}
+      >
+        {children}
+      </Text>
+    </Box>
   )
 }
 
 export default Address
-
-const S = {
-  SubHeaderArea: styled.div`
-    height: 50px;
-  `,
-  AddressText: styled(Text)`
-    color: ${({ theme }) => theme.previousTheme.colors.gray700};
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  `,
-}

@@ -29,7 +29,6 @@ import { useTheme } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
 import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
-import { BasketballLoading } from "~/components/domains"
 import { Button, Icon, Toast, Upload } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useNavigationContext } from "~/contexts/hooks"
@@ -49,7 +48,7 @@ const Page = withRouteGuard("private", () => {
   const myProfileQuery = useMyProfileQuery()
 
   if (myProfileQuery.isLoading) {
-    return <BasketballLoading />
+    return <>loading...</> // TODO: Skeleton
   }
 
   if (myProfileQuery.isError) {

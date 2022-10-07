@@ -58,7 +58,7 @@ const ScrollContainer = ({ children }: Props) => {
           overflow-x: hidden;
           max-width: 560px;
           margin: auto;
-          background-color: ${theme.previousTheme.colors.gray50};
+          background-color: ${theme.colors.gray0050};
           height: ${`${height}`}px;
 
           ::-webkit-scrollbar {

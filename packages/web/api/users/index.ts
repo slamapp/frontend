@@ -46,9 +46,4 @@ export default {
       { data: formData }
     )
   },
-
-  deleteMyProfileImage: () =>
-    http.auth.delete<{
-      profileImage: null
-    }>("/users/myprofile/image"),
 } as const

@@ -1,37 +1,39 @@
+import { Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
-import styled from "@emotion/styled"
+import dayjs from "dayjs"
 import { CourtItem } from "~/components/domains"
-import { Spacer } from "~/components/uis"
 import type { APIReservation } from "~/types/domains/objects"
-import ReservationItemBottom from "./ReservationItemBottom"
 
 interface Props {
   reservation: APIReservation
 }
 
-const ReservationItemComponent = ({ reservation }: Props) => {
+const ReservationItem = ({ reservation }: Props) => {
   const theme = useTheme()
 
   return (
-    <ReservationItem>
-      <HeaderContainer>
-        <Spacer gap={10}>
-          <CourtItem.Header>{reservation.court.name}</CourtItem.Header>
-          <CourtItem.Datetime
-            endDatetime={reservation.endTime}
-            startDatetime={reservation.startTime}
-          />
-        </Spacer>
-      </HeaderContainer>
+    <VStack
+      align="stretch"
+      p="16px"
+      borderRadius="16px"
+      bgColor={theme.colors.white}
+    >
+      <Flex justify="space-between">
+        <CourtItem.Header>{reservation.court.name}</CourtItem.Header>
 
-      <Spacer
-        justify="flex-end"
-        align="center"
-        gap="xs"
-        style={{
-          margin: `${theme.previousTheme.gaps.sm} 0 ${theme.previousTheme.gaps.base} 0`,
-        }}
-      >
+        <HStack>
+          <Text>
+            {dayjs(reservation.startTime).format("YYYY년 MM월 DD일")} (
+            {dayjs(reservation.startTime).day()})
+          </Text>
+          <Text>
+            {dayjs(reservation.startTime).format("HH:mm")} -{" "}
+            {dayjs(reservation.endTime).format("HH:mm")}
+          </Text>
+        </HStack>
+      </Flex>
+
+      <HStack justify="flex-end" spacing="8px" m="16px 0 20px 0">
         <CourtItem.FavoritesToggle courtId={reservation.court.id} />
         <CourtItem.Share
           court={{
@@ -53,29 +55,9 @@ const ReservationItemComponent = ({ reservation }: Props) => {
           courtName={reservation.court.name}
           type="findRoad"
         />
-      </Spacer>
-      <ReservationItemBottom
-        courtId={reservation.court.id}
-        startTime={reservation.startTime}
-        endTime={reservation.endTime}
-        numberOfReservations={reservation.numberOfReservations}
-      />
-    </ReservationItem>
+      </HStack>
+    </VStack>
   )
 }
 
-export default ReservationItemComponent
-
-const ReservationItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: ${({ theme }) => theme.previousTheme.colors.white};
-  border-radius: ${({ theme }) => theme.previousTheme.borderRadiuses.md};
-  padding: 20px;
-`
-
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
+export default ReservationItem

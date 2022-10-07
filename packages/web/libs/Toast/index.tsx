@@ -35,21 +35,36 @@ class Toast<ExtraOptions extends { [x: string]: any }> {
     zIndex?: number
     portalId?: string
     Adapter?: FunctionComponent<{ children: ReactNode }>
-    List?: FunctionComponent<ComponentPropsWithoutRef<typeof DefaultList>>
+    List?: FunctionComponent<
+      { templates: ReactNode } & {
+        options: ExtraOptions &
+          Omit<
+            Pick<
+              ComponentPropsWithoutRef<typeof DefaultList>["options"],
+              "marginBottom"
+            >,
+            keyof ExtraOptions
+          >
+      }
+    >
     Template?: FunctionComponent<
       { content: ReactNode } & Pick<
         ComponentPropsWithoutRef<typeof DefaultTemplate>,
         "close" | "isShow"
       > & {
-          options: Pick<
-            ComponentPropsWithoutRef<typeof DefaultTemplate>["options"],
-            "delay" | "duration" | "status"
-          > &
-            ExtraOptions
+          options: ExtraOptions &
+            Omit<
+              Pick<
+                ComponentPropsWithoutRef<typeof DefaultTemplate>["options"],
+                "delay" | "duration" | "status"
+              >,
+              keyof ExtraOptions
+            >
         }
     >
     defaultOptions?: Partial<
-      ComponentPropsWithoutRef<typeof DefaultTemplate>["options"]
+      ComponentPropsWithoutRef<typeof DefaultTemplate>["options"] &
+        ComponentPropsWithoutRef<typeof DefaultList>["options"]
     >
   } = {}) {
     this.defaultOptions = {
@@ -80,7 +95,9 @@ class Toast<ExtraOptions extends { [x: string]: any }> {
         this.portal,
         <Context.Provider
           value={{
-            List,
+            List: List as ComponentPropsWithoutRef<
+              typeof Context.Provider
+            >["value"]["List"],
             Template: Template as ComponentPropsWithoutRef<
               typeof Context.Provider
             >["value"]["Template"],
@@ -101,8 +118,18 @@ class Toast<ExtraOptions extends { [x: string]: any }> {
   show(
     content: ComponentPropsWithoutRef<typeof DefaultTemplate>["content"],
     options?: ExtraOptions &
-      Partial<ComponentPropsWithoutRef<typeof DefaultTemplate>["options"]> &
-      Partial<ComponentPropsWithoutRef<typeof DefaultList>["options"]>
+      (Partial<
+        Omit<
+          ComponentPropsWithoutRef<typeof DefaultTemplate>["options"],
+          keyof ExtraOptions
+        >
+      > &
+        Partial<
+          Omit<
+            ComponentPropsWithoutRef<typeof DefaultList>["options"],
+            keyof ExtraOptions
+          >
+        >)
   ) {
     this.createToast?.(content, { ...this.defaultOptions, ...options })
   }

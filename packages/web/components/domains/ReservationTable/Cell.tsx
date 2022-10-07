@@ -1,8 +1,7 @@
 import type { ReactNode } from "react"
 import { useEffect, useRef } from "react"
 import { useRouter } from "next/router"
-import { css } from "@emotion/react"
-import styled from "@emotion/styled"
+import { css, useTheme } from "@emotion/react"
 import { useNavigationContext } from "~/contexts/hooks"
 import { useIntersectionObserver } from "~/hooks"
 import { useReservationTableContext } from "./context"
@@ -22,6 +21,7 @@ const Cell = ({
   timeNumber,
   children,
 }: Props) => {
+  const theme = useTheme()
   const { tableCellHeight } = useReservationTableContext()
   const router = useRouter()
 
@@ -49,35 +49,23 @@ const Cell = ({
   }, [entry?.isIntersecting])
 
   return (
-    <S.Cell
+    <div
       ref={ref}
-      tableCellHeight={tableCellHeight}
-      isTop={isTop}
-      isOddTimeNumber={isOddTimeNumber}
+      css={css`
+        box-sizing: border-box;
+        background-color: orange;
+        height: ${tableCellHeight}px;
+        border-top: ${isTop ? 18 : isOddTimeNumber ? 2 : 1}px solid
+          ${theme.colors.black};
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      `}
     >
       {children}
-    </S.Cell>
+    </div>
   )
 }
 
 export default Cell
-
-const S = {
-  Cell: styled.div<{
-    tableCellHeight: number
-    isTop: boolean
-    isOddTimeNumber: boolean
-  }>`
-    ${({ theme, isOddTimeNumber, tableCellHeight, isTop }) => css`
-      box-sizing: border-box;
-      background-color: orange;
-      height: ${tableCellHeight}px;
-      border-top: ${isTop ? 18 : isOddTimeNumber ? 2 : 1}px solid
-        ${theme.colors.black};
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    `}
-  `,
-}

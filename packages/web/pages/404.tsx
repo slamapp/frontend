@@ -8,11 +8,7 @@ export default function Custom404() {
 
   return (
     <PageContainer>
-      <ErrorMessage
-        title="원하시는 페이지를 찾을 수 없어요. 🤔"
-        description="내 주변 농구장을 찾으러 가보는 건 어떨까요?"
-        buttonTitle="지도에서 내 주변 농구장 찾기"
-      />
+      <ErrorMessage title="원하시는 페이지를 찾을 수 없어요 🤔" />
     </PageContainer>
   )
 }

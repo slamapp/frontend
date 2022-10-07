@@ -101,16 +101,17 @@ const MenuItem = styled.div`
   gap: 12px;
   padding: 12px 16px;
   transition: background 200ms;
-  border-bottom: 1px solid ${({ theme }) => theme.previousTheme.colors.gray50};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray0050};
+  cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.previousTheme.colors.gray100};
+    background: ${({ theme }) => theme.colors.gray0100};
   }
   &:focus {
-    background: ${({ theme }) => theme.previousTheme.colors.gray200};
+    background: ${({ theme }) => theme.colors.gray0200};
   }
   &:active {
-    background: ${({ theme }) => theme.previousTheme.colors.gray300};
+    background: ${({ theme }) => theme.colors.gray0300};
   }
 `
 

@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/router"
+import { VStack } from "@chakra-ui/react"
 import dayjs from "dayjs"
-import { Spacer } from "~/components/uis"
 import Cells from "./Cells"
 import type { ContextProps } from "./context"
 import { ReservationTableContext } from "./context"
@@ -106,10 +106,11 @@ const ReservationTable = ({ children }: Props) => {
         replaceNewDate,
       }}
     >
-      <Spacer
+      <VStack
         ref={vwElementRef}
-        justify="space-between"
-        style={{ position: "relative" }}
+        align="stretch"
+        position="relative"
+        spacing={0}
       >
         {isReadyTableCellHeight ? (
           <>
@@ -120,7 +121,7 @@ const ReservationTable = ({ children }: Props) => {
         ) : (
           <>테이블 그리기를 준비중입니다.</>
         )}
-      </Spacer>
+      </VStack>
     </ReservationTableContext.Provider>
   )
 }

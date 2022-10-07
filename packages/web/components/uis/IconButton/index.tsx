@@ -46,9 +46,9 @@ const StyledIconButton = styled.button<{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${theme.previousTheme.colors.white};
-    border: ${noOutlined ? 0 : 2}px solid ${theme.previousTheme.colors.gray100};
-    border-radius: ${theme.previousTheme.borderRadiuses.lg};
+    border-radius: 16px;
+    background-color: white;
+    border: ${noOutlined ? 0 : 2}px solid ${theme.colors.gray0100};
     min-width: ${theme.previousTheme.buttonHeights[size]};
     min-height: ${theme.previousTheme.buttonHeights[size]};
     width: ${theme.previousTheme.buttonHeights[size]};

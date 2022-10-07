@@ -2,15 +2,14 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { Box, Flex } from "@chakra-ui/react"
+import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
 import { CourtItem, DatePicker } from "~/components/domains"
 import { Map } from "~/components/kakaos"
-import { Button, Icon, Skeleton, Spacer, Text, Toast } from "~/components/uis"
+import { Button, Icon, Skeleton, Toast } from "~/components/uis"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useLocalStorage } from "~/hooks"
@@ -90,12 +89,12 @@ const Page = () => {
   }, [selectedCourtId, setNavigationTitle])
 
   useMountCustomButtonEvent(
-    <Spacer type="horizontal" gap={8} align="center">
-      <Text color="lightgrey" size="xs">
+    <HStack>
+      <Text color="lightgrey" fontSize="12px">
         새 농구장을 추가해보세요
       </Text>
       <Icon name="plus-circle" />
-    </Spacer>,
+    </HStack>,
     () => {
       if (currentUser) {
         router.push("/courts/create")
@@ -129,6 +128,7 @@ const Page = () => {
               </>,
               {
                 duration: 1000,
+                marginBottom: "bottomNavigation",
               }
             )
           }}
@@ -356,108 +356,91 @@ const BottomModal = ({
   )
 
   return (
-    <div
-      css={css`
-        position: sticky;
-        height: ${courtId ? 210 : 0}px;
-        background-color: ${theme.colors.white};
-        display: flex;
-        z-index: 0;
-        border-radius: 16px 16px 0 0;
-        box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.3);
-        transition: height 100ms ease-in-out;
-      `}
+    <VStack
+      align="stretch"
+      justify="space-between"
+      pos="sticky"
+      bgColor="white"
+      h={`${courtId ? 210 : 0}px`}
+      p={courtId ? "24px 20px 20px 20px" : ""}
+      transition="height 100ms ease-in-out"
+      boxShadow="0px 0px 16px rgba(0, 0, 0, 0.3)"
+      overflow="hidden"
+      borderRadius="16px 16px 0 0"
     >
-      {courtQuery.isSuccess && (
-        <BottomModalContainer>
-          <Spacer gap="xs">
-            <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
-            <CourtItem.Address>{courtQuery.data.address}</CourtItem.Address>
-          </Spacer>
-          <Spacer
-            type="horizontal"
-            gap="xs"
-            style={{ marginTop: theme.gaps.sm }}
-          >
-            <CourtItem.FavoritesToggle courtId={courtQuery.data.id} />
-            <CourtItem.Share
-              court={{
-                id: courtQuery.data.id,
-                latitude: courtQuery.data.latitude,
-                longitude: courtQuery.data.longitude,
-                name: courtQuery.data.name,
-              }}
-            />
-            <CourtItem.ChatLink
-              chatroomId={
-                // TODO: Court에 chatroomId 포함시키기
-                "1"
-              }
-            />
-            <CourtItem.KakaoMapLink
-              latitude={courtQuery.data.latitude}
-              longitude={courtQuery.data.longitude}
-              courtName={courtQuery.data.name}
-            />
+      {courtQuery.isLoading ? (
+        <>
+          <VStack align="stretch">
+            <HStack>
+              <Skeleton.Circle size={32} />
+              <Skeleton.Box height={24} style={{ flex: 1, marginRight: 80 }} />
+            </HStack>
+            <Skeleton.Paragraph fontSize={12} line={2} />
+          </VStack>
 
-            {getLocalToken() ? (
-              <Link
-                href={`reservations/courts/${
-                  courtQuery.data.id
-                }?date=${getTimezoneDateStringFromDate(selectedDate)}`}
-                passHref
-              >
-                <a style={{ flex: 1, display: "flex" }}>
-                  <Button size="lg" style={{ flex: 1 }}>
-                    예약하기
-                  </Button>
-                </a>
-              </Link>
-            ) : (
-              <Link href="/login" passHref>
-                <a style={{ flex: 1, display: "flex" }}>
-                  <Button size="lg" style={{ flex: 1 }}>
-                    로그인하고 예약하기
-                  </Button>
-                </a>
-              </Link>
-            )}
-          </Spacer>
-        </BottomModalContainer>
-      )}
-      {courtQuery.isLoading && (
-        <BottomModalContainer>
-          <Spacer justify="space-between" style={{ height: "100%" }}>
-            <Spacer gap={8}>
-              <Spacer type="horizontal" align="center" gap={8}>
-                <Skeleton.Circle size={32} />
-                <Skeleton.Box
-                  height={24}
-                  style={{ flex: 1, marginRight: 80 }}
-                />
-              </Spacer>
-              <Skeleton.Paragraph fontSize={12} line={2} />
-            </Spacer>
+          <HStack spacing="8px">
+            <Skeleton.Box height={36} width={36} />
+            <Skeleton.Box height={36} width={36} />
+            <Skeleton.Box height={36} width={36} />
+            <Skeleton.Box height={36} width={36} />
+            <Skeleton.Box height={36} style={{ flex: 1 }} />
+          </HStack>
+        </>
+      ) : (
+        courtQuery.isSuccess && (
+          <>
+            <VStack align="stretch" spacing="8px">
+              <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
+              <CourtItem.Address>{courtQuery.data.address}</CourtItem.Address>
+            </VStack>
+            <HStack spacing="8px">
+              <CourtItem.FavoritesToggle courtId={courtQuery.data.id} />
+              <CourtItem.Share
+                court={{
+                  id: courtQuery.data.id,
+                  latitude: courtQuery.data.latitude,
+                  longitude: courtQuery.data.longitude,
+                  name: courtQuery.data.name,
+                }}
+              />
+              <CourtItem.ChatLink
+                chatroomId={
+                  // TODO: Court에 chatroomId 포함시키기
+                  "1"
+                }
+              />
+              <CourtItem.KakaoMapLink
+                latitude={courtQuery.data.latitude}
+                longitude={courtQuery.data.longitude}
+                courtName={courtQuery.data.name}
+              />
 
-            <Spacer type="horizontal" gap={12}>
-              <Skeleton.Box height={36} width={36} />
-              <Skeleton.Box height={36} width={36} />
-              <Skeleton.Box height={36} width={36} />
-              <Skeleton.Box height={36} width={36} />
-              <Skeleton.Box height={36} style={{ flex: 1 }} />
-            </Spacer>
-          </Spacer>
-        </BottomModalContainer>
+              {getLocalToken() ? (
+                <Link
+                  href={`reservations/courts/${
+                    courtQuery.data.id
+                  }?date=${getTimezoneDateStringFromDate(selectedDate)}`}
+                  passHref
+                >
+                  <a style={{ flex: 1, display: "flex" }}>
+                    <Button size="lg" style={{ flex: 1 }}>
+                      예약하기
+                    </Button>
+                  </a>
+                </Link>
+              ) : (
+                <Link href="/login" passHref>
+                  <a style={{ flex: 1, display: "flex" }}>
+                    <Button size="lg" style={{ flex: 1 }}>
+                      로그인하고 예약하기
+                    </Button>
+                  </a>
+                </Link>
+              )}
+            </HStack>
+          </>
+        )
       )}
-    </div>
+    </VStack>
   )
 }
-
-const BottomModalContainer = styled.div`
-  flex: 1;
-  margin: 28px 20px 16px 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`

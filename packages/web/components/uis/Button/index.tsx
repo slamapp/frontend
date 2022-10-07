@@ -72,7 +72,7 @@ const StyledButton = styled.button<Omit<Props, "children">>`
     display: ${block ? "block" : "inline-block"};
     height: ${theme.previousTheme.buttonHeights[size!]};
     width: ${fullWidth && "100%"};
-    padding: 0 ${theme.previousTheme.buttonRightLeftPaddings[size as Size]};
+    padding: 0 18px;
     white-space: nowrap;
 
     font-size: ${theme.previousTheme.fontSizes[
@@ -84,9 +84,9 @@ const StyledButton = styled.button<Omit<Props, "children">>`
 
   ${({ theme }) =>
     css`
-      background-color: ${theme.previousTheme.colors.gray900};
+      background-color: ${theme.colors.gray0900};
       color: ${theme.colors.white};
-      border: 1px solid ${theme.previousTheme.colors.gray200};
+      border: 1px solid ${theme.colors.gray0200};
 
       :hover {
         opacity: 0.8;
@@ -102,8 +102,8 @@ const StyledButton = styled.button<Omit<Props, "children">>`
     secondary &&
     css`
       background-color: ${theme.colors.white};
-      color: ${theme.previousTheme.colors.gray900};
-      border: 1px solid ${theme.previousTheme.colors.gray200};
+      color: ${theme.colors.gray0900};
+      border: 1px solid ${theme.colors.gray0200};
 
       :hover {
         opacity: 0.8;
@@ -113,9 +113,9 @@ const StyledButton = styled.button<Omit<Props, "children">>`
   ${({ theme, tertiary }) =>
     tertiary &&
     css`
-      background-color: ${theme.previousTheme.colors.gray200};
-      color: ${theme.previousTheme.colors.gray900};
-      border: 1px solid ${theme.previousTheme.colors.gray300};
+      background-color: ${theme.colors.gray0200};
+      color: ${theme.colors.gray0900};
+      border: 1px solid ${theme.colors.gray0300};
 
       :hover {
         opacity: 0.8;

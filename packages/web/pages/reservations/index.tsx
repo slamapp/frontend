@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import { Text, VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import { api } from "~/api"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
-import { Spacer, Text } from "~/components/uis"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 
@@ -73,14 +73,14 @@ const Page = withRouteGuard("private", () => {
     <PageContainer>
       <TabContainer>
         <Text
-          strong={activeTab === "UPCOMING"}
+          fontWeight={activeTab === "UPCOMING" ? "bold" : undefined}
           onClick={() => setActiveTab("UPCOMING")}
           style={{ cursor: "pointer" }}
         >
           다가올 예약
         </Text>
         <Text
-          strong={activeTab === "EXPIRED"}
+          fontWeight={activeTab === "EXPIRED" ? "bold" : undefined}
           onClick={handleClickExpiredTab}
           style={{ cursor: "pointer" }}
         >
@@ -97,14 +97,14 @@ const Page = withRouteGuard("private", () => {
               buttonTitle="예약할 농구장 찾기"
             />
           ) : (
-            <Spacer gap="md">
+            <VStack align="stretch" spacing="8px">
               {upcomingReservations.map((reservation) => (
                 <ReservationItem
                   key={reservation.id}
                   reservation={reservation}
                 />
               ))}
-            </Spacer>
+            </VStack>
           )
         ) : expiredReservations.length === 0 ? (
           <NoItemMessage
@@ -114,11 +114,11 @@ const Page = withRouteGuard("private", () => {
             buttonTitle="예약할 농구장 찾기"
           />
         ) : (
-          <Spacer gap="md">
+          <VStack align="stretch" spacing="8px">
             {expiredReservations.map((reservation) => (
               <ReservationItem key={reservation.id} reservation={reservation} />
             ))}
-          </Spacer>
+          </VStack>
         )}
       </TabContentsWrapper>
 
@@ -134,7 +134,7 @@ const TabContainer = styled.div`
   justify-content: space-around;
   align-items: center;
   height: 52px;
-  border-bottom: 4px solid ${({ theme }) => theme.previousTheme.colors.gray100};
+  border-bottom: 4px solid ${({ theme }) => theme.colors.gray0100};
   margin-top: 16px;
 `
 
@@ -142,7 +142,7 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  margin: 0 ${({ theme }) => theme.previousTheme.gaps.base};
+  margin: 0 20px;
 `
 
 const TabContentsWrapper = styled.div`

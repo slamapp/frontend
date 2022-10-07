@@ -1,16 +1,11 @@
 import type { ComponentPropsWithoutRef } from "react"
+import { useEffect } from "react"
 import type { GetServerSideProps } from "next"
 import Link from "next/link"
-import { Tag } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
+import { Flex, HStack, Tag, Text, VStack } from "@chakra-ui/react"
+import { css } from "@emotion/react"
 import styled from "@emotion/styled"
-import { useMutation } from "@tanstack/react-query"
-import { api } from "~/api"
-import {
-  BasketballLoading,
-  ProfileFavoritesListItem,
-} from "~/components/domains"
-import { Avatar, Button, Spacer, Text } from "~/components/uis"
+import { Avatar, Button, Icon } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import {
@@ -19,7 +14,7 @@ import {
 } from "~/features/notifications"
 import { useMyProfileQuery, useUserProfileQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
-import type { APIUser } from "~/types/domains/objects"
+import type { APICourt, APIUser } from "~/types/domains/objects"
 import {
   getTranslatedPositions,
   getTranslatedProficiency,
@@ -28,7 +23,6 @@ import {
 const Page = withRouteGuard<{ userId: APIUser["id"] }>(
   "private",
   ({ userId }) => {
-    const theme = useTheme()
     const { useMountPage, setNavigationTitle } = useNavigationContext()
 
     const { authProps } = useAuthContext()
@@ -36,6 +30,13 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
     useMountPage("PAGE_USER")
 
     const isMe = userId === authProps.currentUser?.id
+
+    useEffect(() => {
+      if (isMe) {
+        setNavigationTitle(authProps.currentUser?.nickname)
+      }
+    }, [])
+
     const myProfileQuery = useMyProfileQuery({
       enabled: isMe,
       onSuccess: ({ nickname }) => setNavigationTitle(nickname),
@@ -49,7 +50,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
       (isMe && myProfileQuery.isLoading) ||
       (!isMe && userProfileQuery.isLoading)
     ) {
-      return <BasketballLoading />
+      return <>loading...</> // TODO: Skeleton
     }
 
     if (isMe && myProfileQuery.isSuccess) {
@@ -78,7 +79,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                     <a>
                       <dt>팔로잉</dt>
                       <dd>
-                        <Text strong>{followingCount}</Text>
+                        <Text fontWeight="bold">{followingCount}</Text>
                       </dd>
                     </a>
                   </Link>
@@ -88,7 +89,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                     <a>
                       <dt>팔로워</dt>
                       <dd>
-                        <Text strong>{followerCount}</Text>
+                        <Text fontWeight="bold">{followerCount}</Text>
                       </dd>
                     </a>
                   </Link>
@@ -116,14 +117,10 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
             </div>
           </MainInfoContainer>
 
-          <Spacer
-            gap="base"
-            type="vertical"
-            style={{ padding: `${theme.gaps.md} ${theme.gaps.base}` }}
-          >
-            <div>
+          <VStack align="stretch" spacing="36px" p="24px 20px">
+            <VStack align="stretch">
               <Text>포지션</Text>
-              <Spacer type="horizontal" gap="xs">
+              <HStack>
                 {positions.length ? (
                   getTranslatedPositions(positions).map(
                     ({ english, korean }) => <Tag key={english}>{korean}</Tag>
@@ -131,29 +128,31 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                 ) : (
                   <Tag>선택한 포지션이 없습니다</Tag>
                 )}
-              </Spacer>
-            </div>
-            <div>
+              </HStack>
+            </VStack>
+            <VStack align="stretch">
               <Text>숙련도</Text>
-              <Tag>
-                {proficiency === null
-                  ? "미정"
-                  : getTranslatedProficiency(proficiency).korean}
-              </Tag>
-            </div>
+              <HStack>
+                <Tag>
+                  {proficiency === null
+                    ? "미정"
+                    : getTranslatedProficiency(proficiency).korean}
+                </Tag>
+              </HStack>
+            </VStack>
             <div>
               <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
               {authProps.favorites.length ? (
-                authProps.favorites.map(({ id, court }) => (
-                  <ProfileFavoritesListItem key={id} courtId={court.id}>
-                    {court.name}
-                  </ProfileFavoritesListItem>
-                ))
+                <FavoriteList
+                  favoriteCourts={authProps.favorites.map(
+                    ({ court: { id, name } }) => ({ id, name })
+                  )}
+                />
               ) : (
                 <Tag>즐겨찾기한 농구장이 없습니다</Tag>
               )}
             </div>
-          </Spacer>
+          </VStack>
         </div>
       )
     }
@@ -186,7 +185,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                     <a>
                       <dt>팔로잉</dt>
                       <dd>
-                        <Text strong>{followingCount}</Text>
+                        <Text fontWeight="bold">{followingCount}</Text>
                       </dd>
                     </a>
                   </Link>
@@ -196,7 +195,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                     <a>
                       <dt>팔로워</dt>
                       <dd>
-                        <Text strong>{followerCount}</Text>
+                        <Text fontWeight="bold">{followerCount}</Text>
                       </dd>
                     </a>
                   </Link>
@@ -243,14 +242,10 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
             )}
           </MainInfoContainer>
 
-          <Spacer
-            gap="base"
-            type="vertical"
-            style={{ padding: `${theme.gaps.md} ${theme.gaps.base}` }}
-          >
-            <div>
+          <VStack align="stretch" spacing="36px" p="24px 20px">
+            <VStack align="stretch">
               <Text>포지션</Text>
-              <Spacer type="horizontal" gap="xs">
+              <HStack>
                 {positions.length ? (
                   getTranslatedPositions(positions).map(
                     ({ english, korean }) => <Tag key={english}>{korean}</Tag>
@@ -258,29 +253,27 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                 ) : (
                   <Tag>선택한 포지션이 없습니다</Tag>
                 )}
-              </Spacer>
-            </div>
-            <div>
+              </HStack>
+            </VStack>
+            <VStack align="stretch">
               <Text>숙련도</Text>
-              <Tag>
-                {proficiency === null
-                  ? "미정"
-                  : getTranslatedProficiency(proficiency).korean}
-              </Tag>
-            </div>
+              <HStack>
+                <Tag>
+                  {proficiency === null
+                    ? "미정"
+                    : getTranslatedProficiency(proficiency).korean}
+                </Tag>
+              </HStack>
+            </VStack>
             <div>
               <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
               {favoriteCourts.length ? (
-                favoriteCourts.map(({ id, name }) => (
-                  <ProfileFavoritesListItem key={id} courtId={id}>
-                    {name}
-                  </ProfileFavoritesListItem>
-                ))
+                <FavoriteList favoriteCourts={favoriteCourts} />
               ) : (
                 <Tag>등록한 농구장이 없습니다</Tag>
               )}
             </div>
-          </Spacer>
+          </VStack>
         </div>
       )
     }
@@ -294,8 +287,36 @@ export default Page
 export const getServerSideProps: GetServerSideProps<
   ComponentPropsWithoutRef<typeof Page>
 > = async ({ query }) => ({
-  props: { userId: query.userId as APIUser["id"] }, // will be passed to the page component as props
+  props: { userId: query.userId as APIUser["id"] },
 })
+
+const FavoriteList = ({
+  favoriteCourts,
+}: {
+  favoriteCourts: Pick<APICourt, "id" | "name">[]
+}) => {
+  return (
+    <>
+      {favoriteCourts.map((court) => (
+        <Flex key={court.id} justify="space-between" align="center" py="8px">
+          <HStack spacing="10px">
+            <Icon name="map-pin" color="#FE6D04" />
+            <Text size="base">{court.name}</Text>
+          </HStack>
+
+          <Link
+            href={{ pathname: "/map", query: { courtId: court.id } }}
+            passHref
+          >
+            <a>
+              <Button secondary>지도 보기</Button>
+            </a>
+          </Link>
+        </Flex>
+      ))}
+    </>
+  )
+}
 
 const FollowButton = ({
   isFollowing,
