@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import styled from "@emotion/styled"
 import dayjs from "dayjs"
-import { Spacer, Text } from "~/components/uis/atoms"
+import { Spacer, Text } from "~/components/uis"
 import { week } from "~/utils/date"
 
 interface Props {

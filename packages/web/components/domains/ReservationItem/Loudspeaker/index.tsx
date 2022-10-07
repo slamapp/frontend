@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "@emotion/styled"
-import { Button } from "~/components/uis/atoms"
+import { Button } from "~/components/uis"
 import { useSocketContext } from "~/contexts/hooks"
 import type { APICourt, APIReservation } from "~/types/domains/objects"
 

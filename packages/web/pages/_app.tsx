@@ -4,9 +4,9 @@ import { ChakraProvider } from "@chakra-ui/react"
 import { ThemeProvider } from "@emotion/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { DefaultLayout } from "~/components/domains/layout"
-import { Image } from "~/components/uis/atoms"
+import { Image } from "~/components/uis"
 import Providers from "~/contexts/Providers"
+import { Layout } from "~/layouts"
 import { GlobalCSS, chakraTheme, emotionTheme } from "~/styles"
 
 const queryClient = new QueryClient()
@@ -40,9 +40,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ThemeProvider theme={emotionTheme}>
             <GlobalCSS />
             <Providers>
-              <DefaultLayout>
+              <Layout>
                 <Component {...pageProps} />
-              </DefaultLayout>
+              </Layout>
             </Providers>
           </ThemeProvider>
         </ChakraProvider>

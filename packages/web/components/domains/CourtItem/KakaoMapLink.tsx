@@ -1,4 +1,4 @@
-import { IconButton } from "~/components/uis/molecules"
+import { IconButton } from "~/components/uis"
 
 type KakaoMapButtonType = "information" | "findRoad"
 interface Props {

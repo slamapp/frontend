@@ -1,4 +1,4 @@
-import { Toast } from "~/components/uis/molecules"
+import { Toast } from "~/components/uis"
 
 const DEFAULT_MESSAGE_TEMPLATE_ID = 69947
 const DEFAULT_REQUEST_URL = "https://slams.app"

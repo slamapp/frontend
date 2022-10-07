@@ -1,7 +1,7 @@
 import { css, useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import { motion } from "framer-motion"
-import { Text } from "~/components/uis/atoms"
+import { Text } from "~/components/uis"
 import { week } from "~/utils/date"
 
 interface Props {

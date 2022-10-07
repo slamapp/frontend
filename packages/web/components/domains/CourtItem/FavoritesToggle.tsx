@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { Icon } from "~/components/uis/atoms"
+import { Icon } from "~/components/uis"
 import { useAuthContext } from "~/contexts/hooks"
 import type { APICourt } from "~/types/domains/objects"
 

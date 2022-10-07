@@ -3,7 +3,7 @@ import { Fragment, useEffect, useRef } from "react"
 import type { GetServerSideProps } from "next"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { NoItemMessage, ProfileAvatar } from "~/components/domains"
-import { Button, Skeleton } from "~/components/uis/atoms"
+import { Button, Skeleton } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
 import {
   useUserFollowerInfiniteQuery,

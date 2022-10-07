@@ -1,6 +1,6 @@
 import { css } from "@emotion/react"
 import { motion } from "framer-motion"
-import { IconButton } from "~/components/uis/molecules"
+import { IconButton } from "~/components/uis"
 import type { Coord } from "~/types/domains/objects/court"
 import { useMap } from "../../context"
 

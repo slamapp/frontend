@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { IconButton } from "~/components/uis/molecules"
+import { IconButton } from "~/components/uis"
 import type { APIChatRoom } from "~/types/domains/objects"
 
 interface Props {

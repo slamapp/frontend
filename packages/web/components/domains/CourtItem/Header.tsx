@@ -1,6 +1,6 @@
 import { HStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
-import { Icon, Text } from "~/components/uis/atoms"
+import { Icon, Text } from "~/components/uis"
 
 interface Props {
   children: React.ReactNode

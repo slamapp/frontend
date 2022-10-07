@@ -1,6 +1,6 @@
-import type { ComponentPropsWithoutRef } from "react"
 import { useEffect, useState } from "react"
 import Head from "next/head"
+import { useRouter } from "next/router"
 import {
   Box,
   Center,
@@ -21,37 +21,38 @@ import { DevTool } from "@hookform/devtools"
 import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
 import type { api } from "~/api"
-import { BottomFixedGradient } from "~/components/domains"
-import { useScrollContainer } from "~/components/domains/layout/DefaultLayout/ScrollContainer"
-import Map from "~/components/kakaos/Map/Map"
-import { Button, Icon } from "~/components/uis/atoms"
-import { Toast } from "~/components/uis/molecules"
+import { Map } from "~/components/kakaos"
+import { Button, Icon, Toast } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
+import { useCourtCreateMutation } from "~/features/courts"
 import { withRouteGuard } from "~/hocs"
+import { BottomFixedGradient, useScrollContainer } from "~/layouts"
 import type { APICourt } from "~/types/domains/objects/court"
 
+type FieldValues = Pick<
+  Parameters<typeof api.courts.createNewCourt>[0],
+  "basketCount" | "image" | "name" | "texture"
+> & {
+  position: Pick<
+    Parameters<typeof api.courts.createNewCourt>[0],
+    "latitude" | "longitude"
+  > | null
+}
+
 const Page = withRouteGuard("private", () => {
+  const router = useRouter()
+  const courtCreateMutation = useCourtCreateMutation()
+
   const { scrollContainerHeight } = useScrollContainer()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_COURT_CREATE")
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     register,
-    watch,
-  } = useForm<
-    Pick<
-      Parameters<typeof api.courts.createNewCourt>[0],
-      "basketCount" | "image" | "name" | "texture"
-    > & {
-      position: Pick<
-        Parameters<typeof api.courts.createNewCourt>[0],
-        "latitude" | "longitude"
-      > | null
-    }
-  >({
+  } = useForm<FieldValues>({
     mode: "all",
     defaultValues: {
       basketCount: 1,
@@ -139,6 +140,31 @@ const Page = withRouteGuard("private", () => {
           }
         >
           <Button
+            loading={isSubmitting}
+            onClick={handleSubmit(
+              async ({ basketCount, image, name, position, texture }) => {
+                if (position) {
+                  const { latitude, longitude } = position
+                  const { data } = await courtCreateMutation.mutateAsync({
+                    basketCount,
+                    image,
+                    latitude,
+                    longitude,
+                    name,
+                    texture,
+                  })
+
+                  await router.replace(
+                    "/map" // TODO: 내가 제안한 농구장 리스트 페이지 만들면 그 페이지로 라우팅)
+                  )
+
+                  Toast.show(
+                    `농구장을 잘 등록했어요 (${data.name}, 골대 개수: ${data.basketCount})`,
+                    { status: "success" }
+                  )
+                }
+              }
+            )}
             fullWidth
             size="lg"
             style={{ borderRadius: scrollContainerHeight > 400 ? 16 : 0 }}

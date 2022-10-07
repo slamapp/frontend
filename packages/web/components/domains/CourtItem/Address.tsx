@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "@emotion/styled"
-import { Text } from "~/components/uis/atoms"
+import { Text } from "~/components/uis"
 
 interface Props {
   children: React.ReactNode

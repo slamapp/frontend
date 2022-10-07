@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { Spinner } from "@chakra-ui/react"
 import styled from "@emotion/styled"
-import { Header } from "~/components/uis/atoms"
+import { Header } from "~/components/uis"
 import { useAuthContext } from "~/contexts/hooks"
 import { useLocalToken } from "~/hooks/domain"
 

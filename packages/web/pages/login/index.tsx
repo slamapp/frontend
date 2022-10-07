@@ -4,11 +4,11 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { HStack, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import { BottomFixedGradient, Logo } from "~/components/domains"
-import { Button } from "~/components/uis/atoms"
-import { IconButton } from "~/components/uis/molecules"
+import { Logo } from "~/components/domains"
+import { Button, IconButton } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
+import { BottomFixedGradient } from "~/layouts"
 
 const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string
 

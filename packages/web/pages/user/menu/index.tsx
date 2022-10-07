@@ -1,11 +1,12 @@
-import { useState } from "react"
 import type { GetStaticProps, InferGetStaticPropsType } from "next"
+import { Box, Button, Center, Flex, Text, VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import dayjs from "dayjs"
-import { Modal } from "~/components/domains"
-import { Button, Icon, Spacer } from "~/components/uis/atoms"
+import { AnimatePresence, motion } from "framer-motion"
+import { Icon, LayerOver } from "~/components/uis"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
+import { useScrollContainer } from "~/layouts"
 
 interface Props {
   buildTime: string
@@ -17,74 +18,82 @@ const Page = withRouteGuard(
     const { logout } = useAuthContext()
     const { useMountPage } = useNavigationContext()
     useMountPage("PAGE_USER_MENU")
-
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
-    const list = [
-      {
-        title: "로그아웃",
-        onClick: () => setIsModalOpen(true),
-        icon: "log-out",
-      },
-    ] as const
-
-    const handleClickCancelLogout = () => {
-      setIsModalOpen(false)
-    }
-    const handleClickConfirmLogout = () => {
-      logout()
-      setIsModalOpen(false)
-    }
+    const { scrollContainerWidth } = useScrollContainer()
 
     return (
-      <Spacer
-        type="vertical"
-        justify="space-between"
-        style={{ height: "100%" }}
-      >
-        <MenuList>
-          {list.map(({ title, onClick, icon }) => (
-            <MenuItem key={title} onClick={onClick}>
-              <Icon name={icon} /> {title}
-            </MenuItem>
-          ))}
-        </MenuList>
-        <div style={{ textAlign: "center" }}>
+      <Flex flexDir="column" h="100%">
+        <VStack align="stretch" flex={1}>
+          <LayerOver
+            trigger={({ open }) => (
+              <MenuItem onClick={open}>
+                <Icon name="log-out" /> 로그아웃
+              </MenuItem>
+            )}
+            layer={({ close, isOpen }) => (
+              <AnimatePresence mode="wait">
+                {isOpen && (
+                  <Center
+                    as={motion.div}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    pos="fixed"
+                    top={0}
+                    bottom={0}
+                    left={0}
+                    right={0}
+                    backdropFilter="blur(3px)"
+                  >
+                    <Box
+                      onClick={close}
+                      pos="fixed"
+                      top={0}
+                      bottom={0}
+                      left={0}
+                      right={0}
+                      bgColor="#00000005"
+                      zIndex={-1}
+                    />
+                    <Box
+                      width="90%"
+                      maxWidth={`${scrollContainerWidth - 60}px`}
+                      bgColor="white"
+                      borderRadius="16px"
+                      p="16px"
+                      boxShadow="0 8px 32px -16px #00000020"
+                    >
+                      <VStack align="stretch">
+                        <Text>정말 로그아웃할까요? 🤔</Text>
+                        <Flex justify="space-between">
+                          <Button onClick={() => close()}>닫기</Button>
+                          <Button
+                            onClick={() => {
+                              logout()
+                              close()
+                            }}
+                          >
+                            로그아웃하기
+                          </Button>
+                        </Flex>
+                      </VStack>
+                    </Box>
+                  </Center>
+                )}
+              </AnimatePresence>
+            )}
+          />
+        </VStack>
+        <div>
           {dayjs(buildTime).format(
             "빌드 버전: YYYY년 MM월 DD일 HH시 MM분 ss초"
           )}
         </div>
-        <Modal visible={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <Modal.Header block>정말 로그아웃 하시나요? 🤔</Modal.Header>
-          <Modal.BottomButtonContainer>
-            <Button
-              style={{ flex: 1 }}
-              secondary
-              size="lg"
-              onClick={handleClickCancelLogout}
-            >
-              취소
-            </Button>
-            <Button
-              style={{ flex: 1 }}
-              size="lg"
-              onClick={handleClickConfirmLogout}
-            >
-              로그아웃하기
-            </Button>
-          </Modal.BottomButtonContainer>
-        </Modal>
-      </Spacer>
+      </Flex>
     )
   }
 )
 
 export default Page
-
-const MenuList = styled.div`
-  margin-top: 24px;
-  border-top: 1px solid ${({ theme }) => theme.previousTheme.colors.gray100};
-`
 
 const MenuItem = styled.div`
   display: flex;

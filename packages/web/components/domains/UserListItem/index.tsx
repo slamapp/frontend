@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react"
 import styled from "@emotion/styled"
 import { ProfileAvatar } from "~/components/domains"
-import { Button, Spacer, Text } from "~/components/uis/atoms"
+import { Button, Spacer, Text } from "~/components/uis"
 import { useSocketContext } from "~/contexts/hooks"
 import type { APIUser } from "~/types/domains/objects"
 

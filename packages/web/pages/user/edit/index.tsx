@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { forwardRef, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import {
@@ -29,12 +29,8 @@ import { useTheme } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
 import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
-import { BottomFixedGradient } from "~/components/domains"
-import { useScrollContainer } from "~/components/domains/layout/DefaultLayout/ScrollContainer"
-import LoadingIndicator from "~/components/kakaos/Map/LoadingIndicator"
-import { Upload } from "~/components/uis"
-import { Button, Icon } from "~/components/uis/atoms"
-import { Toast } from "~/components/uis/molecules"
+import { BasketballLoading } from "~/components/domains"
+import { Button, Icon, Toast, Upload } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useNavigationContext } from "~/contexts/hooks"
 import {
@@ -43,6 +39,7 @@ import {
   useUpdateMyProfileImageMutation,
 } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
+import { BottomFixedGradient, useScrollContainer } from "~/layouts"
 import type { APIUser } from "~/types/domains/objects"
 
 const Page = withRouteGuard("private", () => {
@@ -52,7 +49,7 @@ const Page = withRouteGuard("private", () => {
   const myProfileQuery = useMyProfileQuery()
 
   if (myProfileQuery.isLoading) {
-    return <LoadingIndicator />
+    return <BasketballLoading />
   }
 
   if (myProfileQuery.isError) {
@@ -267,29 +264,24 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
   )
 }
 
-const ChipCheckboxGroup = forwardRef(
-  (
-    {
-      options,
-      ...props
-    }: UseCheckboxGroupProps & {
-      options: { value: string; label: string }[]
-    },
-    ref
-  ) => {
-    const { getCheckboxProps } = useCheckboxGroup(props)
+const ChipCheckboxGroup = ({
+  options,
+  ...props
+}: UseCheckboxGroupProps & {
+  options: { value: string; label: string }[]
+}) => {
+  const { getCheckboxProps } = useCheckboxGroup(props)
 
-    return (
-      <Flex wrap="wrap" width="100%" gap="8px">
-        {options.map(({ value, label }) => (
-          <ChipCheckbox key={value} {...getCheckboxProps({ value })}>
-            {label}
-          </ChipCheckbox>
-        ))}
-      </Flex>
-    )
-  }
-)
+  return (
+    <Flex wrap="wrap" width="100%" gap="8px">
+      {options.map(({ value, label }) => (
+        <ChipCheckbox key={value} {...getCheckboxProps({ value })}>
+          {label}
+        </ChipCheckbox>
+      ))}
+    </Flex>
+  )
+}
 
 const ChipCheckbox = ({
   children,
@@ -324,29 +316,24 @@ const ChipCheckbox = ({
   )
 }
 
-const ChipRadioGroup = forwardRef(
-  (
-    {
-      options,
-      ...props
-    }: UseRadioGroupProps & {
-      options: { value: string; label: string }[]
-    },
-    ref
-  ) => {
-    const { getRadioProps } = useRadioGroup(props)
+const ChipRadioGroup = ({
+  options,
+  ...props
+}: UseRadioGroupProps & {
+  options: { value: string; label: string }[]
+}) => {
+  const { getRadioProps } = useRadioGroup(props)
 
-    return (
-      <Flex wrap="wrap" width="100%" gap="8px">
-        {options.map(({ value, label }) => (
-          <ChipRadio key={value} {...getRadioProps({ value })}>
-            {label}
-          </ChipRadio>
-        ))}
-      </Flex>
-    )
-  }
-)
+  return (
+    <Flex wrap="wrap" width="100%" gap="8px">
+      {options.map(({ value, label }) => (
+        <ChipRadio key={value} {...getRadioProps({ value })}>
+          {label}
+        </ChipRadio>
+      ))}
+    </Flex>
+  )
+}
 
 const ChipRadio = ({
   children,

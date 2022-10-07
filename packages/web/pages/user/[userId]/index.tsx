@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef } from "react"
 import type { GetServerSideProps } from "next"
 import Link from "next/link"
+import { Tag } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { useMutation } from "@tanstack/react-query"
@@ -9,8 +10,7 @@ import {
   BasketballLoading,
   ProfileFavoritesListItem,
 } from "~/components/domains"
-import { Button, Spacer, Text } from "~/components/uis/atoms"
-import { Avatar, Chip, Label } from "~/components/uis/molecules"
+import { Avatar, Button, Spacer, Text } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { useMyProfileQuery, useUserProfileQuery } from "~/features/users"
@@ -118,33 +118,27 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
             style={{ padding: `${theme.gaps.md} ${theme.gaps.base}` }}
           >
             <div>
-              <Label>포지션</Label>
+              <Text>포지션</Text>
               <Spacer type="horizontal" gap="xs">
                 {positions.length ? (
                   getTranslatedPositions(positions).map(
-                    ({ english, korean }) => (
-                      <Chip key={english} secondary>
-                        {korean}
-                      </Chip>
-                    )
+                    ({ english, korean }) => <Tag key={english}>{korean}</Tag>
                   )
                 ) : (
-                  <Chip key="no_position" secondary>
-                    선택한 포지션이 없습니다
-                  </Chip>
+                  <Tag>선택한 포지션이 없습니다</Tag>
                 )}
               </Spacer>
             </div>
             <div>
-              <Label>숙련도</Label>
-              <Chip secondary>
+              <Text>숙련도</Text>
+              <Tag>
                 {proficiency === null
                   ? "미정"
                   : getTranslatedProficiency(proficiency).korean}
-              </Chip>
+              </Tag>
             </div>
             <div>
-              <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
+              <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
               {authProps.favorites.length ? (
                 authProps.favorites.map(({ id, court }) => (
                   <ProfileFavoritesListItem key={id} courtId={court.id}>
@@ -152,7 +146,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                   </ProfileFavoritesListItem>
                 ))
               ) : (
-                <Chip secondary>즐겨찾기한 농구장이 없습니다</Chip>
+                <Tag>즐겨찾기한 농구장이 없습니다</Tag>
               )}
             </div>
           </Spacer>
@@ -251,33 +245,27 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
             style={{ padding: `${theme.gaps.md} ${theme.gaps.base}` }}
           >
             <div>
-              <Label>포지션</Label>
+              <Text>포지션</Text>
               <Spacer type="horizontal" gap="xs">
                 {positions.length ? (
                   getTranslatedPositions(positions).map(
-                    ({ english, korean }) => (
-                      <Chip key={english} secondary>
-                        {korean}
-                      </Chip>
-                    )
+                    ({ english, korean }) => <Tag key={english}>{korean}</Tag>
                   )
                 ) : (
-                  <Chip key="no_position" secondary>
-                    선택한 포지션이 없습니다
-                  </Chip>
+                  <Tag>선택한 포지션이 없습니다</Tag>
                 )}
               </Spacer>
             </div>
             <div>
-              <Label>숙련도</Label>
-              <Chip secondary>
+              <Text>숙련도</Text>
+              <Tag>
                 {proficiency === null
                   ? "미정"
                   : getTranslatedProficiency(proficiency).korean}
-              </Chip>
+              </Tag>
             </div>
             <div>
-              <Label>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Label>
+              <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
               {favoriteCourts.length ? (
                 favoriteCourts.map(({ id, name }) => (
                   <ProfileFavoritesListItem key={id} courtId={id}>
@@ -285,7 +273,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                   </ProfileFavoritesListItem>
                 ))
               ) : (
-                <Chip secondary>등록한 농구장이 없습니다</Chip>
+                <Tag>등록한 농구장이 없습니다</Tag>
               )}
             </div>
           </Spacer>

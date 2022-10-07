@@ -1,9 +1,10 @@
-import type { ReactElement, ComponentProps } from "react"
-import { useRef, useContext, useEffect, useState } from "react"
+import type { ComponentProps } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { Context } from "./context"
+import DefaultList from "./DefaultList"
 import DefaultTemplate from "./DefaultTemplate"
+import DoAfterDuration from "./DoAfterDuration"
 import { iterateCallWithDelay } from "./helpers"
-import { useTimeout, useTimeoutFn } from "./hooks"
 
 const Manager = ({
   bind,
@@ -11,16 +12,24 @@ const Manager = ({
   bind: (
     createToast: (
       content: ComponentProps<typeof DefaultTemplate>["content"],
-      options: ComponentProps<typeof DefaultTemplate>["options"]
+      options: ComponentProps<typeof DefaultTemplate>["options"] &
+        ComponentProps<typeof DefaultList>["options"]
     ) => void
   ) => void
 }) => {
-  const { Template = DefaultTemplate } = useContext(Context)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  const { Template = DefaultTemplate, List = DefaultList } = useContext(Context)
 
   const [toastItems, setToastItems] = useState<
-    (Pick<ComponentProps<typeof DefaultTemplate>, "content" | "options"> & {
+    (Pick<ComponentProps<typeof DefaultTemplate>, "content"> & {
       id: string
-    })[]
+    } & Pick<ComponentProps<typeof DefaultTemplate>, "options"> &
+      Pick<ComponentProps<typeof DefaultList>, "options">)[]
   >([])
 
   useEffect(() => {
@@ -38,9 +47,13 @@ const Manager = ({
     closes.current = []
   }
 
-  return (
-    <>
-      {toastItems.map(({ id, content: Content, options }) => {
+  return isMounted ? (
+    <List
+      options={{
+        marginBottom:
+          toastItems[toastItems.length - 1]?.options?.marginBottom ?? 0,
+      }}
+      templates={toastItems.map(({ id, content: Content, options }) => {
         return (
           <DoAfterDuration
             key={id}
@@ -48,7 +61,7 @@ const Manager = ({
               delay: options.delay,
               duration: options.duration,
             }}
-            onDelayed={() =>
+            onDelayedAfterDone={() =>
               setToastItems((oldToastItems) =>
                 oldToastItems.filter((toast) => toast.id !== id)
               )
@@ -78,52 +91,8 @@ const Manager = ({
           </DoAfterDuration>
         )
       })}
-    </>
-  )
+    />
+  ) : null
 }
 
 export default Manager
-
-const DoAfterDuration = ({
-  options,
-  children,
-  onDelayed,
-  onDone,
-  onMount,
-}: {
-  options: Pick<
-    ComponentProps<typeof DefaultTemplate>["options"],
-    "delay" | "duration"
-  >
-  children: (options: { isDone: boolean; doEarly: () => void }) => ReactElement
-  onDelayed?: () => void
-  onDone?: () => void
-  onMount?: (mount: { doEarly: () => void }) => void
-}) => {
-  const [isDone, setIsDone] = useState(false)
-
-  const [runAfterDone] = useTimeoutFn(() => {
-    onDelayed?.()
-  }, options.delay)
-
-  const clearDurationDo = useTimeout(() => {
-    doAnyway()
-    onDone?.()
-  }, options.duration)
-
-  const doAnyway = () => {
-    setIsDone(true)
-    runAfterDone()
-  }
-
-  const doEarly = () => {
-    clearDurationDo()
-    doAnyway()
-  }
-
-  useEffect(() => {
-    onMount?.({ doEarly })
-  }, [])
-
-  return <>{children({ isDone, doEarly })}</>
-}

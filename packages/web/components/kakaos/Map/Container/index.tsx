@@ -1,4 +1,4 @@
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import { useMap } from "../context"
 import useMapEvent from "../hooks/useMapEvent"
 

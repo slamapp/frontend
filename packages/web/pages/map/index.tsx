@@ -8,17 +8,13 @@ import styled from "@emotion/styled"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
-import {
-  BottomFixedGradient,
-  CourtItem,
-  DatePicker,
-} from "~/components/domains"
-import Map from "~/components/kakaos/Map/Map"
-import { Button, Icon, Skeleton, Spacer, Text } from "~/components/uis/atoms"
-import { Toast } from "~/components/uis/molecules"
+import { CourtItem, DatePicker } from "~/components/domains"
+import { Map } from "~/components/kakaos"
+import { Button, Icon, Skeleton, Spacer, Text, Toast } from "~/components/uis"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useLocalStorage } from "~/hooks"
+import { BottomFixedGradient } from "~/layouts"
 import type { APICourt } from "~/types/domains/objects"
 import { getLocalToken } from "~/utils"
 import { getTimezoneDateStringFromDate } from "~/utils/date"

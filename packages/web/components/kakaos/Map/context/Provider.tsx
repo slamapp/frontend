@@ -56,8 +56,6 @@ export const Provider = ({
     map?.setZoomable(zoomable)
 
     if (!zoomable) {
-      console.log("not zoomable")
-
       map?.setLevel(map?.getLevel())
       map?.setMaxLevel(map?.getLevel())
       map?.setMinLevel(map?.getLevel())

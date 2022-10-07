@@ -3,7 +3,7 @@ import Link from "next/link"
 import styled from "@emotion/styled"
 import { api } from "~/api"
 import { CourtItem, NoItemMessage } from "~/components/domains"
-import { Button, Skeleton, Spacer } from "~/components/uis/atoms"
+import { Button, Skeleton, Spacer } from "~/components/uis"
 import { useAuthContext } from "~/contexts/hooks"
 import type { APIFavorite } from "~/types/domains/objects"
 

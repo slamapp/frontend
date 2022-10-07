@@ -5,6 +5,7 @@ import type {
 } from "react"
 import { hydrateRoot } from "react-dom/client"
 import { Context } from "./context"
+import type DefaultList from "./DefaultList"
 import type DefaultTemplate from "./DefaultTemplate"
 import Manager from "./Manager"
 
@@ -15,23 +16,26 @@ class Toast<ExtraOptions extends { [x: string]: any }> {
     | Parameters<ComponentPropsWithoutRef<typeof Manager>["bind"]>[0]
     | null = null
 
-  defaultOptions: ComponentPropsWithoutRef<typeof DefaultTemplate>["options"] =
-    {
-      duration: 2000,
-      delay: 200,
-      status: null,
-    }
+  defaultOptions: ComponentPropsWithoutRef<typeof DefaultTemplate>["options"] &
+    ComponentPropsWithoutRef<typeof DefaultList>["options"] = {
+    duration: 2000,
+    delay: 200,
+    status: null,
+    marginBottom: 0,
+  }
 
   constructor({
     zIndex = 9999,
     portalId = "toast-portal",
-    Template,
     Adapter = ({ children }) => <>{children}</>,
+    List,
+    Template,
     defaultOptions,
   }: {
     zIndex?: number
     portalId?: string
     Adapter?: FunctionComponent<{ children: ReactNode }>
+    List?: FunctionComponent<ComponentPropsWithoutRef<typeof DefaultList>>
     Template?: FunctionComponent<
       { content: ReactNode } & Pick<
         ComponentPropsWithoutRef<typeof DefaultTemplate>,
@@ -74,21 +78,22 @@ class Toast<ExtraOptions extends { [x: string]: any }> {
 
       hydrateRoot(
         this.portal,
-        <Adapter>
-          <Context.Provider
-            value={{
-              Template: Template as ComponentPropsWithoutRef<
-                typeof Context.Provider
-              >["value"]["Template"],
-            }}
-          >
+        <Context.Provider
+          value={{
+            List,
+            Template: Template as ComponentPropsWithoutRef<
+              typeof Context.Provider
+            >["value"]["Template"],
+          }}
+        >
+          <Adapter>
             <Manager
               bind={(createToast) => {
                 this.createToast = createToast
               }}
             />
-          </Context.Provider>
-        </Adapter>
+          </Adapter>
+        </Context.Provider>
       )
     }
   }
@@ -96,7 +101,8 @@ class Toast<ExtraOptions extends { [x: string]: any }> {
   show(
     content: ComponentPropsWithoutRef<typeof DefaultTemplate>["content"],
     options?: ExtraOptions &
-      Partial<ComponentPropsWithoutRef<typeof DefaultTemplate>["options"]>
+      Partial<ComponentPropsWithoutRef<typeof DefaultTemplate>["options"]> &
+      Partial<ComponentPropsWithoutRef<typeof DefaultList>["options"]>
   ) {
     this.createToast?.(content, { ...this.defaultOptions, ...options })
   }

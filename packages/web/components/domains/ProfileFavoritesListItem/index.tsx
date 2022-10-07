@@ -2,7 +2,7 @@ import React from "react"
 import type { HTMLAttributes, ReactNode } from "react"
 import Link from "next/link"
 import styled from "@emotion/styled"
-import { Button, Icon, Spacer, Text } from "~/components/uis/atoms"
+import { Button, Icon, Spacer, Text } from "~/components/uis"
 import type { APIFavorite } from "~/types/domains/objects"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {

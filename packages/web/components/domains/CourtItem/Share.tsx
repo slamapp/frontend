@@ -1,4 +1,4 @@
-import { IconButton } from "~/components/uis/molecules"
+import { IconButton } from "~/components/uis"
 import { withShareClick } from "~/hocs"
 import type { APICourt } from "~/types/domains/objects"
 

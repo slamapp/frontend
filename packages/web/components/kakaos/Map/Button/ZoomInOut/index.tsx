@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from "react"
 import { css } from "@emotion/react"
 import { motion } from "framer-motion"
-import { IconButton } from "~/components/uis/molecules"
+import { IconButton } from "~/components/uis"
 import { useMap } from "../../context"
 
 const ZoomInOut = () => {
