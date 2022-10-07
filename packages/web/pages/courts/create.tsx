@@ -14,9 +14,8 @@ import {
   InputRightElement,
   Text,
   VStack,
-  theme,
 } from "@chakra-ui/react"
-import { css } from "@emotion/react"
+import { css, useTheme } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
 import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
@@ -187,6 +186,7 @@ const MapEditor = ({
 }: {
   onChange?: (position: Pick<APICourt, "latitude" | "longitude">) => void
 }) => {
+  const theme = useTheme()
   const [mode, setMode] = useState<"beforeEdit" | "editing">("beforeEdit")
 
   const [courtPosition, setCourtPosition] =
@@ -296,8 +296,8 @@ const MapEditor = ({
               >
                 <Flex
                   as={motion.div}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                  initial={{ opacity: 0, scale: 10, y: -40 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.9 }}
                   style={{
@@ -341,20 +341,21 @@ const MapEditor = ({
                       bottom="-34px"
                       whiteSpace="nowrap"
                       textAlign="center"
-                      bgColor="black"
+                      bgColor="#00000095"
+                      backdropFilter="blur(2px)"
                       color="white"
                       borderRadius="8px"
                       py="4px"
-                      px="16px"
+                      px="8px"
                       pointerEvents="none"
                       boxShadow="0 0 16px #00000040"
                     >
                       <Icon
                         name="map-pin"
-                        size="sm"
-                        color={theme.colors.orange[500]}
+                        size={12}
+                        color={theme.colors.orange0600}
                       />
-                      <Text fontSize="16px" fontWeight="bold">
+                      <Text fontSize="12px" fontWeight="bold">
                         {address}
                       </Text>
                     </HStack>

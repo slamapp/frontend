@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -88,20 +88,18 @@ const Page = () => {
     }
   }, [selectedCourtId, setNavigationTitle])
 
+  const handleCustomButton = useCallback(() => {
+    router.push(currentUser ? "/courts/create" : "/login")
+  }, [currentUser])
+
   useMountCustomButtonEvent(
-    <HStack>
-      <Text color="lightgrey" fontSize="12px">
+    <HStack spacing="4px">
+      <Text color={theme.colors.gray0200} fontSize="12px">
         새 농구장을 추가해보세요
       </Text>
       <Icon name="plus-circle" />
     </HStack>,
-    () => {
-      if (currentUser) {
-        router.push("/courts/create")
-      } else {
-        router.push("/login")
-      }
-    }
+    handleCustomButton
   )
 
   useEffect(() => {
@@ -226,8 +224,8 @@ const Page = () => {
                   >
                     <Flex
                       as={motion.div}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
+                      initial={{ scale: 0, y: 40 }}
+                      animate={{ scale: 1, y: 0 }}
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
                       style={{
@@ -262,6 +260,35 @@ const Page = () => {
                           userSelect: "none",
                         }}
                       />
+                      <HStack
+                        as={motion.div}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        pos="absolute"
+                        bottom="-34px"
+                        whiteSpace="nowrap"
+                        textAlign="center"
+                        bgColor={
+                          selectedCourtId === court.id ? "black" : "#00000095"
+                        }
+                        transition="background-color 200ms"
+                        backdropFilter="blur(2px)"
+                        color="white"
+                        borderRadius="8px"
+                        py="4px"
+                        px="8px"
+                        pointerEvents="none"
+                        boxShadow="0 0 16px #00000040"
+                      >
+                        <Icon
+                          name="map-pin"
+                          size={12}
+                          color={theme.colors.orange0600}
+                        />
+                        <Text fontSize="12px" fontWeight="bold">
+                          {court.name}
+                        </Text>
+                      </HStack>
                     </Flex>
                   </motion.div>
                 </Map.Marker.CustomMarkerOverlay>

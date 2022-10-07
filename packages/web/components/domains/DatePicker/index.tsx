@@ -79,8 +79,8 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.1 }}
               cursor="pointer"
-              bgColor={selected ? theme.colors.gray0900 : "#ffffff90"}
-              border={`1px solid ${selected ? theme.colors.gray0900 : "white"}`}
+              bgColor={selected ? theme.colors.black : "#ffffff90"}
+              border={`1px solid ${selected ? theme.colors.black : "white"}`}
               transition="background-color border 200ms"
               boxShadow="0 8px 32px -16px #00000040"
               borderRadius="12px"

@@ -281,7 +281,7 @@ type FeatherIconNameType =
 
 interface Props {
   name: FeatherIconNameType
-  size?: "sm" | "md" | "lg"
+  size?: "sm" | "md" | "lg" | number
   strokeWidth?: number
   rotate?: number
   color?: string
@@ -313,8 +313,8 @@ const Icon = ({
   return (
     <IconWrapper {...props} size={size} rotate={rotate}>
       <Image
-        width={24}
-        height={24}
+        width={typeof size === "number" ? size : 24}
+        height={typeof size === "number" ? size : 24}
         src={`data:image/svg+xml;base64,${base64}`}
         alt={name}
       />
@@ -329,10 +329,10 @@ const IconWrapper = styled.i<Pick<Props, "size" | "rotate">>`
   ${({ size, theme }) => css`
     width: ${typeof size === "string"
       ? theme.previousTheme.iconSize[size]
-      : size};
+      : `${size}px`};
     height: ${typeof size === "string"
       ? theme.previousTheme.iconSize[size]
-      : size};
+      : `${size}px`};
   `}
 
   img {

@@ -21,7 +21,6 @@ const BottomNavigation = () => {
           left: 0;
           right: 0;
           z-index: 2000;
-          box-shadow: 0 -8px 32px -16px #00000020;
         `}
       >
         <div

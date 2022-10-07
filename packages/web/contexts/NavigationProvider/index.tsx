@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
-import { useCallback, useReducer, useEffect } from "react"
+import { useCallback, useEffect, useReducer } from "react"
 import type { ContextProps } from "./context"
 import Context from "./context"
-import { reducer, initialData } from "./reducer"
+import { initialData, reducer } from "./reducer"
 
 interface Props {
   children: ReactNode
@@ -46,7 +46,7 @@ const NavigationProvider = ({ children }: Props) => {
       setCustomButtonEvent(customButtonName, handleClick)
 
       return clearNavigationEvent
-    }, [])
+    }, [handleClick])
 
   const clearNavigationEvent: ContextProps["clearNavigationEvent"] =
     useCallback(() => {

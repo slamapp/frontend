@@ -298,11 +298,11 @@ const ChipCheckbox = ({
         cursor="pointer"
         border="2px solid"
         borderColor={
-          state.isChecked ? theme.colors.gray0900 : theme.colors.gray0100
+          state.isChecked ? theme.colors.black : theme.colors.gray0100
         }
         borderRadius="full"
-        bgColor={state.isChecked ? theme.colors.gray0900 : "transparent"}
-        color={state.isChecked ? theme.colors.white : theme.colors.gray0900}
+        bgColor={state.isChecked ? theme.colors.black : "transparent"}
+        color={state.isChecked ? theme.colors.white : theme.colors.black}
         px="16px"
         py="4px"
         {...getCheckboxProps()}
@@ -350,11 +350,11 @@ const ChipRadio = ({
         cursor="pointer"
         border="2px solid"
         borderColor={
-          state.isChecked ? theme.colors.gray0900 : theme.colors.gray0100
+          state.isChecked ? theme.colors.black : theme.colors.gray0100
         }
         borderRadius="full"
-        bgColor={state.isChecked ? theme.colors.gray0900 : "transparent"}
-        color={state.isChecked ? theme.colors.white : theme.colors.gray0900}
+        bgColor={state.isChecked ? theme.colors.black : "transparent"}
+        color={state.isChecked ? theme.colors.white : theme.colors.black}
         px="16px"
         py="4px"
         {...getCheckboxProps()}

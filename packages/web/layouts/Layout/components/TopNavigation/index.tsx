@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { css } from "@emotion/react"
+import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Variants } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
@@ -17,6 +17,7 @@ const titleWrapperVariants: Variants = {
 }
 
 const TopNavigation = () => {
+  const theme = useTheme()
   const { authProps } = useAuthContext()
   const { scrollToTop } = useScrollContainer()
 
@@ -125,6 +126,7 @@ const TopNavigation = () => {
             padding-left: 22px;
             cursor: pointer;
             user-select: none;
+            color: ${theme.colors.black};
           `}
           variants={titleWrapperVariants}
           initial="notShrink"
