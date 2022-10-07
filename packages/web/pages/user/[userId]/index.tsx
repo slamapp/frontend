@@ -13,6 +13,10 @@ import {
 import { Avatar, Button, Spacer, Text } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import {
+  useFollowCancelMutation,
+  useFollowCreateMutation,
+} from "~/features/notifications"
 import { useMyProfileQuery, useUserProfileQuery } from "~/features/users"
 import { withRouteGuard } from "~/hocs"
 import type { APIUser } from "~/types/domains/objects"
@@ -302,26 +306,22 @@ const FollowButton = ({
   receiverId: APIUser["id"]
   refetch: () => void
 }) => {
-  const followMutation = useMutation(
-    () => api.follows.postFollow({ receiverId }),
-    { onSuccess: () => refetch() }
-  )
-  const followCancelMutation = useMutation(
-    () => api.follows.deleteFollow({ receiverId }),
-    { onSuccess: () => refetch() }
-  )
+  const followCreateMutation = useFollowCreateMutation()
+  const followCancelMutation = useFollowCancelMutation()
 
   return (
     <Button
       fullWidth
-      loading={followMutation.isLoading || followCancelMutation.isLoading}
-      disabled={followMutation.isLoading || followCancelMutation.isLoading}
+      loading={followCreateMutation.isLoading || followCancelMutation.isLoading}
+      disabled={
+        followCreateMutation.isLoading || followCancelMutation.isLoading
+      }
       tertiary={isFollowing}
       onClick={() => {
         if (isFollowing) {
-          followCancelMutation.mutate()
+          followCancelMutation.mutate({ receiverId }, { onSuccess: refetch })
         } else {
-          followMutation.mutate()
+          followCreateMutation.mutate({ receiverId }, { onSuccess: refetch })
         }
       }}
     >

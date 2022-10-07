@@ -2,7 +2,10 @@ import type { CSSProperties } from "react"
 import styled from "@emotion/styled"
 import { ProfileAvatar } from "~/components/domains"
 import { Button, Spacer, Text } from "~/components/uis"
-import { useSocketContext } from "~/contexts/hooks"
+import {
+  useFollowCancelMutation,
+  useFollowCreateMutation,
+} from "~/features/notifications"
 import type { APIUser } from "~/types/domains/objects"
 
 interface Props {
@@ -14,9 +17,10 @@ interface Props {
 // 아바타 + 이름 + 버튼
 
 const UserListItem = ({ className, style, isFollowed, user }: Props) => {
-  const { sendFollow, sendFollowCancel } = useSocketContext()
-
   const { id, nickname, profileImage } = user
+
+  const followCancelMutation = useFollowCancelMutation()
+  const followCreateMutation = useFollowCreateMutation()
 
   return (
     <ListItem className={className} style={style}>
@@ -35,13 +39,15 @@ const UserListItem = ({ className, style, isFollowed, user }: Props) => {
           <></>
         ) : isFollowed ? (
           <Button
-            onClick={() => sendFollowCancel({ receiverId: user.id })}
+            onClick={() => followCancelMutation.mutate({ receiverId: user.id })}
             secondary
           >
             팔로잉
           </Button>
         ) : (
-          <Button onClick={() => sendFollow({ receiverId: user.id })}>
+          <Button
+            onClick={() => followCreateMutation.mutate({ receiverId: user.id })}
+          >
             팔로우
           </Button>
         )}

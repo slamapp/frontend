@@ -3,7 +3,6 @@ import styled from "@emotion/styled"
 import { CourtItem } from "~/components/domains"
 import { Spacer } from "~/components/uis"
 import type { APIReservation } from "~/types/domains/objects"
-import Loudspeaker from "./Loudspeaker"
 import ReservationItemBottom from "./ReservationItemBottom"
 
 interface Props {
@@ -23,11 +22,6 @@ const ReservationItemComponent = ({ reservation }: Props) => {
             startDatetime={reservation.startTime}
           />
         </Spacer>
-        <Loudspeaker
-          startTime={reservation.startTime}
-          courtId={reservation.court.id}
-          reservationId={reservation.id}
-        />
       </HeaderContainer>
 
       <Spacer

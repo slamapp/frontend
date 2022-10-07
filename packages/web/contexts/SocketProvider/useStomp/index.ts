@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useState } from "react"
-import type { CompatClient } from "@stomp/stompjs"
+import type { CompatClient, messageCallbackType } from "@stomp/stompjs"
 import { api } from "~/api"
 import { useAuthContext } from "~/contexts/hooks"
 import type { APINotification } from "~/types/domains/objects"
-import type { SendAuth, UseStomp } from "./type"
-import { subscribe } from "./utils"
+import { getLocalToken } from "~/utils"
 
-const useStomp: UseStomp = (token: string) => {
+type UseStomp = () => {
+  isConnected: boolean
+  isLoading: boolean
+  sendAuth: (destination: string, body: { [x: string]: any }) => void
+}
+
+const useStomp: UseStomp = () => {
   const [compatClient, setCompatClient] = useState<CompatClient | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -21,7 +26,7 @@ const useStomp: UseStomp = (token: string) => {
     if (authProps.currentUser) {
       const newClient = api.sockets.getCompatClient()
       newClient.connect(
-        { Authorization: { token: `Bearer ${token}` } },
+        { Authorization: { token: `Bearer ${getLocalToken()}` } },
         () => {
           if (!authProps.currentUser) {
             return
@@ -49,12 +54,16 @@ const useStomp: UseStomp = (token: string) => {
     }
   }, [authProps.currentUser])
 
-  const sendAuth: SendAuth = (destination, body) => {
+  const sendAuth: ReturnType<UseStomp>["sendAuth"] = (destination, body) => {
     console.log("SEND,Token", "destination:", destination, "body:", body)
 
     const bodyStringified = JSON.stringify(body)
-    if (compatClient && token) {
-      compatClient.send(destination, { token }, bodyStringified)
+    if (compatClient && getLocalToken()) {
+      compatClient.send(
+        destination,
+        { token: getLocalToken() },
+        bodyStringified
+      )
     }
   }
 
@@ -62,3 +71,25 @@ const useStomp: UseStomp = (token: string) => {
 }
 
 export default useStomp
+
+type ParsedCallback = (parsedBody: { [x: string]: any }) => void
+
+const subscribe = (
+  compatClient: CompatClient,
+  destination: string,
+  parsedCallback: ParsedCallback
+) => compatClient.subscribe(destination, getParsedCallback(parsedCallback))
+
+const getParsedCallback =
+  (parsedCallback: ParsedCallback): messageCallbackType =>
+  ({ body }) => {
+    const defaultParsed = {}
+    try {
+      const parsedBody = JSON.parse(body)
+      console.log("::SUBSCRIBE::", parsedBody)
+      parsedCallback(parsedBody)
+    } catch (error) {
+      console.error(error)
+      parsedCallback(defaultParsed)
+    }
+  }

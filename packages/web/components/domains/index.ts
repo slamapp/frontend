@@ -1,6 +1,5 @@
 export { default as DatePicker } from "./DatePicker"
 export { default as Logo } from "./Logo"
-export { default as LoudSpeaker } from "./ReservationItem/Loudspeaker"
 export { default as BasketballLoading } from "./BasketballLoading"
 export { default as ErrorMessage } from "./ErrorMessage"
 export { default as NoItemMessage } from "./NoItemMessage"
