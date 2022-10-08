@@ -104,11 +104,7 @@ const FollowListItem = ({
   user: Pick<APIUser, "profileImage" | "nickname" | "id">
 }) => (
   <HStack width="100%" px="4">
-    <ProfileAvatar
-      profileImage={user.profileImage}
-      userId={user.id}
-      nickname={user.nickname}
-    />
+    <ProfileAvatar user={{ id: user.id, profileImage: user.profileImage }} />
     <Text flex={1}>{user.nickname}</Text>
     <div>
       {isFollowed === undefined ? (

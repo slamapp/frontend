@@ -2,10 +2,10 @@ import type { ComponentPropsWithoutRef } from "react"
 import { useEffect } from "react"
 import type { GetServerSideProps } from "next"
 import Link from "next/link"
-import { Flex, HStack, Tag, Text, VStack } from "@chakra-ui/react"
+import { Avatar, Flex, HStack, Tag, Text, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
-import { Avatar, Button, Icon } from "~/components/uis"
+import { Button, Icon } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import {
@@ -70,8 +70,8 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
           <MainInfoContainer>
             <MainInfoArea>
               <Avatar
+                size="xl"
                 src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
-                shape="circle"
               />
               <StatBar>
                 <div>
@@ -175,10 +175,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
         <div>
           <MainInfoContainer>
             <MainInfoArea>
-              <Avatar
-                src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
-                shape="circle"
-              />
+              <Avatar src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
               <StatBar>
                 <div>
                   <Link href={`/user/${id}/following`}>

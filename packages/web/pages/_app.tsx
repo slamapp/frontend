@@ -5,7 +5,12 @@ import { ThemeProvider } from "@emotion/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Image } from "~/components/uis"
-import Providers from "~/contexts/Providers"
+import {
+  AnalyticsProvider,
+  AuthProvider,
+  NavigationProvider,
+  SocketProvider,
+} from "~/contexts"
 import { Layout } from "~/layouts"
 import { GlobalCSS, chakraTheme, emotionTheme } from "~/styles"
 
@@ -39,11 +44,17 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ChakraProvider resetCSS theme={chakraTheme}>
           <ThemeProvider theme={emotionTheme}>
             <GlobalCSS />
-            <Providers>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </Providers>
+            <AuthProvider>
+              <SocketProvider>
+                <NavigationProvider>
+                  <AnalyticsProvider>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </AnalyticsProvider>
+                </NavigationProvider>
+              </SocketProvider>
+            </AuthProvider>
           </ThemeProvider>
         </ChakraProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />

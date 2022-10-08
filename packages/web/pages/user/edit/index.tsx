@@ -396,7 +396,7 @@ const AvatarEdit = ({ src }: { src: string }) => {
         {({ dragging }) => (
           <Box pointerEvents="none" pos="relative">
             <Avatar
-              size="lg"
+              size="xl"
               src={src}
               border={dragging ? "5px solid black" : undefined}
             />

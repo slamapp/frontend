@@ -10,5 +10,4 @@ export { default as Toggle } from "./Toggle"
 export { default as Image } from "./Image"
 export { default as LayerOver } from "./LayerOver"
 /* eslint-disable import/no-cycle */
-export { default as Avatar } from "./Avatar"
 export { default as IconButton } from "./IconButton"

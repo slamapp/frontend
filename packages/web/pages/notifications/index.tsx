@@ -174,9 +174,7 @@ const getNotificationMarkUp = ({
       return (
         <>
           <ProfileAvatar
-            userId={sender.id}
-            profileImage={sender.profileImage}
-            nickname={sender.nickname}
+            user={{ id: sender.id, profileImage: sender.profileImage }}
           />
           <div>
             <LinkStrong href={`user/${sender.id}`}>

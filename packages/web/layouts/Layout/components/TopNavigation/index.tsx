@@ -97,7 +97,14 @@ const TopNavigation = () => {
               </Link>
             </Badge>
           )}
-          {isProfile && <ProfileAvatar.Mine />}
+          {isProfile && authProps.currentUser && (
+            <ProfileAvatar
+              user={{
+                id: authProps.currentUser.id,
+                profileImage: authProps.currentUser.profileImage,
+              }}
+            />
+          )}
           {isMenu && (
             <Link href="/user/menu" passHref>
               <a>

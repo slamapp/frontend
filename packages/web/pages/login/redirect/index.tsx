@@ -30,22 +30,20 @@ const RedirectPage = () => {
     }
   }, [router.query.token as string])
 
-  const NeedReLoginMarkUp = () => {
-    return (
-      <div>
-        <Header>유효한 접근이 아닙니다.</Header>
-        <Link href="/login" passHref>
-          <a>
-            <button>다시 로그인하러 가기</button>
-          </a>
-        </Link>
-      </div>
-    )
-  }
-
   return (
     <PageContainer>
-      {isNeedReLogin ? <NeedReLoginMarkUp /> : <Spinner />}
+      {isNeedReLogin ? (
+        <div>
+          <Header>유효한 접근이 아닙니다.</Header>
+          <Link href="/login" passHref>
+            <a>
+              <button>다시 로그인하러 가기</button>
+            </a>
+          </Link>
+        </div>
+      ) : (
+        <Spinner />
+      )}
     </PageContainer>
   )
 }
