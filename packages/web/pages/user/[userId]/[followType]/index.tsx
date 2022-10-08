@@ -110,7 +110,7 @@ const FollowListItem = ({
       {isFollowed === undefined ? (
         <></>
       ) : isFollowed ? (
-        <Button secondary>팔로잉</Button>
+        <Button>팔로잉</Button>
       ) : (
         <Button>팔로우</Button>
       )}

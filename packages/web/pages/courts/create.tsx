@@ -254,8 +254,7 @@ const MapEditor = ({
         {mode === "beforeEdit" && (
           <Center width="100%" height="100%">
             <Button
-              secondary
-              type="button"
+              scheme="white"
               style={{
                 boxShadow: "0 0 32px rgba(0,0,0,0.3)",
                 zIndex: 1,
@@ -375,8 +374,7 @@ const MapEditor = ({
               p="8px"
             >
               <Button
-                secondary
-                type="button"
+                scheme="white"
                 style={{
                   boxShadow: "0 0 32px rgba(0,0,0,0.3)",
                   zIndex: 1,

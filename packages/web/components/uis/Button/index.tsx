@@ -1,132 +1,59 @@
-import type { CSSProperties, MouseEvent, ReactNode } from "react"
-import { Spinner } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import styled from "@emotion/styled"
+import type { ComponentPropsWithoutRef, ReactNode } from "react"
+import { Flex, Spinner } from "@chakra-ui/react"
+import { useTheme } from "@emotion/react"
+import { motion } from "framer-motion"
+import type { EmotionTheme } from "~/styles/emotionTheme"
 
-type Size = "sm" | "md" | "lg"
-
-interface Props {
-  children?: ReactNode
-  className?: string
-  size?: Size
-  type?: "button" | "submit"
-  secondary?: boolean
-  tertiary?: boolean
-  fullWidth?: boolean
-  block?: boolean
+interface Props
+  extends Partial<
+      Pick<ComponentPropsWithoutRef<typeof Flex>, "onClick" | "style">
+    >,
+    Pick<
+      ComponentPropsWithoutRef<typeof motion.button>,
+      "initial" | "animate" | "disabled" | "type"
+    > {
+  size?: keyof EmotionTheme["sizes"]["buttonHeight"] | number
+  scheme?: keyof EmotionTheme["scheme"]["buttons"]
   loading?: boolean
-  disabled?: boolean
-  style?: CSSProperties
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void
+  fullWidth?: boolean
+  children?: ReactNode
 }
 
 const Button = ({
-  className,
-  children,
-  fullWidth = false,
-  block = false,
-  loading = false,
-  disabled = false,
-  secondary = false,
-  tertiary = false,
-  type = "button",
   size = "md",
-  style,
-  onClick,
+  scheme = "black",
+  loading = false,
+  fullWidth,
+  ...props
 }: Props) => {
+  const theme = useTheme()
+
+  const height =
+    typeof size === "string" ? theme.sizes.buttonHeight[size] : size
+
+  const selectedScheme = theme.scheme.buttons[scheme]
+
   return (
-    <StyledButton
-      className={className}
-      block={block}
-      size={size}
-      type={type}
-      fullWidth={fullWidth}
-      secondary={secondary}
-      tertiary={tertiary}
-      onClick={onClick}
-      style={style}
-      disabled={disabled}
+    <Flex
+      as={motion.button}
+      type="button"
+      whileTap={{ scale: 0.9, opacity: 0.8 }}
+      justify="center"
+      align="center"
+      gap="6px"
+      h={height}
+      w={fullWidth ? "100%" : undefined}
+      px="18px"
+      whiteSpace="nowrap"
+      borderRadius="16px"
+      fontWeight="bold"
+      transition="background-color 200ms"
+      {...selectedScheme}
+      {...props}
     >
-      <div
-        css={css`
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 8px;
-        `}
-      >
-        {loading && <Spinner />} {children}
-      </div>
-    </StyledButton>
+      {loading && <Spinner />} {props.children}
+    </Flex>
   )
 }
-
-const fontSizeMap: { [key in Size]: string } = {
-  sm: "xs",
-  md: "sm",
-  lg: "base",
-}
-
-const StyledButton = styled.button<Omit<Props, "children">>`
-  ${({ theme, size, fullWidth, block }) => css`
-    display: ${block ? "block" : "inline-block"};
-    height: ${theme.previousTheme.buttonHeights[size!]};
-    width: ${fullWidth && "100%"};
-    padding: 0 18px;
-    white-space: nowrap;
-
-    font-size: ${theme.previousTheme.fontSizes[
-      fontSizeMap[size as Size] as Size
-    ]};
-    border-radius: ${theme.previousTheme.borderRadiuses[size as Size]};
-    transition: all 200ms;
-  `}
-
-  ${({ theme }) =>
-    css`
-      background-color: ${theme.colors.gray0900};
-      color: ${theme.colors.white};
-      border: 1px solid ${theme.colors.gray0200};
-
-      :hover {
-        opacity: 0.8;
-      }
-    `}
-
-  font-weight: bold;
-  border: none;
-  outline: none;
-  cursor: pointer;
-
-  ${({ theme, secondary }) =>
-    secondary &&
-    css`
-      background-color: ${theme.colors.white};
-      color: ${theme.colors.gray0900};
-      border: 1px solid ${theme.colors.gray0200};
-
-      :hover {
-        opacity: 0.8;
-      }
-    `}
-
-  ${({ theme, tertiary }) =>
-    tertiary &&
-    css`
-      background-color: ${theme.colors.gray0200};
-      color: ${theme.colors.gray0900};
-      border: 1px solid ${theme.colors.gray0300};
-
-      :hover {
-        opacity: 0.8;
-      }
-    `}
-
-  &:disabled {
-    cursor: not-allowed;
-    filter: contrast(-0.8);
-    opacity: 0.8;
-  }
-`
 
 export default Button

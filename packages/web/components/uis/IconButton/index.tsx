@@ -1,60 +1,42 @@
-import type { ComponentProps } from "react"
-import { css } from "@emotion/react"
-import styled from "@emotion/styled"
+import type { ComponentProps, MouseEventHandler } from "react"
+import { Center } from "@chakra-ui/react"
+import { useTheme } from "@emotion/react"
+import { motion } from "framer-motion"
 import { Icon } from "~/components/uis"
 
-interface Props {
-  name: ComponentProps<typeof Icon>["name"]
-  iconSize?: ComponentProps<typeof Icon>["size"]
-  iconColor?: ComponentProps<typeof Icon>["color"]
-  className?: ComponentProps<typeof StyledIconButton>["className"]
-  size?: ComponentProps<typeof StyledIconButton>["size"]
-  type?: ComponentProps<typeof StyledIconButton>["type"]
-  onClick?: ComponentProps<typeof StyledIconButton>["onClick"]
-  noOutlined?: ComponentProps<typeof StyledIconButton>["noOutlined"]
+interface Props extends ComponentProps<typeof Center> {
+  icon: Pick<ComponentProps<typeof Icon>, "name" | "size" | "color" | "fill">
+  size?: "sm" | "md" | "lg"
+  type?: ComponentProps<typeof motion.button>["type"]
+  onClick?: MouseEventHandler<HTMLDivElement> &
+    MouseEventHandler<HTMLButtonElement>
 }
 
 const IconButton = ({
-  name,
-  type = "button",
-  iconColor,
-  className,
-  onClick,
+  icon,
   size = "lg",
-  iconSize = "sm",
-  noOutlined = false,
+  type = "button",
+  onClick,
+  ...props
 }: Props) => {
+  const theme = useTheme()
+
   return (
-    <StyledIconButton
-      noOutlined={noOutlined}
-      className={className}
+    <Center
+      as={motion.button}
+      whileTap={{ scale: 0.9, opacity: 0.8 }}
       type={type}
       onClick={onClick}
-      size={size}
+      border={`2px solid ${theme.colors.gray0100}`}
+      borderRadius="16px"
+      w={`${theme.sizes.buttonHeight[size]}`}
+      h={`${theme.sizes.buttonHeight[size]}`}
+      cursor="pointer"
+      {...props}
     >
-      <Icon name={name} color={iconColor} size={iconSize} />
-    </StyledIconButton>
+      <Icon {...icon} />
+    </Center>
   )
 }
-
-const StyledIconButton = styled.button<{
-  size: "sm" | "md" | "lg"
-  noOutlined: boolean
-}>`
-  ${({ theme, size, noOutlined }) => css`
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 16px;
-    background-color: white;
-    border: ${noOutlined ? 0 : 2}px solid ${theme.colors.gray0100};
-    min-width: ${theme.previousTheme.buttonHeights[size]};
-    min-height: ${theme.previousTheme.buttonHeights[size]};
-    width: ${theme.previousTheme.buttonHeights[size]};
-    height: ${theme.previousTheme.buttonHeights[size]};
-    cursor: pointer;
-  `}
-`
 
 export default IconButton

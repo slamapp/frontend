@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { Center } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import type { Variants } from "framer-motion"
@@ -64,10 +65,14 @@ const TopNavigation = () => {
       <Wrapper>
         <IconGroup>
           {isBack && (
-            <CursorIcon
-              name="chevron-left"
+            <Center
+              h="32px"
+              w="24px"
+              cursor="pointer"
               onClick={handleClickBack || handleDefaultBack}
-            />
+            >
+              <Icon name="chevron-left" size="md" />
+            </Center>
           )}
         </IconGroup>
         <IconGroup>
@@ -185,10 +190,6 @@ const IconGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-`
-
-const CursorIcon = styled(Icon)`
-  cursor: pointer;
 `
 
 const CustomButton = styled.div`

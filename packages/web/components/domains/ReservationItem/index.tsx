@@ -35,26 +35,9 @@ const ReservationItem = ({ reservation }: Props) => {
 
       <HStack justify="flex-end" spacing="8px" m="16px 0 20px 0">
         <CourtItem.FavoritesToggle courtId={reservation.court.id} />
-        <CourtItem.Share
-          court={{
-            id: reservation.court.id,
-            name: reservation.court.name,
-            latitude: reservation.court.latitude,
-            longitude: reservation.court.longitude,
-          }}
-        />
-        <CourtItem.ChatLink
-          chatroomId={
-            // TODO: Court에 chatroomId 포함시키기
-            "1"
-          }
-        />
-        <CourtItem.KakaoMapLink
-          latitude={reservation.court.latitude}
-          longitude={reservation.court.longitude}
-          courtName={reservation.court.name}
-          type="findRoad"
-        />
+        <CourtItem.Share court={reservation.court} />
+        <CourtItem.ChatLink chatroom={{ id: "1" }} />
+        <CourtItem.Map court={reservation.court} type="findRoad" />
       </HStack>
     </VStack>
   )

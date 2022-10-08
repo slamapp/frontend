@@ -1,4 +1,16 @@
 const sizes = {
+  iconSize: {
+    xs: "12px",
+    sm: "16px",
+    md: "20px",
+    lg: "24px",
+    xl: "28px",
+  },
+  buttonHeight: {
+    sm: "27px",
+    md: "38px",
+    lg: "42px",
+  },
   // 2px scale
   scale0000: "2px",
   scale0100: "4px",

@@ -322,14 +322,7 @@ const Page = () => {
               <Box mx="16px" mb="16px">
                 <Link href="/login" passHref>
                   <a>
-                    <Button
-                      size="lg"
-                      fullWidth
-                      css={css`
-                        background-color: ${theme.colors.kakaoYellow};
-                        color: ${theme.colors.kakaoLoginBrown};
-                      `}
-                    >
+                    <Button size="lg" fullWidth scheme="kakao">
                       <Image
                         src="/assets/icon-kakao.svg"
                         alt="카카오 로그인 로고"
@@ -363,8 +356,6 @@ const BottomModal = ({
   courtsRefetch: () => void
   onCourtReady: (court: APICourt) => void
 }) => {
-  const theme = useTheme()
-
   const courtQuery = useCourtQuery(
     courtId || "",
     { date: getTimezoneDateStringFromDate(selectedDate), time: "morning" },
@@ -422,25 +413,9 @@ const BottomModal = ({
             </VStack>
             <HStack spacing="8px">
               <CourtItem.FavoritesToggle courtId={courtQuery.data.id} />
-              <CourtItem.Share
-                court={{
-                  id: courtQuery.data.id,
-                  latitude: courtQuery.data.latitude,
-                  longitude: courtQuery.data.longitude,
-                  name: courtQuery.data.name,
-                }}
-              />
-              <CourtItem.ChatLink
-                chatroomId={
-                  // TODO: Court에 chatroomId 포함시키기
-                  "1"
-                }
-              />
-              <CourtItem.KakaoMapLink
-                latitude={courtQuery.data.latitude}
-                longitude={courtQuery.data.longitude}
-                courtName={courtQuery.data.name}
-              />
+              <CourtItem.Share court={courtQuery.data} />
+              <CourtItem.ChatLink chatroom={{ id: "1" }} />
+              <CourtItem.Map court={courtQuery.data} />
 
               {getLocalToken() ? (
                 <Link

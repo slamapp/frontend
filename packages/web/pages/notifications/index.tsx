@@ -193,12 +193,7 @@ const getNotificationMarkUp = ({
 
       return (
         <>
-          <CourtItem.KakaoMapLink
-            latitude={court.latitude}
-            longitude={court.longitude}
-            courtName={court.name}
-            type="findRoad"
-          />
+          <CourtItem.Map court={court} type="findRoad" />
           <div>
             <div>
               <Link href={`courts/${court.id}/${dayFormatted}`} passHref>

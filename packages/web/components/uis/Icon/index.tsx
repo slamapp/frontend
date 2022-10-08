@@ -1,8 +1,64 @@
-import type { ComponentProps } from "react"
 import Image from "next/image"
-import { css } from "@emotion/react"
-import styled from "@emotion/styled"
+import { css, useTheme } from "@emotion/react"
 import Icons from "feather-icons"
+import type { EmotionTheme } from "~/styles/emotionTheme"
+
+interface Props {
+  name: FeatherIconNameType
+  size?: keyof EmotionTheme["sizes"]["iconSize"] | number
+  strokeWidth?: number
+  rotate?: number
+  color?: string
+  fill?: boolean
+}
+
+const Icon = ({
+  name = "box",
+  size = "md",
+  strokeWidth = 2,
+  color = "#222",
+  fill = false,
+}: Props) => {
+  const theme = useTheme()
+
+  const sizePx =
+    typeof size === "string" ? theme.sizes.iconSize[size] : `${size}px`
+
+  return (
+    <i
+      css={css`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: ${sizePx};
+        height: ${sizePx};
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      `}
+    >
+      <Image
+        width={sizePx}
+        height={sizePx}
+        src={`data:image/svg+xml;base64,${Buffer.from(
+          Icons.icons[name].toSvg({
+            strokeWidth,
+            stroke: color,
+            width: size,
+            height: size,
+            fill: fill ? color : "transparent",
+          }),
+          "utf8"
+        ).toString("base64")}`}
+        alt={name}
+      />
+    </i>
+  )
+}
+
+export default Icon
 
 type FeatherIconNameType =
   | "arrow-down-left"
@@ -278,104 +334,3 @@ type FeatherIconNameType =
   | "zap"
   | "zoom-in"
   | "zoom-out"
-
-interface Props {
-  name: FeatherIconNameType
-  size?: "sm" | "md" | "lg" | number
-  strokeWidth?: number
-  rotate?: number
-  color?: string
-  fill?: boolean
-  [prop: string]: any
-}
-
-const Icon = ({
-  name = "box",
-  size = "md",
-  strokeWidth = 2,
-  rotate = 0,
-  color = "#222",
-  fill = false,
-  ...props
-}: Props) => {
-  const icon = Icons.icons[name]
-  const svg = icon
-    ? icon.toSvg({
-        strokeWidth,
-        stroke: color,
-        width: size,
-        height: size,
-        fill: fill ? color : "transparent",
-      })
-    : ""
-  const base64 = Buffer.from(svg, "utf8").toString("base64")
-
-  return (
-    <IconWrapper {...props} size={size} rotate={rotate}>
-      <Image
-        width={typeof size === "number" ? size : 24}
-        height={typeof size === "number" ? size : 24}
-        src={`data:image/svg+xml;base64,${base64}`}
-        alt={name}
-      />
-    </IconWrapper>
-  )
-}
-
-const IconWrapper = styled.i<Pick<Props, "size" | "rotate">>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ${({ size, theme }) => css`
-    width: ${typeof size === "string"
-      ? theme.previousTheme.iconSize[size]
-      : `${size}px`};
-    height: ${typeof size === "string"
-      ? theme.previousTheme.iconSize[size]
-      : `${size}px`};
-  `}
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`
-
-Icon.Toggle = ({
-  size = "lg",
-  iconSize = "sm",
-  name = "star",
-  checked,
-  onChange,
-}: {
-  name?: ComponentProps<typeof Icon>["name"]
-  size?: ComponentProps<typeof StyledIconToggleLabel>["size"]
-  iconSize?: ComponentProps<typeof Icon>["size"]
-  checked: ComponentProps<"input">["checked"]
-  onChange: ComponentProps<"input">["onChange"]
-}) => (
-  <StyledIconToggleLabel size={size}>
-    <Icon color="#FFC700" name={name} fill={checked} size={iconSize} />
-    <input type="checkbox" checked={checked} onChange={onChange} />
-  </StyledIconToggleLabel>
-)
-
-const StyledIconToggleLabel = styled.label<{ size: "sm" | "md" | "lg" }>`
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 16px;
-  background-color: ${({ theme }) => theme.colors.white};
-  border: 2px solid ${({ theme }) => theme.colors.gray0100};
-  min-width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  min-height: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  width: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  height: ${({ theme, size }) => theme.previousTheme.buttonHeights[size]};
-  cursor: pointer;
-  input {
-    display: none;
-  }
-`
-
-export default Icon

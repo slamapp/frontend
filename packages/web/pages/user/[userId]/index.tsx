@@ -94,24 +94,13 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                     </a>
                   </Link>
                 </div>
-                <div>
-                  <dt>평가 점수</dt>
-                  <dd
-                    onClick={() => alert("개발 예정")}
-                    style={{ cursor: "pointer" }}
-                  >
-                    6.3
-                  </dd>
-                </div>
               </StatBar>
             </MainInfoArea>
             <Description>{description}</Description>
             <div>
               <Link href="/user/edit" passHref>
                 <a>
-                  <Button fullWidth secondary>
-                    프로필 편집
-                  </Button>
+                  <Button fullWidth>프로필 편집</Button>
                 </a>
               </Link>
             </div>
@@ -197,15 +186,6 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
                     </a>
                   </Link>
                 </div>
-                <div>
-                  <dt>평가 점수</dt>
-                  <dd
-                    onClick={() => alert("개발 예정")}
-                    style={{ cursor: "pointer" }}
-                  >
-                    6.3
-                  </dd>
-                </div>
               </StatBar>
             </MainInfoArea>
             <Description>{description}</Description>
@@ -213,9 +193,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
               <ButtonContainer>
                 <Link href={`/chat/${id}`} passHref>
                   <a style={{ width: "100%" }}>
-                    <Button fullWidth secondary>
-                      메시지
-                    </Button>
+                    <Button fullWidth>메시지</Button>
                   </a>
                 </Link>
                 <FollowButton
@@ -230,9 +208,7 @@ const Page = withRouteGuard<{ userId: APIUser["id"] }>(
               <div>
                 <Link href="/user/edit" passHref>
                   <a>
-                    <Button fullWidth secondary>
-                      프로필 편집
-                    </Button>
+                    <Button fullWidth>프로필 편집</Button>
                   </a>
                 </Link>
               </div>
@@ -306,7 +282,7 @@ const FavoriteList = ({
             passHref
           >
             <a>
-              <Button secondary>지도 보기</Button>
+              <Button>지도 보기</Button>
             </a>
           </Link>
         </Flex>
@@ -334,7 +310,7 @@ const FollowButton = ({
       disabled={
         followCreateMutation.isLoading || followCancelMutation.isLoading
       }
-      tertiary={isFollowing}
+      scheme={isFollowing ? "black" : "white"}
       onClick={() => {
         if (isFollowing) {
           followCancelMutation.mutate({ receiverId }, { onSuccess: refetch })

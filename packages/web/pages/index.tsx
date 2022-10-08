@@ -123,11 +123,7 @@ const Page = withRouteGuard("private", () => {
                         name: court.name,
                       }}
                     />
-                    <CourtItem.KakaoMapLink
-                      latitude={court.latitude}
-                      longitude={court.longitude}
-                      courtName={court.name}
-                    />
+                    <CourtItem.Map court={court} />
                   </HStack>
                   <Link
                     href={{
@@ -139,7 +135,7 @@ const Page = withRouteGuard("private", () => {
                     passHref
                   >
                     <a style={{ flex: 1, display: "flex" }}>
-                      <Button size="lg" style={{ flex: 1 }}>
+                      <Button size="lg" fullWidth>
                         예약하기
                       </Button>
                     </a>

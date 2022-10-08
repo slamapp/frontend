@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { HStack, VStack } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
+import { css } from "@emotion/react"
 import { Logo } from "~/components/domains"
 import { Button, IconButton } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
@@ -13,7 +13,6 @@ import { BottomFixedGradient } from "~/layouts"
 const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string
 
 const Page = withRouteGuard("prevented", () => {
-  const theme = useTheme()
   const router = useRouter()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_LOGIN")
@@ -56,17 +55,14 @@ const Page = withRouteGuard("prevented", () => {
         <HStack m="16px" spacing="8px">
           <Link href="/map" passHref>
             <a>
-              <IconButton name="map" />
+              <IconButton icon={{ name: "map" }} />
             </a>
           </Link>
           <Button
             onClick={handleClickLogin}
             size="lg"
-            style={{
-              flex: 1,
-              backgroundColor: theme.colors.kakaoYellow,
-              color: theme.colors.kakaoLoginBrown,
-            }}
+            style={{ flex: 1 }}
+            scheme="kakao"
           >
             <Image
               src="/assets/icon-kakao.svg"

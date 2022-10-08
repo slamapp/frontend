@@ -34,10 +34,18 @@ const ZoomInOut = () => {
       `}
     >
       <TapAnimate onTapStart={handleClickZoomIn}>
-        <IconButton name="plus" type="button" iconColor="#6B94E5" noOutlined />
+        <IconButton
+          icon={{ name: "plus", color: "#6B94E5" }}
+          border="none"
+          bgColor="white"
+        />
       </TapAnimate>
       <TapAnimate onTapStart={handleClickZoomOut}>
-        <IconButton name="minus" type="button" iconColor="#6B94E5" noOutlined />
+        <IconButton
+          icon={{ name: "minus", color: "#6B94E5" }}
+          border="none"
+          bgColor="white"
+        />
       </TapAnimate>
     </motion.div>
   )
