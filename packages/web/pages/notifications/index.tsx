@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef } from "react"
+import Link from "next/link"
 import { Box, HStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { motion } from "framer-motion"
 import { CourtItem, NoItemMessage, ProfileAvatar } from "~/components/domains"
-import { LinkStrong, Skeleton } from "~/components/uis"
+import { Skeleton } from "~/components/uis"
 import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
 import { withRouteGuard } from "~/hocs"
 import { useIntersectionObserver } from "~/hooks"
@@ -177,9 +178,11 @@ const getNotificationMarkUp = ({
             user={{ id: sender.id, profileImage: sender.profileImage }}
           />
           <div>
-            <LinkStrong href={`user/${sender.id}`}>
-              {sender.nickname}
-            </LinkStrong>
+            <Link href={`user/${sender.id}`} passHref>
+              <a>
+                <strong>{sender.nickname}</strong>
+              </a>
+            </Link>
             님이 팔로우 했습니다
           </div>
         </>
@@ -198,9 +201,13 @@ const getNotificationMarkUp = ({
           />
           <div>
             <div>
-              <LinkStrong href={`courts/${court.id}/${dayFormatted}`}>
-                {`${court.name} (농구 골대 ${court.basketCount} 개)`}
-              </LinkStrong>
+              <Link href={`courts/${court.id}/${dayFormatted}`} passHref>
+                <a>
+                  <strong>
+                    {court.name} (농구 골대 {court.basketCount} 개)
+                  </strong>
+                </a>
+              </Link>{" "}
               에서 함께 농구할 사람을 급하게 구하고 있습니다
             </div>
             <div>{court.image}</div>
