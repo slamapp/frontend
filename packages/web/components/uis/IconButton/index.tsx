@@ -57,12 +57,4 @@ const StyledIconButton = styled.button<{
   `}
 `
 
-IconButton.Share = ({
-  onClick,
-}: {
-  onClick?: ComponentProps<typeof IconButton>["onClick"]
-}) => {
-  return <IconButton name="share-2" onClick={onClick} />
-}
-
 export default IconButton

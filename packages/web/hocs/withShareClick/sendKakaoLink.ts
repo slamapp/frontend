@@ -1,36 +1,23 @@
-import { Toast } from "~/components/uis"
-
 const DEFAULT_MESSAGE_TEMPLATE_ID = 69947
-const DEFAULT_REQUEST_URL = "https://slams.app"
 
-const defaultSettings = {
-  templateId: DEFAULT_MESSAGE_TEMPLATE_ID,
-  requestUrl: DEFAULT_REQUEST_URL,
-  installTalk: true,
-}
-
-export interface TemplateArgs {
-  title: string
-  subtitle: string
-  path: string
-  callbackText: string
-  buttonText: string
-}
-
-type SendKakaoLink = (templateArgs: TemplateArgs) => void
-
-export const sendKakaoLink: SendKakaoLink = ({
-  title,
-  subtitle,
-  path,
-  callbackText,
-  buttonText,
-}) => {
-  const settings = {
-    callback: () => {
-      Toast.show(callbackText)
-    },
-    templateArgs: { title, subtitle, path, buttonText },
+type Options = {
+  requestUrl: string
+  templateArgs: {
+    title: string
+    subtitle: string
+    path: string
+    buttonText: string
   }
-  window.Kakao.Link.sendScrap({ ...defaultSettings, ...settings })
+  callback?: () => void
+}
+
+export const sendKakaoLink = ({ requestUrl, templateArgs }: Options) => {
+  console.log(requestUrl)
+
+  window.Kakao.Link.sendScrap({
+    templateId: DEFAULT_MESSAGE_TEMPLATE_ID,
+    requestUrl,
+    installTalk: true,
+    templateArgs,
+  })
 }

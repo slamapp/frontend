@@ -3,20 +3,18 @@ import copy from "copy-to-clipboard"
 import { Toast } from "~/components/uis"
 import useKakao from "~/hooks/useKakao"
 import { positionType, proficiencyType } from "~/types/domains/objects/user"
-import type { TemplateArgs } from "./sendKakaoLink"
 import { sendKakaoLink } from "./sendKakaoLink"
 import type { ShareArgs } from "./types"
 
-const CLIENT_DOMAIN = "https://slams.app"
-
 const handleShareClick = (
   isKakaoInitialized: boolean,
-  templateArgs: TemplateArgs
+  options: Parameters<typeof sendKakaoLink>[0]
 ) => {
   if (isKakaoInitialized) {
-    sendKakaoLink(templateArgs)
+    sendKakaoLink(options)
   } else {
-    const copyText = CLIENT_DOMAIN + templateArgs.path
+    const copyText = options.requestUrl + options.templateArgs.path
+
     copy(copyText)
     Toast.show(`🔗 공유하실 링크를 복사했습니다 (${copyText})`)
   }
@@ -26,50 +24,88 @@ const withShareClick = (...args: ShareArgs) => {
   return (
     WrappedComponent: ComponentType<{ onClick?: (e?: UIEvent) => void }>
   ) => {
-    const [isKakaoInitialized] = useKakao()
+    const defaultOptions = {
+      requestUrl:
+        window.location.hostname === "localhost"
+          ? `http://${window.location.host}`
+          : `https://${window.location.host}`,
+      templateArgs: {
+        title: "슬램",
+        subtitle: "같이 농구할 사람이 없다고?",
+        path: "",
+        buttonText: "슬램에서 보기",
+      },
+      callback: () =>
+        Toast.show("성공적으로 공유했어요", {
+          status: "success",
+        }),
+    }
 
-    let templateArgs: TemplateArgs
+    let options: Parameters<typeof sendKakaoLink>[0] = {
+      ...defaultOptions,
+    }
 
     switch (args[0]) {
       case "court": {
         const { id, name } = args[1].court
-        templateArgs = {
-          title: `${name}`,
-          subtitle: `${name}에서 농구 한판 어때요?🏀`,
-          path: `/courts?courtId=${id}`,
-          callbackText: `농구장 공유에 성공했어요🥳`,
-          buttonText: `${name} 놀러가기`,
+        options = {
+          ...defaultOptions,
+          templateArgs: {
+            title: `${name}`,
+            subtitle: `${name}에서 농구 한판 어때요?`,
+            path: `/map?courtId=${id}`,
+            buttonText: `${name} 놀러가기`,
+          },
+          callback: () =>
+            Toast.show(`농구장 공유에 성공했어요🥳`, {
+              status: "success",
+            }),
         }
+
         break
       }
 
       case "courtChatroom": {
         const { id, court } = args[1].courtChatroom
-        templateArgs = {
-          title: `${court.name}`,
-          subtitle: `우리 ${court.name} 채팅방으로 놀러오세요🏀`,
-          path: `/chat/${id}`,
-          callbackText: `농구장 채팅방 공유에 성공했어요🥳`,
-          buttonText: `${court.name} 놀러가기`,
+        options = {
+          ...defaultOptions,
+          templateArgs: {
+            title: `${court.name}`,
+            subtitle: `우리 ${court.name} 채팅방으로 놀러오세요`,
+            path: `/chat/${id}`,
+            buttonText: `${court.name} 놀러가기`,
+          },
+          callback: () =>
+            Toast.show(`농구장 채팅방 공유에 성공했어요🥳`, {
+              status: "success",
+            }),
         }
+
         break
       }
 
       case "user": {
         const { id, nickname, positions, proficiency } = args[1].user
-        templateArgs = {
-          title: `${nickname}`,
-          subtitle: `${nickname}를 소개합니다🏀
-포지션: ${positions.map((position) => positionType[position]).join(", ")}${
-            proficiency
-              ? `
-실력: ${proficiencyType[proficiency]}`
-              : ""
-          }`,
-          path: `/user/${id}`,
-          callbackText: `사용자 공유에 성공했어요🥳`,
-          buttonText: `${nickname}를 만나러 가기`,
+        options = {
+          ...defaultOptions,
+          templateArgs: {
+            title: `${nickname}`,
+            subtitle: `${nickname}를 소개합니다
+  포지션: ${positions.map((position) => positionType[position]).join(", ")}${
+              proficiency
+                ? `
+  실력: ${proficiencyType[proficiency]}`
+                : ""
+            }`,
+            path: `/user/${id}`,
+            buttonText: `${nickname}를 만나러 가기`,
+          },
+          callback: () =>
+            Toast.show(`사용자 공유에 성공했어요🥳`, {
+              status: "success",
+            }),
         }
+
         break
       }
 
@@ -80,9 +116,11 @@ const withShareClick = (...args: ShareArgs) => {
       }
     }
 
+    const [isKakaoInitialized] = useKakao()
+
     return (
       <WrappedComponent
-        onClick={() => handleShareClick(isKakaoInitialized, templateArgs)}
+        onClick={() => handleShareClick(isKakaoInitialized, options)}
       />
     )
   }
