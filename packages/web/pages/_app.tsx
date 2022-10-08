@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </ChakraProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
-      <EssentialImagePreload lazyLoadTime={2000} />
+      <EssentialImagePreload lazyLoadTime={10} />
     </>
   )
 }

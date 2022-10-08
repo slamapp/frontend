@@ -38,7 +38,7 @@ const EssentialImagePreload = ({ lazyLoadTime = 5000 }: Props) => {
         "/assets/basketball/fire_on_reservated.gif",
         "/assets/basketball/only_ball_500.gif",
       ].map((url) => (
-        <img key={url} src={url} loading="lazy" />
+        <img key={url} src={url} />
       ))}
     </div>
   ) : null
