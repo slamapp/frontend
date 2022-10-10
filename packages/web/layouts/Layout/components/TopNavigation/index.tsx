@@ -22,7 +22,7 @@ const TopNavigation = () => {
   const theme = useTheme()
 
   const { scrollToTop } = useScrollContainer()
-  const getNotificationsQuery = useGetInfiniteNotificationsQuery()
+  const getNotificationsInfiniteQuery = useGetInfiniteNotificationsQuery()
   const currentUserQuery = useCurrentUserQuery()
   const { navigationProps } = useNavigationContext()
 
@@ -44,9 +44,9 @@ const TopNavigation = () => {
   }
 
   const unreadNotificationsCount =
-    getNotificationsQuery.data?.pages.reduce(
+    getNotificationsInfiniteQuery.data?.pages.reduce(
       (acc, { contents }) =>
-        contents.reduce((acc, { isRead }) => acc + (isRead ? 0 : 1), 0),
+        acc + contents.reduce((acc, { isRead }) => acc + (isRead ? 0 : 1), 0),
       0
     ) || 0
 
@@ -76,7 +76,7 @@ const TopNavigation = () => {
           )}
         </IconGroup>
         <IconGroup>
-          {isNotifications && getNotificationsQuery.isSuccess && (
+          {isNotifications && getNotificationsInfiniteQuery.isSuccess && (
             <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
               <Link href="/notifications" passHref>
                 <a>

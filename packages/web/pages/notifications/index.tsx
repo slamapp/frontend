@@ -1,14 +1,17 @@
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import type { NextPage } from "next"
 import Link from "next/link"
 import { Box, HStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
+import { useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { motion } from "framer-motion"
+import { api } from "~/api"
 import { CourtItem, NoItemMessage, ProfileAvatar } from "~/components/domains"
 import { InfiniteScrollSensor, Skeleton } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
+import { key } from "~/features"
 import { useGetInfiniteNotificationsQuery } from "~/features/notifications"
 import { useCurrentUserQuery } from "~/features/users"
 import type { APINotification } from "~/types/domains/objects"
@@ -16,10 +19,19 @@ import type { APINotification } from "~/types/domains/objects"
 dayjs.extend(relativeTime)
 
 const Page: NextPage = () => {
+  const queryClient = useQueryClient()
   const currentUserQuery = useCurrentUserQuery()
   const getNotificationsInfiniteQuery = useGetInfiniteNotificationsQuery()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_NOTIFICATIONS")
+
+  useEffect(() => {
+    return () => {
+      api.notifications.readAllNotifications().then(() => {
+        queryClient.invalidateQueries([...key.notifications.all])
+      })
+    }
+  }, [])
 
   if (!currentUserQuery.isSuccess || !getNotificationsInfiniteQuery.isSuccess) {
     return null
