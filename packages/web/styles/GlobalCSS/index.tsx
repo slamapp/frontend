@@ -4,8 +4,15 @@ const GlobalCSS = () => {
   return (
     <Global
       styles={css`
+        /* 앱처럼 user-select 제거 */
         * {
           user-select: none;
+        }
+
+        /* iOS 15이하 대응 */
+        input,
+        textarea {
+          user-select: auto;
         }
 
         h1,
