@@ -1,10 +1,13 @@
 import type { ReactNode } from "react"
-import { useCallback } from "react"
 import Link from "next/link"
 import { Box, HStack, Text } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import { Icon, IconButton, Toast } from "~/components/uis"
-import { useGetFavoritesQuery } from "~/features/favorites"
+import { Icon, IconButton } from "~/components/uis"
+import {
+  useCancelFavoriteMutation,
+  useCreateFavoriteMutation,
+  useGetFavoritesQuery,
+} from "~/features/favorites"
 import { useCurrentUserQuery } from "~/features/users"
 import { withShareClick } from "~/hocs"
 import type { APIChatRoom, APICourt } from "~/types/domains/objects"
@@ -21,20 +24,26 @@ const CourtItem = {
   FavoritesToggle: ({ courtId }: { courtId: APICourt["id"] }) => {
     const currentUserQuery = useCurrentUserQuery()
     const getFavoritesQuery = useGetFavoritesQuery()
+    const createFavoriteMutation = useCreateFavoriteMutation()
+    const cancelFavoriteMutation = useCancelFavoriteMutation()
 
     if (!currentUserQuery.isSuccess || !getFavoritesQuery.isSuccess) {
       return null
     }
 
-    const isChecked = getFavoritesQuery.data.contents.some(
-      ({ court }) => court.id === courtId
+    const foundFavorite = getFavoritesQuery.data.contents.find(
+      (favorite) => favorite.court.id === courtId
     )
 
     return (
       <IconButton
-        icon={{ name: "star", color: "#FFC700", fill: isChecked }}
+        icon={{ name: "star", color: "#FFC700", fill: !!foundFavorite }}
         onClick={() => {
-          Toast.show("TODO: favorite 토글")
+          if (!foundFavorite) {
+            createFavoriteMutation.mutate({ courtId })
+          } else {
+            cancelFavoriteMutation.mutate({ favoriteId: foundFavorite.id })
+          }
         }}
       />
     )
