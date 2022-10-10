@@ -4,7 +4,7 @@ import { api } from "~/api"
 import { key } from "~/features"
 
 const useCourtQuery = (
-  courtId: Parameters<typeof api.courts.getCourtDetail>[0],
+  courtId: Parameters<typeof api.courts.getCourtDetail>[0] | null,
   filter: Parameters<typeof api.courts.getCourtDetail>[1],
   options?: Pick<
     UseQueryOptions<
@@ -14,14 +14,20 @@ const useCourtQuery = (
     >,
     "onSuccess" | "enabled"
   >
-) =>
-  useQuery(
-    key.courts.oneFilter(courtId, filter),
-    () =>
-      api.courts.getCourtDetail(courtId, filter).then(({ data }) =>
-        new Promise<string>((resolve) => {
-          const latLng = new kakao.maps.LatLng(data.latitude, data.longitude)
-          searchAddrFromCoords(latLng, (result, status) => {
+) => {
+  return useQuery(
+    key.courts.oneFilter(courtId || "", filter),
+    async () => {
+      const { data } = await api.courts.getCourtDetail(courtId || "", filter)
+
+      const latLng = new kakao.maps.LatLng(data.latitude, data.longitude)
+      const geocoder = new kakao.maps.services.Geocoder()
+
+      const address = await new Promise((resolve) => {
+        geocoder.coord2RegionCode(
+          latLng.getLng(),
+          latLng.getLat(),
+          (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
               // 도로명 주소
               if (result[0]) {
@@ -31,14 +37,18 @@ const useCourtQuery = (
               else if (result[1]) {
                 resolve(result[1].address_name)
               }
+            } else {
+              resolve("주소가 존재하지 않습니다.")
             }
-            // 주소가 없는 경우
-            resolve("주소가 존재하지 않습니다.")
-          })
-        }).then((address) => ({ ...data, address }))
-      ),
-    { ...options }
+          }
+        )
+      })
+
+      return { ...data, address }
+    },
+    { enabled: !!courtId && !!kakao.maps.services?.Geocoder, ...options }
   )
+}
 
 export default useCourtQuery
 
@@ -48,7 +58,4 @@ function searchAddrFromCoords(
     result: kakao.maps.services.RegionCode[],
     status: kakao.maps.services.Status
   ) => void
-) {
-  const geocoder = new kakao.maps.services.Geocoder()
-  geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback)
-}
+) {}

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { NextPage } from "next"
 import Image from "next/image"
@@ -5,7 +6,6 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
 import {
@@ -72,6 +72,24 @@ const Page: NextPage = () => {
       time: "morning",
     },
     { enabled: !!bounds }
+  )
+
+  const courtQuery = useCourtQuery(
+    selectedCourtId,
+    { date: getTimezoneDateStringFromDate(selectedDate), time: "morning" },
+    {
+      onSuccess: (data) => {
+        setTimeout(() => {
+          mapRef.current?.relayout()
+          mapRef.current?.panTo(
+            new kakao.maps.LatLng(data.latitude, data.longitude)
+          )
+          courtsQuery.refetch()
+        }, 0)
+
+        setCenter({ latitude: data.latitude, longitude: data.longitude })
+      },
+    }
   )
 
   useMountPage("PAGE_MAP")
@@ -309,20 +327,72 @@ const Page: NextPage = () => {
               )
             })}
         </Map>
-        <BottomModal
-          selectedDate={selectedDate}
-          courtId={selectedCourtId}
-          map={mapRef.current}
-          courtsRefetch={() => {
-            courtsQuery.refetch()
-          }}
-          onCourtReady={({ latitude, longitude }) => {
-            setCenter({
-              latitude,
-              longitude,
-            })
-          }}
-        />
+        <BottomModal isOpen={!!selectedCourtId}>
+          <Box p="24px 20px 20px 20px" h="100%">
+            {courtQuery.isLoading ? (
+              <VStack align="stretch" justify="space-between" h="100%">
+                <VStack align="stretch">
+                  <HStack>
+                    <Skeleton.Circle size={32} />
+                    <Skeleton.Box
+                      height={24}
+                      style={{ flex: 1, marginRight: 80 }}
+                    />
+                  </HStack>
+                  <Skeleton.Paragraph fontSize={12} line={2} />
+                </VStack>
+
+                <HStack spacing="8px">
+                  <Skeleton.Box height={36} width={36} />
+                  <Skeleton.Box height={36} width={36} />
+                  <Skeleton.Box height={36} width={36} />
+                  <Skeleton.Box height={36} width={36} />
+                  <Skeleton.Box height={36} style={{ flex: 1 }} />
+                </HStack>
+              </VStack>
+            ) : (
+              courtQuery.isSuccess && (
+                <VStack align="stretch" justify="space-between" h="100%">
+                  <VStack align="stretch" spacing="8px">
+                    <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
+                    <CourtItem.Address>
+                      {courtQuery.data.address}
+                    </CourtItem.Address>
+                  </VStack>
+                  <HStack spacing="8px">
+                    <CourtItem.FavoritesToggle courtId={courtQuery.data.id} />
+                    <CourtItem.Share court={courtQuery.data} />
+                    <CourtItem.ChatLink chatroom={{ id: "1" }} />
+                    <CourtItem.Map court={courtQuery.data} />
+
+                    {getLocalToken() ? (
+                      <Link
+                        href={`reservations/courts/${
+                          courtQuery.data.id
+                        }?date=${getTimezoneDateStringFromDate(selectedDate)}`}
+                        passHref
+                      >
+                        <a style={{ flex: 1, display: "flex" }}>
+                          <Button size="lg" style={{ flex: 1 }}>
+                            예약하기
+                          </Button>
+                        </a>
+                      </Link>
+                    ) : (
+                      <Link href="/login" passHref>
+                        <a style={{ flex: 1, display: "flex" }}>
+                          <Button size="lg" style={{ flex: 1 }}>
+                            로그인하고 예약하기
+                          </Button>
+                        </a>
+                      </Link>
+                    )}
+                  </HStack>
+                </VStack>
+              )
+            )}
+          </Box>
+        </BottomModal>
       </Flex>
       <AnimatePresence mode="wait">
         {selectedCourtId ??
@@ -358,105 +428,23 @@ const Page: NextPage = () => {
 export default Page
 
 const BottomModal = ({
-  courtId,
-  selectedDate,
-  map,
-  courtsRefetch,
-  onCourtReady,
+  isOpen,
+  children,
 }: {
-  courtId: APICourt["id"] | null
-  selectedDate: Dayjs
-  map?: kakao.maps.Map
-  courtsRefetch: () => void
-  onCourtReady: (court: APICourt) => void
+  isOpen: boolean
+  children: ReactNode
 }) => {
-  const courtQuery = useCourtQuery(
-    courtId || "",
-    { date: getTimezoneDateStringFromDate(selectedDate), time: "morning" },
-    {
-      enabled: !!courtId,
-      onSuccess: (data) => {
-        setTimeout(() => {
-          map?.relayout()
-          map?.panTo(new kakao.maps.LatLng(data.latitude, data.longitude))
-          courtsRefetch()
-        }, 0)
-
-        onCourtReady(data)
-      },
-    }
-  )
-
   return (
-    <VStack
-      align="stretch"
-      justify="space-between"
+    <Box
       pos="sticky"
       bgColor="white"
-      h={`${courtId ? 210 : 0}px`}
-      p={courtId ? "24px 20px 20px 20px" : ""}
+      h={`${isOpen ? 210 : 0}px`}
       transition="height 100ms ease-in-out"
       boxShadow="0px 0px 16px rgba(0, 0, 0, 0.3)"
       overflow="hidden"
       borderRadius="16px 16px 0 0"
     >
-      {courtQuery.isLoading ? (
-        <>
-          <VStack align="stretch">
-            <HStack>
-              <Skeleton.Circle size={32} />
-              <Skeleton.Box height={24} style={{ flex: 1, marginRight: 80 }} />
-            </HStack>
-            <Skeleton.Paragraph fontSize={12} line={2} />
-          </VStack>
-
-          <HStack spacing="8px">
-            <Skeleton.Box height={36} width={36} />
-            <Skeleton.Box height={36} width={36} />
-            <Skeleton.Box height={36} width={36} />
-            <Skeleton.Box height={36} width={36} />
-            <Skeleton.Box height={36} style={{ flex: 1 }} />
-          </HStack>
-        </>
-      ) : (
-        courtQuery.isSuccess && (
-          <>
-            <VStack align="stretch" spacing="8px">
-              <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
-              <CourtItem.Address>{courtQuery.data.address}</CourtItem.Address>
-            </VStack>
-            <HStack spacing="8px">
-              <CourtItem.FavoritesToggle courtId={courtQuery.data.id} />
-              <CourtItem.Share court={courtQuery.data} />
-              <CourtItem.ChatLink chatroom={{ id: "1" }} />
-              <CourtItem.Map court={courtQuery.data} />
-
-              {getLocalToken() ? (
-                <Link
-                  href={`reservations/courts/${
-                    courtQuery.data.id
-                  }?date=${getTimezoneDateStringFromDate(selectedDate)}`}
-                  passHref
-                >
-                  <a style={{ flex: 1, display: "flex" }}>
-                    <Button size="lg" style={{ flex: 1 }}>
-                      예약하기
-                    </Button>
-                  </a>
-                </Link>
-              ) : (
-                <Link href="/login" passHref>
-                  <a style={{ flex: 1, display: "flex" }}>
-                    <Button size="lg" style={{ flex: 1 }}>
-                      로그인하고 예약하기
-                    </Button>
-                  </a>
-                </Link>
-              )}
-            </HStack>
-          </>
-        )
-      )}
-    </VStack>
+      {children}
+    </Box>
   )
 }
