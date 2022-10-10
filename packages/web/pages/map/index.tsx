@@ -394,9 +394,10 @@ const Page: NextPage = () => {
           </Box>
         </BottomModal>
       </Flex>
+
       <AnimatePresence mode="wait">
         {selectedCourtId ??
-          (!currentUserQuery.data && (
+          (!currentUserQuery.isSuccess && (
             <BottomFixedGradient
               as={motion.div}
               initial={{ y: 300 }}
