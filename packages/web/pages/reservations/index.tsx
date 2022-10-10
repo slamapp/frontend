@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import type { NextPage } from "next"
 import { Text, VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import { api } from "~/api"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
-import { withRouteGuard } from "~/hocs"
+import { useNavigationContext } from "~/contexts/hooks"
+import { useGetUpcomingReservationsQuery } from "~/features/reservations"
+import { useCurrentUserQuery } from "~/features/users"
 
-const Page = withRouteGuard("private", () => {
-  const { authProps, getMyReservations } = useAuthContext()
-  const { reservations: upcomingReservations } = authProps
+const Page: NextPage = () => {
+  const currentUserQuery = useCurrentUserQuery()
+  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
+
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_RESERVATIONS")
-  useEffect(() => {
-    getMyReservations()
-  }, [])
 
   const ref = useRef<HTMLDivElement>(null)
   const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">("UPCOMING")
@@ -65,7 +65,7 @@ const Page = withRouteGuard("private", () => {
     return () => observer.disconnect()
   }, [ref, loadMore])
 
-  if (!authProps.currentUser) {
+  if (!currentUserQuery.isSuccess) {
     return null
   }
 
@@ -88,8 +88,8 @@ const Page = withRouteGuard("private", () => {
         </Text>
       </TabContainer>
       <TabContentsWrapper>
-        {activeTab === "UPCOMING" ? (
-          upcomingReservations.length === 0 ? (
+        {activeTab === "UPCOMING" && getUpcomingReservationsQuery.isSuccess ? (
+          getUpcomingReservationsQuery.data.contents.length === 0 ? (
             <NoItemMessage
               title="다가올 예약이 아직 없어요 🤔"
               type="reservation"
@@ -98,7 +98,7 @@ const Page = withRouteGuard("private", () => {
             />
           ) : (
             <VStack align="stretch" spacing="8px">
-              {upcomingReservations.map((reservation) => (
+              {getUpcomingReservationsQuery.data.contents.map((reservation) => (
                 <ReservationItem
                   key={reservation.id}
                   reservation={reservation}
@@ -125,7 +125,7 @@ const Page = withRouteGuard("private", () => {
       <div ref={ref} style={{ height: 20 }} />
     </PageContainer>
   )
-})
+}
 
 export default Page
 

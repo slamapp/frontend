@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import {
@@ -24,7 +25,6 @@ import { Map } from "~/components/kakaos"
 import { Button, Icon, Toast } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
 import { useCourtCreateMutation } from "~/features/courts"
-import { withRouteGuard } from "~/hocs"
 import { BottomFixedGradient, useScrollContainer } from "~/layouts"
 import type { APICourt } from "~/types/domains/objects/court"
 
@@ -38,7 +38,7 @@ type FieldValues = Pick<
   > | null
 }
 
-const Page = withRouteGuard("private", () => {
+const Page: NextPage = () => {
   const router = useRouter()
   const courtCreateMutation = useCourtCreateMutation()
 
@@ -177,7 +177,7 @@ const Page = withRouteGuard("private", () => {
       <DevTool control={control} />
     </>
   )
-})
+}
 
 export default Page
 

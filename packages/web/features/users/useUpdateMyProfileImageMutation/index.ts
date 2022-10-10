@@ -1,17 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { api } from "~/api"
-import { useAuthContext } from "~/contexts/hooks"
 import key from "~/features/key"
+import { useCurrentUserQuery } from "~/features/users"
 
 const useUpdateMyProfileImageMutation = () => {
-  const { authProps } = useAuthContext()
+  const currentUserQuery = useCurrentUserQuery()
   const queryClient = useQueryClient()
 
   return useMutation(api.users.updateMyProfileImage, {
     onSuccess: () => {
-      if (authProps.currentUser) {
+      if (currentUserQuery.isSuccess) {
         return queryClient.resetQueries(
-          key.users.myProfile(authProps.currentUser.id)
+          key.users.myProfile(currentUserQuery.data.id)
         )
       }
     },

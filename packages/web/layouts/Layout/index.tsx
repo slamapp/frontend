@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react"
 import { Box } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import { useNavigationContext } from "~/contexts/hooks"
+import { useCurrentUserQuery } from "~/features/users"
 import { useIntersectionObserver } from "~/hooks"
 import {
   BottomNavigation,
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
+  const currentUserQuery = useCurrentUserQuery()
   const { navigationProps, setTopNavIsShrink } = useNavigationContext()
   const { isBottomNavigation, isTopNavigation } = navigationProps
 
@@ -54,7 +56,9 @@ const Layout = ({ children }: Props) => {
         >
           {children}
         </main>
-        {isBottomNavigation && <BottomNavigation />}
+        {isBottomNavigation && currentUserQuery.isSuccess && (
+          <BottomNavigation />
+        )}
       </ScrollContainer>
     </>
   )

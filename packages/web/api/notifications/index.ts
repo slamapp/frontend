@@ -1,5 +1,6 @@
 import type { AxiosPromise } from "axios"
 import { http } from "~/api/core"
+import type { CursorListRequestOption } from "~/types/domains/lists/CursorList"
 import type { APINotification } from "~/types/domains/objects"
 
 export default {
@@ -7,11 +8,7 @@ export default {
     size = 3,
     lastId,
     isFirst = false,
-  }: {
-    size?: number
-    lastId?: APINotification["id"] | null
-    isFirst?: boolean
-  }) =>
+  }: CursorListRequestOption<APINotification>) =>
     http.auth.get<{
       contents: APINotification[]
       lastId: APINotification["id"] | null

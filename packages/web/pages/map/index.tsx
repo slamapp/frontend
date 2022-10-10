@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import type { NextPage } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -10,8 +11,11 @@ import { AnimatePresence, motion } from "framer-motion"
 import { CourtItem, DatePicker } from "~/components/domains"
 import { Map } from "~/components/kakaos"
 import { Button, Icon, Skeleton, Toast } from "~/components/uis"
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { useNavigationContext } from "~/contexts/hooks"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
+import { useGetFavoritesQuery } from "~/features/favorites"
+import { useGetUpcomingReservationsQuery } from "~/features/reservations"
+import { useCurrentUserQuery } from "~/features/users"
 import { useLocalStorage } from "~/hooks"
 import { BottomFixedGradient } from "~/layouts"
 import type { APICourt } from "~/types/domains/objects"
@@ -27,11 +31,12 @@ const DEFAULT_POSITION = {
   longitude: 126.978,
 }
 
-const Page = () => {
+const Page: NextPage = () => {
   const theme = useTheme()
   const router = useRouter()
-  const { authProps } = useAuthContext()
-  const { favorites, reservations, currentUser } = authProps
+  const currentUserQuery = useCurrentUserQuery()
+  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
+  const getFavoritesQuery = useGetFavoritesQuery()
 
   const [selectedCourtId, setSelectedCourtId] = useState<APICourt["id"] | null>(
     null
@@ -89,8 +94,8 @@ const Page = () => {
   }, [selectedCourtId, setNavigationTitle])
 
   const handleCustomButton = useCallback(() => {
-    router.push(currentUser ? "/courts/create" : "/login")
-  }, [currentUser])
+    router.push(currentUserQuery.data ? "/courts/create" : "/login")
+  }, [!!currentUserQuery.data])
 
   useMountCustomButtonEvent(
     <HStack spacing="4px">
@@ -164,12 +169,16 @@ const Page = () => {
             courtsQuery.data.map(({ court, reservationMaxCount }) => {
               let imageSrc = "/assets/basketball/animation_off_400.png"
 
-              const isReservatedCourt = reservations.some(
-                ({ court: { id } }) => id === court.id
-              )
-              const isFavoritedCourt = favorites.some(
-                ({ court: { id } }) => id === court.id
-              )
+              const isReservatedCourt =
+                getUpcomingReservationsQuery.isSuccess &&
+                getUpcomingReservationsQuery.data.contents.some(
+                  ({ court: { id } }) => id === court.id
+                )
+              const isFavoritedCourt =
+                getFavoritesQuery.isSuccess &&
+                getFavoritesQuery.data.contents.some(
+                  ({ court: { id } }) => id === court.id
+                )
 
               if (isFavoritedCourt) {
                 imageSrc = "/assets/basketball/animation_off_favorited.png"
@@ -312,7 +321,7 @@ const Page = () => {
       </Flex>
       <AnimatePresence mode="wait">
         {selectedCourtId ??
-          (authProps.currentUser === null && (
+          (!currentUserQuery.data && (
             <BottomFixedGradient
               as={motion.div}
               initial={{ y: 300 }}

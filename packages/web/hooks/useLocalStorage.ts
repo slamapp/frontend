@@ -4,20 +4,21 @@ const useLocalStorage = <T = any>(
   key: string,
   initialValue: T
 ): [storedValue: T, setValue: (value: T) => void] => {
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const item = localStorage.getItem(key)
+  const [storedValue, setStoredValue] = useState(
+    typeof document !== "undefined"
+      ? () => {
+          try {
+            const item = localStorage.getItem(key)
 
-      return item ? JSON.parse(item) : initialValue
-    } catch (error) {
-      // 서버사이드에서 실행되지 않도록 처리
-      if (typeof document !== "undefined") {
-        console.error(error)
-      }
+            return item ? JSON.parse(item) : initialValue
+          } catch (error) {
+            console.error(error)
 
-      return initialValue
-    }
-  })
+            return initialValue
+          }
+        }
+      : initialValue
+  )
 
   const setValue = (value: T) => {
     try {

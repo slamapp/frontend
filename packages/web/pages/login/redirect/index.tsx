@@ -1,57 +1,39 @@
-import { useCallback, useEffect, useState } from "react"
-import Link from "next/link"
+import { useEffect } from "react"
+import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { Spinner } from "@chakra-ui/react"
-import styled from "@emotion/styled"
-import { useAuthContext } from "~/contexts/hooks"
-import { useLocalToken } from "~/hooks/domain"
+import { css } from "@emotion/react"
+import { useLocalToken, useTokenCookie } from "~/hooks/domain"
 
-const RedirectPage = () => {
-  const [isNeedReLogin, setIsNeedReLogin] = useState(false)
+const Page: NextPage = () => {
   const [, setToken] = useLocalToken()
-  const { authProviderInit } = useAuthContext()
   const router = useRouter()
+  const token = router.query.token as string
 
-  const getCurrentUserData = useCallback(async () => {
-    setToken(router.query.token as string)
-    try {
-      await authProviderInit()
-      router.replace("/")
-    } catch (error) {
-      console.error(error)
-      setIsNeedReLogin(true)
-    }
-  }, [router.query.token as string, authProviderInit, setToken])
+  const tokenCookie = useTokenCookie()
 
   useEffect(() => {
-    if (router.query.token) {
-      getCurrentUserData()
+    if (token) {
+      setToken(token)
+      tokenCookie.set(token)
+
+      router.replace("/")
     }
-  }, [router.query.token as string])
+  }, [token])
 
   return (
-    <PageContainer>
-      {isNeedReLogin ? (
-        <div>
-          <Link href="/login" passHref>
-            <a>
-              <button>다시 로그인하러 가기</button>
-            </a>
-          </Link>
-        </div>
-      ) : (
-        <Spinner />
-      )}
-    </PageContainer>
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      `}
+    >
+      <Spinner />
+    </div>
   )
 }
 
-export default RedirectPage
-
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`
+export default Page

@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import type { CompatClient, messageCallbackType } from "@stomp/stompjs"
 import { api } from "~/api"
-import { useAuthContext } from "~/contexts/hooks"
-import type { APINotification } from "~/types/domains/objects"
+import { useCurrentUserQuery } from "~/features/users"
 import { getLocalToken } from "~/utils"
 
 type UseStomp = () => {
@@ -15,44 +14,41 @@ const useStomp: UseStomp = () => {
   const [compatClient, setCompatClient] = useState<CompatClient | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const { authProps, unshiftNotification } = useAuthContext()
-
-  const handleError = useCallback((e: any) => {
-    console.log(e)
-    setIsLoading(false)
-  }, [])
+  const currentUserQuery = useCurrentUserQuery()
 
   useEffect(() => {
-    if (authProps.currentUser) {
+    if (currentUserQuery.isSuccess) {
       const newClient = api.sockets.getCompatClient()
       newClient.connect(
         { Authorization: { token: `Bearer ${getLocalToken()}` } },
         () => {
-          if (!authProps.currentUser) {
+          if (!currentUserQuery.isSuccess) {
             return
           }
           setIsConnected(true)
           setIsLoading(false)
           subscribe(
             newClient,
-            `/user/${authProps.currentUser.id}/notification`,
+            `/user/${currentUserQuery.data.id}/notification`,
             (body) => {
               console.log(body)
-              unshiftNotification(body as APINotification)
             }
           )
           subscribe(newClient, `/user/${`courtId`}/chat`, (body) => {
             console.log(body)
           })
         },
-        handleError
+        (e: any) => {
+          console.log(e)
+          setIsLoading(false)
+        }
       )
 
       setCompatClient(newClient)
 
       return () => newClient.disconnect()
     }
-  }, [authProps.currentUser])
+  }, [currentUserQuery.isSuccess, currentUserQuery.data?.id])
 
   const sendAuth: ReturnType<UseStomp>["sendAuth"] = (destination, body) => {
     console.log("SEND,Token", "destination:", destination, "body:", body)

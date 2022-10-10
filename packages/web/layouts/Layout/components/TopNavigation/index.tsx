@@ -1,4 +1,3 @@
-import { useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { Center } from "@chakra-ui/react"
@@ -8,7 +7,9 @@ import type { Variants } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
 import { Badge, Icon } from "~/components/uis"
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
+import { useNavigationContext } from "~/contexts/hooks"
+import { useGetInfiniteNotificationsQuery } from "~/features/notifications"
+import { useCurrentUserQuery } from "~/features/users"
 import { useScrollContainer } from "~/layouts"
 
 const titleWrapperVariants: Variants = {
@@ -19,9 +20,10 @@ const titleWrapperVariants: Variants = {
 
 const TopNavigation = () => {
   const theme = useTheme()
-  const { authProps } = useAuthContext()
-  const { scrollToTop } = useScrollContainer()
 
+  const { scrollToTop } = useScrollContainer()
+  const getNotificationsQuery = useGetInfiniteNotificationsQuery()
+  const currentUserQuery = useCurrentUserQuery()
   const { navigationProps } = useNavigationContext()
 
   const {
@@ -41,14 +43,12 @@ const TopNavigation = () => {
     router.back()
   }
 
-  const unreadNotificationsCount = useMemo(
-    () =>
-      authProps.notifications.reduce(
-        (acc, { isRead }) => acc + (isRead ? 0 : 1),
-        0
-      ),
-    [authProps.notifications]
-  )
+  const unreadNotificationsCount =
+    getNotificationsQuery.data?.pages.reduce(
+      (acc, { contents }) =>
+        contents.reduce((acc, { isRead }) => acc + (isRead ? 0 : 1), 0),
+      0
+    ) || 0
 
   return (
     <Container
@@ -76,7 +76,7 @@ const TopNavigation = () => {
           )}
         </IconGroup>
         <IconGroup>
-          {isNotifications && (
+          {isNotifications && getNotificationsQuery.isSuccess && (
             <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
               <Link href="/notifications" passHref>
                 <a>
@@ -102,11 +102,11 @@ const TopNavigation = () => {
               </Link>
             </Badge>
           )}
-          {isProfile && authProps.currentUser && (
+          {isProfile && currentUserQuery.isSuccess && (
             <ProfileAvatar
               user={{
-                id: authProps.currentUser.id,
-                profileImage: authProps.currentUser.profileImage,
+                id: currentUserQuery.data.id,
+                profileImage: currentUserQuery.data.profileImage,
               }}
             />
           )}

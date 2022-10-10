@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { useEffect, useState } from "react"
+import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import {
@@ -37,11 +38,10 @@ import {
   useMyProfileQuery,
   useUpdateMyProfileImageMutation,
 } from "~/features/users"
-import { withRouteGuard } from "~/hocs"
 import { BottomFixedGradient, useScrollContainer } from "~/layouts"
 import type { APIUser } from "~/types/domains/objects"
 
-const Page = withRouteGuard("private", () => {
+const Page: NextPage = () => {
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_USER_EDIT")
 
@@ -56,7 +56,7 @@ const Page = withRouteGuard("private", () => {
   }
 
   return <EditForm initialData={myProfileQuery.data} />
-})
+}
 
 export default Page
 

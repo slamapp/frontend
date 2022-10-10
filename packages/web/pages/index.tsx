@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
@@ -7,12 +8,12 @@ import { motion } from "framer-motion"
 import { api } from "~/api"
 import { CourtItem, NoItemMessage } from "~/components/domains"
 import { Button, Icon, Skeleton } from "~/components/uis"
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
-import { withRouteGuard } from "~/hocs"
+import { useNavigationContext } from "~/contexts/hooks"
+import { useCurrentUserQuery } from "~/features/users"
 import type { APIFavorite } from "~/types/domains/objects"
 
-const Page = withRouteGuard("private", () => {
-  const { authProps } = useAuthContext()
+const Page: NextPage = () => {
+  const currentUserQuery = useCurrentUserQuery()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_FAVORITES")
 
@@ -30,12 +31,12 @@ const Page = withRouteGuard("private", () => {
   }
 
   useEffect(() => {
-    if (authProps.currentUser) {
+    if (currentUserQuery.isSuccess) {
       getPageFavorites()
     }
-  }, [authProps.currentUser])
+  }, [currentUserQuery.isSuccess])
 
-  if (!authProps.currentUser) {
+  if (!currentUserQuery.isSuccess) {
     return null
   }
 
@@ -148,6 +149,6 @@ const Page = withRouteGuard("private", () => {
       </VStack>
     </Box>
   )
-})
+}
 
 export default Page

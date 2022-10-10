@@ -3,8 +3,9 @@ import { useCallback } from "react"
 import Link from "next/link"
 import { Box, HStack, Text } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import { Icon, IconButton } from "~/components/uis"
-import { useAuthContext } from "~/contexts/hooks"
+import { Icon, IconButton, Toast } from "~/components/uis"
+import { useGetFavoritesQuery } from "~/features/favorites"
+import { useCurrentUserQuery } from "~/features/users"
 import { withShareClick } from "~/hocs"
 import type { APIChatRoom, APICourt } from "~/types/domains/objects"
 
@@ -18,39 +19,23 @@ const CourtItem = {
       <IconButton icon={{ name: "share-2" }} onClick={onClick} />
     )),
   FavoritesToggle: ({ courtId }: { courtId: APICourt["id"] }) => {
-    const { authProps, createFavorite, deleteFavorite } = useAuthContext()
+    const currentUserQuery = useCurrentUserQuery()
+    const getFavoritesQuery = useGetFavoritesQuery()
 
-    const isChecked = authProps.favorites.some(
-      ({ court }) => court.id === courtId
-    )
-
-    const handleToggleFavorite = useCallback(() => {
-      if (isChecked) {
-        const deletingFavorite = authProps.favorites.find(
-          ({ court }) => court.id === courtId
-        )
-        if (deletingFavorite) {
-          deleteFavorite(deletingFavorite.id)
-        }
-      } else {
-        createFavorite(courtId)
-      }
-    }, [
-      isChecked,
-      courtId,
-      createFavorite,
-      deleteFavorite,
-      authProps.favorites,
-    ])
-
-    if (!authProps.currentUser) {
+    if (!currentUserQuery.isSuccess || !getFavoritesQuery.isSuccess) {
       return null
     }
+
+    const isChecked = getFavoritesQuery.data.contents.some(
+      ({ court }) => court.id === courtId
+    )
 
     return (
       <IconButton
         icon={{ name: "star", color: "#FFC700", fill: isChecked }}
-        onClick={handleToggleFavorite}
+        onClick={() => {
+          Toast.show("TODO: favorite 토글")
+        }}
       />
     )
   },

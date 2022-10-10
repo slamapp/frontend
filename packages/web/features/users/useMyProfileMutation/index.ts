@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { api } from "~/api"
-import { useAuthContext } from "~/contexts/hooks"
 import key from "~/features/key"
+import useCurrentUserQuery from "../useCurrentUserQuery"
 
 const useMyProfileMutation = () => {
-  const { authProps } = useAuthContext()
+  const currentUserQuery = useCurrentUserQuery()
   const queryClient = useQueryClient()
 
   return useMutation(
@@ -12,9 +12,9 @@ const useMyProfileMutation = () => {
       api.users.updateMyProfile(data).then(({ data }) => data),
     {
       onSuccess: () => {
-        if (authProps.currentUser) {
+        if (currentUserQuery.isSuccess) {
           return queryClient.invalidateQueries(
-            key.users.myProfile(authProps.currentUser.id)
+            key.users.myProfile(currentUserQuery.data.id)
           )
         }
       },

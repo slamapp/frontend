@@ -1,7 +1,7 @@
-import { withRouteGuard } from "~/hocs"
+import type { NextPage } from "next"
 
-const Page = withRouteGuard("private", () => {
+const Page: NextPage = () => {
   return <div>Chatroom Page</div>
-})
+}
 
 export default Page

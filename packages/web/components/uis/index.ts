@@ -5,5 +5,6 @@ export { default as Button } from "./Button"
 export { default as Icon } from "./Icon"
 export { default as Skeleton } from "./Skeleton"
 export { default as LayerOver } from "./LayerOver"
+export { default as InfiniteScrollSensor } from "./InfiniteScrollSensor"
 /* eslint-disable import/no-cycle */
 export { default as IconButton } from "./IconButton"

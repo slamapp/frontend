@@ -4,3 +4,4 @@ export { default as useUserFollowerInfiniteQuery } from "./useUserFollowerInfini
 export { default as useUserFollowingInfiniteQuery } from "./useUserFollowingInfiniteQuery"
 export { default as useMyProfileMutation } from "./useMyProfileMutation"
 export { default as useUpdateMyProfileImageMutation } from "./useUpdateMyProfileImageMutation"
+export { default as useCurrentUserQuery } from "./useCurrentUserQuery"

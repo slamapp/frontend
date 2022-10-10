@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef } from "react"
+import { Fragment } from "react"
+import type { NextPage } from "next"
 import Link from "next/link"
 import { Box, HStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
@@ -6,41 +7,21 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { motion } from "framer-motion"
 import { CourtItem, NoItemMessage, ProfileAvatar } from "~/components/domains"
-import { Skeleton } from "~/components/uis"
-import { useAuthContext, useNavigationContext } from "~/contexts/hooks"
-import { withRouteGuard } from "~/hocs"
-import { useIntersectionObserver } from "~/hooks"
+import { InfiniteScrollSensor, Skeleton } from "~/components/uis"
+import { useNavigationContext } from "~/contexts/hooks"
+import { useGetInfiniteNotificationsQuery } from "~/features/notifications"
+import { useCurrentUserQuery } from "~/features/users"
 import type { APINotification } from "~/types/domains/objects"
 
 dayjs.extend(relativeTime)
 
-const Page = withRouteGuard("private", () => {
-  const { authProps, getMoreNotifications, readAllNotifications } =
-    useAuthContext()
+const Page: NextPage = () => {
+  const currentUserQuery = useCurrentUserQuery()
+  const getNotificationsInfiniteQuery = useGetInfiniteNotificationsQuery()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_NOTIFICATIONS")
 
-  const ref = useRef<HTMLDivElement>(null)
-  const entry = useIntersectionObserver(ref, {})
-
-  useEffect(() => {
-    if (entry?.isIntersecting) {
-      getMoreNotifications()
-    }
-  }, [entry?.isIntersecting])
-
-  const isNeedReadAllNotifications = useMemo(
-    () => authProps.notifications.some((notification) => !notification.isRead),
-    [authProps.notifications]
-  )
-
-  useEffect(() => {
-    if (isNeedReadAllNotifications) {
-      readAllNotifications()
-    }
-  }, [])
-
-  if (!authProps.currentUser) {
+  if (!currentUserQuery.isSuccess || !getNotificationsInfiniteQuery.isSuccess) {
     return null
   }
 
@@ -51,7 +32,7 @@ const Page = withRouteGuard("private", () => {
       `}
     >
       <Box mx="16px">
-        {authProps.notifications.length === 0 && (
+        {getNotificationsInfiniteQuery.data.pages.length === 0 && (
           <NoItemMessage
             type="notification"
             title="알림이 없습니다"
@@ -59,33 +40,44 @@ const Page = withRouteGuard("private", () => {
             buttonTitle="지도에서 내 주변 농구장 찾기"
           />
         )}
-        {authProps.notifications.map((notification) => (
-          <NotificationItem
-            key={notification.createdAt}
-            notification={notification}
-          />
-        ))}
-      </Box>
-      <div ref={ref} style={{ minHeight: 200 }}>
-        {authProps.notificationLastId ? (
-          <div>
-            <SkeletonNotification />
-            <SkeletonNotification />
-          </div>
-        ) : (
-          authProps.notifications.length === 0 || (
-            <NoItemMessage
-              type="notification"
-              title="더 받아올 알림이 없습니다"
-              description="유용한 정보를 알림에서 모아 보실 수 있어요"
-              buttonTitle="지도에서 내 주변 농구장 찾기"
-            />
+        {getNotificationsInfiniteQuery.data.pages.map(
+          ({ contents, lastId }, pageIndex) => (
+            <Fragment key={pageIndex}>
+              {contents.map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  notification={notification}
+                />
+              ))}
+              {pageIndex !==
+              getNotificationsInfiniteQuery.data.pages.length -
+                1 ? null : lastId ? (
+                <InfiniteScrollSensor
+                  onIntersected={() =>
+                    getNotificationsInfiniteQuery.fetchNextPage()
+                  }
+                  render={(ref) => (
+                    <div ref={ref} style={{ minHeight: 200 }}>
+                      <SkeletonNotification />
+                      <SkeletonNotification />
+                    </div>
+                  )}
+                />
+              ) : (
+                <NoItemMessage
+                  type="notification"
+                  title="더 받아올 알림이 없습니다"
+                  description="유용한 정보를 알림에서 모아 보실 수 있어요"
+                  buttonTitle="지도에서 내 주변 농구장 찾기"
+                />
+              )}
+            </Fragment>
           )
         )}
-      </div>
+      </Box>
     </div>
   )
-})
+}
 
 export default Page
 

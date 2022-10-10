@@ -10,9 +10,6 @@ const getInterceptedInstance = (requestType: RequestType) =>
   setInterceptors(
     axios.create({
       baseURL: endPoint + subfix,
-      headers: {
-        "Content-Type": "application/json",
-      },
     }),
     requestType
   )
@@ -21,7 +18,6 @@ const setInterceptors = (instance: AxiosInstance, requestType: RequestType) => {
   instance.interceptors.request.use((config) => ({
     ...config,
     headers: {
-      ...config.headers,
       ...((requestType === "AUTH" || requestType === "AUTH_FILE") && {
         Authorization: `Bearer ${getLocalToken()}`,
       }),

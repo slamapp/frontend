@@ -1,7 +1,7 @@
+import type { NextPage } from "next"
 import Head from "next/head"
-import { withRouteGuard } from "~/hocs"
 
-const Page = withRouteGuard("private", () => {
+const Page: NextPage = () => {
   return (
     <div>
       <Head>
@@ -10,6 +10,6 @@ const Page = withRouteGuard("private", () => {
       </Head>
     </div>
   )
-})
+}
 
 export default Page

@@ -1,3 +1,4 @@
+import type { NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
@@ -7,12 +8,11 @@ import { css } from "@emotion/react"
 import { Logo } from "~/components/domains"
 import { Button, IconButton } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
-import { withRouteGuard } from "~/hocs"
 import { BottomFixedGradient } from "~/layouts"
 
 const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string
 
-const Page = withRouteGuard("prevented", () => {
+const Page: NextPage = () => {
   const router = useRouter()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_LOGIN")
@@ -76,6 +76,6 @@ const Page = withRouteGuard("prevented", () => {
       </BottomFixedGradient>
     </>
   )
-})
+}
 
 export default Page

@@ -1,8 +1,8 @@
 import type { UseQueryOptions } from "@tanstack/react-query"
 import { useQuery } from "@tanstack/react-query"
 import { api } from "~/api"
-import { useAuthContext } from "~/contexts/hooks"
 import { key } from "~/features"
+import { useCurrentUserQuery } from "~/features/users"
 
 const useMyProfileQuery = (
   options?: Pick<
@@ -10,13 +10,13 @@ const useMyProfileQuery = (
     "onSuccess" | "enabled"
   >
 ) => {
-  const { authProps } = useAuthContext()
+  const currentUserQuery = useCurrentUserQuery()
 
   return useQuery(
-    key.users.myProfile(authProps.currentUser?.id || "no Id"),
+    key.users.myProfile(currentUserQuery.data?.id || "no Id"),
     () => api.users.getMyProfile().then(({ data }) => data),
     {
-      enabled: !!authProps.currentUser?.id,
+      enabled: !!currentUserQuery.isSuccess,
       ...options,
     }
   )

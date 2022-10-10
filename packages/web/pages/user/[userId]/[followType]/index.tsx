@@ -1,24 +1,22 @@
 import type { ComponentPropsWithoutRef } from "react"
-import { Fragment, useEffect, useRef } from "react"
-import type { GetServerSideProps } from "next"
+import { Fragment } from "react"
+import type { GetServerSideProps, NextPage } from "next"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { NoItemMessage, ProfileAvatar } from "~/components/domains"
-import { Button, Skeleton } from "~/components/uis"
+import { Button, InfiniteScrollSensor, Skeleton } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
 import {
   useUserFollowerInfiniteQuery,
   useUserFollowingInfiniteQuery,
 } from "~/features/users"
-import { withRouteGuard } from "~/hocs"
-import { useIntersectionObserver } from "~/hooks"
 import type { APIUser } from "~/types/domains/objects"
 
 type FollowType = "following" | "follower"
 
-const Page = withRouteGuard<{
-  userId: APIUser["id"]
-  followType: FollowType
-}>("private", ({ userId, followType }) => {
+const Page: NextPage<{ userId: APIUser["id"]; followType: FollowType }> = ({
+  userId,
+  followType,
+}) => {
   const { useMountPage } = useNavigationContext()
   useMountPage(
     followType === "follower" ? "PAGE_USER_FOLLOWER" : "PAGE_USER_FOLLOWING"
@@ -44,7 +42,18 @@ const Page = withRouteGuard<{
               userFollowerInfiniteQuery.data.pages.length -
                 1 ? null : lastId ? (
                 <InfiniteScrollSensor
-                  onIntersected={userFollowerInfiniteQuery.fetchNextPage}
+                  onIntersected={() =>
+                    userFollowerInfiniteQuery.fetchNextPage()
+                  }
+                  render={(ref) => (
+                    <HStack ref={ref} width="100%" px="16px" my="16px">
+                      <Skeleton.Circle size={32} />
+                      <Box flex={1}>
+                        <Skeleton.Box width={80} height={20} />
+                      </Box>
+                      <Skeleton.Box width={70} height={30} />
+                    </HStack>
+                  )}
                 />
               ) : (
                 <NoItemMessage
@@ -68,7 +77,18 @@ const Page = withRouteGuard<{
               userFollowingInfiniteQuery.data.pages.length -
                 1 ? null : lastId ? (
                 <InfiniteScrollSensor
-                  onIntersected={userFollowingInfiniteQuery.fetchNextPage}
+                  onIntersected={() =>
+                    userFollowingInfiniteQuery.fetchNextPage()
+                  }
+                  render={(ref) => (
+                    <HStack ref={ref} width="100%" px="16px" my="16px">
+                      <Skeleton.Circle size={32} />
+                      <Box flex={1}>
+                        <Skeleton.Box width={80} height={20} />
+                      </Box>
+                      <Skeleton.Box width={70} height={30} />
+                    </HStack>
+                  )}
                 />
               ) : (
                 <NoItemMessage
@@ -83,7 +103,7 @@ const Page = withRouteGuard<{
         )}
     </VStack>
   )
-})
+}
 
 export default Page
 
@@ -117,28 +137,3 @@ const FollowListItem = ({
     </div>
   </HStack>
 )
-
-const InfiniteScrollSensor = ({
-  onIntersected,
-}: {
-  onIntersected: () => void
-}) => {
-  const ref = useRef<HTMLDivElement>(null)
-  const entry = useIntersectionObserver(ref, { threshold: 0.5 })
-
-  useEffect(() => {
-    if (entry?.isIntersecting) {
-      onIntersected()
-    }
-  }, [entry?.isIntersecting])
-
-  return (
-    <HStack ref={ref} width="100%" px="16px" my="16px">
-      <Skeleton.Circle size={32} />
-      <Box flex={1}>
-        <Skeleton.Box width={80} height={20} />
-      </Box>
-      <Skeleton.Box width={70} height={30} />
-    </HStack>
-  )
-}
