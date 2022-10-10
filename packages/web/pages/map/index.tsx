@@ -8,7 +8,11 @@ import { css, useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
-import { CourtItem, DatePicker } from "~/components/domains"
+import {
+  CourtItem,
+  DatePicker,
+  EssentialImagePreload,
+} from "~/components/domains"
 import { Map } from "~/components/kakaos"
 import { Button, Icon, Skeleton, Toast } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
@@ -119,6 +123,7 @@ const Page: NextPage = () => {
 
   return (
     <>
+      <EssentialImagePreload lazyLoadTime={10} />
       <Flex direction="column" flex={1}>
         <DatePicker
           initialValue={selectedDate}

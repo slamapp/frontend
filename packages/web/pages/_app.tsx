@@ -10,7 +10,7 @@ import {
   QueryClientProvider,
   SocketProvider,
 } from "~/contexts"
-import { EssentialImagePreload, Layout } from "~/layouts"
+import { Layout } from "~/layouts"
 import { GlobalCSS, chakraTheme, emotionTheme } from "~/styles"
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -38,7 +38,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </QueryClientProvider>
       </CookiesProvider>
-      <EssentialImagePreload lazyLoadTime={10} />
     </>
   )
 }
