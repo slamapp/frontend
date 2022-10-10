@@ -27,7 +27,7 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const logout = () => {
     tokenCookie.remove()
     localStorage.clear()
-    queryClient.clear()
+    queryClient.invalidateQueries()
   }
 
   return (
