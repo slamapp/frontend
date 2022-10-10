@@ -3,10 +3,10 @@ import { NextResponse } from "next/server"
 import { TOKEN_KEY } from "./constants"
 
 const privatePaths = ["/user", "/courts/create", "/chat/list", "/reservations"]
-const privateRedirectPath = "/login"
+const privateRedirectPath = "/map"
 
 const preventedPaths = ["/login"]
-const preventedRedirectPath = "/map"
+const preventedRedirectPath = "/"
 
 const middleware: NextMiddleware = (request) => {
   const slamToken = request.cookies.get(TOKEN_KEY)
@@ -28,7 +28,8 @@ const middleware: NextMiddleware = (request) => {
     privatePaths.reduce(
       (acc, path) => acc || request.nextUrl.pathname.includes(path),
       false
-    )
+    ) ||
+    request.nextUrl.pathname === "/"
   ) {
     const nextUrl = request.nextUrl.clone()
     nextUrl.pathname = privateRedirectPath
