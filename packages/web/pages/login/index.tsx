@@ -7,18 +7,16 @@ import { HStack, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import { Logo } from "~/components/domains"
 import { Button, IconButton } from "~/components/uis"
+import { env } from "~/constants"
 import { useNavigationContext } from "~/contexts/hooks"
 import { BottomFixedGradient } from "~/layouts"
-
-const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string
 
 const Page: NextPage = () => {
   const router = useRouter()
   const { useMountPage } = useNavigationContext()
   useMountPage("PAGE_LOGIN")
 
-  const endpoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string
-  const kakaoUrl = `${endpoint}/oauth2/authorization/kakao?redirect_uri=${redirectUri}`
+  const kakaoUrl = `${env.SERVICE_API_END_POINT}/oauth2/authorization/kakao?redirect_uri=${env.REDIRECT_URI}`
 
   const handleClickLogin = () => {
     router.replace(kakaoUrl)

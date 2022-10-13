@@ -1,4 +1,4 @@
-export interface ActionWithPayload<Type, Payload = any>
+export interface ActionWithPayload<Type, Payload = unknown>
   extends ActionWithoutPayload<Type> {
   payload: Payload
 }

@@ -1,19 +1,19 @@
 import dayjs from "dayjs"
 import { useCookies } from "react-cookie"
-import { TOKEN_KEY } from "~/constants"
+import { env } from "~/constants"
 
 const useTokenCookie = () => {
   const [cookies, setCookie, removeCookie] = useCookies()
 
   return {
-    get: () => cookies[TOKEN_KEY],
+    get: () => cookies[env.SLAM_TOKEN_KEY],
     set: (token: string) =>
-      setCookie(TOKEN_KEY, token, {
+      setCookie(`${env.SLAM_TOKEN_KEY}`, token, {
         path: "/",
         expires: dayjs().add(14, "day").toDate(),
         sameSite: "strict",
       }),
-    remove: () => removeCookie(TOKEN_KEY, { path: "/" }),
+    remove: () => removeCookie(`${env.SLAM_TOKEN_KEY}`, { path: "/" }),
   }
 }
 

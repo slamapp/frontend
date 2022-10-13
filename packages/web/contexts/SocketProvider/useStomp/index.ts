@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import type { CompatClient, messageCallbackType } from "@stomp/stompjs"
 import { api } from "~/api"
 import { useCurrentUserQuery } from "~/features/users"
-import { getLocalToken } from "~/utils"
+import { getCookieToken } from "~/utils"
 
 type UseStomp = () => {
   isConnected: boolean
@@ -20,7 +20,7 @@ const useStomp: UseStomp = () => {
     if (currentUserQuery.isSuccess) {
       const newClient = api.sockets.getCompatClient()
       newClient.connect(
-        { Authorization: { token: `Bearer ${getLocalToken()}` } },
+        { Authorization: { token: `Bearer ${getCookieToken()}` } },
         () => {
           if (!currentUserQuery.isSuccess) {
             return
@@ -54,10 +54,10 @@ const useStomp: UseStomp = () => {
     console.log("SEND,Token", "destination:", destination, "body:", body)
 
     const bodyStringified = JSON.stringify(body)
-    if (compatClient && getLocalToken()) {
+    if (compatClient && getCookieToken()) {
       compatClient.send(
         destination,
-        { token: getLocalToken() },
+        { token: getCookieToken() },
         bodyStringified
       )
     }

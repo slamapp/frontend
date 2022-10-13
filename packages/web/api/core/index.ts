@@ -1,15 +1,13 @@
 import type { AxiosInstance, AxiosPromise, AxiosRequestConfig } from "axios"
 import axios from "axios"
-import { getLocalToken } from "~/utils"
-
-const endPoint = process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string
-const subfix = process.env.NEXT_PUBLIC_SERVICE_API_SUB_FIX as string
+import { env } from "~/constants"
+import { getCookieToken } from "~/utils"
 
 type RequestType = "DEFAULT" | "AUTH" | "AUTH_FILE"
 const getInterceptedInstance = (requestType: RequestType) =>
   setInterceptors(
     axios.create({
-      baseURL: endPoint + subfix,
+      baseURL: `${env.SERVICE_API_END_POINT}${env.SERVICE_API_SUB_FIX}`,
     }),
     requestType
   )
@@ -19,7 +17,7 @@ const setInterceptors = (instance: AxiosInstance, requestType: RequestType) => {
     ...config,
     headers: {
       ...((requestType === "AUTH" || requestType === "AUTH_FILE") && {
-        Authorization: `Bearer ${getLocalToken()}`,
+        Authorization: `Bearer ${getCookieToken()}`,
       }),
       ...(requestType === "AUTH_FILE" && {
         "Content-Type": "multipart/form-data",

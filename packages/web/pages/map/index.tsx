@@ -23,7 +23,7 @@ import { useCurrentUserQuery } from "~/features/users"
 import { useLocalStorage } from "~/hooks"
 import { BottomFixedGradient } from "~/layouts"
 import type { APICourt } from "~/types/domains/objects"
-import { getLocalToken } from "~/utils"
+import { getCookieToken } from "~/utils"
 import { getTimezoneDateStringFromDate } from "~/utils/date"
 
 const PAUSE_COURT_NUMBER = 0
@@ -365,7 +365,7 @@ const Page: NextPage = () => {
                     <CourtItem.ChatLink chatroom={{ id: "1" }} />
                     <CourtItem.Map court={courtQuery.data} />
 
-                    {getLocalToken() ? (
+                    {getCookieToken() ? (
                       <Link
                         href={`reservations/courts/${
                           courtQuery.data.id

@@ -2,9 +2,8 @@ import type { ReactElement } from "react"
 import type { DocumentContext, DocumentInitialProps } from "next/document"
 import Document, { Head, Html, Main, NextScript } from "next/document"
 import { ColorModeScript } from "@chakra-ui/react"
+import { env } from "~/constants"
 import { chakraTheme } from "~/styles"
-
-const kakaoSdkAppKey = process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -32,7 +31,7 @@ class MyDocument extends Document {
           <script
             defer
             type="text/javascript"
-            src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoSdkAppKey}&autoload=false&libraries=services`}
+            src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${env.KAKAO_JAVASCRIPT_KEY}&autoload=false&libraries=services`}
           />
           <script
             defer

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
+import { env } from "~/constants"
 
 const useKakao = () => {
   const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
     if (typeof window !== "undefined" && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY)
+      window.Kakao.init(env.KAKAO_JAVASCRIPT_KEY)
     }
   }, [])
 

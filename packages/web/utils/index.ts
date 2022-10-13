@@ -1,1 +1,1 @@
-export { default as getLocalToken } from "./getLocalToken"
+export { default as getCookieToken } from "./getCookieToken"

@@ -1,11 +1,8 @@
 import React, { useEffect, useRef } from "react"
 import { css } from "@emotion/react"
-import { useQueryClient } from "@tanstack/react-query"
 import { useNavigationContext } from "~/contexts/hooks"
 import { useCurrentUserQuery } from "~/features/users"
 import { useIntersectionObserver } from "~/hooks"
-import { useTokenCookie } from "~/hooks/domain"
-import { getLocalToken } from "~/utils"
 import {
   BottomNavigation,
   ScrollContainer,
@@ -18,19 +15,6 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-  const queryClient = useQueryClient()
-  const tokenCookie = useTokenCookie()
-
-  useEffect(() => {
-    if (!tokenCookie.get()) {
-      if (getLocalToken()) {
-        tokenCookie.remove()
-        localStorage.clear()
-        queryClient.invalidateQueries()
-      }
-    }
-  }, [])
-
   const currentUserQuery = useCurrentUserQuery()
   const { navigationProps, setTopNavIsShrink } = useNavigationContext()
   const { isBottomNavigation, isTopNavigation } = navigationProps
