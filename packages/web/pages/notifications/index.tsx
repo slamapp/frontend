@@ -8,7 +8,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { motion } from "framer-motion"
 import { api } from "~/api"
-import { CourtItem, NoItemMessage, ProfileAvatar } from "~/components/domains"
+import { NoItemMessage, ProfileAvatar } from "~/components/domains"
 import { InfiniteScrollSensor, Skeleton } from "~/components/uis"
 import { useNavigationContext } from "~/contexts/hooks"
 import { key } from "~/features"
@@ -112,9 +112,9 @@ const NotificationItem = ({
 }: {
   notification: APINotification
 }) => {
-  const { createdAt, isClicked, isRead } = notification
-  const date = new Date(createdAt)
-  const fromCreatedAt = dayjs(date).locale("ko").fromNow()
+  const fromCreatedAt = dayjs(notification.createdAt, { utc: true })
+    .locale("ko")
+    .from(dayjs().tz())
   const theme = useTheme()
 
   return (
@@ -136,9 +136,7 @@ const NotificationItem = ({
         box-shadow: 0px 12px 12px -12px rgb(0 0 0 / 10%);
       `}
     >
-      <HStack spacing="6px">
-        {getNotificationMarkUp({ date, notification })}
-      </HStack>
+      <HStack spacing="6px">{getNotificationMarkUp({ notification })}</HStack>
       <div>
         <div
           style={{
@@ -153,8 +151,7 @@ const NotificationItem = ({
               fontSize: 10,
             }}
           >
-            {isRead ? "읽음" : "안 읽음"}
-            {isClicked ? "확인 함" : "확인 안함"}
+            {notification.isRead ? "읽음" : "안 읽음"}
           </div>
           <div style={{ fontSize: 12 }}>{fromCreatedAt}</div>
         </div>
@@ -164,14 +161,10 @@ const NotificationItem = ({
 }
 
 const getNotificationMarkUp = ({
-  date,
   notification,
 }: {
-  date: Date
   notification: APINotification
 }) => {
-  const dayFormatted = dayjs(date).format("YYYY-MM-DD")
-
   switch (notification.type) {
     case "FOLLOW": {
       const { sender } = notification.follow
@@ -188,28 +181,6 @@ const getNotificationMarkUp = ({
               </a>
             </Link>
             님이 팔로우 했습니다
-          </div>
-        </>
-      )
-    }
-    case "LOUDSPEAKER": {
-      const { court } = notification.loudspeaker
-
-      return (
-        <>
-          <CourtItem.Map court={court} type="findRoad" />
-          <div>
-            <div>
-              <Link href={`courts/${court.id}/${dayFormatted}`} passHref>
-                <a>
-                  <strong>
-                    {court.name} (농구 골대 {court.basketCount} 개)
-                  </strong>
-                </a>
-              </Link>{" "}
-              에서 함께 농구할 사람을 급하게 구하고 있습니다
-            </div>
-            <div>{court.image}</div>
           </div>
         </>
       )
