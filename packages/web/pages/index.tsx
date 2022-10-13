@@ -36,11 +36,7 @@ const Page: NextPage = () => {
     }
   }, [currentUserQuery.isSuccess])
 
-  if (!currentUserQuery.isSuccess) {
-    return null
-  }
-
-  return (
+  return currentUserQuery.isSuccess ? (
     <Box flex={1}>
       <Head>
         <title>Slam - 우리 주변 농구장을 빠르게</title>
@@ -148,7 +144,7 @@ const Page: NextPage = () => {
         )}
       </VStack>
     </Box>
-  )
+  ) : null
 }
 
 export default Page

@@ -65,11 +65,7 @@ const Page: NextPage = () => {
     return () => observer.disconnect()
   }, [ref, loadMore])
 
-  if (!currentUserQuery.isSuccess) {
-    return null
-  }
-
-  return (
+  return currentUserQuery.isSuccess ? (
     <PageContainer>
       <TabContainer>
         <Text
@@ -124,7 +120,7 @@ const Page: NextPage = () => {
 
       <div ref={ref} style={{ height: 20 }} />
     </PageContainer>
-  )
+  ) : null
 }
 
 export default Page

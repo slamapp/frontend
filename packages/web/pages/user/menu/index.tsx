@@ -24,12 +24,6 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const { scrollContainerWidth } = useScrollContainer()
   const queryClient = useQueryClient()
 
-  const logout = () => {
-    tokenCookie.remove()
-    localStorage.clear()
-    queryClient.invalidateQueries()
-  }
-
   return (
     <Flex flexDir="column" h="100%">
       <VStack align="stretch" flex={1}>
@@ -79,10 +73,11 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                           닫기
                         </Button>
                         <Button
-                          onClick={() => {
-                            logout()
+                          onClick={async () => {
+                            tokenCookie.remove()
+                            await router.push("/map")
+                            await queryClient.invalidateQueries()
                             close()
-                            router.replace("/login")
                           }}
                         >
                           로그아웃하기

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react"
 import { css } from "@emotion/react"
 import { useNavigationContext } from "~/contexts/hooks"
-import { useCurrentUserQuery } from "~/features/users"
 import { useIntersectionObserver } from "~/hooks"
+import { getCookieToken } from "~/utils"
 import {
   BottomNavigation,
   ScrollContainer,
@@ -15,7 +15,6 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-  const currentUserQuery = useCurrentUserQuery()
   const { navigationProps, setTopNavIsShrink } = useNavigationContext()
   const { isBottomNavigation, isTopNavigation } = navigationProps
 
@@ -53,7 +52,7 @@ const Layout = ({ children }: Props) => {
       >
         {children}
       </main>
-      {isBottomNavigation && currentUserQuery.isSuccess && <BottomNavigation />}
+      {isBottomNavigation && getCookieToken() && <BottomNavigation />}
     </ScrollContainer>
   )
 }

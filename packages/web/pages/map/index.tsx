@@ -397,7 +397,7 @@ const Page: NextPage = () => {
 
       <AnimatePresence mode="wait">
         {selectedCourtId ??
-          (!currentUserQuery.isSuccess && (
+          (!getCookieToken() && (
             <BottomFixedGradient
               as={motion.div}
               initial={{ y: 300 }}

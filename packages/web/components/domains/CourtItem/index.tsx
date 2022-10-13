@@ -8,9 +8,9 @@ import {
   useCreateFavoriteMutation,
   useGetFavoritesQuery,
 } from "~/features/favorites"
-import { useCurrentUserQuery } from "~/features/users"
 import { withShareClick } from "~/hocs"
 import type { APIChatRoom, APICourt } from "~/types/domains/objects"
+import { getCookieToken } from "~/utils"
 
 const CourtItem = {
   Share: ({
@@ -22,12 +22,11 @@ const CourtItem = {
       <IconButton icon={{ name: "share-2" }} onClick={onClick} />
     )),
   FavoritesToggle: ({ courtId }: { courtId: APICourt["id"] }) => {
-    const currentUserQuery = useCurrentUserQuery()
     const getFavoritesQuery = useGetFavoritesQuery()
     const createFavoriteMutation = useCreateFavoriteMutation()
     const cancelFavoriteMutation = useCancelFavoriteMutation()
 
-    if (!currentUserQuery.isSuccess || !getFavoritesQuery.isSuccess) {
+    if (!getCookieToken() || !getFavoritesQuery.isSuccess) {
       return null
     }
 
