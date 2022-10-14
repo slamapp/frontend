@@ -8,13 +8,14 @@
 
 <br>
 <div>
+
+<img alt="TypeScript" src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
 <img alt="React" src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 <img alt="Next" src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
-<img alt="TypeScript" src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img alt="Recoil" src="https://img.shields.io/badge/recoil-3677E5.svg?&style=for-the-badge&logo=react&logoColor=white">
 <img alt="React-Query" src="https://img.shields.io/badge/reactquery-111827.svg?&style=for-the-badge&logo=reactquery&logoColor=EF4444">
+<img alt="React-Hook-Form" src="https://img.shields.io/badge/reacthookform-EC5990.svg?&style=for-the-badge&logo=reacthookform&logoColor=white">
 <img alt="Vercel" src="https://img.shields.io/badge/Vercel-000000.svg?&style=for-the-badge&logo=Vercel&logoColor=white">
-
-
 </div>
 
 <br>
