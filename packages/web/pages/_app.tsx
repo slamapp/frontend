@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import { ThemeProvider } from "@emotion/react"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { CookiesProvider } from "react-cookie"
+import { RecoilRoot } from "recoil"
 import {
   AnalyticsProvider,
   NavigationProvider,
@@ -19,25 +20,27 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Slam | 우리 주변 농구장을 빠르게</title>
       </Head>
-      <CookiesProvider>
-        <QueryClientProvider>
-          <ChakraProvider resetCSS theme={chakraTheme}>
-            <ThemeProvider theme={emotionTheme}>
-              <GlobalCSS />
-              <SocketProvider>
-                <NavigationProvider>
-                  <AnalyticsProvider>
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  </AnalyticsProvider>
-                </NavigationProvider>
-              </SocketProvider>
-            </ThemeProvider>
-          </ChakraProvider>
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        </QueryClientProvider>
-      </CookiesProvider>
+      <RecoilRoot>
+        <CookiesProvider>
+          <QueryClientProvider>
+            <ChakraProvider resetCSS theme={chakraTheme}>
+              <ThemeProvider theme={emotionTheme}>
+                <GlobalCSS />
+                <SocketProvider>
+                  <NavigationProvider>
+                    <AnalyticsProvider>
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
+                    </AnalyticsProvider>
+                  </NavigationProvider>
+                </SocketProvider>
+              </ThemeProvider>
+            </ChakraProvider>
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          </QueryClientProvider>
+        </CookiesProvider>
+      </RecoilRoot>
     </>
   )
 }
