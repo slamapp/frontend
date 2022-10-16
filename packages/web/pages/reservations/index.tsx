@@ -1,127 +1,140 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import type { NextPage } from "next"
 import { Text, VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import { api } from "~/api"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
-import { useNavigationContext } from "~/contexts/hooks"
 import { useGetUpcomingReservationsQuery } from "~/features/reservations"
 import { useCurrentUserQuery } from "~/features/users"
+import { withNavigation } from "~/layouts/Layout/navigations"
 
-const Page: NextPage = () => {
-  const currentUserQuery = useCurrentUserQuery()
-  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
+const Page = withNavigation(
+  {
+    top: {
+      title: "예약",
+      isNotification: true,
+      isProfile: true,
+    },
+  },
+  () => {
+    const currentUserQuery = useCurrentUserQuery()
+    const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
 
-  const { useMountPage } = useNavigationContext()
-  useMountPage("PAGE_RESERVATIONS")
-
-  const ref = useRef<HTMLDivElement>(null)
-  const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">("UPCOMING")
-  const [expiredReservations, setExpiredReservations] = useState<any[]>([])
-  const [currentLastId, setCurrentLastId] = useState<any>()
-
-  const handleClickExpiredTab = useCallback(async () => {
-    setActiveTab("EXPIRED")
-
-    if (currentLastId !== null) {
-      const { data } = await api.reservations.getMyExpiredReservations({
-        isFirst: !currentLastId,
-        lastId: currentLastId,
-      })
-      const { contents, lastId } = data
-      setExpiredReservations((prev) => [...prev, ...contents])
-      setCurrentLastId(lastId)
-    }
-  }, [currentLastId])
-
-  const loadMore = useCallback(async () => {
-    if (expiredReservations.length !== 0 && currentLastId !== null) {
-      const { data } = await api.reservations.getMyExpiredReservations({
-        isFirst: !currentLastId,
-        lastId: currentLastId,
-      })
-      const { contents, lastId } = data
-      setExpiredReservations((prev) => [...prev, ...contents])
-      setCurrentLastId(lastId)
-    }
-  }, [currentLastId, expiredReservations])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            loadMore()
-          }
-        })
-      },
-      { threshold: 1.0 }
+    const ref = useRef<HTMLDivElement>(null)
+    const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">(
+      "UPCOMING"
     )
+    const [expiredReservations, setExpiredReservations] = useState<any[]>([])
+    const [currentLastId, setCurrentLastId] = useState<any>()
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
+    const handleClickExpiredTab = useCallback(async () => {
+      setActiveTab("EXPIRED")
 
-    return () => observer.disconnect()
-  }, [ref, loadMore])
+      if (currentLastId !== null) {
+        const { data } = await api.reservations.getMyExpiredReservations({
+          isFirst: !currentLastId,
+          lastId: currentLastId,
+        })
+        const { contents, lastId } = data
+        setExpiredReservations((prev) => [...prev, ...contents])
+        setCurrentLastId(lastId)
+      }
+    }, [currentLastId])
 
-  return currentUserQuery.isSuccess ? (
-    <PageContainer>
-      <TabContainer>
-        <Text
-          fontWeight={activeTab === "UPCOMING" ? "bold" : undefined}
-          onClick={() => setActiveTab("UPCOMING")}
-          style={{ cursor: "pointer" }}
-        >
-          다가올 예약
-        </Text>
-        <Text
-          fontWeight={activeTab === "EXPIRED" ? "bold" : undefined}
-          onClick={handleClickExpiredTab}
-          style={{ cursor: "pointer" }}
-        >
-          지난 예약
-        </Text>
-      </TabContainer>
-      <TabContentsWrapper>
-        {activeTab === "UPCOMING" && getUpcomingReservationsQuery.isSuccess ? (
-          getUpcomingReservationsQuery.data.contents.length === 0 ? (
+    const loadMore = useCallback(async () => {
+      if (expiredReservations.length !== 0 && currentLastId !== null) {
+        const { data } = await api.reservations.getMyExpiredReservations({
+          isFirst: !currentLastId,
+          lastId: currentLastId,
+        })
+        const { contents, lastId } = data
+        setExpiredReservations((prev) => [...prev, ...contents])
+        setCurrentLastId(lastId)
+      }
+    }, [currentLastId, expiredReservations])
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              loadMore()
+            }
+          })
+        },
+        { threshold: 1.0 }
+      )
+
+      if (ref.current) {
+        observer.observe(ref.current)
+      }
+
+      return () => observer.disconnect()
+    }, [ref, loadMore])
+
+    return currentUserQuery.isSuccess ? (
+      <PageContainer>
+        <TabContainer>
+          <Text
+            fontWeight={activeTab === "UPCOMING" ? "bold" : undefined}
+            onClick={() => setActiveTab("UPCOMING")}
+            style={{ cursor: "pointer" }}
+          >
+            다가올 예약
+          </Text>
+          <Text
+            fontWeight={activeTab === "EXPIRED" ? "bold" : undefined}
+            onClick={handleClickExpiredTab}
+            style={{ cursor: "pointer" }}
+          >
+            지난 예약
+          </Text>
+        </TabContainer>
+        <TabContentsWrapper>
+          {activeTab === "UPCOMING" &&
+          getUpcomingReservationsQuery.isSuccess ? (
+            getUpcomingReservationsQuery.data.contents.length === 0 ? (
+              <NoItemMessage
+                title="다가올 예약이 아직 없어요 🤔"
+                type="reservation"
+                description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
+                buttonTitle="예약할 농구장 찾기"
+              />
+            ) : (
+              <VStack align="stretch" spacing="8px">
+                {getUpcomingReservationsQuery.data.contents.map(
+                  (reservation) => (
+                    <ReservationItem
+                      key={reservation.id}
+                      reservation={reservation}
+                    />
+                  )
+                )}
+              </VStack>
+            )
+          ) : expiredReservations.length === 0 ? (
             <NoItemMessage
-              title="다가올 예약이 아직 없어요 🤔"
+              title="지난 예약이 아직 없어요 🤔"
               type="reservation"
               description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
               buttonTitle="예약할 농구장 찾기"
             />
           ) : (
             <VStack align="stretch" spacing="8px">
-              {getUpcomingReservationsQuery.data.contents.map((reservation) => (
+              {expiredReservations.map((reservation) => (
                 <ReservationItem
                   key={reservation.id}
                   reservation={reservation}
                 />
               ))}
             </VStack>
-          )
-        ) : expiredReservations.length === 0 ? (
-          <NoItemMessage
-            title="지난 예약이 아직 없어요 🤔"
-            type="reservation"
-            description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
-            buttonTitle="예약할 농구장 찾기"
-          />
-        ) : (
-          <VStack align="stretch" spacing="8px">
-            {expiredReservations.map((reservation) => (
-              <ReservationItem key={reservation.id} reservation={reservation} />
-            ))}
-          </VStack>
-        )}
-      </TabContentsWrapper>
+          )}
+        </TabContentsWrapper>
 
-      <div ref={ref} style={{ height: 20 }} />
-    </PageContainer>
-  ) : null
-}
+        <div ref={ref} style={{ height: 20 }} />
+      </PageContainer>
+    ) : null
+  }
+)
 
 export default Page
 

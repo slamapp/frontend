@@ -2,8 +2,8 @@ import type { ReactNode } from "react"
 import { useEffect, useRef } from "react"
 import { useRouter } from "next/router"
 import { css, useTheme } from "@emotion/react"
-import { useNavigationContext } from "~/contexts/hooks"
 import { useIntersectionObserver } from "~/hooks"
+import { useSetNavigation } from "~/layouts/Layout/navigations"
 import { useReservationTableContext } from "./context"
 
 interface Props {
@@ -22,10 +22,10 @@ const Cell = ({
   children,
 }: Props) => {
   const theme = useTheme()
+  const setNavigation = useSetNavigation()
   const { tableCellHeight } = useReservationTableContext()
   const router = useRouter()
 
-  const { setNavigationTitle } = useNavigationContext()
   const ref = useRef<HTMLDivElement>(null)
   const entry = useIntersectionObserver(ref, {})
 
@@ -36,7 +36,7 @@ const Cell = ({
           router.query.courtId as string
         }?date=${intersectingTitle}`
       )
-      setNavigationTitle(intersectingTitle)
+      setNavigation.title(intersectingTitle)
     }
     if (timeNumber === 36 && entry?.isIntersecting) {
       router.replace(
@@ -44,7 +44,7 @@ const Cell = ({
           router.query.courtId as string
         }?date=${intersectingTitle}`
       )
-      setNavigationTitle(intersectingTitle)
+      setNavigation.title(intersectingTitle)
     }
   }, [entry?.isIntersecting])
 

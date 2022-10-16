@@ -1,22 +1,21 @@
 import React, { useEffect, useRef } from "react"
+import { Box } from "@chakra-ui/react"
 import { css } from "@emotion/react"
-import { useNavigationContext } from "~/contexts/hooks"
 import { useIntersectionObserver } from "~/hooks"
 import { getCookieToken } from "~/utils"
+import { ScrollContainer, TopPageLoader } from "./components"
 import {
   BottomNavigation,
-  ScrollContainer,
   TopNavigation,
-  TopPageLoader,
-} from "./components"
+  useNavigationValue,
+} from "./navigations"
 
 interface Props {
   children: React.ReactNode
 }
 
 const Layout = ({ children }: Props) => {
-  const { navigationProps, setTopNavIsShrink } = useNavigationContext()
-  const { isBottomNavigation, isTopNavigation } = navigationProps
+  const { top = true, bottom = true } = useNavigationValue()
 
   const topIntersectionObserverRef = useRef<HTMLDivElement>(null)
 
@@ -25,24 +24,18 @@ const Layout = ({ children }: Props) => {
     {}
   )
 
-  useEffect(() => {
-    if (topIntersectionObserverEntry) {
-      setTopNavIsShrink(!topIntersectionObserverEntry?.isIntersecting)
-    }
-  }, [topIntersectionObserverEntry?.isIntersecting])
+  const isTooScrolled = !topIntersectionObserverEntry?.isIntersecting
 
   return (
     <ScrollContainer>
-      <TopPageLoader />
-      {isTopNavigation && <TopNavigation />}
-      <div
+      <Box
         ref={topIntersectionObserverRef}
-        css={css`
-          position: absolute;
-          min-height: 30px;
-          width: 100%;
-        `}
+        pos="absolute"
+        minH="30px"
+        w="100%"
       />
+      <TopPageLoader />
+      {top && <TopNavigation isShrink={isTooScrolled} />}
       <main
         css={css`
           display: flex;
@@ -52,7 +45,7 @@ const Layout = ({ children }: Props) => {
       >
         {children}
       </main>
-      {isBottomNavigation && getCookieToken() && <BottomNavigation />}
+      {bottom && getCookieToken() && <BottomNavigation />}
     </ScrollContainer>
   )
 }

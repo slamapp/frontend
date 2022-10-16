@@ -32,7 +32,6 @@ import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
 import { Button, Icon, Toast, Upload } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
-import { useNavigationContext } from "~/contexts/hooks"
 import {
   useMyProfileMutation,
   useMyProfileQuery,
@@ -42,9 +41,6 @@ import { BottomFixedGradient, useScrollContainer } from "~/layouts"
 import type { APIUser } from "~/types/domains/objects"
 
 const Page: NextPage = () => {
-  const { useMountPage } = useNavigationContext()
-  useMountPage("PAGE_USER_EDIT")
-
   const myProfileQuery = useMyProfileQuery()
 
   if (myProfileQuery.isLoading) {

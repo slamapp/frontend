@@ -8,13 +8,10 @@ import { css } from "@emotion/react"
 import { Logo } from "~/components/domains"
 import { Button, IconButton } from "~/components/uis"
 import { env } from "~/constants"
-import { useNavigationContext } from "~/contexts/hooks"
 import { BottomFixedGradient } from "~/layouts"
 
 const Page: NextPage = () => {
   const router = useRouter()
-  const { useMountPage } = useNavigationContext()
-  useMountPage("PAGE_LOGIN")
 
   const kakaoUrl = `${env.SERVICE_API_END_POINT}/oauth2/authorization/kakao?redirect_uri=${env.REDIRECT_URI}`
 

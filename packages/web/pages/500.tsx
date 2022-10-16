@@ -1,11 +1,7 @@
 import styled from "@emotion/styled"
 import { ErrorMessage } from "~/components/domains"
-import { useNavigationContext } from "~/contexts/hooks"
 
 export default function Custom500() {
-  const { useMountPage } = useNavigationContext()
-  useMountPage("PAGE_ERROR")
-
   return (
     <PageContainer>
       <ErrorMessage title="시스템 문제로 페이지를 표시할 수 없어요 😥" />

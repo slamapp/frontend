@@ -1,3 +1,4 @@
+import type { UseInfiniteQueryOptions } from "@tanstack/react-query"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { api } from "~/api"
 import key from "~/features/key"
@@ -5,7 +6,12 @@ import type { APIUser } from "~/types/domains/objects"
 
 const useUserFollowerInfiniteQuery = (
   userId: APIUser["id"],
-  options: { enabled: boolean }
+  options: Pick<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof api.follows.getUserFollowers>>["data"]
+    >,
+    "onSuccess" | "enabled"
+  >
 ) =>
   useInfiniteQuery(
     key.users.oneFollowers(userId),

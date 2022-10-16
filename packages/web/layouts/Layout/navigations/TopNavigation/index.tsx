@@ -7,10 +7,10 @@ import type { Variants } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
 import { Badge, Icon } from "~/components/uis"
-import { useNavigationContext } from "~/contexts/hooks"
 import { useGetInfiniteNotificationsQuery } from "~/features/notifications"
 import { useCurrentUserQuery } from "~/features/users"
 import { useScrollContainer } from "~/layouts"
+import { useNavigationValue } from "../atoms"
 
 const titleWrapperVariants: Variants = {
   notShrink: { originX: 0, x: 0, y: 0, scale: 1 },
@@ -18,24 +18,17 @@ const titleWrapperVariants: Variants = {
   shrinkWithBack: { originX: 0, x: 30, y: -45, scale: 0.7 },
 }
 
-const TopNavigation = () => {
+type Props = {
+  isShrink: boolean
+}
+
+const TopNavigation = ({ isShrink }: Props) => {
   const theme = useTheme()
 
   const { scrollToTop } = useScrollContainer()
   const getNotificationsInfiniteQuery = useGetInfiniteNotificationsQuery()
   const currentUserQuery = useCurrentUserQuery()
-  const { navigationProps } = useNavigationContext()
-
-  const {
-    isBack,
-    isNotifications,
-    title,
-    isMenu,
-    handleClickBack,
-    customButton,
-    isProfile,
-    isTopNavShrink,
-  } = navigationProps
+  const navigation = useNavigationValue()
 
   const router = useRouter()
 
@@ -50,11 +43,32 @@ const TopNavigation = () => {
       0
     ) || 0
 
+  if (!navigation.top) {
+    return null
+  }
+
   return (
-    <Container
+    <motion.nav
+      css={css`
+        z-index: 1000;
+        position: sticky;
+        top: 0;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: block;
+          height: 56px;
+          transition: opacity 200ms;
+        }
+      `}
       initial={{ background: undefined }}
       animate={
-        isTopNavShrink
+        isShrink
           ? {
               background:
                 "linear-gradient(#fafafa,#fafafa,#fafafa, transparent)",
@@ -62,47 +76,56 @@ const TopNavigation = () => {
           : { background: undefined }
       }
     >
-      <Wrapper>
+      <div
+        css={css`
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0px 12px;
+          height: 50px;
+        `}
+      >
         <IconGroup>
-          {isBack && (
+          {navigation.top.isBack && (
             <Center
               h="32px"
               w="24px"
               cursor="pointer"
-              onClick={handleClickBack || handleDefaultBack}
+              onClick={handleDefaultBack}
             >
               <Icon name="chevron-left" size="md" />
             </Center>
           )}
         </IconGroup>
         <IconGroup>
-          {isNotifications && getNotificationsInfiniteQuery.isSuccess && (
-            <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
-              <Link href="/notifications" passHref>
-                <a>
-                  <motion.div
-                    initial={{ rotateZ: 0 }}
-                    animate={
-                      unreadNotificationsCount > 0
-                        ? {
-                            rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
-                            transition: {
-                              repeat: Infinity,
-                              repeatDelay: 3,
-                            },
-                          }
-                        : {
-                            rotateZ: 0,
-                          }
-                    }
-                  >
-                    <Icon name="bell" />
-                  </motion.div>
-                </a>
-              </Link>
-            </Badge>
-          )}
-          {isProfile && currentUserQuery.isSuccess && (
+          {navigation.top.isNotification &&
+            getNotificationsInfiniteQuery.isSuccess && (
+              <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
+                <Link href="/notifications" passHref>
+                  <a>
+                    <motion.div
+                      initial={{ rotateZ: 0 }}
+                      animate={
+                        unreadNotificationsCount > 0
+                          ? {
+                              rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
+                              transition: {
+                                repeat: Infinity,
+                                repeatDelay: 3,
+                              },
+                            }
+                          : {
+                              rotateZ: 0,
+                            }
+                      }
+                    >
+                      <Icon name="bell" />
+                    </motion.div>
+                  </a>
+                </Link>
+              </Badge>
+            )}
+          {navigation.top.isProfile && currentUserQuery.isSuccess && (
             <ProfileAvatar
               user={{
                 id: currentUserQuery.data.id,
@@ -110,21 +133,29 @@ const TopNavigation = () => {
               }}
             />
           )}
-          {isMenu && (
+          {navigation.top.isMenu && (
             <Link href="/user/menu" passHref>
               <a>
                 <Icon name="menu" />
               </a>
             </Link>
           )}
+          {navigation.top.Custom && (
+            <div
+              css={css`
+                padding: 8px 0 8px 0;
+                font-weight: 700;
 
-          {customButton && (
-            <CustomButton onClick={customButton.handleClick}>
-              {customButton.title}
-            </CustomButton>
+                :hover {
+                  cursor: pointer;
+                }
+              `}
+            >
+              {navigation.top.Custom({})}
+            </div>
           )}
         </IconGroup>
-      </Wrapper>
+      </div>
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -143,60 +174,25 @@ const TopNavigation = () => {
           variants={titleWrapperVariants}
           initial="notShrink"
           animate={
-            isTopNavShrink
-              ? isBack
+            isShrink
+              ? navigation.top.isBack
                 ? "shrinkWithBack"
                 : "shrink"
               : "notShrink"
           }
         >
-          {title}
+          {navigation.top.title}
         </motion.div>
       </AnimatePresence>
-    </Container>
+    </motion.nav>
   )
 }
 
 export default TopNavigation
-
-const Container = styled(motion.nav)`
-  z-index: 1000;
-  position: sticky;
-  top: 0;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: block;
-    height: 56px;
-    transition: opacity 200ms;
-  }
-`
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 12px;
-  height: 50px;
-`
 
 const IconGroup = styled.div`
   z-index: 1000;
   display: flex;
   align-items: center;
   gap: 16px;
-`
-
-const CustomButton = styled.div`
-  padding: 8px 0 8px 0;
-  font-weight: 700;
-
-  :hover {
-    cursor: pointer;
-  }
 `
