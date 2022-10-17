@@ -12,12 +12,10 @@ type Options = {
 }
 
 export const sendKakaoLink = ({ requestUrl, templateArgs }: Options) => {
-  console.log(requestUrl)
-
-  window.Kakao.Link.sendScrap({
-    templateId: DEFAULT_MESSAGE_TEMPLATE_ID,
-    requestUrl,
-    installTalk: true,
-    templateArgs,
-  })
+  // window.Kakao.Link.sendScrap({
+  //   templateId: DEFAULT_MESSAGE_TEMPLATE_ID,
+  //   requestUrl,
+  //   installTalk: true,
+  //   templateArgs,
+  // })
 }

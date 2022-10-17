@@ -1,12 +1,8 @@
 import type { FC } from "react"
 import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 
-const navigationState = atom<Options>({
-  key: "navigation",
-  default: {},
-})
-
-type Options = {
+const navigationState = atom<{
+  isLoading: boolean
   top?: {
     title?: string
     isBack?: boolean
@@ -14,13 +10,16 @@ type Options = {
     isMenu?: boolean
     isProfile?: boolean
     Custom?: FC
-  }
-  bottom?: false
-}
+  } | null
+  bottom?: boolean
+}>({
+  key: "navigation",
+  default: { isLoading: true },
+})
 
-export const useNavigation = () => useRecoilState(navigationState)
-export const useNavigationValue = () => useRecoilValue(navigationState)
-export const useSetNavigation = () => {
+const useNavigation = () => useRecoilState(navigationState)
+const useNavigationValue = () => useRecoilValue(navigationState)
+const useSetNavigation = () => {
   const set = useSetRecoilState(navigationState)
 
   return {
@@ -32,3 +31,5 @@ export const useSetNavigation = () => {
       })),
   }
 }
+
+export { useNavigation, useNavigationValue, useSetNavigation }

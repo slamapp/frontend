@@ -1,16 +1,22 @@
 import { useEffect } from "react"
 import type { NextPage } from "next"
+import type { useNavigationValue } from "../atoms"
 import { useSetNavigation } from "../atoms"
 
 const withNavigation =
   <P extends object>(
-    setterOrUpdater: Parameters<ReturnType<typeof useSetNavigation>["all"]>[0],
+    options: Pick<ReturnType<typeof useNavigationValue>, "top" | "bottom">,
     Page: NextPage<P>
   ): NextPage<P> =>
   (props) => {
     const set = useSetNavigation()
     useEffect(() => {
-      set.all(setterOrUpdater)
+      set.all((prev) => ({
+        ...prev,
+        bottom: true,
+        ...options,
+        isLoading: false,
+      }))
     }, [])
 
     return <Page {...props} />

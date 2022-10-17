@@ -29,7 +29,6 @@ const Page = withNavigation<{ userId: APIUser["id"] }>(
     top: {
       isBack: true,
       isMenu: true,
-      isNotification: true,
       title: "",
     },
     bottom: false,

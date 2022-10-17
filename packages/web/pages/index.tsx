@@ -3,6 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
+import type { Variants } from "framer-motion"
 import { motion } from "framer-motion"
 import { api } from "~/api"
 import { CourtItem, NoItemMessage } from "~/components/domains"
@@ -10,6 +11,17 @@ import { Button, Icon, Skeleton } from "~/components/uis"
 import { useCurrentUserQuery } from "~/features/users"
 import { withNavigation } from "~/layouts/Layout/navigations"
 import type { APIFavorite } from "~/types/domains/objects"
+
+const getFavoriteItemVariants = (index: number): Variants => ({
+  initial: { y: 40, opacity: 0 },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: { delay: index / 50 },
+    backgroundColor: "#ffffff90",
+  },
+  whileTap: { backgroundColor: "white" },
+})
 
 const Page = withNavigation(
   {
@@ -21,15 +33,12 @@ const Page = withNavigation(
   },
   () => {
     const currentUserQuery = useCurrentUserQuery()
-
-    const [isLoading, setIsLoading] = useState(true)
-    const [favorites, setFavorites] = useState<APIFavorite[]>([])
+    const [favorites, setFavorites] = useState<APIFavorite[] | null>(null)
 
     const getPageFavorites = async () => {
       try {
         const { data } = await api.favorites.getMyFavorites()
         setFavorites(data.contents)
-        setIsLoading(false)
       } catch (error) {
         console.error(error)
       }
@@ -47,7 +56,7 @@ const Page = withNavigation(
           <title>Slam - 우리 주변 농구장을 빠르게</title>
         </Head>
         <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
-          {isLoading ? (
+          {favorites === null ? (
             <VStack spacing="18px" align="stretch">
               {Array.from({ length: 6 }).map((_, index) => (
                 <Box key={index} p="12px">
@@ -87,14 +96,10 @@ const Page = withNavigation(
                 <VStack
                   key={id}
                   as={motion.div}
-                  initial={{ y: 40, opacity: 0 }}
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                    transition: { delay: index / 50 },
-                    backgroundColor: "#ffffff90",
-                  }}
-                  whileTap={{ backgroundColor: "white" }}
+                  variants={getFavoriteItemVariants(index)}
+                  initial="initial"
+                  animate="animate"
+                  whileTap="whileTap"
                   border="1px solid white"
                   spacing="16px"
                   align="stretch"

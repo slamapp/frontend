@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { Box } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import { useIntersectionObserver } from "~/hooks"
-import { getCookieToken } from "~/utils"
-import { ScrollContainer, TopPageLoader } from "./components"
+import { PageLoader, ScrollContainer } from "./components"
 import {
   BottomNavigation,
   TopNavigation,
@@ -24,7 +23,9 @@ const Layout = ({ children }: Props) => {
     {}
   )
 
-  const isTooScrolled = !topIntersectionObserverEntry?.isIntersecting
+  const isTooScrolled = !!(
+    topIntersectionObserverEntry && !topIntersectionObserverEntry.isIntersecting
+  )
 
   return (
     <ScrollContainer>
@@ -34,7 +35,6 @@ const Layout = ({ children }: Props) => {
         minH="30px"
         w="100%"
       />
-      <TopPageLoader />
       {top && <TopNavigation isShrink={isTooScrolled} />}
       <main
         css={css`
@@ -45,7 +45,8 @@ const Layout = ({ children }: Props) => {
       >
         {children}
       </main>
-      {bottom && getCookieToken() && <BottomNavigation />}
+      <PageLoader />
+      {bottom && <BottomNavigation />}
     </ScrollContainer>
   )
 }

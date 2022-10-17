@@ -12,8 +12,6 @@ const useDisclosure = (options: Options) => {
   const [isOpen, setIsOpen] = useState<boolean>(initialState)
 
   const open = async () => {
-    console.log("open")
-
     setIsOpen(true)
 
     return onOpen?.()

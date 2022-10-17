@@ -8,13 +8,15 @@ const useGetInfiniteNotificationsQuery = () =>
     [...key.notifications.all],
     ({ pageParam = { isFirst: true, lastId: null } }) =>
       api.notifications
-        .getNotifications({ ...pageParam, size: 2 })
+        .getNotifications({ ...pageParam, size: 1 })
         .then(({ data }) => data),
     {
-      getNextPageParam: (lastPage) => ({
-        isFirst: false,
-        lastId: lastPage.lastId,
-      }),
+      getNextPageParam: (lastPage) => {
+        return {
+          isFirst: false,
+          lastId: lastPage.lastId,
+        }
+      },
       enabled: !!getCookieToken(),
     }
   )

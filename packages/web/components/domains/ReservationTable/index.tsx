@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
 import { VStack } from "@chakra-ui/react"
 import dayjs from "dayjs"
@@ -20,7 +20,6 @@ interface Props {
 
 const ReservationTable = ({ children }: Props) => {
   const router = useRouter()
-
   const [intersectingTitleCountMap, setIntersectingTitleCountMap] = useState<{
     [date: string]: number
   }>({})
@@ -36,10 +35,14 @@ const ReservationTable = ({ children }: Props) => {
     dayjsDate.Current.format(DATE_QUERY_STRING_FORMAT),
   ])
   const vwElementRef = useRef<HTMLDivElement>(null)
-  const tableCellHeight = useMemo(
-    () => (vwElementRef.current?.clientWidth || 6) / 6,
-    [vwElementRef.current?.clientWidth]
+  const [tableCellHeight, setTableCellHeight] = useState(
+    (vwElementRef.current?.clientWidth || 6) / 6
   )
+
+  useEffect(() => {
+    setTableCellHeight((vwElementRef.current?.clientWidth || 6) / 6)
+  }, [vwElementRef.current?.clientWidth])
+
   const isReadyTableCellHeight = tableCellHeight > 10
 
   const replaceNewDate: ContextProps["replaceNewDate"] = useCallback(
@@ -108,6 +111,8 @@ const ReservationTable = ({ children }: Props) => {
     >
       <VStack
         ref={vwElementRef}
+        w="100%"
+        minH={30}
         align="stretch"
         position="relative"
         spacing={0}

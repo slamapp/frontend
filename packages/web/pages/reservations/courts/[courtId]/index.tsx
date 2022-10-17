@@ -1,13 +1,18 @@
-import type { NextPage } from "next"
 import { ReservationTable } from "~/components/domains"
+import { withNavigation } from "~/layouts/Layout/navigations"
 
-const Page: NextPage = () => {
-  return (
-    <ReservationTable>
-      <ReservationTable.Divider />
-      <ReservationTable.Cells />
-    </ReservationTable>
-  )
-}
+const Page = withNavigation(
+  {
+    top: { isBack: true, title: "" },
+  },
+  () => {
+    return (
+      <ReservationTable>
+        <ReservationTable.Divider />
+        <ReservationTable.Cells />
+      </ReservationTable>
+    )
+  }
+)
 
 export default Page

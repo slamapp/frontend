@@ -28,7 +28,7 @@ const Page: NextPage = withNavigation(
   () => {
     const queryClient = useQueryClient()
     const currentUserQuery = useCurrentUserQuery()
-    const getNotificationsInfiniteQuery = useGetInfiniteNotificationsQuery()
+    const notifications = useGetInfiniteNotificationsQuery()
 
     useEffect(() => {
       return () => {
@@ -38,64 +38,50 @@ const Page: NextPage = withNavigation(
       }
     }, [])
 
-    if (
-      !currentUserQuery.isSuccess ||
-      !getNotificationsInfiniteQuery.isSuccess
-    ) {
+    if (!currentUserQuery.isSuccess || !notifications.isSuccess) {
       return null
     }
 
     return (
-      <div
-        css={css`
-          flex: 1;
-        `}
-      >
-        <Box mx="16px">
-          {getNotificationsInfiniteQuery.data.pages.length === 0 && (
-            <NoItemMessage
-              type="notification"
-              title="알림이 없습니다"
-              description="유용한 정보를 알림에서 모아 보실 수 있어요"
-              buttonTitle="지도에서 내 주변 농구장 찾기"
-            />
-          )}
-          {getNotificationsInfiniteQuery.data.pages.map(
-            ({ contents, lastId }, pageIndex) => (
-              <Fragment key={pageIndex}>
-                {contents.map((notification) => (
-                  <NotificationItem
-                    key={notification.id}
-                    notification={notification}
-                  />
-                ))}
-                {pageIndex !==
-                getNotificationsInfiniteQuery.data.pages.length -
-                  1 ? null : lastId ? (
-                  <InfiniteScrollSensor
-                    onIntersected={() =>
-                      getNotificationsInfiniteQuery.fetchNextPage()
-                    }
-                    render={(ref) => (
-                      <div ref={ref} style={{ minHeight: 200 }}>
-                        <SkeletonNotification />
-                        <SkeletonNotification />
-                      </div>
-                    )}
-                  />
-                ) : (
-                  <NoItemMessage
-                    type="notification"
-                    title="더 받아올 알림이 없습니다"
-                    description="유용한 정보를 알림에서 모아 보실 수 있어요"
-                    buttonTitle="지도에서 내 주변 농구장 찾기"
-                  />
+      <Box mx="16px" mt="24px">
+        {notifications.data.pages.length === 0 && (
+          <NoItemMessage
+            type="notification"
+            title="알림이 없습니다"
+            description="유용한 정보를 알림에서 모아 보실 수 있어요"
+            buttonTitle="지도에서 내 주변 농구장 찾기"
+          />
+        )}
+        {notifications.data.pages.map(({ contents, lastId }, pageIndex) => (
+          <Fragment key={pageIndex}>
+            {contents.map((notification) => (
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+              />
+            ))}
+            {notifications.data.pages.length === pageIndex + 1 && lastId && (
+              <InfiniteScrollSensor
+                onIntersected={() => notifications.fetchNextPage()}
+                render={(ref) => (
+                  <div ref={ref} style={{ minHeight: 200 }}>
+                    <SkeletonNotification />
+                    <SkeletonNotification />
+                  </div>
                 )}
-              </Fragment>
-            )
-          )}
-        </Box>
-      </div>
+              />
+            )}
+            {notifications.data.pages.length === pageIndex + 1 && !lastId && (
+              <NoItemMessage
+                type="notification"
+                title="더 받아올 알림이 없습니다"
+                description="유용한 정보를 알림에서 모아 보실 수 있어요"
+                buttonTitle="지도에서 내 주변 농구장 찾기"
+              />
+            )}
+          </Fragment>
+        ))}
+      </Box>
     )
   }
 )

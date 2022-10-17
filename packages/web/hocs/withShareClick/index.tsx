@@ -1,7 +1,6 @@
 import type { ComponentType, UIEvent } from "react"
 import copy from "copy-to-clipboard"
 import { Toast } from "~/components/uis"
-import useKakao from "~/hooks/useKakao"
 import { positionType, proficiencyType } from "~/types/domains/objects/user"
 import { sendKakaoLink } from "./sendKakaoLink"
 import type { ShareArgs } from "./types"
@@ -116,12 +115,11 @@ const withShareClick = (...args: ShareArgs) => {
       }
     }
 
-    const [isKakaoInitialized] = useKakao()
-
     return (
-      <WrappedComponent
-        onClick={() => handleShareClick(isKakaoInitialized, options)}
-      />
+      // <WrappedComponent
+      //   onClick={() => handleShareClick(isKakaoInitialized, options)}
+      // />
+      null
     )
   }
 }

@@ -52,7 +52,7 @@ const Top = () => {
     <MoreTableMaker
       ref={sensorRef}
       tableCellHeight={tableCellHeight}
-      colorInterecting={!!sensorEntry?.isIntersecting}
+      colorIntersecting={!!sensorEntry?.isIntersecting}
     />
   )
 }
@@ -81,7 +81,7 @@ const Bottom = () => {
     <MoreTableMaker
       ref={sensorRef}
       tableCellHeight={tableCellHeight}
-      colorInterecting={!!sensorEntry?.isIntersecting}
+      colorIntersecting={!!sensorEntry?.isIntersecting}
     />
   )
 }
@@ -95,10 +95,10 @@ export default MoreCellSensor
 
 const MoreTableMaker = styled.div<{
   tableCellHeight: number
-  colorInterecting: boolean
+  colorIntersecting: boolean
 }>`
-  background-color: ${({ colorInterecting }) =>
-    colorInterecting ? "blue" : "red"};
+  background-color: ${({ colorIntersecting }) =>
+    colorIntersecting ? "blue" : "red"};
   height: ${({ tableCellHeight }) => tableCellHeight * SENSOR_MULTIPLY}px;
 `
 
