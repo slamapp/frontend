@@ -7,12 +7,14 @@ const useTokenCookie = () => {
 
   return {
     get: () => cookies[env.SLAM_TOKEN_KEY],
-    set: (token: string) =>
+    set: (token: string) => {
       setCookie(`${env.SLAM_TOKEN_KEY}`, token, {
         path: "/",
         expires: dayjs().add(14, "day").toDate(),
         sameSite: "strict",
-      }),
+        secure: env.IS_PRODUCTION_MODE,
+      })
+    },
     remove: () => removeCookie(`${env.SLAM_TOKEN_KEY}`, { path: "/" }),
   }
 }

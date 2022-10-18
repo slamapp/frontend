@@ -80,7 +80,7 @@ const Page = withNavigation<InferGetStaticPropsType<typeof getStaticProps>>(
                             onClick={async () => {
                               tokenCookie.remove()
                               await router.push("/map")
-                              await queryClient.invalidateQueries()
+                              await queryClient.resetQueries()
                               close()
                             }}
                           >

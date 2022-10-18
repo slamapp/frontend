@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -19,10 +19,10 @@ import { useGetFavoritesQuery } from "~/features/favorites"
 import { useGetUpcomingReservationsQuery } from "~/features/reservations"
 import { useCurrentUserQuery } from "~/features/users"
 import { useLocalStorage } from "~/hooks"
+import { useTokenCookie } from "~/hooks/domain"
 import { BottomFixedGradient } from "~/layouts"
 import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
-import { getCookieToken } from "~/utils"
 import { getTimezoneDateStringFromDate } from "~/utils/date"
 
 const PAUSE_COURT_NUMBER = 0
@@ -43,9 +43,17 @@ const Page = withNavigation(
       Custom: () => {
         const theme = useTheme()
         const router = useRouter()
+        const currentUserQuery = useCurrentUserQuery()
 
         return (
-          <HStack spacing="4px" onClick={() => router.push("/courts/create")}>
+          <HStack
+            spacing="4px"
+            onClick={() => {
+              router.push(
+                currentUserQuery.isSuccess ? "/courts/create" : "/login"
+              )
+            }}
+          >
             <Text color={theme.colors.gray0500} fontSize="12px">
               새 농구장을 추가해보세요
             </Text>
@@ -56,10 +64,10 @@ const Page = withNavigation(
     },
   },
   () => {
+    const tokenCookie = useTokenCookie()
     const setNavigation = useSetNavigation()
     const theme = useTheme()
     const router = useRouter()
-    const currentUserQuery = useCurrentUserQuery()
     const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
     const getFavoritesQuery = useGetFavoritesQuery()
 
@@ -123,10 +131,6 @@ const Page = withNavigation(
         }, 200)
       }
     }, [selectedCourtId])
-
-    const handleCustomButton = useCallback(() => {
-      router.push(currentUserQuery.data ? "/courts/create" : "/login")
-    }, [!!currentUserQuery.data])
 
     useEffect(() => {
       requestAnimationFrame(() => {
@@ -376,7 +380,7 @@ const Page = withNavigation(
                       <CourtItem.ChatLink chatroom={{ id: "1" }} />
                       <CourtItem.Map court={courtQuery.data} />
 
-                      {getCookieToken() ? (
+                      {tokenCookie.get() ? (
                         <Link
                           href={`reservations/courts/${
                             courtQuery.data.id
@@ -410,7 +414,7 @@ const Page = withNavigation(
 
         <AnimatePresence mode="wait">
           {selectedCourtId ??
-            (!getCookieToken() && (
+            (!tokenCookie.get() && (
               <BottomFixedGradient
                 as={motion.div}
                 initial={{ y: 300 }}

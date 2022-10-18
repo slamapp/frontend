@@ -33,6 +33,8 @@ const TopNavigation = ({ isShrink }: Props) => {
     return null
   }
 
+  const { Custom } = navigation.top
+
   return (
     <AnimatePresence mode="wait">
       {!navigation.isLoading && (
@@ -133,7 +135,7 @@ const TopNavigation = ({ isShrink }: Props) => {
                   </a>
                 </Link>
               )}
-              {navigation.top.Custom && (
+              {Custom && (
                 <div
                   css={css`
                     padding: 8px 0 8px 0;
@@ -144,7 +146,7 @@ const TopNavigation = ({ isShrink }: Props) => {
                     }
                   `}
                 >
-                  {navigation.top.Custom({})}
+                  <Custom />
                 </div>
               )}
             </IconGroup>

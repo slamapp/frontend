@@ -2,8 +2,8 @@ import React, { useRef } from "react"
 import { Box } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import { AnimatePresence } from "framer-motion"
+import { useCurrentUserQuery } from "~/features/users"
 import { useIntersectionObserver } from "~/hooks"
-import { useTokenCookie } from "~/hooks/domain"
 import { PageLoader, ScrollContainer } from "./components"
 import {
   BottomNavigation,
@@ -17,7 +17,7 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   const { top = true, bottom = true } = useNavigationValue()
-  const tokenCookie = useTokenCookie()
+  const currentUserQuery = useCurrentUserQuery()
 
   const topIntersectionObserverRef = useRef<HTMLDivElement>(null)
 
@@ -50,7 +50,7 @@ const Layout = ({ children }: Props) => {
       </main>
       <PageLoader />
       <AnimatePresence mode="wait">
-        {bottom && tokenCookie.get() && <BottomNavigation />}
+        {bottom && currentUserQuery.isSuccess && <BottomNavigation />}
       </AnimatePresence>
     </ScrollContainer>
   )
