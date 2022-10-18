@@ -361,7 +361,17 @@ const Page = withNavigation(
                       </CourtItem.Address>
                     </VStack>
                     <HStack spacing="8px">
-                      <CourtItem.FavoritesToggle courtId={courtQuery.data.id} />
+                      {getFavoritesQuery.isSuccess && (
+                        <CourtItem.FavoritesToggle
+                          courtId={courtQuery.data.id}
+                          favoriteId={
+                            getFavoritesQuery.data.contents.find(
+                              (favorite) =>
+                                favorite.court.id === courtQuery.data.id
+                            )?.id || null
+                          }
+                        />
+                      )}
                       <CourtItem.Share court={courtQuery.data} />
                       <CourtItem.ChatLink chatroom={{ id: "1" }} />
                       <CourtItem.Map court={courtQuery.data} />

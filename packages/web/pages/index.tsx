@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import { api } from "~/api"
 import { CourtItem, NoItemMessage } from "~/components/domains"
 import { Button, Icon, Skeleton } from "~/components/uis"
+import { useGetFavoritesQuery } from "~/features/favorites"
 import { useCurrentUserQuery } from "~/features/users"
 import { withNavigation } from "~/layouts/Layout/navigations"
 import type { APIFavorite } from "~/types/domains/objects"
@@ -34,6 +35,7 @@ const Page = withNavigation(
   () => {
     const currentUserQuery = useCurrentUserQuery()
     const [favorites, setFavorites] = useState<APIFavorite[] | null>(null)
+    const getFavoritesQuery = useGetFavoritesQuery()
 
     const getPageFavorites = async () => {
       try {
@@ -50,7 +52,7 @@ const Page = withNavigation(
       }
     }, [currentUserQuery.isSuccess])
 
-    return currentUserQuery.isSuccess ? (
+    return currentUserQuery.isSuccess && getFavoritesQuery.isSuccess ? (
       <Box flex={1}>
         <Head>
           <title>Slam - 우리 주변 농구장을 빠르게</title>
@@ -121,7 +123,14 @@ const Page = withNavigation(
                   </HStack>
                   <HStack spacing="8px">
                     <HStack spacing="8px">
-                      <CourtItem.FavoritesToggle courtId={court.id} />
+                      <CourtItem.FavoritesToggle
+                        courtId={court.id}
+                        favoriteId={
+                          getFavoritesQuery.data.contents.find(
+                            (favorite) => favorite.court.id === court.id
+                          )?.id || null
+                        }
+                      />
                       <CourtItem.Share
                         court={{
                           id: court.id,

@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { Flex } from "@chakra-ui/react"
 import NavIcon from "./NavIcon"
@@ -30,6 +30,10 @@ const navIconPropsList: ComponentProps<typeof NavIcon>[] = [
 const BottomNavigation = () => {
   const router = useRouter()
   const [activePathname, setActivePathname] = useState(() => router.pathname)
+
+  useEffect(() => {
+    setActivePathname(router.pathname)
+  }, [router.pathname])
 
   return (
     <Flex

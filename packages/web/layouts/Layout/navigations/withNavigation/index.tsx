@@ -11,12 +11,12 @@ const withNavigation =
   (props) => {
     const set = useSetNavigation()
     useEffect(() => {
-      set.all((prev) => ({
-        ...prev,
+      set.all({
+        top: null,
         bottom: true,
         ...options,
         isLoading: false,
-      }))
+      })
     }, [])
 
     return <Page {...props} />

@@ -6,11 +6,13 @@ import { Icon, IconButton } from "~/components/uis"
 import {
   useCancelFavoriteMutation,
   useCreateFavoriteMutation,
-  useGetFavoritesQuery,
 } from "~/features/favorites"
 import { withShareClick } from "~/hocs"
-import type { APIChatRoom, APICourt } from "~/types/domains/objects"
-import { getCookieToken } from "~/utils"
+import type {
+  APIChatRoom,
+  APICourt,
+  APIFavorite,
+} from "~/types/domains/objects"
 
 const CourtItem = {
   Share: ({
@@ -21,27 +23,24 @@ const CourtItem = {
     withShareClick("court", { court })(({ onClick }) => (
       <IconButton icon={{ name: "share-2" }} onClick={onClick} />
     )),
-  FavoritesToggle: ({ courtId }: { courtId: APICourt["id"] }) => {
-    const getFavoritesQuery = useGetFavoritesQuery()
+  FavoritesToggle: ({
+    courtId,
+    favoriteId,
+  }: {
+    courtId: APICourt["id"]
+    favoriteId: APIFavorite["id"] | null
+  }) => {
     const createFavoriteMutation = useCreateFavoriteMutation()
     const cancelFavoriteMutation = useCancelFavoriteMutation()
 
-    if (!getCookieToken() || !getFavoritesQuery.isSuccess) {
-      return null
-    }
-
-    const foundFavorite = getFavoritesQuery.data.contents.find(
-      (favorite) => favorite.court.id === courtId
-    )
-
     return (
       <IconButton
-        icon={{ name: "star", color: "#FFC700", fill: !!foundFavorite }}
+        icon={{ name: "star", color: "#FFC700", fill: !!favoriteId }}
         onClick={() => {
-          if (!foundFavorite) {
+          if (!favoriteId) {
             createFavoriteMutation.mutate({ courtId })
           } else {
-            cancelFavoriteMutation.mutate({ favoriteId: foundFavorite.id })
+            cancelFavoriteMutation.mutate({ favoriteId })
           }
         }}
       />
