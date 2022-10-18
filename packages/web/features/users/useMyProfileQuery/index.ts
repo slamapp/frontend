@@ -18,6 +18,7 @@ const useMyProfileQuery = (
     {
       enabled: !!currentUserQuery.isSuccess,
       ...options,
+      suspense: true,
     }
   )
 }

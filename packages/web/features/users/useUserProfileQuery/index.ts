@@ -16,7 +16,7 @@ const useUserProfileQuery = (
   useQuery(
     key.users.otherProfile(userId),
     () => api.users.getUserProfile({ id: userId }).then(({ data }) => data),
-    { ...option }
+    { ...option, suspense: true }
   )
 
 export default useUserProfileQuery

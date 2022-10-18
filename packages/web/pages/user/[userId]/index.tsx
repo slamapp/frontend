@@ -1,8 +1,16 @@
 import type { ComponentPropsWithoutRef } from "react"
-import { useEffect } from "react"
 import type { GetServerSideProps } from "next"
 import Link from "next/link"
-import { Avatar, Flex, HStack, Tag, Text, VStack } from "@chakra-ui/react"
+import {
+  Avatar,
+  Center,
+  Flex,
+  HStack,
+  Spinner,
+  Tag,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import styled from "@emotion/styled"
 import { Button, Icon } from "~/components/uis"
@@ -17,6 +25,7 @@ import {
   useMyProfileQuery,
   useUserProfileQuery,
 } from "~/features/users"
+import { withSuspense } from "~/hocs"
 import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt, APIUser } from "~/types/domains/objects"
 import {
@@ -33,193 +42,80 @@ const Page = withNavigation<{ userId: APIUser["id"] }>(
     },
     bottom: false,
   },
-  ({ userId }) => {
-    const setNavigation = useSetNavigation()
-    const currentUserQuery = useCurrentUserQuery()
-    const getFavoritesQuery = useGetFavoritesQuery()
-
-    const isMe =
-      currentUserQuery.isSuccess && userId === currentUserQuery.data.id
-
-    useEffect(() => {
-      if (isMe) {
-        setNavigation.title(currentUserQuery.data?.nickname)
-      }
-    }, [isMe])
-
-    const myProfileQuery = useMyProfileQuery({
-      enabled: isMe,
-      onSuccess: ({ nickname }) => {
-        setNavigation.title(nickname)
-      },
-    })
-    const userProfileQuery = useUserProfileQuery(userId, {
-      enabled: !isMe,
-      onSuccess: ({ nickname }) => {
-        setNavigation.title(nickname)
-      },
-    })
-
-    if (
-      (isMe && myProfileQuery.isLoading) ||
-      (!isMe && userProfileQuery.isLoading)
-    ) {
-      return <>loading...</> // TODO: Skeleton
-    }
-
-    if (isMe && myProfileQuery.isSuccess) {
-      const {
-        description,
-        followerCount,
-        followingCount,
-        id,
-        nickname,
-        positions,
-        proficiency,
-        profileImage,
-      } = myProfileQuery.data
-
+  withSuspense(
+    () => {
       return (
-        <div>
-          <MainInfoContainer>
-            <MainInfoArea>
-              <Avatar
-                size="xl"
-                src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
-              />
-              <StatBar>
-                <div>
-                  <Link href={`/user/${id}/following`}>
-                    <a>
-                      <dt>팔로잉</dt>
-                      <dd>
-                        <Text fontWeight="bold">{followingCount}</Text>
-                      </dd>
-                    </a>
-                  </Link>
-                </div>
-                <div>
-                  <Link href={`/user/${id}/follower`}>
-                    <a>
-                      <dt>팔로워</dt>
-                      <dd>
-                        <Text fontWeight="bold">{followerCount}</Text>
-                      </dd>
-                    </a>
-                  </Link>
-                </div>
-              </StatBar>
-            </MainInfoArea>
-            <Description>{description}</Description>
-            <div>
-              <Link href="/user/edit" passHref>
-                <a>
-                  <Button fullWidth>프로필 편집</Button>
-                </a>
-              </Link>
-            </div>
-          </MainInfoContainer>
-
-          <VStack align="stretch" spacing="36px" p="24px 20px">
-            <VStack align="stretch">
-              <Text>포지션</Text>
-              <HStack>
-                {positions.length ? (
-                  getTranslatedPositions(positions).map(
-                    ({ english, korean }) => <Tag key={english}>{korean}</Tag>
-                  )
-                ) : (
-                  <Tag>선택한 포지션이 없습니다</Tag>
-                )}
-              </HStack>
-            </VStack>
-            <VStack align="stretch">
-              <Text>숙련도</Text>
-              <HStack>
-                <Tag>
-                  {proficiency === null
-                    ? "미정"
-                    : getTranslatedProficiency(proficiency).korean}
-                </Tag>
-              </HStack>
-            </VStack>
-            <div>
-              <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
-              {getFavoritesQuery.isSuccess &&
-              getFavoritesQuery.data.contents.length ? (
-                <FavoriteList
-                  favoriteCourts={getFavoritesQuery.data.contents.map(
-                    ({ court: { id, name } }) => ({ id, name })
-                  )}
-                />
-              ) : (
-                <Tag>즐겨찾기한 농구장이 없습니다</Tag>
-              )}
-            </div>
-          </VStack>
-        </div>
+        <Center flex={1}>
+          <Spinner />
+        </Center>
       )
-    }
+    },
+    ({ userId }) => {
+      const setNavigation = useSetNavigation()
+      const currentUserQuery = useCurrentUserQuery()
+      const getFavoritesQuery = useGetFavoritesQuery()
 
-    if (userProfileQuery.isSuccess) {
-      const {
-        description,
-        followerCount,
-        followingCount,
-        id,
-        nickname,
-        positions,
-        proficiency,
-        profileImage,
-        favoriteCourts,
-        isFollowing,
-      } = userProfileQuery.data
+      const isMe =
+        currentUserQuery.isSuccess && userId === currentUserQuery.data.id
 
-      return (
-        <div>
-          <MainInfoContainer>
-            <MainInfoArea>
-              <Avatar src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
-              <StatBar>
-                <div>
-                  <Link href={`/user/${id}/following`}>
-                    <a>
-                      <dt>팔로잉</dt>
-                      <dd>
-                        <Text fontWeight="bold">{followingCount}</Text>
-                      </dd>
-                    </a>
-                  </Link>
-                </div>
-                <div>
-                  <Link href={`/user/${id}/follower`}>
-                    <a>
-                      <dt>팔로워</dt>
-                      <dd>
-                        <Text fontWeight="bold">{followerCount}</Text>
-                      </dd>
-                    </a>
-                  </Link>
-                </div>
-              </StatBar>
-            </MainInfoArea>
-            <Description>{description}</Description>
-            {!isMe ? (
-              <ButtonContainer>
-                <Link href={`/chat/${id}`} passHref>
-                  <a style={{ width: "100%" }}>
-                    <Button fullWidth>메시지</Button>
-                  </a>
-                </Link>
-                <FollowButton
-                  isFollowing={isFollowing}
-                  receiverId={id}
-                  refetch={() => {
-                    userProfileQuery.refetch()
-                  }}
+      const myProfileQuery = useMyProfileQuery({
+        enabled: !currentUserQuery.isLoading && isMe,
+        onSuccess: ({ nickname }) => {
+          setNavigation.title(nickname)
+        },
+      })
+
+      const userProfileQuery = useUserProfileQuery(userId, {
+        enabled: !currentUserQuery.isLoading && !isMe,
+        onSuccess: ({ nickname }) => {
+          setNavigation.title(nickname)
+        },
+      })
+
+      if (isMe && myProfileQuery.isSuccess) {
+        const {
+          description,
+          followerCount,
+          followingCount,
+          id,
+          nickname,
+          positions,
+          proficiency,
+          profileImage,
+        } = myProfileQuery.data
+
+        return (
+          <div>
+            <MainInfoContainer>
+              <MainInfoArea>
+                <Avatar
+                  size="xl"
+                  src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
                 />
-              </ButtonContainer>
-            ) : (
+                <StatBar>
+                  <div>
+                    <Link href={`/user/${id}/following`}>
+                      <a>
+                        <dt>팔로잉</dt>
+                        <dd>
+                          <Text fontWeight="bold">{followingCount}</Text>
+                        </dd>
+                      </a>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link href={`/user/${id}/follower`}>
+                      <a>
+                        <dt>팔로워</dt>
+                        <dd>
+                          <Text fontWeight="bold">{followerCount}</Text>
+                        </dd>
+                      </a>
+                    </Link>
+                  </div>
+                </StatBar>
+              </MainInfoArea>
+              <Description>{description}</Description>
               <div>
                 <Link href="/user/edit" passHref>
                   <a>
@@ -227,47 +123,157 @@ const Page = withNavigation<{ userId: APIUser["id"] }>(
                   </a>
                 </Link>
               </div>
-            )}
-          </MainInfoContainer>
+            </MainInfoContainer>
 
-          <VStack align="stretch" spacing="36px" p="24px 20px">
-            <VStack align="stretch">
-              <Text>포지션</Text>
-              <HStack>
-                {positions.length ? (
-                  getTranslatedPositions(positions).map(
-                    ({ english, korean }) => <Tag key={english}>{korean}</Tag>
-                  )
+            <VStack align="stretch" spacing="36px" p="24px 20px">
+              <VStack align="stretch">
+                <Text>포지션</Text>
+                <HStack>
+                  {positions.length ? (
+                    getTranslatedPositions(positions).map(
+                      ({ english, korean }) => <Tag key={english}>{korean}</Tag>
+                    )
+                  ) : (
+                    <Tag>선택한 포지션이 없습니다</Tag>
+                  )}
+                </HStack>
+              </VStack>
+              <VStack align="stretch">
+                <Text>숙련도</Text>
+                <HStack>
+                  <Tag>
+                    {proficiency === null
+                      ? "미정"
+                      : getTranslatedProficiency(proficiency).korean}
+                  </Tag>
+                </HStack>
+              </VStack>
+              <div>
+                <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
+                {getFavoritesQuery.isSuccess &&
+                getFavoritesQuery.data.contents.length ? (
+                  <FavoriteList
+                    favoriteCourts={getFavoritesQuery.data.contents.map(
+                      ({ court: { id, name } }) => ({ id, name })
+                    )}
+                  />
                 ) : (
-                  <Tag>선택한 포지션이 없습니다</Tag>
+                  <Tag>즐겨찾기한 농구장이 없습니다</Tag>
                 )}
-              </HStack>
+              </div>
             </VStack>
-            <VStack align="stretch">
-              <Text>숙련도</Text>
-              <HStack>
-                <Tag>
-                  {proficiency === null
-                    ? "미정"
-                    : getTranslatedProficiency(proficiency).korean}
-                </Tag>
-              </HStack>
-            </VStack>
-            <div>
-              <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
-              {favoriteCourts.length ? (
-                <FavoriteList favoriteCourts={favoriteCourts} />
-              ) : (
-                <Tag>등록한 농구장이 없습니다</Tag>
-              )}
-            </div>
-          </VStack>
-        </div>
-      )
-    }
+          </div>
+        )
+      }
 
-    return null
-  }
+      if (userProfileQuery.isSuccess) {
+        const {
+          description,
+          followerCount,
+          followingCount,
+          id,
+          nickname,
+          positions,
+          proficiency,
+          profileImage,
+          favoriteCourts,
+          isFollowing,
+        } = userProfileQuery.data
+
+        return (
+          <div>
+            <MainInfoContainer>
+              <MainInfoArea>
+                <Avatar src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
+                <StatBar>
+                  <div>
+                    <Link href={`/user/${id}/following`}>
+                      <a>
+                        <dt>팔로잉</dt>
+                        <dd>
+                          <Text fontWeight="bold">{followingCount}</Text>
+                        </dd>
+                      </a>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link href={`/user/${id}/follower`}>
+                      <a>
+                        <dt>팔로워</dt>
+                        <dd>
+                          <Text fontWeight="bold">{followerCount}</Text>
+                        </dd>
+                      </a>
+                    </Link>
+                  </div>
+                </StatBar>
+              </MainInfoArea>
+              <Description>{description}</Description>
+              {!isMe ? (
+                <ButtonContainer>
+                  <Link href={`/chat/${id}`} passHref>
+                    <a style={{ width: "100%" }}>
+                      <Button fullWidth>메시지</Button>
+                    </a>
+                  </Link>
+                  <FollowButton
+                    isFollowing={isFollowing}
+                    receiverId={id}
+                    refetch={() => {
+                      userProfileQuery.refetch()
+                    }}
+                  />
+                </ButtonContainer>
+              ) : (
+                <div>
+                  <Link href="/user/edit" passHref>
+                    <a>
+                      <Button fullWidth>프로필 편집</Button>
+                    </a>
+                  </Link>
+                </div>
+              )}
+            </MainInfoContainer>
+
+            <VStack align="stretch" spacing="36px" p="24px 20px">
+              <VStack align="stretch">
+                <Text>포지션</Text>
+                <HStack>
+                  {positions.length ? (
+                    getTranslatedPositions(positions).map(
+                      ({ english, korean }) => <Tag key={english}>{korean}</Tag>
+                    )
+                  ) : (
+                    <Tag>선택한 포지션이 없습니다</Tag>
+                  )}
+                </HStack>
+              </VStack>
+              <VStack align="stretch">
+                <Text>숙련도</Text>
+                <HStack>
+                  <Tag>
+                    {proficiency === null
+                      ? "미정"
+                      : getTranslatedProficiency(proficiency).korean}
+                  </Tag>
+                </HStack>
+              </VStack>
+              <div>
+                <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
+                {favoriteCourts.length ? (
+                  <FavoriteList favoriteCourts={favoriteCourts} />
+                ) : (
+                  <Tag>등록한 농구장이 없습니다</Tag>
+                )}
+              </div>
+            </VStack>
+          </div>
+        )
+      }
+
+      return null
+    }
+  )
 )
 
 export default Page
