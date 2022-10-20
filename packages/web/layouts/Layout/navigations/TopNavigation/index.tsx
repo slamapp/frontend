@@ -174,8 +174,8 @@ const TopNavigation = ({ isShrink }: Props) => {
                     ? 30
                     : 6
                   : navigation.top.isBack
-                  ? 6
-                  : 6,
+                  ? 0
+                  : 0,
                 y: isShrink ? -45 : 0,
                 scale: isShrink ? 0.7 : 1,
                 opacity: 0,
@@ -187,8 +187,8 @@ const TopNavigation = ({ isShrink }: Props) => {
                     ? 30
                     : 6
                   : navigation.top.isBack
-                  ? 6
-                  : 6,
+                  ? 0
+                  : 0,
                 y: isShrink ? -45 : 0,
                 scale: isShrink ? 0.7 : 1,
                 opacity: 1,

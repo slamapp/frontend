@@ -331,7 +331,7 @@ const Page = withNavigation(
               })}
           </Map>
           <BottomModal isOpen={!!selectedCourtId}>
-            <Box p="24px 20px 20px 20px" h="100%">
+            <Box p="24px 20px 20px 20px" h="170px">
               {courtQuery.isLoading ? (
                 <VStack align="stretch" justify="space-between" h="100%">
                   <VStack align="stretch">
@@ -356,7 +356,7 @@ const Page = withNavigation(
               ) : (
                 courtQuery.isSuccess && (
                   <VStack align="stretch" justify="space-between" h="100%">
-                    <VStack align="stretch" spacing="8px">
+                    <VStack align="stretch" spacing={0}>
                       <CourtItem.Header>
                         {courtQuery.data.name}
                       </CourtItem.Header>
@@ -457,7 +457,8 @@ const BottomModal = ({
     <Box
       pos="sticky"
       bgColor="white"
-      h={`${isOpen ? 210 : 0}px`}
+      mt={`${isOpen ? -16 : 0}px`}
+      h={`${isOpen ? "auto" : 0}px`}
       transition="height 100ms ease-in-out"
       boxShadow="0px 0px 16px rgba(0, 0, 0, 0.3)"
       overflow="hidden"

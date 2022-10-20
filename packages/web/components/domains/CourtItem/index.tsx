@@ -96,7 +96,7 @@ const CourtItem = {
     const theme = useTheme()
 
     return (
-      <Box h="50px">
+      <Box>
         <Text
           color={theme.colors.gray0700}
           css={css`

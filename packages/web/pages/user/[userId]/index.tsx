@@ -1,20 +1,12 @@
-import type { ComponentPropsWithoutRef } from "react"
-import type { GetServerSideProps } from "next"
+import type { ReactNode } from "react"
 import Link from "next/link"
-import {
-  Avatar,
-  Center,
-  Flex,
-  HStack,
-  Spinner,
-  Tag,
-  Text,
-  VStack,
-} from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import styled from "@emotion/styled"
-import { Button, Icon } from "~/components/uis"
+import { useRouter } from "next/router"
+import { Avatar, Box, Flex, HStack, Tag, Text, VStack } from "@chakra-ui/react"
+import { css, useTheme } from "@emotion/react"
+import { useQueryClient } from "@tanstack/react-query"
+import { Button, Icon, Skeleton } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
+import { key } from "~/features"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import {
   useFollowCancelMutation,
@@ -33,24 +25,17 @@ import {
   getTranslatedProficiency,
 } from "~/utils/userInfo"
 
-const Page = withNavigation<{ userId: APIUser["id"] }>(
+const Page = withNavigation(
   {
-    top: {
-      isBack: true,
-      isMenu: true,
-      title: "",
-    },
+    top: { isBack: true, isMenu: true, title: "" },
     bottom: false,
   },
   withSuspense(
     () => {
-      return (
-        <Center flex={1}>
-          <Spinner />
-        </Center>
-      )
-    },
-    ({ userId }) => {
+      const router = useRouter()
+      const userId = router.query.userId as string
+
+      const queryClient = useQueryClient()
       const setNavigation = useSetNavigation()
       const currentUserQuery = useCurrentUserQuery()
       const getFavoritesQuery = useGetFavoritesQuery()
@@ -72,7 +57,10 @@ const Page = withNavigation<{ userId: APIUser["id"] }>(
         },
       })
 
-      if (isMe && myProfileQuery.isSuccess) {
+      const followCreateMutation = useFollowCreateMutation()
+      const followCancelMutation = useFollowCancelMutation()
+
+      if (isMe && myProfileQuery.isSuccess && getFavoritesQuery.isSuccess) {
         const {
           description,
           followerCount,
@@ -85,84 +73,28 @@ const Page = withNavigation<{ userId: APIUser["id"] }>(
         } = myProfileQuery.data
 
         return (
-          <div>
-            <MainInfoContainer>
-              <MainInfoArea>
-                <Avatar
-                  size="xl"
-                  src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
-                />
-                <StatBar>
-                  <div>
-                    <Link href={`/user/${id}/following`}>
-                      <a>
-                        <dt>팔로잉</dt>
-                        <dd>
-                          <Text fontWeight="bold">{followingCount}</Text>
-                        </dd>
-                      </a>
-                    </Link>
-                  </div>
-                  <div>
-                    <Link href={`/user/${id}/follower`}>
-                      <a>
-                        <dt>팔로워</dt>
-                        <dd>
-                          <Text fontWeight="bold">{followerCount}</Text>
-                        </dd>
-                      </a>
-                    </Link>
-                  </div>
-                </StatBar>
-              </MainInfoArea>
-              <Description>{description}</Description>
-              <div>
-                <Link href="/user/edit" passHref>
-                  <a>
-                    <Button fullWidth>프로필 편집</Button>
-                  </a>
-                </Link>
-              </div>
-            </MainInfoContainer>
-
-            <VStack align="stretch" spacing="36px" p="24px 20px">
-              <VStack align="stretch">
-                <Text>포지션</Text>
-                <HStack>
-                  {positions.length ? (
-                    getTranslatedPositions(positions).map(
-                      ({ english, korean }) => <Tag key={english}>{korean}</Tag>
-                    )
-                  ) : (
-                    <Tag>선택한 포지션이 없습니다</Tag>
-                  )}
-                </HStack>
-              </VStack>
-              <VStack align="stretch">
-                <Text>숙련도</Text>
-                <HStack>
-                  <Tag>
-                    {proficiency === null
-                      ? "미정"
-                      : getTranslatedProficiency(proficiency).korean}
-                  </Tag>
-                </HStack>
-              </VStack>
-              <div>
-                <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
-                {getFavoritesQuery.isSuccess &&
-                getFavoritesQuery.data.contents.length ? (
-                  <FavoriteList
-                    favoriteCourts={getFavoritesQuery.data.contents.map(
-                      ({ court: { id, name } }) => ({ id, name })
-                    )}
-                  />
-                ) : (
-                  <Tag>즐겨찾기한 농구장이 없습니다</Tag>
-                )}
-              </div>
-            </VStack>
-          </div>
+          <PageContents
+            user={{
+              id,
+              profileImage,
+              description,
+              nickname,
+              positions,
+              proficiency,
+            }}
+            followerCount={followerCount}
+            followingCount={followingCount}
+            favoriteCourts={getFavoritesQuery.data.contents.map(
+              ({ court }) => ({ id: court.id, name: court.name })
+            )}
+            buttonArea={
+              <Link href="/user/edit" passHref>
+                <a>
+                  <Button fullWidth>프로필 편집</Button>
+                </a>
+              </Link>
+            }
+          />
         )
       }
 
@@ -181,216 +113,275 @@ const Page = withNavigation<{ userId: APIUser["id"] }>(
         } = userProfileQuery.data
 
         return (
-          <div>
-            <MainInfoContainer>
-              <MainInfoArea>
-                <Avatar src={profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
-                <StatBar>
-                  <div>
-                    <Link href={`/user/${id}/following`}>
-                      <a>
-                        <dt>팔로잉</dt>
-                        <dd>
-                          <Text fontWeight="bold">{followingCount}</Text>
-                        </dd>
-                      </a>
-                    </Link>
-                  </div>
-                  <div>
-                    <Link href={`/user/${id}/follower`}>
-                      <a>
-                        <dt>팔로워</dt>
-                        <dd>
-                          <Text fontWeight="bold">{followerCount}</Text>
-                        </dd>
-                      </a>
-                    </Link>
-                  </div>
-                </StatBar>
-              </MainInfoArea>
-              <Description>{description}</Description>
-              {!isMe ? (
-                <ButtonContainer>
-                  <Link href={`/chat/${id}`} passHref>
-                    <a style={{ width: "100%" }}>
-                      <Button fullWidth>메시지</Button>
-                    </a>
-                  </Link>
-                  <FollowButton
-                    isFollowing={isFollowing}
-                    receiverId={id}
-                    refetch={() => {
-                      userProfileQuery.refetch()
-                    }}
-                  />
-                </ButtonContainer>
-              ) : (
-                <div>
-                  <Link href="/user/edit" passHref>
-                    <a>
-                      <Button fullWidth>프로필 편집</Button>
-                    </a>
-                  </Link>
-                </div>
-              )}
-            </MainInfoContainer>
-
-            <VStack align="stretch" spacing="36px" p="24px 20px">
-              <VStack align="stretch">
-                <Text>포지션</Text>
-                <HStack>
-                  {positions.length ? (
-                    getTranslatedPositions(positions).map(
-                      ({ english, korean }) => <Tag key={english}>{korean}</Tag>
+          <PageContents
+            user={{
+              id,
+              profileImage,
+              description,
+              nickname,
+              positions,
+              proficiency,
+            }}
+            followerCount={followerCount}
+            followingCount={followingCount}
+            favoriteCourts={favoriteCourts}
+            buttonArea={
+              <Flex gap="8px">
+                <Link href={`/chat/${id}`} passHref>
+                  <a style={{ width: "100%" }}>
+                    <Button fullWidth>메시지</Button>
+                  </a>
+                </Link>
+                <Button
+                  fullWidth
+                  loading={
+                    followCreateMutation.isLoading ||
+                    followCancelMutation.isLoading
+                  }
+                  disabled={
+                    followCreateMutation.isLoading ||
+                    followCancelMutation.isLoading
+                  }
+                  scheme={isFollowing ? "black" : "white"}
+                  onClick={() =>
+                    (isFollowing
+                      ? followCancelMutation
+                      : followCreateMutation
+                    ).mutate(
+                      { receiverId: userId },
+                      {
+                        onSuccess: () =>
+                          queryClient.invalidateQueries({
+                            queryKey: key.users.otherProfile(userId),
+                            exact: true,
+                          }),
+                      }
                     )
-                  ) : (
-                    <Tag>선택한 포지션이 없습니다</Tag>
-                  )}
-                </HStack>
-              </VStack>
-              <VStack align="stretch">
-                <Text>숙련도</Text>
-                <HStack>
-                  <Tag>
-                    {proficiency === null
-                      ? "미정"
-                      : getTranslatedProficiency(proficiency).korean}
-                  </Tag>
-                </HStack>
-              </VStack>
-              <div>
-                <Text>{isMe ? "내가" : `${nickname}님이`} 즐겨찾는 농구장</Text>
-                {favoriteCourts.length ? (
-                  <FavoriteList favoriteCourts={favoriteCourts} />
-                ) : (
-                  <Tag>등록한 농구장이 없습니다</Tag>
-                )}
-              </div>
-            </VStack>
-          </div>
+                  }
+                >
+                  {isFollowing ? `팔로잉` : `팔로우`}
+                </Button>
+              </Flex>
+            }
+          />
         )
       }
 
       return null
+    },
+    () => {
+      const theme = useTheme()
+
+      return (
+        <VStack
+          align="stretch"
+          p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}
+        >
+          <Flex justify="space-between" align="center">
+            <Skeleton.Circle size={96} />
+            <HStack spacing="16px">
+              <VStack>
+                <Skeleton.Box width={30} height={14} />
+                <Skeleton.Box width={42} height={20} />
+              </VStack>
+              <VStack>
+                <Skeleton.Box width={30} height={14} />
+                <Skeleton.Box width={42} height={20} />
+              </VStack>
+            </HStack>
+          </Flex>
+          <Skeleton.Box width="100%" height={32} />
+          <VStack align="stretch" spacing="36px" p="24px 20px">
+            <VStack align="stretch">
+              <Skeleton.Box width={30} height={14} />
+              <HStack>
+                <Skeleton.Box width={42} height={20} />
+                <Skeleton.Box width={42} height={20} />
+              </HStack>
+            </VStack>
+            <VStack align="stretch">
+              <Skeleton.Box width={30} height={14} />
+              <HStack>
+                <Skeleton.Box width={42} height={20} />
+              </HStack>
+            </VStack>
+            <VStack align="stretch">
+              <Skeleton.Box width={30} height={14} />
+              <HStack>
+                <Skeleton.Circle size={36} />
+                <Box flex={1}>
+                  <Skeleton.Paragraph line={1} />
+                </Box>
+                <Skeleton.Box width={42} height={20} />
+              </HStack>
+              <HStack>
+                <Skeleton.Circle size={36} />
+                <Box flex={1}>
+                  <Skeleton.Paragraph line={1} />
+                </Box>
+                <Skeleton.Box width={42} height={20} />
+              </HStack>
+              <HStack>
+                <Skeleton.Circle size={36} />
+                <Box flex={1}>
+                  <Skeleton.Paragraph line={1} />
+                </Box>
+                <Skeleton.Box width={42} height={20} />
+              </HStack>
+              <HStack>
+                <Skeleton.Circle size={36} />
+                <Box flex={1}>
+                  <Skeleton.Paragraph line={1} />
+                </Box>
+                <Skeleton.Box width={42} height={20} />
+              </HStack>
+            </VStack>
+          </VStack>
+        </VStack>
+      )
     }
   )
 )
 
 export default Page
 
-export const getServerSideProps: GetServerSideProps<
-  ComponentPropsWithoutRef<typeof Page>
-> = async ({ query }) => ({
-  props: { userId: query.userId as APIUser["id"] },
-})
-
-const FavoriteList = ({
+const PageContents = ({
+  user,
+  followingCount,
+  followerCount,
   favoriteCourts,
+  buttonArea,
 }: {
+  user: Pick<
+    APIUser,
+    | "profileImage"
+    | "id"
+    | "description"
+    | "positions"
+    | "proficiency"
+    | "nickname"
+  >
+} & {
+  followingCount: number
+  followerCount: number
   favoriteCourts: Pick<APICourt, "id" | "name">[]
+  buttonArea: ReactNode
 }) => {
-  return (
-    <>
-      {favoriteCourts.map((court) => (
-        <Flex key={court.id} justify="space-between" align="center" py="8px">
-          <HStack spacing="10px">
-            <Icon name="map-pin" color="#FE6D04" />
-            <Text size="base">{court.name}</Text>
-          </HStack>
-
-          <Link
-            href={{ pathname: "/map", query: { courtId: court.id } }}
-            passHref
-          >
-            <a>
-              <Button>지도 보기</Button>
-            </a>
-          </Link>
-        </Flex>
-      ))}
-    </>
-  )
-}
-
-const FollowButton = ({
-  isFollowing,
-  receiverId,
-  refetch,
-}: {
-  isFollowing: boolean
-  receiverId: APIUser["id"]
-  refetch: () => void
-}) => {
-  const followCreateMutation = useFollowCreateMutation()
-  const followCancelMutation = useFollowCancelMutation()
+  const theme = useTheme()
 
   return (
-    <Button
-      fullWidth
-      loading={followCreateMutation.isLoading || followCancelMutation.isLoading}
-      disabled={
-        followCreateMutation.isLoading || followCancelMutation.isLoading
-      }
-      scheme={isFollowing ? "black" : "white"}
-      onClick={() => {
-        if (isFollowing) {
-          followCancelMutation.mutate({ receiverId }, { onSuccess: refetch })
-        } else {
-          followCreateMutation.mutate({ receiverId }, { onSuccess: refetch })
-        }
-      }}
+    <VStack
+      align="stretch"
+      p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}
     >
-      {isFollowing ? `팔로잉` : `팔로우`}
-    </Button>
+      <VStack align="stretch">
+        <Flex justify="space-between" align="center">
+          <Avatar
+            size="xl"
+            src={user.profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
+          />
+          <Flex
+            textAlign="center"
+            flexGrow={1}
+            justify="space-evenly"
+            css={css`
+              dd {
+                box-sizing: border-box;
+                margin: 0;
+                font-weight: bold;
+                padding: ${theme.gaps.xs} 0;
+              }
+            `}
+          >
+            <div>
+              <Link href={`/user/${user.id}/following`}>
+                <a>
+                  <dt>팔로잉</dt>
+                  <dd>
+                    <Text fontWeight="bold">{followingCount}</Text>
+                  </dd>
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href={`/user/${user.id}/follower`}>
+                <a>
+                  <dt>팔로워</dt>
+                  <dd>
+                    <Text fontWeight="bold">{followerCount}</Text>
+                  </dd>
+                </a>
+              </Link>
+            </div>
+          </Flex>
+        </Flex>
+        <div
+          css={css`
+            margin: ${theme.gaps.md} 0;
+            line-height: 1.4;
+          `}
+        >
+          {user.description}
+        </div>
+      </VStack>
+      {buttonArea}
+      <VStack align="stretch" spacing="36px" pt="24px">
+        <VStack align="stretch">
+          <Text>포지션</Text>
+          <HStack>
+            {user.positions.length ? (
+              getTranslatedPositions(user.positions).map(
+                ({ english, korean }) => <Tag key={english}>{korean}</Tag>
+              )
+            ) : (
+              <Tag>선택한 포지션이 없습니다</Tag>
+            )}
+          </HStack>
+        </VStack>
+        <VStack align="stretch">
+          <Text>숙련도</Text>
+          <HStack>
+            <Tag>
+              {user.proficiency === null
+                ? "미정"
+                : getTranslatedProficiency(user.proficiency).korean}
+            </Tag>
+          </HStack>
+        </VStack>
+        <VStack align="stretch">
+          <Text>즐겨찾는 농구장</Text>
+          {favoriteCourts.length === 0 ? (
+            <HStack>
+              <Tag>등록한 농구장이 없습니다</Tag>
+            </HStack>
+          ) : (
+            <VStack spacing="4px" align="stretch">
+              {favoriteCourts.map((court) => (
+                <Flex
+                  key={court.id}
+                  justify="space-between"
+                  align="center"
+                  py="8px"
+                >
+                  <HStack spacing="10px">
+                    <Icon name="map-pin" color="#FE6D04" />
+                    <Text size="base">{court.name}</Text>
+                  </HStack>
+
+                  <Link
+                    href={{ pathname: "/map", query: { courtId: court.id } }}
+                    passHref
+                  >
+                    <a>
+                      <Button>지도 보기</Button>
+                    </a>
+                  </Link>
+                </Flex>
+              ))}
+            </VStack>
+          )}
+        </VStack>
+      </VStack>
+    </VStack>
   )
 }
-
-const MainInfoContainer = styled.div`
-  ${({ theme }) => css`
-    padding: ${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md};
-    transition: background 200ms;
-  `}
-`
-
-const FlexContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
-const MainInfoArea = styled(FlexContainer)`
-  ${({ theme }) => css`
-    padding: 0 ${theme.gaps.xs};
-  `}
-`
-
-const ButtonContainer = styled(FlexContainer)`
-  ${({ theme }) => css`
-    gap: 0 ${theme.gaps.xs};
-  `}
-`
-
-const StatBar = styled.dl`
-  ${({ theme }) => css`
-    display: flex;
-    text-align: center;
-    margin: 0;
-    flex-grow: 1;
-    margin-left: ${theme.gaps.lg};
-    justify-content: space-evenly;
-
-    dd {
-      box-sizing: border-box;
-      margin: 0;
-      font-weight: bold;
-      padding: ${theme.gaps.xs} 0;
-    }
-  `}
-`
-
-const Description = styled.div`
-  ${({ theme }) => css`
-    margin: ${theme.gaps.md} 0;
-    line-height: 1.4;
-  `}
-`

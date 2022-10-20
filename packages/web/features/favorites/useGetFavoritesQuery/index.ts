@@ -9,6 +9,7 @@ const useGetFavoritesQuery = () => {
     () => api.favorites.getMyFavorites().then(({ data }) => data),
     {
       enabled: !!getCookieToken(),
+      suspense: true,
     }
   )
 }
