@@ -93,7 +93,13 @@ export const Provider = ({
   const debouncedSouthWestLng = useDebounce(southWest?.getLng(), debounceDelay)
 
   useEffect(() => {
-    if (map) {
+    if (
+      map &&
+      debouncedNorthEastLat &&
+      debouncedNorthEastLng &&
+      debouncedSouthWestLat &&
+      debouncedSouthWestLng
+    ) {
       requestAnimationFrame(() => {
         onBoundChange?.(map)
       })

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useTransition } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -18,6 +18,7 @@ import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import { useGetUpcomingReservationsQuery } from "~/features/reservations"
 import { useCurrentUserQuery } from "~/features/users"
+import { withSuspense } from "~/hocs"
 import { useLocalStorage } from "~/hooks"
 import { useTokenCookie } from "~/hooks/domain"
 import { BottomFixedGradient } from "~/layouts"
@@ -63,7 +64,8 @@ const Page = withNavigation(
       },
     },
   },
-  () => {
+  withSuspense(() => {
+    const [isTransitioning, startTransition] = useTransition()
     const tokenCookie = useTokenCookie()
     const setNavigation = useSetNavigation()
     const theme = useTheme()
@@ -81,13 +83,9 @@ const Page = withNavigation(
 
     const mapRef = useRef<kakao.maps.Map>()
 
-    const isFetchDisabled = useRef(false)
-
-    const [selectedDate, setSelectedDate] = useState(() => {
-      const timezone = "Asia/Seoul"
-
-      return dayjs().tz(timezone).hour(0).minute(0).second(0).millisecond(0)
-    })
+    const [selectedDate, setSelectedDate] = useState(() =>
+      dayjs().tz("Asia/Seoul").hour(0).minute(0).second(0).millisecond(0)
+    )
 
     const courtsQuery = useCourtsQuery(
       {
@@ -105,38 +103,44 @@ const Page = withNavigation(
       selectedCourtId,
       { date: getTimezoneDateStringFromDate(selectedDate), time: "morning" },
       {
-        onSuccess: (data) => {
-          setTimeout(() => {
+        onSuccess: ({ latitude, longitude }) => {
+          startTransition(() => {
             mapRef.current?.relayout()
-            mapRef.current?.panTo(
-              new kakao.maps.LatLng(data.latitude, data.longitude)
-            )
+            setCenter({ latitude, longitude })
             courtsQuery.refetch()
-          }, 0)
-
-          setCenter({ latitude: data.latitude, longitude: data.longitude })
+          })
         },
       }
     )
 
     useEffect(() => {
-      setNavigation.title(
-        selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?"
-      )
+      startTransition(() => {
+        setNavigation.title(
+          selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?"
+        )
 
-      if (selectedCourtId === null) {
-        setTimeout(() => {
-          mapRef.current?.relayout()
-          courtsQuery.refetch()
-        }, 200)
-      }
+        if (selectedCourtId === null) {
+          setTimeout(() => {
+            mapRef.current?.relayout()
+            courtsQuery.refetch()
+          }, 200)
+        }
+      })
     }, [selectedCourtId])
 
     useEffect(() => {
-      requestAnimationFrame(() => {
-        courtsQuery.refetch()
+      startTransition(() => {
+        if (bounds) {
+          courtsQuery.refetch()
+        }
       })
-    }, [bounds, selectedDate])
+    }, [
+      bounds?.getNorthEast().getLat(),
+      bounds?.getNorthEast().getLng(),
+      bounds?.getSouthWest().getLat(),
+      bounds?.getSouthWest().getLng(),
+      selectedDate,
+    ])
 
     useEffect(() => {
       setSelectedCourtId((router.query.courtId as string) || null)
@@ -162,35 +166,33 @@ const Page = withNavigation(
               )
             }}
           />
-
           <Map
             center={center}
             level={6}
+            maxLevel={7}
             onClick={() => {
               router.replace({ pathname: "/map" })
             }}
             onDragStart={() => {
               router.replace({ pathname: "/map" })
-
-              isFetchDisabled.current = true
-            }}
-            onDragEnd={() => {
-              isFetchDisabled.current = false
             }}
             onLoaded={(map) => {
               setBounds(map.getBounds())
               mapRef.current = map
             }}
             onBoundChange={(map) => {
-              if (!isFetchDisabled.current) {
-                setBounds(map.getBounds())
-              }
+              setBounds(map.getBounds())
+            }}
+            onZoomChanged={(map) => {
+              setBounds(map.getBounds())
             }}
             style={{ flex: 1 }}
           >
             <Map.Button.CurrentLocation />
             <Map.Button.ZoomInOut />
-            {courtsQuery.isFetching && <Map.LoadingIndicator />}
+            {(isTransitioning || courtsQuery.isFetching) && (
+              <Map.LoadingIndicator />
+            )}
             {courtsQuery.isSuccess &&
               courtsQuery.data.map(({ court, reservationMaxCount }) => {
                 let imageSrc = "/assets/basketball/animation_off_400.png"
@@ -441,7 +443,7 @@ const Page = withNavigation(
         </AnimatePresence>
       </>
     )
-  }
+  })
 )
 
 export default Page
