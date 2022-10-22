@@ -104,9 +104,9 @@ const Page = withNavigation(
       { date: getTimezoneDateStringFromDate(selectedDate), time: "morning" },
       {
         onSuccess: ({ latitude, longitude }) => {
+          setCenter({ latitude, longitude })
+          mapRef.current?.relayout()
           startTransition(() => {
-            mapRef.current?.relayout()
-            setCenter({ latitude, longitude })
             courtsQuery.refetch()
           })
         },
@@ -119,12 +119,7 @@ const Page = withNavigation(
           selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?"
         )
 
-        if (selectedCourtId === null) {
-          setTimeout(() => {
-            mapRef.current?.relayout()
-            courtsQuery.refetch()
-          }, 200)
-        }
+        mapRef.current?.relayout()
       })
     }, [selectedCourtId])
 
@@ -181,7 +176,9 @@ const Page = withNavigation(
               mapRef.current = map
             }}
             onBoundChange={(map) => {
-              setBounds(map.getBounds())
+              startTransition(() => {
+                setBounds(map.getBounds())
+              })
             }}
             onZoomChanged={(map) => {
               setBounds(map.getBounds())
