@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import { useEffect, useRef } from "react"
 import { useRouter } from "next/router"
 import { css, useTheme } from "@emotion/react"
+import { motion } from "framer-motion"
 import { useIntersectionObserver } from "~/hooks"
 import { useSetNavigation } from "~/layouts/Layout/navigations"
 import { useReservationTableContext } from "./context"
@@ -9,6 +10,7 @@ import { useReservationTableContext } from "./context"
 interface Props {
   isOddTimeNumber: boolean
   isTop: boolean
+  isBottom: boolean
   timeNumber: number
   intersectingTitle: string
   children: ReactNode
@@ -23,7 +25,7 @@ const Cell = ({
 }: Props) => {
   const theme = useTheme()
   const setNavigation = useSetNavigation()
-  const { tableCellHeight } = useReservationTableContext()
+  const { tableCellHeight, isFetching } = useReservationTableContext()
   const router = useRouter()
 
   const ref = useRef<HTMLDivElement>(null)
@@ -49,22 +51,29 @@ const Cell = ({
   }, [entry?.isIntersecting])
 
   return (
-    <div
+    <motion.div
       ref={ref}
       css={css`
         box-sizing: border-box;
-        background-color: orange;
         height: ${tableCellHeight}px;
-        border-top: ${isTop ? 18 : isOddTimeNumber ? 2 : 1}px solid
+        border-top: ${isTop ? 4 : isOddTimeNumber ? 1 : 0.5}px solid
           ${theme.colors.black};
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
       `}
+      animate={
+        isFetching
+          ? {
+              color: ["#ffffff", "#000000", "#ffffff", "#000000"],
+              transition: { repeat: Infinity, duration: 1 },
+            }
+          : { color: "#000000" }
+      }
     >
       {children}
-    </div>
+    </motion.div>
   )
 }
 

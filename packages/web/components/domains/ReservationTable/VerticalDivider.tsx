@@ -1,7 +1,7 @@
 import { css } from "@emotion/react"
 import { useReservationTableContext } from "./context"
 
-const Divider = () => {
+const VerticalDivider = () => {
   const { tableCellHeight } = useReservationTableContext()
 
   return (
@@ -11,11 +11,11 @@ const Divider = () => {
         top: 0;
         bottom: 0;
         right: ${tableCellHeight}px;
-        width: 6px;
+        width: 4px;
         background-color: black;
       `}
     />
   )
 }
 
-export default Divider
+export default VerticalDivider

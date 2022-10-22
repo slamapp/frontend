@@ -3,11 +3,13 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
 import { VStack } from "@chakra-ui/react"
 import dayjs from "dayjs"
+import { useGetReservationsInfiniteQuery } from "~/features/reservations"
+import type { APICourt } from "~/types/domains/objects"
 import Cells from "./Cells"
 import type { ContextProps } from "./context"
 import { ReservationTableContext } from "./context"
-import Divider from "./Divider"
 import MoreCellSensor from "./MoreCellSensor"
+import VerticalDivider from "./VerticalDivider"
 import "dayjs/locale/ko"
 
 dayjs.locale("ko")
@@ -15,10 +17,17 @@ dayjs.locale("ko")
 const DATE_QUERY_STRING_FORMAT = "YYYY-MM-DD"
 
 interface Props {
+  courtId: APICourt["id"]
+  date: string
   children: ReactNode
 }
 
-const ReservationTable = ({ children }: Props) => {
+const ReservationTable = ({ courtId, date, children }: Props) => {
+  const getReservationsInfiniteQuery = useGetReservationsInfiniteQuery({
+    courtId,
+    initialDate: date,
+  })
+
   const router = useRouter()
   const [intersectingTitleCountMap, setIntersectingTitleCountMap] = useState<{
     [date: string]: number
@@ -26,7 +35,7 @@ const ReservationTable = ({ children }: Props) => {
 
   const dayjsToday = dayjs()
   const dayjsDate = {
-    Current: dayjs(`${router.query.date as string}`),
+    Current: dayjs(`${date}`),
     Min: dayjsToday,
     Max: dayjs(dayjsToday.clone()).add(13, "day"),
   }
@@ -53,25 +62,31 @@ const ReservationTable = ({ children }: Props) => {
           dayjs(dates[dates.length - 1]).isAfter(dayjsDate.Max))
       ) {
         if (typeof callback === "function") {
-          await callback({ isAddedCells: false })
+          callback({ isAddedCells: false })
         }
 
         return
       }
 
       if (option === "subtract") {
-        setDates((prev) => [
-          dayjs(prev[0]).subtract(1, "day").format(DATE_QUERY_STRING_FORMAT),
-          ...prev,
-        ])
+        setDates((prev) => {
+          const subtractedDay = dayjs(prev[0]).subtract(1, "day")
+          getReservationsInfiniteQuery.fetchNextPage({
+            pageParam: subtractedDay.toISOString(),
+          })
+
+          return [subtractedDay.format(DATE_QUERY_STRING_FORMAT), ...prev]
+        })
       }
       if (option === "add") {
-        setDates((prev) => [
-          ...prev,
-          dayjs(prev[prev.length - 1])
-            .add(1, "day")
-            .format(DATE_QUERY_STRING_FORMAT),
-        ])
+        setDates((prev) => {
+          const addedDay = dayjs(prev[prev.length - 1]).add(1, "day")
+          getReservationsInfiniteQuery.fetchNextPage({
+            pageParam: addedDay.toISOString(),
+          })
+
+          return [...prev, addedDay.format(DATE_QUERY_STRING_FORMAT)]
+        })
       }
       if (typeof callback === "function") {
         await callback({ isAddedCells: true })
@@ -83,20 +98,20 @@ const ReservationTable = ({ children }: Props) => {
   useEffect(() => {
     if (dayjsDate.Current.isBefore(dayjsDate.Min.subtract(1, "day"))) {
       router.replace(
-        `/reservations/courts/${
-          router.query.courtId as string
-        }?date=${dayjsDate.Min.format(DATE_QUERY_STRING_FORMAT)}`
+        `/reservations/courts/${courtId}?date=${dayjsDate.Min.format(
+          DATE_QUERY_STRING_FORMAT
+        )}`
       )
     }
 
     if (dayjsDate.Current.isAfter(dayjsDate.Max.add(1, "day"))) {
       router.replace(
-        `/reservations/courts/${
-          router.query.courtId as string
-        }?date=${dayjsDate.Max.format(DATE_QUERY_STRING_FORMAT)}`
+        `/reservations/courts/${courtId}?date=${dayjsDate.Max.format(
+          DATE_QUERY_STRING_FORMAT
+        )}`
       )
     }
-  }, [router.query.date, router.query.courtId, router])
+  }, [date, courtId, router])
 
   return (
     <ReservationTableContext.Provider
@@ -107,6 +122,8 @@ const ReservationTable = ({ children }: Props) => {
         dates,
         setDates,
         replaceNewDate,
+        courtId,
+        isFetching: getReservationsInfiniteQuery.isFetching,
       }}
     >
       <VStack
@@ -118,13 +135,9 @@ const ReservationTable = ({ children }: Props) => {
         spacing={0}
       >
         {isReadyTableCellHeight ? (
-          <>
-            <MoreCellSensor.Top />
-            {children}
-            <MoreCellSensor.Bottom />
-          </>
+          children
         ) : (
-          <>테이블 그리기를 준비중입니다.</>
+          <>readyTableCellHeight is required</>
         )}
       </VStack>
     </ReservationTableContext.Provider>
@@ -133,5 +146,6 @@ const ReservationTable = ({ children }: Props) => {
 
 export default ReservationTable
 
-ReservationTable.Divider = Divider
+ReservationTable.VerticalDivider = VerticalDivider
 ReservationTable.Cells = Cells
+ReservationTable.MoreCellSensor = MoreCellSensor

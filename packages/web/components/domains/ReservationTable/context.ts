@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
 import { createContext, useContext } from "react"
+import type { APICourt } from "~/types/domains/objects/court"
 
 export interface ContextProps {
   intersectingTitleCountMap: { [date: string]: number }
@@ -13,6 +14,8 @@ export interface ContextProps {
     option: "add" | "subtract",
     callback?: ({ isAddedCells }: { isAddedCells: boolean }) => void
   ) => void
+  courtId: APICourt["id"]
+  isFetching: boolean
 }
 
 export const ReservationTableContext = createContext({} as ContextProps)

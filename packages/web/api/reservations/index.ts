@@ -16,6 +16,9 @@ export default {
       params: { isFirst, lastId, size },
     }),
 
+  getReservationsAtDate: (params: { courtId: APICourt["id"]; date: string }) =>
+    http.auth.get<List<APIReservation>>("/reservations", { params }),
+
   getMyReservationParticipants: ({
     courtId,
     startTime,
