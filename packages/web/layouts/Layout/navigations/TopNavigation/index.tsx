@@ -97,26 +97,24 @@ const TopNavigation = ({ isShrink }: Props) => {
                     maxCount={10}
                   >
                     <Link href="/notifications" passHref>
-                      <a>
-                        <motion.div
-                          initial={{ rotateZ: 0 }}
-                          animate={
-                            unreadNotificationsCount > 0
-                              ? {
-                                  rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
-                                  transition: {
-                                    repeat: Infinity,
-                                    repeatDelay: 3,
-                                  },
-                                }
-                              : {
-                                  rotateZ: 0,
-                                }
-                          }
-                        >
-                          <Icon name="bell" />
-                        </motion.div>
-                      </a>
+                      <motion.div
+                        initial={{ rotateZ: 0 }}
+                        animate={
+                          unreadNotificationsCount > 0
+                            ? {
+                                rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
+                                transition: {
+                                  repeat: Infinity,
+                                  repeatDelay: 3,
+                                },
+                              }
+                            : {
+                                rotateZ: 0,
+                              }
+                        }
+                      >
+                        <Icon name="bell" />
+                      </motion.div>
                     </Link>
                   </Badge>
                 )}
@@ -130,9 +128,7 @@ const TopNavigation = ({ isShrink }: Props) => {
               )}
               {navigation.top.isMenu && (
                 <Link href="/user/menu" passHref>
-                  <a>
-                    <Icon name="menu" />
-                  </a>
+                  <Icon name="menu" />
                 </Link>
               )}
               {Custom && (

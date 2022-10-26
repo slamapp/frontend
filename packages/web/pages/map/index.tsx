@@ -387,20 +387,21 @@ const Page = withNavigation(
                             selectedDate
                           )}`}
                           passHref
+                          style={{ flex: 1, display: "flex" }}
                         >
-                          <a style={{ flex: 1, display: "flex" }}>
-                            <Button size="lg" style={{ flex: 1 }}>
-                              예약하기
-                            </Button>
-                          </a>
+                          <Button size="lg" style={{ flex: 1 }}>
+                            예약하기
+                          </Button>
                         </Link>
                       ) : (
-                        <Link href="/login" passHref>
-                          <a style={{ flex: 1, display: "flex" }}>
-                            <Button size="lg" style={{ flex: 1 }}>
-                              로그인하고 예약하기
-                            </Button>
-                          </a>
+                        <Link
+                          href="/login"
+                          passHref
+                          style={{ flex: 1, display: "flex" }}
+                        >
+                          <Button size="lg" style={{ flex: 1 }}>
+                            로그인하고 예약하기
+                          </Button>
                         </Link>
                       )}
                     </HStack>
@@ -422,17 +423,15 @@ const Page = withNavigation(
               >
                 <Box mx="16px" mb="16px">
                   <Link href="/login" passHref>
-                    <a>
-                      <Button size="lg" fullWidth scheme="kakao">
-                        <Image
-                          src="/assets/icon-kakao.svg"
-                          alt="카카오 로그인 로고"
-                          width={21}
-                          height={19}
-                        />
-                        3초만에 로그인하기
-                      </Button>
-                    </a>
+                    <Button size="lg" fullWidth scheme="kakao">
+                      <Image
+                        src="/assets/icon-kakao.svg"
+                        alt="카카오 로그인 로고"
+                        width={21}
+                        height={19}
+                      />
+                      3초만에 로그인하기
+                    </Button>
                   </Link>
                 </Box>
               </BottomFixedGradient>

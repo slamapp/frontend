@@ -9,20 +9,20 @@ const ProfileAvatar = ({
   user: Pick<APIUser, "id" | "profileImage">
 }) => {
   return (
-    <Link href={`/user/${user.id}`} passHref>
-      <a
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Avatar
-          w="36px"
-          h="36px"
-          src={user.profileImage || DEFAULT_PROFILE_IMAGE_URL}
-        />
-      </a>
+    <Link
+      href={`/user/${user.id}`}
+      passHref
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Avatar
+        w="36px"
+        h="36px"
+        src={user.profileImage || DEFAULT_PROFILE_IMAGE_URL}
+      />
     </Link>
   )
 }

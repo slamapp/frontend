@@ -49,9 +49,7 @@ const CourtItem = {
 
   ChatLink: ({ chatroom }: { chatroom: Pick<APIChatRoom, "id"> }) => (
     <Link href={`/chat/${chatroom.id}`} passHref>
-      <a>
-        <IconButton icon={{ name: "message-circle" }} />
-      </a>
+      <IconButton icon={{ name: "message-circle" }} />
     </Link>
   ),
 
@@ -69,10 +67,10 @@ const CourtItem = {
           : `https://map.kakao.com/link/to/${court.name},${court.latitude},${court.longitude}`
       }
       passHref
+      target="_blank"
+      rel="noreferrer"
     >
-      <a target="_blank" rel="noreferrer">
-        <IconButton icon={{ name: "map" }} />
-      </a>
+      <IconButton icon={{ name: "map" }} />
     </Link>
   ),
 

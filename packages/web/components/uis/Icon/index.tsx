@@ -21,8 +21,8 @@ const Icon = ({
 }: Props) => {
   const theme = useTheme()
 
-  const sizePx =
-    typeof size === "string" ? theme.sizes.iconSize[size] : `${size}px`
+  const sizeNumber =
+    typeof size === "string" ? theme.sizes.iconSize[size] : size
 
   return (
     <i
@@ -30,8 +30,8 @@ const Icon = ({
         display: flex;
         justify-content: center;
         align-items: center;
-        width: ${sizePx};
-        height: ${sizePx};
+        width: ${sizeNumber}px;
+        height: ${sizeNumber}px;
 
         img {
           width: 100%;
@@ -40,8 +40,8 @@ const Icon = ({
       `}
     >
       <Image
-        width={sizePx}
-        height={sizePx}
+        width={sizeNumber}
+        height={sizeNumber}
         src={`data:image/svg+xml;base64,${Buffer.from(
           Icons.icons[name].toSvg({
             strokeWidth,

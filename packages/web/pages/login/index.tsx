@@ -54,9 +54,7 @@ const Page = withNavigation(
         <BottomFixedGradient>
           <HStack m="16px" spacing="8px">
             <Link href="/map" passHref>
-              <a>
-                <IconButton icon={{ name: "map" }} />
-              </a>
+              <IconButton icon={{ name: "map" }} />
             </Link>
             <Button
               onClick={handleClickLogin}

@@ -89,9 +89,7 @@ const Page = withNavigation(
             )}
             buttonArea={
               <Link href="/user/edit" passHref>
-                <a>
-                  <Button fullWidth>프로필 편집</Button>
-                </a>
+                <Button fullWidth>프로필 편집</Button>
               </Link>
             }
           />
@@ -127,10 +125,8 @@ const Page = withNavigation(
             favoriteCourts={favoriteCourts}
             buttonArea={
               <Flex gap="8px">
-                <Link href={`/chat/${id}`} passHref>
-                  <a style={{ width: "100%" }}>
-                    <Button fullWidth>메시지</Button>
-                  </a>
+                <Link href={`/chat/${id}`} passHref style={{ width: "100%" }}>
+                  <Button fullWidth>메시지</Button>
                 </Link>
                 <Button
                   fullWidth
@@ -295,22 +291,18 @@ const PageContents = ({
           >
             <div>
               <Link href={`/user/${user.id}/following`}>
-                <a>
-                  <dt>팔로잉</dt>
-                  <dd>
-                    <Text fontWeight="bold">{followingCount}</Text>
-                  </dd>
-                </a>
+                <dt>팔로잉</dt>
+                <dd>
+                  <Text fontWeight="bold">{followingCount}</Text>
+                </dd>
               </Link>
             </div>
             <div>
               <Link href={`/user/${user.id}/follower`}>
-                <a>
-                  <dt>팔로워</dt>
-                  <dd>
-                    <Text fontWeight="bold">{followerCount}</Text>
-                  </dd>
-                </a>
+                <dt>팔로워</dt>
+                <dd>
+                  <Text fontWeight="bold">{followerCount}</Text>
+                </dd>
               </Link>
             </div>
           </Flex>
@@ -372,9 +364,7 @@ const PageContents = ({
                     href={{ pathname: "/map", query: { courtId: court.id } }}
                     passHref
                   >
-                    <a>
-                      <Button>지도 보기</Button>
-                    </a>
+                    <Button>지도 보기</Button>
                   </Link>
                 </Flex>
               ))}

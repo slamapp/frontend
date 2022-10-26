@@ -10,7 +10,7 @@ interface Props {
 const ErrorMessage = ({ title }: Props) => (
   <VStack>
     <VStack spacing="0">
-      <Image src="/assets/error.svg" alt="error" width="60px" height="60px" />
+      <Image src="/assets/error.svg" alt="error" width={60} height={60} />
       <Text fontSize="lg">{title}</Text>
     </VStack>
 

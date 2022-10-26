@@ -171,9 +171,7 @@ const getNotificationMarkUp = ({
           />
           <div>
             <Link href={`user/${sender.id}`} passHref>
-              <a>
-                <strong>{sender.nickname}</strong>
-              </a>
+              <strong>{sender.nickname}</strong>
             </Link>
             님이 팔로우 했습니다
           </div>

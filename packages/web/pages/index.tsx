@@ -108,12 +108,11 @@ const Page = withNavigation(
                           },
                         }}
                         passHref
+                        style={{ flex: 1, display: "flex" }}
                       >
-                        <a style={{ flex: 1, display: "flex" }}>
-                          <Button size="lg" fullWidth>
-                            예약하기
-                          </Button>
-                        </a>
+                        <Button size="lg" fullWidth>
+                          예약하기
+                        </Button>
                       </Link>
                     </HStack>
                   </VStack>

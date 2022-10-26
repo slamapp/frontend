@@ -1,10 +1,10 @@
 const sizes = {
   iconSize: {
-    xs: "12px",
-    sm: "16px",
-    md: "20px",
-    lg: "24px",
-    xl: "28px",
+    xs: 12,
+    sm: 16,
+    md: 20,
+    lg: 24,
+    xl: 28,
   },
   buttonHeight: {
     sm: "27px",

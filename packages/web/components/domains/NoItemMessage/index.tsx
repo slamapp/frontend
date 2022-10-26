@@ -32,12 +32,10 @@ const NoItemMessage = ({ title, description, buttonTitle, type }: Props) => {
         </Text>
       </VStack>
       <Link href="/map" passHref>
-        <a>
-          <Button fullWidth>
-            <Icon name="map" size="sm" color="white" />
-            {buttonTitle}
-          </Button>
-        </a>
+        <Button fullWidth>
+          <Icon name="map" size="sm" color="white" />
+          {buttonTitle}
+        </Button>
       </Link>
       <div style={{ height: 40 }}></div>
     </VStack>
