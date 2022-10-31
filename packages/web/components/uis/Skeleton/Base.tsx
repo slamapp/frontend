@@ -3,20 +3,14 @@ import styled from "@emotion/styled"
 
 const Base = styled.div`
   ${({ theme }) => css`
-    background-image: linear-gradient(
-      90deg,
-      ${theme.colors.gray0100} 0px,
-      ${theme.colors.gray0050} 40px,
-      ${theme.colors.gray0100} 80px
-    );
+    background: ${theme.colors.gray0100};
   `}
 
   display: inline-block;
   border-radius: 4px;
   background-size: 200% 200%;
   background-position: 0 center;
-  animation: skeleton--zoom-in 0.2s ease-out,
-    skeleton--loading 1s infinite linear;
+  animation: skeleton--zoom-in 0.2s ease-out, skeleton--loading 1s infinite;
 
   @keyframes skeleton--zoom-in {
     0% {
@@ -31,13 +25,13 @@ const Base = styled.div`
 
   @keyframes skeleton--loading {
     0% {
-      background-position-x: 100%;
+      opacity: 0.1;
     }
     50% {
-      background-position-x: 0%;
+      opacity: 1;
     }
     100% {
-      background-position-x: -100%;
+      opacity: 0.1;
     }
   }
 `
