@@ -1,9 +1,5 @@
 import { useRouter } from "next/router"
-import { Box, Spinner } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { useQueryClient } from "@tanstack/react-query"
 import { ReservationTable } from "~/components/domains"
-import { key } from "~/features"
 import { useGetReservationsInfiniteQuery } from "~/features/reservations"
 import { withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
@@ -43,14 +39,39 @@ const Container = ({
 
   return (
     <ReservationTable courtId={courtId} date={date}>
-      <ReservationTable.VerticalDivider />
-      <ReservationTable.MoreCellSensor.Top />
-      {getReservationsInfiniteQuery.isLoading ? (
-        <>loading...</>
-      ) : (
-        <ReservationTable.Cells data={{}} />
+      {({ dates }) => (
+        <>
+          <ReservationTable.VerticalDivider />
+          <ReservationTable.MoreCellSensor.Top />
+          {getReservationsInfiniteQuery.isLoading ? (
+            <>loading...</>
+          ) : (
+            dates
+              .map(
+                (date) =>
+                  Array.from(Array(48).keys()).map((_, index) => ({
+                    timeNumber: index,
+                    date,
+                  })) // 하루의 표 48개 생성
+              )
+              .map((cells) =>
+                cells.map(({ date, timeNumber }) => {
+                  return (
+                    <ReservationTable.Cell
+                      key={`${date}-${timeNumber}`}
+                      onClick={(cell) =>
+                        console.log(`${cell.date} ${cell.time}`)
+                      }
+                      timeNumber={timeNumber}
+                      date={date}
+                    />
+                  )
+                })
+              )
+          )}
+          <ReservationTable.MoreCellSensor.Bottom />
+        </>
       )}
-      <ReservationTable.MoreCellSensor.Bottom />
     </ReservationTable>
   )
 }

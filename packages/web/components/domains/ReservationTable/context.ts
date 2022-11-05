@@ -8,7 +8,6 @@ export interface ContextProps {
     SetStateAction<{ [date: string]: number }>
   >
   tableCellHeight: number
-  dates: string[]
   setDates: Dispatch<SetStateAction<string[]>>
   replaceNewDate: (
     option: "add" | "subtract",

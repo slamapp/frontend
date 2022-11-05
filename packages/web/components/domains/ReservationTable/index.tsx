@@ -5,7 +5,7 @@ import { VStack } from "@chakra-ui/react"
 import dayjs from "dayjs"
 import { useGetReservationsInfiniteQuery } from "~/features/reservations"
 import type { APICourt } from "~/types/domains/objects"
-import Cells from "./Cells"
+import Cell from "./Cell"
 import type { ContextProps } from "./context"
 import { ReservationTableContext } from "./context"
 import MoreCellSensor from "./MoreCellSensor"
@@ -19,7 +19,7 @@ const DATE_QUERY_STRING_FORMAT = "YYYY-MM-DD"
 interface Props {
   courtId: APICourt["id"]
   date: string
-  children: ReactNode
+  children: (props: { dates: string[] }) => ReactNode
 }
 
 const ReservationTable = ({ courtId, date, children }: Props) => {
@@ -119,7 +119,6 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
         intersectingTitleCountMap,
         setIntersectingTitleCountMap,
         tableCellHeight,
-        dates,
         setDates,
         replaceNewDate,
         courtId,
@@ -135,7 +134,7 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
         spacing={0}
       >
         {isReadyTableCellHeight ? (
-          children
+          children({ dates })
         ) : (
           <>readyTableCellHeight is required</>
         )}
@@ -147,5 +146,5 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
 export default ReservationTable
 
 ReservationTable.VerticalDivider = VerticalDivider
-ReservationTable.Cells = Cells
 ReservationTable.MoreCellSensor = MoreCellSensor
+ReservationTable.Cell = Cell

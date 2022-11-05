@@ -1,4 +1,3 @@
-import type { ReactNode } from "react"
 import { useEffect, useRef } from "react"
 import { useRouter } from "next/router"
 import { css, useTheme } from "@emotion/react"
@@ -8,21 +7,12 @@ import { useSetNavigation } from "~/layouts/Layout/navigations"
 import { useReservationTableContext } from "./context"
 
 interface Props {
-  isOddTimeNumber: boolean
-  isTop: boolean
-  isBottom: boolean
   timeNumber: number
-  intersectingTitle: string
-  children: ReactNode
+  date: string
+  onClick: (cell: { date: string; time: string }) => void
 }
 
-const Cell = ({
-  isOddTimeNumber,
-  intersectingTitle,
-  isTop,
-  timeNumber,
-  children,
-}: Props) => {
+const Cell = ({ timeNumber, date, onClick }: Props) => {
   const theme = useTheme()
   const setNavigation = useSetNavigation()
   const { tableCellHeight, isFetching } = useReservationTableContext()
@@ -31,27 +21,32 @@ const Cell = ({
   const ref = useRef<HTMLDivElement>(null)
   const entry = useIntersectionObserver(ref, {})
 
+  const hour = Math.floor(timeNumber / 2)
+  const isOddTimeNumber = Math.abs(timeNumber % 2) === 0
+  const isTop = hour === 0 && isOddTimeNumber
+  const isBottom = hour === 23 && !isOddTimeNumber
+  const time = isOddTimeNumber
+    ? `${hour}:00 - ${hour}:30`
+    : `${hour}:30 - ${hour + 1}:00`
+
   useEffect(() => {
     if (isTop && entry?.isIntersecting) {
       router.replace(
-        `/reservations/courts/${
-          router.query.courtId as string
-        }?date=${intersectingTitle}`
+        `/reservations/courts/${router.query.courtId as string}?date=${date}`
       )
-      setNavigation.title(intersectingTitle)
+      setNavigation.title(date)
     }
     if (timeNumber === 36 && entry?.isIntersecting) {
       router.replace(
-        `/reservations/courts/${
-          router.query.courtId as string
-        }?date=${intersectingTitle}`
+        `/reservations/courts/${router.query.courtId as string}?date=${date}`
       )
-      setNavigation.title(intersectingTitle)
+      setNavigation.title(date)
     }
   }, [entry?.isIntersecting])
 
   return (
     <motion.div
+      onClick={() => onClick({ date, time })}
       ref={ref}
       css={css`
         box-sizing: border-box;
@@ -72,7 +67,9 @@ const Cell = ({
           : { color: "#000000" }
       }
     >
-      {children}
+      {isTop && <div>{date}</div>}
+      {time}
+      {isBottom && <div>{date}</div>}
     </motion.div>
   )
 }
