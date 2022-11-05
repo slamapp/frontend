@@ -1,8 +1,8 @@
 import { css } from "@emotion/react"
-import { useReservationTableContext } from "./context"
+import { useReservationTable } from "../context"
 
 const VerticalDivider = () => {
-  const { tableCellHeight } = useReservationTableContext()
+  const { tableCellHeight } = useReservationTable()
 
   return (
     <div

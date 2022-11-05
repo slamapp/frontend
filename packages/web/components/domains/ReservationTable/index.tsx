@@ -5,11 +5,9 @@ import { VStack } from "@chakra-ui/react"
 import dayjs from "dayjs"
 import { useGetReservationsInfiniteQuery } from "~/features/reservations"
 import type { APICourt } from "~/types/domains/objects"
-import Cell from "./Cell"
+import { Cell, Cursor, MoreCellSensor, VerticalDivider } from "./components"
+import { Context } from "./context"
 import type { ContextProps } from "./context"
-import { ReservationTableContext } from "./context"
-import MoreCellSensor from "./MoreCellSensor"
-import VerticalDivider from "./VerticalDivider"
 import "dayjs/locale/ko"
 
 dayjs.locale("ko")
@@ -29,9 +27,6 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
   })
 
   const router = useRouter()
-  const [intersectingTitleCountMap, setIntersectingTitleCountMap] = useState<{
-    [date: string]: number
-  }>({})
 
   const dayjsToday = dayjs()
   const dayjsDate = {
@@ -114,11 +109,10 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
   }, [date, courtId, router])
 
   return (
-    <ReservationTableContext.Provider
+    <Context.Provider
       value={{
-        intersectingTitleCountMap,
-        setIntersectingTitleCountMap,
         tableCellHeight,
+        dates,
         setDates,
         replaceNewDate,
         courtId,
@@ -139,7 +133,7 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
           <>readyTableCellHeight is required</>
         )}
       </VStack>
-    </ReservationTableContext.Provider>
+    </Context.Provider>
   )
 }
 
@@ -148,3 +142,4 @@ export default ReservationTable
 ReservationTable.VerticalDivider = VerticalDivider
 ReservationTable.MoreCellSensor = MoreCellSensor
 ReservationTable.Cell = Cell
+ReservationTable.Cursor = Cursor

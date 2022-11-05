@@ -29,6 +29,11 @@ const useSetNavigation = () => {
         ...prev,
         top: { ...prev.top, title },
       })),
+    custom: (Custom: FC) =>
+      set((prev) => ({
+        ...prev,
+        top: { ...prev.top, Custom },
+      })),
   }
 }
 

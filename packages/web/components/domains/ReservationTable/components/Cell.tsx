@@ -4,7 +4,7 @@ import { css, useTheme } from "@emotion/react"
 import { motion } from "framer-motion"
 import { useIntersectionObserver } from "~/hooks"
 import { useSetNavigation } from "~/layouts/Layout/navigations"
-import { useReservationTableContext } from "./context"
+import { useReservationTable } from "../context"
 
 interface Props {
   timeNumber: number
@@ -15,7 +15,7 @@ interface Props {
 const Cell = ({ timeNumber, date, onClick }: Props) => {
   const theme = useTheme()
   const setNavigation = useSetNavigation()
-  const { tableCellHeight, isFetching } = useReservationTableContext()
+  const { tableCellHeight, isFetching } = useReservationTable()
   const router = useRouter()
 
   const ref = useRef<HTMLDivElement>(null)
@@ -25,9 +25,13 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
   const isOddTimeNumber = Math.abs(timeNumber % 2) === 0
   const isTop = hour === 0 && isOddTimeNumber
   const isBottom = hour === 23 && !isOddTimeNumber
+  const hourLocaleString = hour.toLocaleString("es-US", {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  })
   const time = isOddTimeNumber
-    ? `${hour}:00 - ${hour}:30`
-    : `${hour}:30 - ${hour + 1}:00`
+    ? `${hourLocaleString}:00`
+    : `${hourLocaleString}:30`
 
   useEffect(() => {
     if (isTop && entry?.isIntersecting) {

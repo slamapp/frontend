@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react"
-import { css } from "@emotion/react"
+import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
 import { useIntersectionObserver } from "~/hooks"
-import { useReservationTableContext } from "./context"
+import { useReservationTable } from "../context"
 
 const SENSOR_MULTIPLY = 6
 
 const Top = () => {
   const [isSensorOff, setIsSensorOff] = useState(false)
-  const { replaceNewDate, tableCellHeight } = useReservationTableContext()
+  const { replaceNewDate, tableCellHeight } = useReservationTable()
   const sensorRef = useRef<HTMLDivElement>(null)
   const sensorEntry = useIntersectionObserver(sensorRef, {
     threshold: 0.5,
@@ -43,7 +43,9 @@ const Top = () => {
     return (
       <>
         <NoAccessScrollMaker />
-        <NoAccess>지난 날은 예약할 수 없습니다</NoAccess>
+        <NoAccess height={tableCellHeight * 1}>
+          지난 날은 예약할 수 없습니다
+        </NoAccess>
       </>
     )
   }
@@ -57,9 +59,38 @@ const Top = () => {
   )
 }
 
+const NoAccessScrollMaker = () => {
+  const ref = useRef(null)
+  const theme = useTheme()
+  const entry = useIntersectionObserver(ref, { threshold: 0.95 })
+  const { tableCellHeight } = useReservationTable()
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      document
+        .getElementById("scrolled-container")
+        ?.scrollTo({ top: entry.boundingClientRect.bottom })
+    }
+  }, [entry?.isIntersecting])
+
+  return (
+    <div
+      ref={ref}
+      css={css`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: ${theme.colors.gray0200};
+        color: ${theme.colors.gray0500};
+        height: ${tableCellHeight * (SENSOR_MULTIPLY - 1)}px;
+      `}
+    />
+  )
+}
+
 const Bottom = () => {
   const [isSensorOff, setIsSensorOff] = useState(false)
-  const { replaceNewDate, tableCellHeight } = useReservationTableContext()
+  const { replaceNewDate, tableCellHeight } = useReservationTable()
   const sensorRef = useRef<HTMLDivElement>(null)
   const sensorEntry = useIntersectionObserver(sensorRef, {})
 
@@ -74,7 +105,11 @@ const Bottom = () => {
   }, [sensorEntry?.isIntersecting])
 
   if (isSensorOff) {
-    return <NoAccess>오늘로부터 14일 후는 예약할 수 없습니다</NoAccess>
+    return (
+      <NoAccess height={tableCellHeight * 1}>
+        오늘로부터 14일 후는 예약할 수 없습니다
+      </NoAccess>
+    )
   }
 
   return (
@@ -102,40 +137,13 @@ const MoreTableMaker = styled.div<{
   height: ${({ tableCellHeight }) => tableCellHeight * SENSOR_MULTIPLY}px;
 `
 
-const NoAccess = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-    background-color: ${theme.colors.gray0200};
-    color: ${theme.colors.gray0500};
-  `}
-`
-
-const NoAccessScrollMaker = () => {
-  const ref = useRef(null)
-
-  const entry = useIntersectionObserver(ref, { threshold: 0.95 })
-
-  useEffect(() => {
-    if (entry?.isIntersecting) {
-      document
-        .getElementById("scrolled-container")
-        ?.scrollTo({ top: entry.boundingClientRect.bottom })
-    }
-  }, [entry?.isIntersecting])
-
-  return <ScrollMaker ref={ref} />
-}
-
-const ScrollMaker = styled.div`
-  ${({ theme }) => css`
+const NoAccess = styled.div<{ height: number }>`
+  ${({ theme, height }) => css`
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: ${theme.colors.gray0200};
     color: ${theme.colors.gray0500};
-    height: 20vh;
+    height: ${height}px;
   `}
 `
