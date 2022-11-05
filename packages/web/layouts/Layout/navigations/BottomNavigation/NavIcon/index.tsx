@@ -23,7 +23,6 @@ const NavIcon = ({
   isActive,
   onTap,
 }: Props) => {
-  const { scrollToTop } = useScrollContainer()
   const router = useRouter()
   const theme = useTheme()
   const color = isActive ? theme.colors.black : theme.colors.gray0500
@@ -31,7 +30,6 @@ const NavIcon = ({
   const handleTap = async () => {
     onTap?.(href)
     await router.push(href)
-    scrollToTop()
   }
 
   return (

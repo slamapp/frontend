@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import { Box } from "@chakra-ui/react"
+import { Box, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
 import { AnimatePresence } from "framer-motion"
 import { useCurrentUserQuery } from "~/features/users"
@@ -31,28 +31,20 @@ const Layout = ({ children }: Props) => {
   )
 
   return (
-    <ScrollContainer>
-      <Box
-        ref={topIntersectionObserverRef}
-        pos="absolute"
-        minH="30px"
-        w="100%"
-      />
-      {top && <TopNavigation isShrink={isTooScrolled} />}
-      <main
-        css={css`
-          display: flex;
-          flex-direction: column;
-          flex: 1;
-        `}
-      >
+    <VStack align="stretch" maxW="560px" m="auto" h="100%" spacing={0}>
+      <ScrollContainer>
+        <Box
+          ref={topIntersectionObserverRef}
+          pos="absolute"
+          minH="30px"
+          w="100%"
+        />
+        {top && <TopNavigation isShrink={isTooScrolled} />}
         {children}
-      </main>
-      <PageLoader />
-      <AnimatePresence mode="wait">
-        {bottom && currentUserQuery.isSuccess && <BottomNavigation />}
-      </AnimatePresence>
-    </ScrollContainer>
+        <PageLoader />
+      </ScrollContainer>
+      {bottom && currentUserQuery.isSuccess && <BottomNavigation />}
+    </VStack>
   )
 }
 

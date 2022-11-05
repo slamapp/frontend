@@ -20,8 +20,6 @@ const Cursor = ({ startTime, endTime }: Props) => {
   const topMargin =
     (startDay.diff(dayjs(dates[0]), "minute") / 30) * tableCellHeight
 
-  console.log(topMargin)
-
   return (
     <div
       css={css`

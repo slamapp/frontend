@@ -4,6 +4,10 @@ const GlobalCSS = () => {
   return (
     <Global
       styles={css`
+        #__next {
+          height: 100%;
+        }
+
         /* 앱처럼 user-select 제거 */
         * {
           user-select: none;

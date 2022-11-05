@@ -1,17 +1,24 @@
 import type { ComponentProps } from "react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import { Box, Flex, VStack } from "@chakra-ui/react"
 import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { ReservationTable } from "~/components/domains"
-import { Button, Toast } from "~/components/uis"
+import { BottomModal, Button, Toast } from "~/components/uis"
 import { useGetReservationsInfiniteQuery } from "~/features/reservations"
 import { withSuspense } from "~/hocs"
 import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
 
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 const Page = withNavigation(
   {
     top: { isBack: true, title: "" },
+    bottom: false,
   },
   withSuspense(() => {
     const router = useRouter()
@@ -113,14 +120,6 @@ const Container = ({
   }
 
   useEffect(() => {
-    if (reservation) {
-      Toast.show(
-        `startTime:${reservation.startTime} endTime:${reservation.endTime}`
-      )
-    }
-  }, [reservation])
-
-  useEffect(() => {
     setNavigation.custom(() =>
       reservation ? (
         <Button scheme="black" onClick={clearReservation}>
@@ -131,44 +130,69 @@ const Container = ({
   }, [reservation, setNavigation])
 
   return (
-    <ReservationTable courtId={courtId} date={date}>
-      {({ dates }) => (
-        <>
-          <ReservationTable.VerticalDivider />
-          <ReservationTable.MoreCellSensor.Top />
-          {getReservationsInfiniteQuery.isLoading ? (
-            <>loading...</>
-          ) : (
-            dates
-              .map(
-                (date) =>
-                  Array.from(Array(48).keys()).map((_, index) => ({
-                    timeNumber: index,
-                    date,
-                  })) // 하루의 표 48개 생성
-              )
-              .map((cells) =>
-                cells.map(({ date, timeNumber }) => {
-                  return (
-                    <ReservationTable.Cell
-                      key={`${date}-${timeNumber}`}
-                      onClick={handleClickCell}
-                      timeNumber={timeNumber}
-                      date={date}
-                    />
-                  )
-                })
-              )
-          )}
-          <ReservationTable.MoreCellSensor.Bottom />
-          {reservation && (
-            <ReservationTable.Cursor
-              startTime={reservation.startTime}
-              endTime={reservation.endTime}
-            />
-          )}
-        </>
+    <Flex direction="column">
+      <ReservationTable courtId={courtId} date={date}>
+        {({ dates }) => (
+          <>
+            <ReservationTable.VerticalDivider />
+            <ReservationTable.MoreCellSensor.Top />
+            {getReservationsInfiniteQuery.isLoading ? (
+              <>loading...</>
+            ) : (
+              dates
+                .map(
+                  (date) =>
+                    Array.from(Array(48).keys()).map((_, index) => ({
+                      timeNumber: index,
+                      date,
+                    })) // 하루의 표 48개 생성
+                )
+                .map((cells) =>
+                  cells.map(({ date, timeNumber }) => {
+                    return (
+                      <ReservationTable.Cell
+                        key={`${date}-${timeNumber}`}
+                        onClick={handleClickCell}
+                        timeNumber={timeNumber}
+                        date={date}
+                      />
+                    )
+                  })
+                )
+            )}
+            <ReservationTable.MoreCellSensor.Bottom />
+            {reservation && (
+              <ReservationTable.Cursor
+                startTime={reservation.startTime}
+                endTime={reservation.endTime}
+              />
+            )}
+          </>
+        )}
+      </ReservationTable>
+
+      {reservation && (
+        <BottomModal isOpen={!!reservation.endTime}>
+          <Box p="24px 20px 20px 20px" h="170px">
+            <VStack align="stretch">
+              <Box>
+                {dayjs(reservation.startTime)
+                  .tz("Asia/Seoul")
+                  .format("YYYY-MM-DDTHH:mm:ssZ[Z]")}
+                {" - "}
+                {reservation.endTime &&
+                  dayjs(reservation.endTime)
+                    .add(30, "minute")
+                    .tz("Asia/Seoul")
+                    .format("YYYY-MM-DDTHH:mm:ssZ[Z]")}
+              </Box>
+              <Flex flexDir="row-reverse">
+                <Button size="lg">예약하기</Button>
+              </Flex>
+            </VStack>
+          </Box>
+        </BottomModal>
       )}
-    </ReservationTable>
+    </Flex>
   )
 }

@@ -1,4 +1,3 @@
-import type { ReactNode } from "react"
 import { useEffect, useRef, useState, useTransition } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -13,7 +12,7 @@ import {
   EssentialImagePreload,
 } from "~/components/domains"
 import { Map } from "~/components/kakaos"
-import { Button, Icon, Skeleton, Toast } from "~/components/uis"
+import { BottomModal, Button, Icon, Skeleton, Toast } from "~/components/uis"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import { useGetUpcomingReservationsQuery } from "~/features/reservations"
@@ -144,7 +143,7 @@ const Page = withNavigation(
     return (
       <>
         <EssentialImagePreload lazyLoadTime={10} />
-        <Flex direction="column" flex={1}>
+        <Flex direction="column" h="100%">
           <DatePicker
             initialValue={selectedDate}
             onChange={(date) => {
@@ -443,26 +442,3 @@ const Page = withNavigation(
 )
 
 export default Page
-
-const BottomModal = ({
-  isOpen,
-  children,
-}: {
-  isOpen: boolean
-  children: ReactNode
-}) => {
-  return (
-    <Box
-      pos="sticky"
-      bgColor="white"
-      mt={`${isOpen ? -16 : 0}px`}
-      h={`${isOpen ? "auto" : 0}px`}
-      transition="height 100ms ease-in-out"
-      boxShadow="0px 0px 16px rgba(0, 0, 0, 0.3)"
-      overflow="hidden"
-      borderRadius="16px 16px 0 0"
-    >
-      {children}
-    </Box>
-  )
-}

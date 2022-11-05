@@ -1,5 +1,5 @@
 import type { ReactNode, RefObject } from "react"
-import { createContext, useContext, useEffect, useRef, useState } from "react"
+import { createContext, useContext, useRef } from "react"
 import { css, useTheme } from "@emotion/react"
 
 type Value = {
@@ -21,7 +21,6 @@ const ScrollContainer = ({ children }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const theme = useTheme()
-  const [height, setHeight] = useState<number>(0)
 
   const scrollToTop = () => {
     ref.current?.scrollTo({ top: 0, behavior: "smooth" })
@@ -29,15 +28,6 @@ const ScrollContainer = ({ children }: Props) => {
 
   const scrollContainerHeight = ref.current?.getClientRects()[0].height ?? 0
   const scrollContainerWidth = ref.current?.getClientRects()[0].width ?? 0
-
-  const handleResize = () => setHeight(window.innerHeight)
-
-  useEffect(() => {
-    handleResize()
-    window.addEventListener("resize", handleResize)
-
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
 
   return (
     <Context.Provider
@@ -56,11 +46,8 @@ const ScrollContainer = ({ children }: Props) => {
           flex-direction: column;
           position: relative;
           overflow-x: hidden;
-          max-width: 560px;
-          margin: auto;
           background-color: ${theme.colors.gray0050};
-          height: ${`${height}`}px;
-
+          flex: 1;
           ::-webkit-scrollbar {
             width: 0px;
           }

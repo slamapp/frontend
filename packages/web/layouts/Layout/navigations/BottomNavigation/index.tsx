@@ -36,15 +36,7 @@ const BottomNavigation = () => {
   }, [router.pathname])
 
   return (
-    <Flex
-      as="nav"
-      pos="sticky"
-      background="white"
-      bottom={0}
-      left={0}
-      right={0}
-      zIndex={2000}
-    >
+    <Flex as="nav" background="white" zIndex={2000}>
       <Flex justify="space-around" align="center" mx="16px" h="52px" w="100%">
         {navIconPropsList.map((navIconProps) => (
           <NavIcon
