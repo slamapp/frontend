@@ -23,7 +23,8 @@ const Button = ({
   size = "md",
   scheme = "black",
   loading = false,
-  fullWidth,
+  disabled = false,
+  fullWidth = false,
   ...props
 }: Props) => {
   const theme = useTheme()
@@ -48,6 +49,9 @@ const Button = ({
       borderRadius="16px"
       fontWeight="bold"
       transition="background-color 200ms"
+      disabled={disabled}
+      opacity={disabled ? 0.7 : undefined}
+      cursor={disabled ? "not-allowed" : "pointer"}
       {...selectedScheme}
       {...props}
     >

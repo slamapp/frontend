@@ -1,6 +1,9 @@
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/router"
+import { Box, Center, Flex } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
+import type { Dayjs } from "dayjs"
+import dayjs from "dayjs"
 import { motion } from "framer-motion"
 import { useIntersectionObserver } from "~/hooks"
 import { useSetNavigation } from "~/layouts/Layout/navigations"
@@ -9,7 +12,7 @@ import { useReservationTable } from "../context"
 interface Props {
   timeNumber: number
   date: string
-  onClick: (cell: { date: string; time: string }) => void
+  onClick: (cellTime: { start: Dayjs; end: Dayjs }) => void
 }
 
 const Cell = ({ timeNumber, date, onClick }: Props) => {
@@ -48,19 +51,28 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
     }
   }, [entry?.isIntersecting])
 
+  const cellTime = useMemo(() => {
+    const start = dayjs(`${date}T${time}:00+09:00`)
+
+    return {
+      start,
+      end: start.add(30, "minute"),
+    }
+  }, [date, time])
+
+  const handleClick = useCallback(() => onClick(cellTime), [cellTime, onClick])
+
   return (
-    <motion.div
-      onClick={() => onClick({ date, time })}
+    <Flex
+      as={motion.div}
+      onClick={handleClick}
+      whileTap={{ backgroundColor: theme.colors.gray0200 }}
       ref={ref}
       css={css`
         box-sizing: border-box;
         height: ${tableCellHeight}px;
         border-top: ${isTop ? 4 : isOddTimeNumber ? 1 : 0.5}px solid
           ${theme.colors.black};
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
       `}
       animate={
         isFetching
@@ -71,10 +83,17 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
           : { color: "#000000" }
       }
     >
-      {isTop && <div>{date}</div>}
-      {time}
-      {isBottom && <div>{date}</div>}
-    </motion.div>
+      <Center flex={5}>
+        <Box textAlign="center">
+          {isTop && <div>{date}</div>}
+          {cellTime.start.tz("Asia/Seoul").format("HH:mm")}
+          {" - "}
+          {cellTime.end.tz("Asia/Seoul").format("HH:mm")}
+          {isBottom && <div>{date}</div>}
+        </Box>
+      </Center>
+      <Center flex={1}>🏀</Center>
+    </Flex>
   )
 }
 

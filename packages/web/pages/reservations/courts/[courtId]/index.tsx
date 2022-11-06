@@ -1,15 +1,22 @@
 import type { ComponentProps } from "react"
-import { useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
-import { Box, Flex, VStack } from "@chakra-ui/react"
+import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
+import { useTheme } from "@emotion/react"
+import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
+import { AnimatePresence, motion } from "framer-motion"
 import { ReservationTable } from "~/components/domains"
-import { BottomModal, Button, Toast } from "~/components/uis"
-import { useGetReservationsInfiniteQuery } from "~/features/reservations"
+import { BottomModal, Button, LayerOver, Toast } from "~/components/uis"
+import {
+  useCreateReservationMutation,
+  useGetReservationsInfiniteQuery,
+} from "~/features/reservations"
 import { withSuspense } from "~/hocs"
-import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
+import { useScrollContainer } from "~/layouts"
+import { withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
 
 dayjs.extend(utc)
@@ -49,8 +56,11 @@ const Container = ({
   courtId: APICourt["id"]
   date: string
 }) => {
-  const setNavigation = useSetNavigation()
+  const theme = useTheme()
+  const router = useRouter()
+  const { scrollContainerWidth } = useScrollContainer()
 
+  const createReservationMutation = useCreateReservationMutation({ courtId })
   const getReservationsInfiniteQuery = useGetReservationsInfiniteQuery({
     courtId,
     initialDate: date,
@@ -58,70 +68,79 @@ const Container = ({
 
   const [reservation, setReservation] = useState<{
     courtId: APICourt["id"]
-    startTime: string
-    endTime: string | null
+    startTime: Dayjs
+    endTime: Dayjs | null
     hasBall: boolean
   } | null>(null)
 
-  const clearReservation = () => setReservation(null)
-
-  const handleClickCell: ComponentProps<
-    typeof ReservationTable.Cell
-  >["onClick"] = ({ date, time }) => {
-    let next: typeof reservation = null
-    const clickedTime = `${date} ${time}`
-    const prev = reservation ? { ...reservation } : null
-
-    // 현 선택 단계
-    const isSelectingStartTime = prev === null
-    const isSelectingEndTime = !!prev && !!prev.startTime && !prev.endTime
-    const isSelectingNew = !!prev && !!prev.startTime && !!prev.endTime
-
-    // 선택 단계별 동작
-    if (isSelectingStartTime) {
-      next = { courtId, startTime: clickedTime, endTime: null, hasBall: false }
-    }
-
-    if (isSelectingEndTime) {
-      const isBeforeStartTime = dayjs(clickedTime).isBefore(
-        dayjs(prev.startTime)
-      )
-      const isAfter4hours =
-        dayjs(clickedTime)
-          .add(30, "minute")
-          .diff(dayjs(prev.startTime), "minute") /
-          30 >
-        8
-
-      if (isBeforeStartTime || isAfter4hours) {
-        if (isAfter4hours) {
-          Toast.show("예약시간을 4시간 이하로 해주세요")
+  const createReservation = ({ hasBall }: { hasBall: boolean }) => {
+    if (reservation && reservation.endTime) {
+      createReservationMutation.mutate(
+        {
+          startTime: reservation.startTime.toISOString(),
+          endTime: reservation.endTime.toISOString(),
+          hasBall,
+        },
+        {
+          onSuccess: () => {
+            router.replace("/reservations")
+          },
         }
-
-        next = { ...prev, startTime: clickedTime }
-      } else if (prev.startTime === clickedTime) {
-        next = prev
-      } else {
-        next = { ...prev, endTime: clickedTime }
-      }
+      )
     }
-
-    if (isSelectingNew) {
-      next = { ...prev, startTime: clickedTime, endTime: null }
-    }
-
-    setReservation(next)
   }
 
-  useEffect(() => {
-    setNavigation.custom(() =>
-      reservation ? (
-        <Button scheme="black" onClick={clearReservation}>
-          취소
-        </Button>
-      ) : null
-    )
-  }, [reservation, setNavigation])
+  const clearReservation = () => setReservation(null)
+
+  const handleClickCell = useCallback<
+    ComponentProps<typeof ReservationTable.Cell>["onClick"]
+  >(
+    (cellTime) => {
+      let next: typeof reservation = null
+      const clickedTime = cellTime.start
+      const prev = reservation ? { ...reservation } : null
+
+      // 1. 현 선택 단계
+      const isSelectingStartTime = prev === null
+      const isSelectingEndTime = !!prev && !!prev.startTime && !prev.endTime
+      const isSelectingNew = !!prev && !!prev.startTime && !!prev.endTime
+
+      // 2. 선택 단계별 동작
+      if (isSelectingStartTime) {
+        next = {
+          courtId,
+          startTime: clickedTime,
+          endTime: null,
+          hasBall: false,
+        }
+      }
+
+      if (isSelectingEndTime) {
+        const isBeforeStartTime = clickedTime.isBefore(prev.startTime)
+        const isOverMaxHour =
+          cellTime.end.diff(prev.startTime, "minute") / 60 > 4 // 4시간을 초과하는 경우
+
+        if (isBeforeStartTime || isOverMaxHour) {
+          if (isOverMaxHour) {
+            Toast.show("예약시간을 4시간 이하로 해주세요", {
+              marginBottom: "bottomNavigation",
+            })
+          }
+
+          next = { ...prev, startTime: clickedTime }
+        } else {
+          next = { ...prev, endTime: cellTime.end }
+        }
+      }
+
+      if (isSelectingNew) {
+        next = { ...prev, startTime: clickedTime, endTime: null }
+      }
+
+      setReservation(next)
+    },
+    [courtId, reservation]
+  )
 
   return (
     <Flex direction="column">
@@ -165,28 +184,191 @@ const Container = ({
         )}
       </ReservationTable>
 
-      {reservation && (
-        <BottomModal isOpen={!!reservation.endTime}>
-          <Box p="24px 20px 20px 20px" h="170px">
-            <VStack align="stretch">
-              <Box>
-                {dayjs(reservation.startTime)
-                  .tz("Asia/Seoul")
-                  .format("YYYY-MM-DDTHH:mm:ssZ[Z]")}
-                {" - "}
-                {reservation.endTime &&
-                  dayjs(reservation.endTime)
-                    .add(30, "minute")
-                    .tz("Asia/Seoul")
-                    .format("YYYY-MM-DDTHH:mm:ssZ[Z]")}
-              </Box>
-              <Flex flexDir="row-reverse">
-                <Button size="lg">예약하기</Button>
-              </Flex>
-            </VStack>
-          </Box>
-        </BottomModal>
-      )}
+      <BottomModal>
+        <Flex
+          flexDir="column"
+          justify="space-between"
+          p="24px 20px 20px 20px"
+          gap="16px"
+          bgColor={theme.colors.white}
+        >
+          <VStack align="stretch">
+            <Text fontSize="1xl" fontWeight="bold">
+              {!reservation?.startTime || !reservation?.endTime
+                ? "예약시간을 먼저 선택하세요"
+                : "예약하기를 눌러 확정하세요"}
+            </Text>
+            <DateInput
+              text={reservation?.startTime
+                ?.tz("Asia/Seoul")
+                .format("YYYY.MM.DD(dd) HH:mm")}
+              clear={clearReservation}
+              placeHolder="시작시간을 눌러주세요"
+            />
+            {reservation && (
+              <DateInput
+                text={reservation?.endTime
+                  ?.tz("Asia/Seoul")
+                  .format("YYYY.MM.DD(dd) HH:mm")}
+                placeHolder="종료시간을 눌러주세요"
+                clear={
+                  reservation.endTime !== null
+                    ? () =>
+                        setReservation({
+                          ...reservation,
+                          endTime: null,
+                        })
+                    : null
+                }
+              />
+            )}
+          </VStack>
+          {reservation && (
+            <LayerOver
+              trigger={({ isOpen, open }) =>
+                reservation.endTime && (
+                  <Button
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: isOpen ? 1 : [1, 1, 1, 1, 1.05, 1, 1.05, 1],
+                    }}
+                    fullWidth
+                    size="lg"
+                    onClick={open}
+                    disabled={!reservation.endTime}
+                  >
+                    예약하기
+                  </Button>
+                )
+              }
+              layer={({ close, isOpen }) => (
+                <AnimatePresence mode="wait">
+                  {isOpen && (
+                    <Center
+                      as={motion.div}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      pos="fixed"
+                      top={0}
+                      bottom={0}
+                      left={0}
+                      right={0}
+                      backdropFilter="blur(3px)"
+                    >
+                      <Box
+                        onClick={close}
+                        pos="fixed"
+                        top={0}
+                        bottom={0}
+                        left={0}
+                        right={0}
+                        bgColor="#00000005"
+                        zIndex={-1}
+                      />
+                      <Box
+                        width="90%"
+                        maxWidth={`${scrollContainerWidth - 60}px`}
+                        bgColor="white"
+                        borderRadius="16px"
+                        p="16px"
+                        boxShadow="0 8px 32px -16px #00000020"
+                      >
+                        <VStack align="stretch" spacing="24px">
+                          <Text
+                            fontSize="2xl"
+                            textAlign="center"
+                            fontWeight="bold"
+                          >
+                            농구공을 가져가나요?
+                          </Text>
+                          <VStack>
+                            <Text fontSize="sm">
+                              {"•시작: "}
+                              {reservation.startTime
+                                .tz("Asia/Seoul")
+                                .format("YYYY.MM.DD(dd) HH:mm")}
+                            </Text>
+                            <Text fontSize="sm">
+                              {"•종료: "}
+                              {reservation.endTime
+                                ?.tz("Asia/Seoul")
+                                .format("YYYY.MM.DD(dd) HH:mm")}
+                            </Text>
+                          </VStack>
+                          <VStack align="stretch">
+                            <Button
+                              fullWidth
+                              size="lg"
+                              onClick={() =>
+                                createReservation({ hasBall: true })
+                              }
+                            >
+                              공을 가져갈게요 🏀 (예약하기)
+                            </Button>
+                            <Button
+                              fullWidth
+                              size="lg"
+                              onClick={() =>
+                                createReservation({ hasBall: false })
+                              }
+                            >
+                              공 없이 몸만 갈게요 (예약하기)
+                            </Button>
+                            <Button
+                              fullWidth
+                              size="lg"
+                              scheme="white"
+                              onClick={() => close()}
+                            >
+                              닫기
+                            </Button>
+                          </VStack>
+                        </VStack>
+                      </Box>
+                    </Center>
+                  )}
+                </AnimatePresence>
+              )}
+            />
+          )}
+        </Flex>
+      </BottomModal>
+    </Flex>
+  )
+}
+
+const DateInput = ({
+  text,
+  placeHolder,
+  clear,
+}: {
+  text?: string
+  placeHolder?: string
+  clear: (() => void) | null
+}) => {
+  const theme = useTheme()
+
+  return (
+    <Flex
+      key={text}
+      as={motion.div}
+      initial={{
+        backgroundColor: text ? theme.colors.gray0500 : theme.colors.gray0050,
+      }}
+      animate={{
+        backgroundColor: theme.colors.gray0050,
+      }}
+      justify="space-between"
+      p="8px 16px"
+      borderRadius="12px"
+    >
+      <Text fontSize="1xl" color={text ? undefined : theme.colors.gray0200}>
+        {text ?? placeHolder}
+      </Text>
+      {clear && <Text onClick={clear}>×</Text>}
     </Flex>
   )
 }
