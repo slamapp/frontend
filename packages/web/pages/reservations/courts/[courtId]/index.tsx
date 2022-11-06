@@ -68,55 +68,49 @@ const Container = ({
   const handleClickCell: ComponentProps<
     typeof ReservationTable.Cell
   >["onClick"] = ({ date, time }) => {
-    const clicked = `${date} ${time}`
+    let next: typeof reservation = null
+    const clickedTime = `${date} ${time}`
+    const prev = reservation ? { ...reservation } : null
 
-    setReservation((prev) => {
-      const isFirst = prev === null
-      const isSecond = !!prev && !!prev.startTime && !prev.endTime
-      const isThird = !!prev && !!prev.startTime && !!prev.endTime
+    // 현 선택 단계
+    const isSelectingStartTime = prev === null
+    const isSelectingEndTime = !!prev && !!prev.startTime && !prev.endTime
+    const isSelectingNew = !!prev && !!prev.startTime && !!prev.endTime
 
-      if (isFirst) {
-        return {
-          courtId,
-          startTime: clicked,
-          endTime: null,
-          hasBall: false,
+    // 선택 단계별 동작
+    if (isSelectingStartTime) {
+      next = { courtId, startTime: clickedTime, endTime: null, hasBall: false }
+    }
+
+    if (isSelectingEndTime) {
+      const isBeforeStartTime = dayjs(clickedTime).isBefore(
+        dayjs(prev.startTime)
+      )
+      const isAfter4hours =
+        dayjs(clickedTime)
+          .add(30, "minute")
+          .diff(dayjs(prev.startTime), "minute") /
+          30 >
+        8
+
+      if (isBeforeStartTime || isAfter4hours) {
+        if (isAfter4hours) {
+          Toast.show("예약시간을 4시간 이하로 해주세요")
         }
-      }
 
-      if (isSecond) {
-        if (
-          dayjs(prev.startTime).isAfter(dayjs(clicked)) ||
-          dayjs(clicked)
-            .add(30, "minute")
-            .diff(dayjs(prev.startTime), "minute") /
-            30 >
-            8
-        ) {
-          return {
-            ...prev,
-            startTime: clicked,
-          }
-        } else if (prev.startTime === clicked) {
-          return prev
-        } else {
-          return {
-            ...prev,
-            endTime: clicked,
-          }
-        }
+        next = { ...prev, startTime: clickedTime }
+      } else if (prev.startTime === clickedTime) {
+        next = prev
+      } else {
+        next = { ...prev, endTime: clickedTime }
       }
+    }
 
-      if (isThird) {
-        return {
-          ...prev,
-          startTime: clicked,
-          endTime: null,
-        }
-      }
+    if (isSelectingNew) {
+      next = { ...prev, startTime: clickedTime, endTime: null }
+    }
 
-      return null
-    })
+    setReservation(next)
   }
 
   useEffect(() => {
