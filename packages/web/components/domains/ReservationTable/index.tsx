@@ -122,7 +122,7 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
       <VStack
         ref={vwElementRef}
         w="100%"
-        minH={30}
+        minH="100vh"
         align="stretch"
         position="relative"
         spacing={0}

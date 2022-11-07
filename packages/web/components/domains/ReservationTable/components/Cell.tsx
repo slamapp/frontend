@@ -60,28 +60,30 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
     }
   }, [date, time])
 
+  const isDisabled = cellTime.start.isBefore(dayjs())
   const handleClick = useCallback(() => onClick(cellTime), [cellTime, onClick])
 
   return (
     <Flex
-      as={motion.div}
-      onClick={handleClick}
-      whileTap={{ backgroundColor: theme.colors.gray0200 }}
       ref={ref}
-      css={css`
-        box-sizing: border-box;
-        height: ${tableCellHeight}px;
-        border-top: ${isTop ? 4 : isOddTimeNumber ? 1 : 0.5}px solid
-          ${theme.colors.black};
-      `}
-      animate={
-        isFetching
+      as={motion.div}
+      onClick={isDisabled ? undefined : handleClick}
+      whileTap={{ backgroundColor: theme.colors.gray0200 }}
+      boxSizing="border-box"
+      height={`${tableCellHeight}px`}
+      borderTop={`${isTop ? 4 : isOddTimeNumber ? 1 : 0.5}px solid ${
+        theme.colors.black
+      }`}
+      animate={{
+        ...(isFetching
           ? {
               color: ["#ffffff", "#000000", "#ffffff", "#000000"],
               transition: { repeat: Infinity, duration: 1 },
             }
-          : { color: "#000000" }
-      }
+          : { color: "#000000" }),
+        filter: isDisabled ? "contrast(0.2)" : undefined,
+        backgroundColor: isDisabled ? theme.colors.gray0100 : undefined,
+      }}
     >
       <Center flex={5}>
         <Box textAlign="center">
