@@ -199,17 +199,25 @@ const Container = ({
                 : "예약하기를 눌러 확정하세요"}
             </Text>
             <DateInput
-              text={reservation?.startTime
-                ?.tz("Asia/Seoul")
-                .format("YYYY.MM.DD(dd) HH:mm")}
-              clear={clearReservation}
+              text={
+                reservation
+                  ? `${reservation.startTime
+                      .tz("Asia/Seoul")
+                      .format("YYYY.MM.DD(dd) HH:mm")} 부터`
+                  : undefined
+              }
+              clear={reservation?.startTime ? clearReservation : null}
               placeHolder="시작시간을 눌러주세요"
             />
             {reservation && (
               <DateInput
-                text={reservation?.endTime
-                  ?.tz("Asia/Seoul")
-                  .format("YYYY.MM.DD(dd) HH:mm")}
+                text={
+                  reservation.endTime
+                    ? `${reservation.endTime
+                        .tz("Asia/Seoul")
+                        .format("YYYY.MM.DD(dd) HH:mm")} 까지`
+                    : undefined
+                }
                 placeHolder="종료시간을 눌러주세요"
                 clear={
                   reservation.endTime !== null
@@ -245,7 +253,7 @@ const Container = ({
               }
               layer={({ close, isOpen }) => (
                 <AnimatePresence mode="wait">
-                  {isOpen && (
+                  {isOpen && reservation.endTime && (
                     <Center
                       as={motion.div}
                       initial={{ opacity: 0 }}
@@ -287,15 +295,15 @@ const Container = ({
                           <VStack>
                             <Text fontSize="sm">
                               {"•시작: "}
-                              {reservation.startTime
+                              {`${reservation.startTime
                                 .tz("Asia/Seoul")
-                                .format("YYYY.MM.DD(dd) HH:mm")}
+                                .format("YYYY.MM.DD(dd) HH:mm")} 부터`}
                             </Text>
                             <Text fontSize="sm">
                               {"•종료: "}
-                              {reservation.endTime
-                                ?.tz("Asia/Seoul")
-                                .format("YYYY.MM.DD(dd) HH:mm")}
+                              {`${reservation.endTime
+                                .tz("Asia/Seoul")
+                                .format("YYYY.MM.DD(dd) HH:mm")} 까지`}
                             </Text>
                           </VStack>
                           <VStack align="stretch">
