@@ -354,7 +354,6 @@ const Page = withNavigation(
                     <Skeleton.Box height={36} width={36} />
                     <Skeleton.Box height={36} width={36} />
                     <Skeleton.Box height={36} width={36} />
-                    <Skeleton.Box height={36} width={36} />
                     <Skeleton.Box height={36} style={{ flex: 1 }} />
                   </HStack>
                 </VStack>
