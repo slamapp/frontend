@@ -20,10 +20,11 @@ import {
 import { withSuspense } from "~/hocs"
 import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt, APIUser } from "~/types/domains/objects"
-import {
-  getTranslatedPositions,
-  getTranslatedProficiency,
-} from "~/utils/userInfo"
+import type {
+  positionType,
+  proficiencyType,
+} from "~/types/domains/objects/user"
+import type { Keyof, ValueOf } from "~/types/helpers"
 
 const Page = withNavigation(
   {
@@ -375,3 +376,63 @@ const PageContents = ({
     </VStack>
   )
 }
+
+const getTranslatedProficiency = (
+  englishProficiency: Keyof<typeof proficiencyType>
+): {
+  english: Keyof<typeof proficiencyType>
+  korean: ValueOf<typeof proficiencyType>
+} => {
+  switch (englishProficiency) {
+    case "BEGINNER":
+      return {
+        english: englishProficiency,
+        korean: "뉴비",
+      }
+
+    case "INTERMEDIATE":
+      return {
+        english: englishProficiency,
+        korean: "중수",
+      }
+    case "MASTER":
+      return {
+        english: englishProficiency,
+        korean: "고수",
+      }
+
+    default:
+      return {
+        english: englishProficiency,
+        korean: "뉴비",
+      }
+  }
+}
+
+const getKoreanPosition = (englishPosition: Keyof<typeof positionType>) => {
+  switch (englishPosition) {
+    case "C":
+      return "센터"
+    case "PF":
+      return "파워포워드"
+    case "SF":
+      return "스몰포워드"
+    case "PG":
+      return "포인트가드"
+    case "SG":
+      return "슈팅가드"
+    default:
+      return "미정"
+  }
+}
+
+export const getTranslatedPositions = (
+  englishPositions: Keyof<typeof positionType>[]
+): {
+  english: Keyof<typeof positionType>
+  korean: ValueOf<typeof positionType>
+}[] =>
+  englishPositions.map((english) => ({
+    english,
+    korean: getKoreanPosition(english),
+  }))

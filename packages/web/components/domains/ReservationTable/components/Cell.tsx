@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/router"
 import { Box, Center, Flex } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
+import { useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { motion } from "framer-motion"
@@ -18,7 +18,7 @@ interface Props {
 const Cell = ({ timeNumber, date, onClick }: Props) => {
   const theme = useTheme()
   const setNavigation = useSetNavigation()
-  const { tableCellHeight, isFetching } = useReservationTable()
+  const { tableCellHeight } = useReservationTable()
   const router = useRouter()
 
   const ref = useRef<HTMLDivElement>(null)
@@ -61,6 +61,7 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
   }, [date, time])
 
   const isDisabled = cellTime.start.isBefore(dayjs())
+
   const handleClick = useCallback(() => onClick(cellTime), [cellTime, onClick])
 
   return (
@@ -75,12 +76,7 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
         theme.colors.black
       }`}
       animate={{
-        ...(isFetching
-          ? {
-              color: ["#ffffff", "#000000", "#ffffff", "#000000"],
-              transition: { repeat: Infinity, duration: 1 },
-            }
-          : { color: "#000000" }),
+        color: "#000000",
         filter: isDisabled ? "contrast(0.2)" : undefined,
         backgroundColor: isDisabled ? theme.colors.gray0100 : undefined,
       }}

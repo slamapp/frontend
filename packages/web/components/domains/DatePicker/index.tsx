@@ -4,7 +4,8 @@ import { css, useTheme } from "@emotion/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { motion } from "framer-motion"
-import { week } from "~/utils/date"
+
+const week = ["일", "월", "화", "수", "목", "금", "토"] as const
 
 const DAY_RANGE = 14
 

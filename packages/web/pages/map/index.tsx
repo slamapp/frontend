@@ -5,6 +5,8 @@ import { useRouter } from "next/router"
 import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import dayjs from "dayjs"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   CourtItem,
@@ -23,12 +25,15 @@ import { useTokenCookie } from "~/hooks/domain"
 import { BottomFixedGradient } from "~/layouts"
 import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
-import { getTimezoneDateStringFromDate } from "~/utils/date"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const PAUSE_COURT_NUMBER = 0
 const FIRE_COURT_NUMBER = 6
 
 // 서울
+const DEFAULT_TIMEZONE = "Asia/Seoul"
 const DEFAULT_POSITION = {
   latitude: 37.5665,
   longitude: 126.978,
@@ -83,12 +88,14 @@ const Page = withNavigation(
     const mapRef = useRef<kakao.maps.Map>()
 
     const [selectedDate, setSelectedDate] = useState(() =>
-      dayjs().tz("Asia/Seoul").hour(0).minute(0).second(0).millisecond(0)
+      dayjs().tz(DEFAULT_TIMEZONE).hour(0).minute(0).second(0).millisecond(0)
     )
+
+    const selectedDateFormatted = selectedDate.format("YYYY-MM-DD")
 
     const courtsQuery = useCourtsQuery(
       {
-        date: selectedDate.format("YYYY-MM-DD"),
+        date: selectedDateFormatted,
         startLatitude: bounds?.getSouthWest().getLat() || 0,
         startLongitude: bounds?.getSouthWest().getLng() || 0,
         endLatitude: bounds?.getNorthEast().getLat() || 0,
@@ -100,7 +107,7 @@ const Page = withNavigation(
 
     const courtQuery = useCourtQuery(
       selectedCourtId,
-      { date: getTimezoneDateStringFromDate(selectedDate), time: "morning" },
+      { date: selectedDateFormatted, time: "morning" },
       {
         onSuccess: ({ latitude, longitude }) => {
           setCenter({ latitude, longitude })
@@ -377,32 +384,24 @@ const Page = withNavigation(
                       <CourtItem.Share court={courtQuery.data} />
                       <CourtItem.ChatLink chatroom={{ id: "1" }} />
                       <CourtItem.Map court={courtQuery.data} />
-
-                      {tokenCookie.get() ? (
-                        <Link
-                          href={`reservations/courts/${
-                            courtQuery.data.id
-                          }?date=${getTimezoneDateStringFromDate(
-                            selectedDate
-                          )}`}
-                          passHref
-                          style={{ flex: 1, display: "flex" }}
-                        >
-                          <Button size="lg" style={{ flex: 1 }}>
-                            예약하기
-                          </Button>
-                        </Link>
-                      ) : (
-                        <Link
-                          href="/login"
-                          passHref
-                          style={{ flex: 1, display: "flex" }}
-                        >
-                          <Button size="lg" style={{ flex: 1 }}>
-                            로그인하고 예약하기
-                          </Button>
-                        </Link>
-                      )}
+                      <Box flex={1}>
+                        {tokenCookie.get() ? (
+                          <Link
+                            href={`reservations/courts/${courtQuery.data.id}?date=${selectedDateFormatted}`}
+                            passHref
+                          >
+                            <Button size="lg" fullWidth>
+                              예약하기
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Link href="/login" passHref>
+                            <Button size="lg" fullWidth>
+                              로그인하고 예약하기
+                            </Button>
+                          </Link>
+                        )}
+                      </Box>
                     </HStack>
                   </VStack>
                 )
