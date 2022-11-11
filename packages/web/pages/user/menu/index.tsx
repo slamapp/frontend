@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
 import { Button, Icon, LayerOver } from "~/components/uis"
-import { useTokenCookie } from "~/hooks/domain"
+import { env } from "~/constants"
 import { useScrollContainer } from "~/layouts"
 import { withNavigation } from "~/layouts/Layout/navigations"
 
@@ -24,7 +24,6 @@ const Page = withNavigation<InferGetStaticPropsType<typeof getStaticProps>>(
   },
   ({ buildTime }) => {
     const router = useRouter()
-    const tokenCookie = useTokenCookie()
     const { scrollContainerWidth } = useScrollContainer()
     const queryClient = useQueryClient()
 
@@ -78,8 +77,7 @@ const Page = withNavigation<InferGetStaticPropsType<typeof getStaticProps>>(
                           </Button>
                           <Button
                             onClick={async () => {
-                              tokenCookie.remove()
-                              await router.push("/map")
+                              await router.replace("/logout")
                               await queryClient.resetQueries()
                               close()
                             }}

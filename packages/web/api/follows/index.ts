@@ -13,7 +13,7 @@ export default {
       size = 1,
     }: CursorListRequestOption<APIUser>
   ) =>
-    http.auth.get<CursorList<APIFollowing>>(`/follow/${userId}/followings`, {
+    http.get<CursorList<APIFollowing>>(`/follow/${userId}/followings`, {
       params: { isFirst, lastId, size },
     }),
 
@@ -25,15 +25,15 @@ export default {
       size = 1,
     }: CursorListRequestOption<APIUser>
   ) =>
-    http.auth.get<CursorList<APIFollower>>(`/follow/${userId}/followers`, {
+    http.get<CursorList<APIFollower>>(`/follow/${userId}/followers`, {
       params: { isFirst, lastId, size },
     }),
 
   postFollow: ({ receiverId }: { receiverId: APIUser["id"] }) =>
-    http.auth.post<void>(`/notifications/follow`, {
+    http.post<void>(`/notifications/follow`, {
       params: { receiverId },
     }),
 
   deleteFollow: ({ receiverId }: { receiverId: APIUser["id"] }) =>
-    http.auth.delete<void>(`/notifications/follow`, { params: { receiverId } }),
+    http.delete<void>(`/notifications/follow`, { params: { receiverId } }),
 } as const

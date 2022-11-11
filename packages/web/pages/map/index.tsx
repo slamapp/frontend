@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState, useTransition } from "react"
-import Image from "next/image"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
@@ -7,7 +6,7 @@ import { css, useTheme } from "@emotion/react"
 import dayjs from "dayjs"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import {
   CourtItem,
   DatePicker,
@@ -21,8 +20,6 @@ import { useGetUpcomingReservationsQuery } from "~/features/reservations"
 import { useCurrentUserQuery } from "~/features/users"
 import { withSuspense } from "~/hocs"
 import { useLocalStorage } from "~/hooks"
-import { useTokenCookie } from "~/hooks/domain"
-import { BottomFixedGradient } from "~/layouts"
 import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
 
@@ -69,20 +66,20 @@ const Page = withNavigation(
     },
   },
   withSuspense(() => {
-    const [isTransitioning, startTransition] = useTransition()
-    const tokenCookie = useTokenCookie()
     const setNavigation = useSetNavigation()
     const theme = useTheme()
     const router = useRouter()
+    const currentUserQuery = useCurrentUserQuery()
     const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
-    const getFavoritesQuery = useGetFavoritesQuery()
+    const getFavoritesQuery = useGetFavoritesQuery({
+      enabled: currentUserQuery.isSuccess,
+    })
 
     const [selectedCourtId, setSelectedCourtId] = useState<
       APICourt["id"] | null
     >(null)
 
     const [center, setCenter] = useLocalStorage("center", DEFAULT_POSITION)
-
     const [bounds, setBounds] = useState<kakao.maps.LatLngBounds>()
 
     const mapRef = useRef<kakao.maps.Map>()
@@ -112,29 +109,21 @@ const Page = withNavigation(
         onSuccess: ({ latitude, longitude }) => {
           setCenter({ latitude, longitude })
           mapRef.current?.relayout()
-          startTransition(() => {
-            courtsQuery.refetch()
-          })
+          courtsQuery.refetch()
         },
       }
     )
 
     useEffect(() => {
-      startTransition(() => {
-        setNavigation.title(
-          selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?"
-        )
-
-        mapRef.current?.relayout()
-      })
+      setNavigation.title(
+        selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?"
+      )
     }, [selectedCourtId])
 
     useEffect(() => {
-      startTransition(() => {
-        if (bounds) {
-          courtsQuery.refetch()
-        }
-      })
+      if (bounds) {
+        courtsQuery.refetch()
+      }
     }, [
       bounds?.getNorthEast().getLat(),
       bounds?.getNorthEast().getLng(),
@@ -145,6 +134,13 @@ const Page = withNavigation(
 
     useEffect(() => {
       setSelectedCourtId((router.query.courtId as string) || null)
+
+      if (bounds && !router.query.courtId) {
+        setTimeout(() => {
+          mapRef.current?.relayout()
+          courtsQuery.refetch()
+        }, 200)
+      }
     }, [router.isReady, router.query.courtId])
 
     return (
@@ -182,9 +178,7 @@ const Page = withNavigation(
               mapRef.current = map
             }}
             onBoundChange={(map) => {
-              startTransition(() => {
-                setBounds(map.getBounds())
-              })
+              setBounds(map.getBounds())
             }}
             onZoomChanged={(map) => {
               setBounds(map.getBounds())
@@ -193,9 +187,7 @@ const Page = withNavigation(
           >
             <Map.Button.CurrentLocation />
             <Map.Button.ZoomInOut />
-            {(isTransitioning || courtsQuery.isFetching) && (
-              <Map.LoadingIndicator />
-            )}
+            {courtsQuery.isFetching && <Map.LoadingIndicator />}
             {courtsQuery.isSuccess &&
               courtsQuery.data.map(({ court, reservationMaxCount }) => {
                 let imageSrc = "/assets/basketball/animation_off_400.png"
@@ -384,22 +376,18 @@ const Page = withNavigation(
                       <CourtItem.ChatLink chatroom={{ id: "1" }} />
                       <CourtItem.Map court={courtQuery.data} />
                       <Box flex={1}>
-                        {tokenCookie.get() ? (
-                          <Link
-                            href={`reservations/courts/${courtQuery.data.id}?date=${selectedDateFormatted}`}
-                            passHref
-                          >
-                            <Button size="lg" fullWidth>
-                              예약하기
-                            </Button>
-                          </Link>
-                        ) : (
-                          <Link href="/login" passHref>
-                            <Button size="lg" fullWidth>
-                              로그인하고 예약하기
-                            </Button>
-                          </Link>
-                        )}
+                        <Link
+                          href={
+                            currentUserQuery.isSuccess
+                              ? `reservations/courts/${courtQuery.data.id}?date=${selectedDateFormatted}`
+                              : "/login"
+                          }
+                          passHref
+                        >
+                          <Button size="lg" fullWidth>
+                            예약하기
+                          </Button>
+                        </Link>
                       </Box>
                     </HStack>
                   </VStack>
@@ -408,32 +396,6 @@ const Page = withNavigation(
             </Box>
           </BottomModal>
         </Flex>
-
-        <AnimatePresence mode="wait">
-          {selectedCourtId ??
-            (!tokenCookie.get() && (
-              <BottomFixedGradient
-                as={motion.div}
-                initial={{ y: 300 }}
-                animate={{ y: 0, transition: { type: "ease" } }}
-                exit={{ y: 300 }}
-              >
-                <Box mx="16px" mb="16px">
-                  <Link href="/login" passHref>
-                    <Button size="lg" fullWidth scheme="kakao">
-                      <Image
-                        src="/assets/icon-kakao.svg"
-                        alt="카카오 로그인 로고"
-                        width={21}
-                        height={19}
-                      />
-                      3초만에 로그인하기
-                    </Button>
-                  </Link>
-                </Box>
-              </BottomFixedGradient>
-            ))}
-        </AnimatePresence>
       </>
     )
   })

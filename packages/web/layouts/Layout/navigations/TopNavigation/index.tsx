@@ -18,16 +18,10 @@ type Props = {
 const TopNavigation = ({ isShrink }: Props) => {
   const theme = useTheme()
   const router = useRouter()
-  const getNotificationsInfiniteQuery = useGetNotificationsQuery()
+
   const currentUserQuery = useCurrentUserQuery()
   const { scrollToTop } = useScrollContainer()
   const navigation = useNavigationValue()
-
-  const unreadNotificationsCount =
-    getNotificationsInfiniteQuery.data?.contents.reduce(
-      (acc, { isRead }) => acc + (isRead ? 0 : 1),
-      0
-    ) || 0
 
   if (!navigation.top) {
     return null
@@ -89,35 +83,9 @@ const TopNavigation = ({ isShrink }: Props) => {
               )}
             </IconGroup>
             <IconGroup>
-              {navigation.top.isNotification &&
-                getNotificationsInfiniteQuery.isSuccess && (
-                  <Badge
-                    count={unreadNotificationsCount}
-                    dot={false}
-                    maxCount={10}
-                  >
-                    <Link href="/notifications" passHref>
-                      <motion.div
-                        initial={{ rotateZ: 0 }}
-                        animate={
-                          unreadNotificationsCount > 0
-                            ? {
-                                rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
-                                transition: {
-                                  repeat: Infinity,
-                                  repeatDelay: 3,
-                                },
-                              }
-                            : {
-                                rotateZ: 0,
-                              }
-                        }
-                      >
-                        <Icon name="bell" />
-                      </motion.div>
-                    </Link>
-                  </Badge>
-                )}
+              {currentUserQuery.isSuccess && navigation.top.isNotification && (
+                <Notification />
+              )}
               {navigation.top.isProfile && currentUserQuery.isSuccess && (
                 <ProfileAvatar
                   user={{
@@ -208,3 +176,38 @@ const IconGroup = styled.div`
   align-items: center;
   gap: 16px;
 `
+
+const Notification = () => {
+  const getNotificationsQuery = useGetNotificationsQuery()
+
+  const unreadNotificationsCount =
+    getNotificationsQuery.data?.contents.reduce(
+      (acc, { isRead }) => acc + (isRead ? 0 : 1),
+      0
+    ) || 0
+
+  return getNotificationsQuery.isSuccess ? (
+    <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
+      <Link href="/notifications" passHref>
+        <motion.div
+          initial={{ rotateZ: 0 }}
+          animate={
+            unreadNotificationsCount > 0
+              ? {
+                  rotateZ: [0, 15, 0 - 15, 0, 15, 0, -15, 0],
+                  transition: {
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                }
+              : {
+                  rotateZ: 0,
+                }
+          }
+        >
+          <Icon name="bell" />
+        </motion.div>
+      </Link>
+    </Badge>
+  ) : null
+}

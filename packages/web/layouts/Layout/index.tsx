@@ -1,6 +1,5 @@
 import React, { useRef } from "react"
 import { Box, VStack } from "@chakra-ui/react"
-import { useCurrentUserQuery } from "~/features/users"
 import { useIntersectionObserver } from "~/hooks"
 import { PageLoader, ScrollContainer } from "./components"
 import {
@@ -14,18 +13,12 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-  const { top = true, bottom = true } = useNavigationValue()
-  const currentUserQuery = useCurrentUserQuery()
-
+  const { top, bottom } = useNavigationValue()
   const topIntersectionObserverRef = useRef<HTMLDivElement>(null)
 
   const topIntersectionObserverEntry = useIntersectionObserver(
     topIntersectionObserverRef,
     {}
-  )
-
-  const isTooScrolled = !!(
-    topIntersectionObserverEntry && !topIntersectionObserverEntry.isIntersecting
   )
 
   return (
@@ -37,11 +30,15 @@ const Layout = ({ children }: Props) => {
           minH="30px"
           w="100%"
         />
-        {top && <TopNavigation isShrink={isTooScrolled} />}
+        {top && (
+          <TopNavigation
+            isShrink={!topIntersectionObserverEntry?.isIntersecting}
+          />
+        )}
         {children}
         <PageLoader />
       </ScrollContainer>
-      {bottom && currentUserQuery.isSuccess && <BottomNavigation />}
+      {bottom && <BottomNavigation />}
     </VStack>
   )
 }

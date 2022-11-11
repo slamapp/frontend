@@ -1,4 +1,10 @@
+import dayjs from "dayjs"
+
 export const DEFAULT_PROFILE_IMAGE_URL = "/assets/default_profile.svg"
+
+export const PROXY_PRE_FIX = "/proxy"
+
+export const COOKIE_TOKEN_EXPIRES = () => dayjs().add(365, "day").toDate()
 
 export const env = {
   IS_PRODUCTION_MODE: process.env.NODE_ENV === "production",

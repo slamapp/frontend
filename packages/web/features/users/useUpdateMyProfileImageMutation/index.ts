@@ -10,7 +10,7 @@ const useUpdateMyProfileImageMutation = () => {
   return useMutation(api.users.updateMyProfileImage, {
     onSuccess: () => {
       if (currentUserQuery.isSuccess) {
-        return queryClient.resetQueries(
+        return queryClient.invalidateQueries(
           key.users.myProfile(currentUserQuery.data.id)
         )
       }

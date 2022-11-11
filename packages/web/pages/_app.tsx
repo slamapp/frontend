@@ -3,12 +3,10 @@ import type { AppProps } from "next/app"
 import Head from "next/head"
 import { ChakraProvider } from "@chakra-ui/react"
 import { ThemeProvider } from "@emotion/react"
-import { CookiesProvider } from "react-cookie"
 import { RecoilRoot } from "recoil"
 import { OpenGraph } from "~/components/common"
 import { env } from "~/constants"
-import AnalyticsProvider from "~/contexts/AnalyticsProvider"
-import SocketProvider from "~/contexts/SocketProvider"
+import { AnalyticsProvider } from "~/contexts"
 import { QueryClientProvider } from "~/features"
 import { useSentry } from "~/hooks/domain"
 import { Layout } from "~/layouts"
@@ -34,22 +32,18 @@ const App = ({ Component, pageProps }: AppProps<PageProps>) => {
         description="슬램 | 농구할 사람이 없다고?"
       />
       <RecoilRoot>
-        <CookiesProvider>
-          <QueryClientProvider hydrateState={pageProps.hydrateState}>
-            <ChakraProvider resetCSS theme={chakraTheme}>
-              <ThemeProvider theme={emotionTheme}>
-                <GlobalCSS />
-                <SocketProvider>
-                  <AnalyticsProvider>
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  </AnalyticsProvider>
-                </SocketProvider>
-              </ThemeProvider>
-            </ChakraProvider>
-          </QueryClientProvider>
-        </CookiesProvider>
+        <QueryClientProvider hydrateState={pageProps.hydrateState}>
+          <ChakraProvider resetCSS theme={chakraTheme}>
+            <ThemeProvider theme={emotionTheme}>
+              <GlobalCSS />
+              <AnalyticsProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </AnalyticsProvider>
+            </ThemeProvider>
+          </ChakraProvider>
+        </QueryClientProvider>
       </RecoilRoot>
     </>
   )

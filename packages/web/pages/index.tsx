@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
@@ -11,6 +11,16 @@ import { useGetFavoritesQuery } from "~/features/favorites"
 import { withSuspense } from "~/hocs"
 import { withNavigation } from "~/layouts/Layout/navigations"
 import type { APIFavorite } from "~/types/domains/objects"
+
+const SkeletonName = () => {
+  const [width, setWidth] = useState("0%")
+
+  useEffect(() => {
+    setWidth(`${Math.random() * 20 + 40}%`)
+  }, [])
+
+  return <Skeleton.Box width={width} height={28} />
+}
 
 const getFavoriteItemVariants = (index: number): Variants => ({
   initial: { y: 40, opacity: 0 },
@@ -130,10 +140,7 @@ const Page = withNavigation(
             <VStack align="stretch" spacing="12px">
               <HStack align="stretch">
                 <Skeleton.Box width={28} height={28} />
-                <Skeleton.Box
-                  width={`${Math.random() * 20 + 40}%`}
-                  height={28}
-                />
+                <SkeletonName />
               </HStack>
               <HStack spacing="8px">
                 <Skeleton.Box width={42} height={42} />

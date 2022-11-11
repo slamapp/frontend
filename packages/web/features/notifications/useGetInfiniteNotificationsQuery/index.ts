@@ -1,7 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { api } from "~/api"
 import key from "~/features/key"
-import { getCookieToken } from "~/utils"
 
 const useGetInfiniteNotificationsQuery = () =>
   useInfiniteQuery(
@@ -17,7 +16,6 @@ const useGetInfiniteNotificationsQuery = () =>
           lastId: lastPage.lastId,
         }
       },
-      enabled: !!getCookieToken(),
     }
   )
 

@@ -37,22 +37,24 @@ import {
   useMyProfileQuery,
   useUpdateMyProfileImageMutation,
 } from "~/features/users"
+import { withSuspense } from "~/hocs"
 import { BottomFixedGradient, useScrollContainer } from "~/layouts"
+import { withNavigation } from "~/layouts/Layout/navigations"
 import type { APIUser } from "~/types/domains/objects"
 
-const Page: NextPage = () => {
-  const myProfileQuery = useMyProfileQuery()
+const Page = withNavigation(
+  {
+    top: { isBack: true, title: "프로필 수정" },
+    bottom: false,
+  },
+  withSuspense(() => {
+    const myProfileQuery = useMyProfileQuery()
 
-  if (myProfileQuery.isLoading) {
-    return <>loading...</> // TODO: Skeleton
-  }
-
-  if (myProfileQuery.isError) {
-    return <>error</>
-  }
-
-  return <EditForm initialData={myProfileQuery.data} />
-}
+    return myProfileQuery.isSuccess ? (
+      <EditForm initialData={myProfileQuery.data} />
+    ) : null
+  })
+)
 
 export default Page
 

@@ -6,6 +6,8 @@ import { css, useTheme } from "@emotion/react"
 import { useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { motion } from "framer-motion"
 import { api } from "~/api"
 import { NoItemMessage, ProfileAvatar } from "~/components/domains"
@@ -17,6 +19,8 @@ import { withNavigation } from "~/layouts/Layout/navigations"
 import type { APINotification } from "~/types/domains/objects"
 
 dayjs.extend(relativeTime)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const Page: NextPage = withNavigation(
   {

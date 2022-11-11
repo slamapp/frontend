@@ -9,7 +9,7 @@ export default {
     lastId,
     isFirst = false,
   }: CursorListRequestOption<APINotification>) =>
-    http.auth.get<{
+    http.get<{
       contents: APINotification[]
       lastId: APINotification["id"] | null
     }>("/notifications", {
@@ -20,6 +20,5 @@ export default {
       },
     }),
 
-  readAllNotifications: () =>
-    http.auth.put<AxiosPromise>("/notifications/read"),
+  readAllNotifications: () => http.put<AxiosPromise>("/notifications/read"),
 } as const

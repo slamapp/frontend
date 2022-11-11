@@ -22,24 +22,21 @@ const courtApi = {
     endLongitude: APICourt["longitude"]
     time: "dawn" | "morning" | "afternoon" | "night"
   }) =>
-    http.default.get<{ court: APICourt; reservationMaxCount: number }[]>(
-      `/courts`,
-      {
-        params: {
-          date,
-          latitude: `${startLatitude},${endLatitude}`,
-          longitude: `${startLongitude},${endLongitude}`,
-          time,
-        },
-      }
-    ),
+    http.get<{ court: APICourt; reservationMaxCount: number }[]>(`/courts`, {
+      params: {
+        date,
+        latitude: `${startLatitude},${endLatitude}`,
+        longitude: `${startLongitude},${endLongitude}`,
+        time,
+      },
+    }),
 
   createNewCourt: (
     data: Pick<
       APICourt,
       "longitude" | "latitude" | "image" | "texture" | "basketCount" | "name"
     >
-  ) => http.auth.post<APINewCourt>(`/courts/new`, { data }),
+  ) => http.post<APINewCourt>(`/courts/new`, { data }),
 
   getCourtDetail: (
     courtId: APICourt["id"],
@@ -51,7 +48,7 @@ const courtApi = {
       time: "dawn" | "morning" | "afternoon" | "night"
     }
   ) =>
-    http.default.get<
+    http.get<
       Pick<
         APICourt,
         | "basketCount"
@@ -74,7 +71,7 @@ const courtApi = {
     }),
 
   getAllCourtReservationsByDate: (courtId: APICourt["id"], date: string) =>
-    http.auth.get<{
+    http.get<{
       courtId: number
       date: string
       reservations: {

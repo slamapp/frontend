@@ -7,10 +7,10 @@ import type {
 
 export default {
   getUserData: () =>
-    http.auth.get<APIUser & { notifications: APINotification[] }>("/users/me"),
+    http.get<APIUser & { notifications: APINotification[] }>("/users/me"),
 
   getMyProfile: () =>
-    http.auth.get<
+    http.get<
       APIUser & {
         followerCount: number
         followingCount: number
@@ -18,7 +18,7 @@ export default {
     >("/users/myprofile"),
 
   getUserProfile: ({ id }: { id: APIUser["id"] }) =>
-    http.auth.get<
+    http.get<
       APIUser & {
         favoriteCourts: Pick<APICourt, "id" | "name">[]
         followerCount: number
@@ -33,7 +33,7 @@ export default {
       "nickname" | "description" | "proficiency" | "positions"
     >
   ) =>
-    http.auth.put<APIUser>("/users/myprofile", {
+    http.put<APIUser>("/users/myprofile", {
       data,
     }),
 
@@ -41,7 +41,7 @@ export default {
     const formData = new FormData()
     formData.append("profileImage", imageFile)
 
-    return http.authFile.put<{ profileImage: APIUser["profileImage"] }>(
+    return http.file.put<{ profileImage: APIUser["profileImage"] }>(
       "/users/myprofile/image",
       { data: formData }
     )
