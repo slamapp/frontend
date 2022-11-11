@@ -20,7 +20,6 @@ class MyDocument extends Document {
         <Head>
           <meta property="og:image" content="/link_image.png" />
           <meta property="og:title" content="슬램" />
-          <meta name="description" content="우리 주변 농구장을 빠르게" />
           <meta property="og:description" content="우리 주변 농구장을 빠르게" />
           <link rel="icon" href="/favicon.ico" />
           <link

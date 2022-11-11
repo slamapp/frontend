@@ -1,7 +1,5 @@
 import React, { useRef } from "react"
 import { Box, VStack } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { AnimatePresence } from "framer-motion"
 import { useCurrentUserQuery } from "~/features/users"
 import { useIntersectionObserver } from "~/hooks"
 import { PageLoader, ScrollContainer } from "./components"
