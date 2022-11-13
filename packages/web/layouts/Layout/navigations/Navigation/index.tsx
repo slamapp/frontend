@@ -17,7 +17,11 @@ const Navigation = ({ top = null, bottom = false, children }: Props) => {
       isLoading: false,
     })
 
-    return () => set.title("")
+    return () =>
+      set.all((prev) => ({
+        ...prev,
+        top: null,
+      }))
   }, [...Object.values(top ?? {}), bottom])
 
   return <>{children}</>

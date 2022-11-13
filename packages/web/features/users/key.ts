@@ -5,6 +5,8 @@ const key = {
 
   currentUser: () => [...key.all, "currentUser"] as const,
 
+  myProfile: () => [...key.all, "myProfile"] as const,
+
   one: (userId: APIUser["id"]) => [...key.all, userId] as const,
 
   oneFollowings: (userId: APIUser["id"]) =>
@@ -12,9 +14,6 @@ const key = {
 
   oneFollowers: (userId: APIUser["id"]) =>
     [...key.one(userId), "followers"] as const,
-
-  myProfile: (userId: APIUser["id"]) =>
-    [...key.one(userId), "myProfile"] as const,
 
   otherProfile: (userId: APIUser["id"]) =>
     [...key.one(userId), "otherProfile"] as const,

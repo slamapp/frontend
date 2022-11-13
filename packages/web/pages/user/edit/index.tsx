@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { useEffect, useState } from "react"
-import type { NextPage } from "next"
+import type { GetServerSideProps, NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import {
@@ -30,19 +30,30 @@ import { useTheme } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
 import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
+import { SSRSafeSuspense } from "~/components/ssrs"
 import { Button, Icon, Toast, Upload } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import {
+  useCurrentUserQuery,
   useMyProfileMutation,
   useMyProfileQuery,
   useUpdateMyProfileImageMutation,
 } from "~/features/users"
-import { withSuspense } from "~/hocs"
 import { BottomFixedGradient, useScrollContainer } from "~/layouts"
 import { Navigation } from "~/layouts/Layout/navigations"
 import type { APIUser } from "~/types/domains/objects"
 
-const Page = withSuspense(() => {
+const Page: NextPage = () => {
+  return (
+    <SSRSafeSuspense>
+      <Contents />
+    </SSRSafeSuspense>
+  )
+}
+
+export default Page
+
+const Contents = () => {
   const myProfileQuery = useMyProfileQuery()
 
   return myProfileQuery.isSuccess ? (
@@ -50,9 +61,7 @@ const Page = withSuspense(() => {
       <EditForm initialData={myProfileQuery.data} />
     </Navigation>
   ) : null
-})
-
-export default Page
+}
 
 const EditForm = ({ initialData }: { initialData: APIUser }) => {
   const { scrollContainerHeight } = useScrollContainer()

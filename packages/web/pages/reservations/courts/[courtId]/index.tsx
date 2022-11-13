@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 import { useCallback, useState } from "react"
-import type { GetServerSideProps } from "next"
+import type { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
@@ -10,12 +10,12 @@ import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
 import { AnimatePresence, motion } from "framer-motion"
 import { ReservationTable } from "~/components/domains"
+import { SSRSafeSuspense } from "~/components/ssrs"
 import { BottomModal, Button, LayerOver, Toast } from "~/components/uis"
 import {
   useCreateReservationMutation,
   useGetReservationsInfiniteQuery,
 } from "~/features/reservations"
-import { withSuspense } from "~/hocs"
 import { useScrollContainer } from "~/layouts"
 import { Navigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
@@ -25,7 +25,33 @@ dayjs.extend(timezone)
 
 type Props = { courtId: string; date: string }
 
-const Page = withSuspense<Props>(({ courtId, date }) => {
+const Page: NextPage<Props> = ({ courtId, date }) => {
+  return (
+    <Navigation
+      top={{
+        isBack: true,
+        title: "",
+      }}
+    >
+      <SSRSafeSuspense>
+        <Contents courtId={courtId} date={date} />
+      </SSRSafeSuspense>
+    </Navigation>
+  )
+}
+
+export default Page
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  query,
+}) => ({
+  props: {
+    date: query.date as string,
+    courtId: query.courtId as string,
+  },
+})
+
+const Contents = ({ courtId, date }: Props) => {
   const theme = useTheme()
   const router = useRouter()
   const { scrollContainerWidth } = useScrollContainer()
@@ -113,226 +139,209 @@ const Page = withSuspense<Props>(({ courtId, date }) => {
   )
 
   return (
-    <Navigation
-      top={{
-        isBack: true,
-        title: "",
-      }}
-    >
-      <Flex direction="column">
-        <ReservationTable courtId={courtId} date={date}>
-          {({ dates }) => (
-            <>
-              <ReservationTable.VerticalDivider />
-              <ReservationTable.MoreCellSensor.Top />
-              {getReservationsInfiniteQuery.isLoading ? (
-                <>loading...</>
-              ) : (
-                dates
-                  .map(
-                    (date) =>
-                      Array.from(Array(48).keys()).map((_, index) => ({
-                        timeNumber: index,
-                        date,
-                      })) // 하루의 표 48개 생성
-                  )
-                  .map((cells) =>
-                    cells.map(({ date, timeNumber }) => {
-                      return (
-                        <ReservationTable.Cell
-                          key={`${date}-${timeNumber}`}
-                          onClick={handleClickCell}
-                          timeNumber={timeNumber}
-                          date={date}
-                        />
-                      )
-                    })
-                  )
-              )}
-              <ReservationTable.MoreCellSensor.Bottom />
-              {reservation && (
-                <ReservationTable.Cursor
-                  startTime={reservation.startTime}
-                  endTime={reservation.endTime}
-                />
-              )}
-            </>
-          )}
-        </ReservationTable>
+    <Flex direction="column">
+      <ReservationTable courtId={courtId} date={date}>
+        {({ dates }) => (
+          <>
+            <ReservationTable.VerticalDivider />
+            <ReservationTable.MoreCellSensor.Top />
+            {getReservationsInfiniteQuery.isLoading ? (
+              <>loading...</>
+            ) : (
+              dates
+                .map(
+                  (date) =>
+                    Array.from(Array(48).keys()).map((_, index) => ({
+                      timeNumber: index,
+                      date,
+                    })) // 하루의 표 48개 생성
+                )
+                .map((cells) =>
+                  cells.map(({ date, timeNumber }) => {
+                    return (
+                      <ReservationTable.Cell
+                        key={`${date}-${timeNumber}`}
+                        onClick={handleClickCell}
+                        timeNumber={timeNumber}
+                        date={date}
+                      />
+                    )
+                  })
+                )
+            )}
+            <ReservationTable.MoreCellSensor.Bottom />
+            {reservation && (
+              <ReservationTable.Cursor
+                startTime={reservation.startTime}
+                endTime={reservation.endTime}
+              />
+            )}
+          </>
+        )}
+      </ReservationTable>
 
-        <BottomModal>
-          <Flex
-            flexDir="column"
-            justify="space-between"
-            p="24px 20px 20px 20px"
-            gap="16px"
-            bgColor={theme.colors.white}
-          >
-            <VStack align="stretch">
-              <Text fontSize="1xl" fontWeight="bold">
-                {!reservation?.startTime || !reservation?.endTime
-                  ? "예약시간을 먼저 선택하세요"
-                  : "예약하기를 눌러 확정하세요"}
-              </Text>
+      <BottomModal>
+        <Flex
+          flexDir="column"
+          justify="space-between"
+          p="24px 20px 20px 20px"
+          gap="16px"
+          bgColor={theme.colors.white}
+        >
+          <VStack align="stretch">
+            <Text fontSize="1xl" fontWeight="bold">
+              {!reservation?.startTime || !reservation?.endTime
+                ? "예약시간을 먼저 선택하세요"
+                : "예약하기를 눌러 확정하세요"}
+            </Text>
+            <DateInput
+              text={
+                reservation
+                  ? `${reservation.startTime
+                      .tz("Asia/Seoul")
+                      .format("YYYY.MM.DD(dd) HH:mm")} 부터`
+                  : undefined
+              }
+              clear={reservation?.startTime ? clearReservation : null}
+              placeHolder="시작시간을 눌러주세요"
+            />
+            {reservation && (
               <DateInput
                 text={
-                  reservation
-                    ? `${reservation.startTime
+                  reservation.endTime
+                    ? `${reservation.endTime
                         .tz("Asia/Seoul")
-                        .format("YYYY.MM.DD(dd) HH:mm")} 부터`
+                        .format("YYYY.MM.DD(dd) HH:mm")} 까지`
                     : undefined
                 }
-                clear={reservation?.startTime ? clearReservation : null}
-                placeHolder="시작시간을 눌러주세요"
-              />
-              {reservation && (
-                <DateInput
-                  text={
-                    reservation.endTime
-                      ? `${reservation.endTime
-                          .tz("Asia/Seoul")
-                          .format("YYYY.MM.DD(dd) HH:mm")} 까지`
-                      : undefined
-                  }
-                  placeHolder="종료시간을 눌러주세요"
-                  clear={
-                    reservation.endTime !== null
-                      ? () =>
-                          setReservation({
-                            ...reservation,
-                            endTime: null,
-                          })
-                      : null
-                  }
-                />
-              )}
-            </VStack>
-            {reservation && (
-              <LayerOver
-                trigger={({ isOpen, open }) =>
-                  reservation.endTime && (
-                    <Button
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        scale: isOpen ? 1 : [1, 1, 1, 1, 1.05, 1, 1.05, 1],
-                      }}
-                      fullWidth
-                      size="lg"
-                      onClick={open}
-                      disabled={!reservation.endTime}
-                    >
-                      예약하기
-                    </Button>
-                  )
+                placeHolder="종료시간을 눌러주세요"
+                clear={
+                  reservation.endTime !== null
+                    ? () =>
+                        setReservation({
+                          ...reservation,
+                          endTime: null,
+                        })
+                    : null
                 }
-                layer={({ close, isOpen }) => (
-                  <AnimatePresence mode="wait">
-                    {isOpen && reservation.endTime && (
-                      <Center
-                        as={motion.div}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+              />
+            )}
+          </VStack>
+          {reservation && (
+            <LayerOver
+              trigger={({ isOpen, open }) =>
+                reservation.endTime && (
+                  <Button
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: isOpen ? 1 : [1, 1, 1, 1, 1.05, 1, 1.05, 1],
+                    }}
+                    fullWidth
+                    size="lg"
+                    onClick={open}
+                    disabled={!reservation.endTime}
+                  >
+                    예약하기
+                  </Button>
+                )
+              }
+              layer={({ close, isOpen }) => (
+                <AnimatePresence mode="wait">
+                  {isOpen && reservation.endTime && (
+                    <Center
+                      as={motion.div}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      pos="fixed"
+                      top={0}
+                      bottom={0}
+                      left={0}
+                      right={0}
+                      backdropFilter="blur(3px)"
+                    >
+                      <Box
+                        onClick={close}
                         pos="fixed"
                         top={0}
                         bottom={0}
                         left={0}
                         right={0}
-                        backdropFilter="blur(3px)"
+                        bgColor="#00000005"
+                        zIndex={-1}
+                      />
+                      <Box
+                        width="90%"
+                        maxWidth={`${scrollContainerWidth - 60}px`}
+                        bgColor="white"
+                        borderRadius="16px"
+                        p="16px"
+                        boxShadow="0 8px 32px -16px #00000020"
                       >
-                        <Box
-                          onClick={close}
-                          pos="fixed"
-                          top={0}
-                          bottom={0}
-                          left={0}
-                          right={0}
-                          bgColor="#00000005"
-                          zIndex={-1}
-                        />
-                        <Box
-                          width="90%"
-                          maxWidth={`${scrollContainerWidth - 60}px`}
-                          bgColor="white"
-                          borderRadius="16px"
-                          p="16px"
-                          boxShadow="0 8px 32px -16px #00000020"
-                        >
-                          <VStack align="stretch" spacing="24px">
-                            <Text
-                              fontSize="2xl"
-                              textAlign="center"
-                              fontWeight="bold"
-                            >
-                              농구공을 가져가나요?
+                        <VStack align="stretch" spacing="24px">
+                          <Text
+                            fontSize="2xl"
+                            textAlign="center"
+                            fontWeight="bold"
+                          >
+                            농구공을 가져가나요?
+                          </Text>
+                          <VStack>
+                            <Text fontSize="sm">
+                              {"•시작: "}
+                              {`${reservation.startTime
+                                .tz("Asia/Seoul")
+                                .format("YYYY.MM.DD(dd) HH:mm")} 부터`}
                             </Text>
-                            <VStack>
-                              <Text fontSize="sm">
-                                {"•시작: "}
-                                {`${reservation.startTime
-                                  .tz("Asia/Seoul")
-                                  .format("YYYY.MM.DD(dd) HH:mm")} 부터`}
-                              </Text>
-                              <Text fontSize="sm">
-                                {"•종료: "}
-                                {`${reservation.endTime
-                                  .tz("Asia/Seoul")
-                                  .format("YYYY.MM.DD(dd) HH:mm")} 까지`}
-                              </Text>
-                            </VStack>
-                            <VStack align="stretch">
-                              <Button
-                                fullWidth
-                                size="lg"
-                                onClick={() =>
-                                  createReservation({ hasBall: true })
-                                }
-                              >
-                                공을 가져갈게요 🏀 (예약하기)
-                              </Button>
-                              <Button
-                                fullWidth
-                                size="lg"
-                                onClick={() =>
-                                  createReservation({ hasBall: false })
-                                }
-                              >
-                                공 없이 몸만 갈게요 (예약하기)
-                              </Button>
-                              <Button
-                                fullWidth
-                                size="lg"
-                                scheme="white"
-                                onClick={() => close()}
-                              >
-                                닫기
-                              </Button>
-                            </VStack>
+                            <Text fontSize="sm">
+                              {"•종료: "}
+                              {`${reservation.endTime
+                                .tz("Asia/Seoul")
+                                .format("YYYY.MM.DD(dd) HH:mm")} 까지`}
+                            </Text>
                           </VStack>
-                        </Box>
-                      </Center>
-                    )}
-                  </AnimatePresence>
-                )}
-              />
-            )}
-          </Flex>
-        </BottomModal>
-      </Flex>
-    </Navigation>
+                          <VStack align="stretch">
+                            <Button
+                              fullWidth
+                              size="lg"
+                              onClick={() =>
+                                createReservation({ hasBall: true })
+                              }
+                            >
+                              공을 가져갈게요 🏀 (예약하기)
+                            </Button>
+                            <Button
+                              fullWidth
+                              size="lg"
+                              onClick={() =>
+                                createReservation({ hasBall: false })
+                              }
+                            >
+                              공 없이 몸만 갈게요 (예약하기)
+                            </Button>
+                            <Button
+                              fullWidth
+                              size="lg"
+                              scheme="white"
+                              onClick={() => close()}
+                            >
+                              닫기
+                            </Button>
+                          </VStack>
+                        </VStack>
+                      </Box>
+                    </Center>
+                  )}
+                </AnimatePresence>
+              )}
+            />
+          )}
+        </Flex>
+      </BottomModal>
+    </Flex>
   )
-})
-
-export default Page
-
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  query,
-}) => {
-  return {
-    props: { date: query.date as string, courtId: query.courtId as string },
-  }
 }
 
 const DateInput = ({

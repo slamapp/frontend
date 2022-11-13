@@ -13,14 +13,14 @@ import {
   EssentialImagePreload,
 } from "~/components/domains"
 import { Map } from "~/components/kakaos"
+import { SSRSafeSuspense } from "~/components/ssrs"
 import { BottomModal, Button, Icon, Skeleton, Toast } from "~/components/uis"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import { useGetUpcomingReservationsQuery } from "~/features/reservations"
 import { useCurrentUserQuery } from "~/features/users"
-import { withSuspense } from "~/hocs"
 import { useLocalStorage } from "~/hooks"
-import { Navigation, useSetNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
 
 dayjs.extend(utc)
@@ -56,8 +56,17 @@ const Custom = () => {
   )
 }
 
-const Page = withSuspense(() => {
-  const setNavigation = useSetNavigation()
+const Page = () => {
+  return (
+    <SSRSafeSuspense>
+      <Contents />
+    </SSRSafeSuspense>
+  )
+}
+
+export default Page
+
+const Contents = () => {
   const theme = useTheme()
   const router = useRouter()
   const currentUserQuery = useCurrentUserQuery()
@@ -389,6 +398,4 @@ const Page = withSuspense(() => {
       </Flex>
     </Navigation>
   )
-})
-
-export default Page
+}

@@ -6,9 +6,9 @@ import { css } from "@emotion/react"
 import type { Variants } from "framer-motion"
 import { motion } from "framer-motion"
 import { CourtItem, NoItemMessage } from "~/components/domains"
+import { SSRSafeSuspense } from "~/components/ssrs"
 import { Button, Icon, Skeleton } from "~/components/uis"
 import { useGetFavoritesQuery } from "~/features/favorites"
-import { withSuspense } from "~/hocs"
 import { Navigation } from "~/layouts/Layout/navigations"
 import type { APIFavorite } from "~/types/domains/objects"
 
@@ -33,141 +33,141 @@ const getFavoriteItemVariants = (index: number): Variants => ({
   whileTap: { backgroundColor: "white" },
 })
 
-const Page = withSuspense(
-  () => {
-    const getFavoritesQuery = useGetFavoritesQuery()
-    const [favorites] = useState<APIFavorite[]>([
-      ...(getFavoritesQuery.isSuccess ? getFavoritesQuery.data.contents : []),
-    ])
-
-    return (
-      <Navigation
-        top={{
-          title: "즐겨찾기",
-          isNotification: true,
-          isProfile: true,
-        }}
-        bottom
-      >
-        <Box flex={1}>
-          <Head>
-            <title>Slam - 우리 주변 농구장을 빠르게</title>
-          </Head>
+const Page = () => {
+  return (
+    <Navigation
+      top={{
+        title: "즐겨찾기",
+        isNotification: true,
+        isProfile: true,
+      }}
+      bottom
+    >
+      <SSRSafeSuspense
+        fallback={
           <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
-            {favorites.length === 0 ? (
-              <NoItemMessage
-                title="즐겨찾는 농구장이 없으시네요? 🤔"
-                type="favorite"
-                description="즐겨찾기하면 더 빠르게 예약하실 수 있어요"
-                buttonTitle="즐겨찾는 농구장 등록하기"
-              />
-            ) : (
-              <VStack spacing="12px" align="stretch">
-                {favorites.map(({ id, court }, index) => (
-                  <VStack
-                    key={id}
-                    as={motion.div}
-                    variants={getFavoriteItemVariants(index)}
-                    initial="initial"
-                    animate="animate"
-                    whileTap="whileTap"
-                    border="1px solid white"
-                    spacing="16px"
-                    align="stretch"
-                    p="12px"
-                    borderRadius="16px"
-                    boxShadow="0 8px 32px -16px #00000020"
-                  >
-                    <HStack spacing="4px">
-                      <Icon name="map-pin" size="sm" color="#FE6D04" />
-                      <Text
-                        fontSize="xl"
-                        overflow="hidden"
-                        whiteSpace="nowrap"
-                        textOverflow="ellipsis"
-                        fontWeight="bold"
-                      >
-                        {court.name}
-                      </Text>
+            <VStack spacing="18px" align="stretch">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <Box key={index} p="12px">
+                  <VStack align="stretch" spacing="12px">
+                    <HStack align="stretch">
+                      <Skeleton.Box width={28} height={28} />
+                      <SkeletonName />
                     </HStack>
                     <HStack spacing="8px">
-                      <HStack spacing="8px">
-                        <CourtItem.FavoritesToggle
-                          courtId={court.id}
-                          favoriteId={
-                            getFavoritesQuery.data?.contents.find(
-                              (favorite) => favorite.court.id === court.id
-                            )?.id || null
-                          }
-                        />
-                        <CourtItem.Share
-                          court={{
-                            id: court.id,
-                            latitude: court.latitude,
-                            longitude: court.longitude,
-                            name: court.name,
-                          }}
-                        />
-                        <CourtItem.Map court={court} />
-                      </HStack>
-                      <Link
-                        href={{
-                          pathname: "/map",
-                          query: {
-                            courtId: court.id,
-                          },
-                        }}
-                        passHref
-                        style={{ flex: 1, display: "flex" }}
-                      >
-                        <Button size="lg" fullWidth>
-                          예약하기
-                        </Button>
-                      </Link>
+                      <Skeleton.Box width={42} height={42} />
+                      <Skeleton.Box width={42} height={42} />
+                      <Skeleton.Box width={42} height={42} />
+                      <Skeleton.Box
+                        height={42}
+                        css={css`
+                          flex: 1;
+                        `}
+                      />
                     </HStack>
                   </VStack>
-                ))}
-              </VStack>
-            )}
-          </VStack>
-        </Box>
-      </Navigation>
-    )
-  },
-  <Navigation
-    top={{
-      title: "즐겨찾기",
-      isNotification: true,
-      isProfile: true,
-    }}
-    bottom
-  >
-    <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
-      <VStack spacing="18px" align="stretch">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <Box key={index} p="12px">
-            <VStack align="stretch" spacing="12px">
-              <HStack align="stretch">
-                <Skeleton.Box width={28} height={28} />
-                <SkeletonName />
-              </HStack>
-              <HStack spacing="8px">
-                <Skeleton.Box width={42} height={42} />
-                <Skeleton.Box width={42} height={42} />
-                <Skeleton.Box width={42} height={42} />
-                <Skeleton.Box
-                  height={42}
-                  css={css`
-                    flex: 1;
-                  `}
-                />
-              </HStack>
+                </Box>
+              ))}
             </VStack>
-          </Box>
-        ))}
-      </VStack>
-    </VStack>
-  </Navigation>
-)
+          </VStack>
+        }
+      >
+        <Contents />
+      </SSRSafeSuspense>
+    </Navigation>
+  )
+}
 
 export default Page
+
+const Contents = () => {
+  const getFavoritesQuery = useGetFavoritesQuery()
+  const [favorites] = useState<APIFavorite[]>([
+    ...(getFavoritesQuery.isSuccess ? getFavoritesQuery.data.contents : []),
+  ])
+
+  return (
+    <Box flex={1}>
+      <Head>
+        <title>Slam - 우리 주변 농구장을 빠르게</title>
+      </Head>
+      <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
+        {favorites.length === 0 ? (
+          <NoItemMessage
+            title="즐겨찾는 농구장이 없으시네요? 🤔"
+            type="favorite"
+            description="즐겨찾기하면 더 빠르게 예약하실 수 있어요"
+            buttonTitle="즐겨찾는 농구장 등록하기"
+          />
+        ) : (
+          <VStack spacing="12px" align="stretch">
+            {favorites.map(({ id, court }, index) => (
+              <VStack
+                key={id}
+                as={motion.div}
+                variants={getFavoriteItemVariants(index)}
+                initial="initial"
+                animate="animate"
+                whileTap="whileTap"
+                border="1px solid white"
+                spacing="16px"
+                align="stretch"
+                p="12px"
+                borderRadius="16px"
+                boxShadow="0 8px 32px -16px #00000020"
+              >
+                <HStack spacing="4px">
+                  <Icon name="map-pin" size="sm" color="#FE6D04" />
+                  <Text
+                    fontSize="xl"
+                    overflow="hidden"
+                    whiteSpace="nowrap"
+                    textOverflow="ellipsis"
+                    fontWeight="bold"
+                  >
+                    {court.name}
+                  </Text>
+                </HStack>
+                <HStack spacing="8px">
+                  <HStack spacing="8px">
+                    <CourtItem.FavoritesToggle
+                      courtId={court.id}
+                      favoriteId={
+                        getFavoritesQuery.data?.contents.find(
+                          (favorite) => favorite.court.id === court.id
+                        )?.id || null
+                      }
+                    />
+                    <CourtItem.Share
+                      court={{
+                        id: court.id,
+                        latitude: court.latitude,
+                        longitude: court.longitude,
+                        name: court.name,
+                      }}
+                    />
+                    <CourtItem.Map court={court} />
+                  </HStack>
+                  <Link
+                    href={{
+                      pathname: "/map",
+                      query: {
+                        courtId: court.id,
+                      },
+                    }}
+                    passHref
+                    style={{ flex: 1, display: "flex" }}
+                  >
+                    <Button size="lg" fullWidth>
+                      예약하기
+                    </Button>
+                  </Link>
+                </HStack>
+              </VStack>
+            ))}
+          </VStack>
+        )}
+      </VStack>
+    </Box>
+  )
+}
