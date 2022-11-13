@@ -9,8 +9,6 @@ import { useScrollContainer } from "~/layouts"
 
 const BottomFixedGradient = ({
   children,
-  className,
-  ...props
 }: ComponentPropsWithoutRef<typeof Flex>) => {
   const theme = useTheme()
   const { scrollContainerWidth, scrollContainerRef } = useScrollContainer()
@@ -36,7 +34,6 @@ const BottomFixedGradient = ({
             ${theme.colors.white} 55%
             )`}
             pointerEvents="none"
-            {...props}
           />
           <Box
             as={motion.div}
@@ -47,7 +44,6 @@ const BottomFixedGradient = ({
             bottom={0}
             maxW="640px"
             zIndex={1}
-            {...props}
           >
             {children}
           </Box>
@@ -55,13 +51,7 @@ const BottomFixedGradient = ({
         scrollContainerRef.current!
       )
     )
-  }, [
-    children,
-    scrollContainerWidth,
-    props,
-    scrollContainerRef,
-    theme.colors.white,
-  ])
+  }, [children, scrollContainerWidth, scrollContainerRef, theme.colors.white])
 
   return portal
 }

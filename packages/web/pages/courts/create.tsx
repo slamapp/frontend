@@ -23,7 +23,7 @@ import { Map } from "~/components/kakaos"
 import { Button, Icon, IconButton, Toast } from "~/components/uis"
 import { useCourtCreateMutation } from "~/features/courts"
 import { BottomFixedGradient, useScrollContainer } from "~/layouts"
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects/court"
 
 type FieldValues = Pick<
@@ -36,182 +36,174 @@ type FieldValues = Pick<
   > | null
 }
 
-const Page = withNavigation(
-  {
-    top: {
-      title: "새 농구장 추가",
-      isBack: true,
+const Page = () => {
+  const router = useRouter()
+  const courtCreateMutation = useCourtCreateMutation()
+
+  const { scrollContainerHeight } = useScrollContainer()
+
+  const {
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    register,
+    watch,
+  } = useForm<FieldValues>({
+    mode: "all",
+    defaultValues: {
+      basketCount: 1,
+      image: null,
+      position: null,
+      name: "",
+      texture: "ETC",
     },
-    bottom: false,
-  },
-  () => {
-    const router = useRouter()
-    const courtCreateMutation = useCourtCreateMutation()
+  })
 
-    const { scrollContainerHeight } = useScrollContainer()
+  return (
+    <Navigation
+      top={{
+        title: "새 농구장 추가",
+        isBack: true,
+      }}
+    >
+      <Head>
+        <title>새 농구장 추가</title>
+      </Head>
 
-    const {
-      control,
-      formState: { errors, isSubmitting },
-      handleSubmit,
-      register,
-      watch,
-    } = useForm<FieldValues>({
-      mode: "all",
-      defaultValues: {
-        basketCount: 1,
-        image: null,
-        position: null,
-        name: "",
-        texture: "ETC",
-      },
-    })
-
-    return (
-      <>
-        <Head>
-          <title>새 농구장 추가</title>
-        </Head>
-
-        <form>
-          <VStack as={motion.div} layout mx="16px" mt="24px" spacing="24px">
-            <Controller
-              name="position"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <FormControl w="100%" isInvalid={!!errors[field.name]}>
-                  <FormLabel htmlFor={field.name}>농구장 위치</FormLabel>
-                  <Input
-                    display="none"
-                    id={field.name}
-                    {...register(field.name, {
-                      required: "농구장 위치를 등록해주세요",
-                    })}
-                  />
-                  <MapEditor
-                    onChange={(courtPosition) => {
-                      field.onChange(courtPosition)
-                      field.onBlur()
-                    }}
-                  />
-                  <FormErrorMessage>
-                    {errors.position?.message}
-                  </FormErrorMessage>
-                </FormControl>
-              )}
-            />
-            {watch("position") && (
-              <FormControl
-                as={motion.div}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
-                w="100%"
-                isInvalid={!!errors.basketCount}
-              >
-                <FormLabel htmlFor="basketCount">골대 개수</FormLabel>
-                <InputGroup>
-                  <Input
-                    id="basketCount"
-                    type="number"
-                    {...register("basketCount", {
-                      required: "농구장에 있는 골대개수를 적어주세요",
-                      max: {
-                        value: 10,
-                        message: "골대 개수는 10개 이하여야 해요",
-                      },
-                      min: {
-                        value: 1,
-                        message: "골대 개수는 1개 이상여야 해요",
-                      },
-                    })}
-                  />
-                  <InputRightElement>
-                    <Text>개</Text>
-                  </InputRightElement>
-                </InputGroup>
-                <FormErrorMessage>
-                  {errors.basketCount?.message}
-                </FormErrorMessage>
-              </FormControl>
-            )}
-            {watch("position") && (
-              <FormControl
-                as={motion.div}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.4 } }}
-                w="100%"
-                isInvalid={!!errors.name}
-              >
-                <FormLabel htmlFor="name">농구장 이름</FormLabel>
+      <form>
+        <VStack as={motion.div} layout mx="16px" mt="24px" spacing="24px">
+          <Controller
+            name="position"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <FormControl w="100%" isInvalid={!!errors[field.name]}>
+                <FormLabel htmlFor={field.name}>농구장 위치</FormLabel>
                 <Input
-                  id="name"
-                  placeholder="ex) 서울 광화문역 앞 농구장"
-                  type="text"
-                  {...register("name", {
-                    required: "농구장 이름을 적어주세요",
-                    minLength: { value: 2, message: "2자 이상으로 적어주세요" },
-                    maxLength: { value: 15, message: "15자 이하로 적어주세요" },
+                  display="none"
+                  id={field.name}
+                  {...register(field.name, {
+                    required: "농구장 위치를 등록해주세요",
                   })}
                 />
-                <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+                <MapEditor
+                  onChange={(courtPosition) => {
+                    field.onChange(courtPosition)
+                    field.onBlur()
+                  }}
+                />
+                <FormErrorMessage>{errors.position?.message}</FormErrorMessage>
               </FormControl>
             )}
-
-            <Box h="100px" />
-          </VStack>
-        </form>
-        <BottomFixedGradient>
-          <Box
-            as={motion.div}
-            initial={{ padding: 16 }}
-            animate={
-              scrollContainerHeight > 400 ? { padding: 16 } : { padding: 0 }
-            }
-          >
-            <Button
-              loading={isSubmitting}
-              onClick={handleSubmit(
-                async ({ basketCount, image, name, position, texture }) => {
-                  if (position) {
-                    const { latitude, longitude } = position
-                    const { data } = await courtCreateMutation.mutateAsync({
-                      basketCount,
-                      image,
-                      latitude,
-                      longitude,
-                      name,
-                      texture,
-                    })
-
-                    await router.replace(
-                      "/map" // TODO: 내가 제안한 농구장 리스트 페이지 만들면 그 페이지로 라우팅)
-                    )
-
-                    Toast.show(
-                      `농구장을 잘 등록했어요 (${data.name}, 골대 개수: ${data.basketCount})`,
-                      {
-                        status: "success",
-                        marginBottom: "bottomFixedGradient",
-                      }
-                    )
-                  }
-                }
-              )}
-              fullWidth
-              size="lg"
-              style={{ borderRadius: scrollContainerHeight > 400 ? 16 : 0 }}
+          />
+          {watch("position") && (
+            <FormControl
+              as={motion.div}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
+              w="100%"
+              isInvalid={!!errors.basketCount}
             >
-              새 농구장 추가 제안하기
-            </Button>
-          </Box>
-        </BottomFixedGradient>
+              <FormLabel htmlFor="basketCount">골대 개수</FormLabel>
+              <InputGroup>
+                <Input
+                  id="basketCount"
+                  type="number"
+                  {...register("basketCount", {
+                    required: "농구장에 있는 골대개수를 적어주세요",
+                    max: {
+                      value: 10,
+                      message: "골대 개수는 10개 이하여야 해요",
+                    },
+                    min: {
+                      value: 1,
+                      message: "골대 개수는 1개 이상여야 해요",
+                    },
+                  })}
+                />
+                <InputRightElement>
+                  <Text>개</Text>
+                </InputRightElement>
+              </InputGroup>
+              <FormErrorMessage>{errors.basketCount?.message}</FormErrorMessage>
+            </FormControl>
+          )}
+          {watch("position") && (
+            <FormControl
+              as={motion.div}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.4 } }}
+              w="100%"
+              isInvalid={!!errors.name}
+            >
+              <FormLabel htmlFor="name">농구장 이름</FormLabel>
+              <Input
+                id="name"
+                placeholder="ex) 서울 광화문역 앞 농구장"
+                type="text"
+                {...register("name", {
+                  required: "농구장 이름을 적어주세요",
+                  minLength: { value: 2, message: "2자 이상으로 적어주세요" },
+                  maxLength: { value: 15, message: "15자 이하로 적어주세요" },
+                })}
+              />
+              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+            </FormControl>
+          )}
 
-        <DevTool control={control} />
-      </>
-    )
-  }
-)
+          <Box h="100px" />
+        </VStack>
+      </form>
+      <BottomFixedGradient>
+        <Box
+          as={motion.div}
+          initial={{ padding: 16 }}
+          animate={
+            scrollContainerHeight > 400 ? { padding: 16 } : { padding: 0 }
+          }
+        >
+          <Button
+            loading={isSubmitting}
+            onClick={handleSubmit(
+              async ({ basketCount, image, name, position, texture }) => {
+                if (position) {
+                  const { latitude, longitude } = position
+                  const { data } = await courtCreateMutation.mutateAsync({
+                    basketCount,
+                    image,
+                    latitude,
+                    longitude,
+                    name,
+                    texture,
+                  })
+
+                  await router.replace(
+                    "/map" // TODO: 내가 제안한 농구장 리스트 페이지 만들면 그 페이지로 라우팅)
+                  )
+
+                  Toast.show(
+                    `농구장을 잘 등록했어요 (${data.name}, 골대 개수: ${data.basketCount})`,
+                    {
+                      status: "success",
+                      marginBottom: "bottomFixedGradient",
+                    }
+                  )
+                }
+              }
+            )}
+            fullWidth
+            size="lg"
+            style={{ borderRadius: scrollContainerHeight > 400 ? 16 : 0 }}
+          >
+            새 농구장 추가 제안하기
+          </Button>
+        </Box>
+      </BottomFixedGradient>
+
+      <DevTool control={control} />
+    </Navigation>
+  )
+}
 
 export default Page
 

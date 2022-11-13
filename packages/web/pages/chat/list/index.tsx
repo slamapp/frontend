@@ -1,16 +1,18 @@
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 
-const Page = withNavigation(
-  {
-    top: {
-      title: "채팅",
-      isNotification: true,
-      isProfile: true,
-    },
-  },
-  () => {
-    return <div>채팅방 리스트 페이지</div>
-  }
-)
+const Page = () => {
+  return (
+    <Navigation
+      top={{
+        title: "채팅",
+        isNotification: true,
+        isProfile: true,
+      }}
+      bottom
+    >
+      채팅방 리스트 페이지
+    </Navigation>
+  )
+}
 
 export default Page

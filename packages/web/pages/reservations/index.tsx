@@ -5,73 +5,71 @@ import { api } from "~/api"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
 import { useGetUpcomingReservationsQuery } from "~/features/reservations"
 import { useCurrentUserQuery } from "~/features/users"
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 
-const Page = withNavigation(
-  {
-    top: {
-      title: "예약",
-      isNotification: true,
-      isProfile: true,
-    },
-  },
-  () => {
-    const currentUserQuery = useCurrentUserQuery()
-    const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
+const Page = () => {
+  const currentUserQuery = useCurrentUserQuery()
+  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
 
-    const ref = useRef<HTMLDivElement>(null)
-    const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">(
-      "UPCOMING"
+  const ref = useRef<HTMLDivElement>(null)
+  const [activeTab, setActiveTab] = useState<"UPCOMING" | "EXPIRED">("UPCOMING")
+  const [expiredReservations, setExpiredReservations] = useState<any[]>([])
+  const [currentLastId, setCurrentLastId] = useState<any>()
+
+  const handleClickExpiredTab = useCallback(async () => {
+    setActiveTab("EXPIRED")
+
+    if (currentLastId !== null) {
+      const { data } = await api.reservations.getMyExpiredReservations({
+        isFirst: !currentLastId,
+        lastId: currentLastId,
+      })
+      const { contents, lastId } = data
+      setExpiredReservations((prev) => [...prev, ...contents])
+      setCurrentLastId(lastId)
+    }
+  }, [currentLastId])
+
+  const loadMore = useCallback(async () => {
+    if (expiredReservations.length !== 0 && currentLastId !== null) {
+      const { data } = await api.reservations.getMyExpiredReservations({
+        isFirst: !currentLastId,
+        lastId: currentLastId,
+      })
+      const { contents, lastId } = data
+      setExpiredReservations((prev) => [...prev, ...contents])
+      setCurrentLastId(lastId)
+    }
+  }, [currentLastId, expiredReservations])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadMore()
+          }
+        })
+      },
+      { threshold: 1.0 }
     )
-    const [expiredReservations, setExpiredReservations] = useState<any[]>([])
-    const [currentLastId, setCurrentLastId] = useState<any>()
 
-    const handleClickExpiredTab = useCallback(async () => {
-      setActiveTab("EXPIRED")
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
 
-      if (currentLastId !== null) {
-        const { data } = await api.reservations.getMyExpiredReservations({
-          isFirst: !currentLastId,
-          lastId: currentLastId,
-        })
-        const { contents, lastId } = data
-        setExpiredReservations((prev) => [...prev, ...contents])
-        setCurrentLastId(lastId)
-      }
-    }, [currentLastId])
+    return () => observer.disconnect()
+  }, [ref, loadMore])
 
-    const loadMore = useCallback(async () => {
-      if (expiredReservations.length !== 0 && currentLastId !== null) {
-        const { data } = await api.reservations.getMyExpiredReservations({
-          isFirst: !currentLastId,
-          lastId: currentLastId,
-        })
-        const { contents, lastId } = data
-        setExpiredReservations((prev) => [...prev, ...contents])
-        setCurrentLastId(lastId)
-      }
-    }, [currentLastId, expiredReservations])
-
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              loadMore()
-            }
-          })
-        },
-        { threshold: 1.0 }
-      )
-
-      if (ref.current) {
-        observer.observe(ref.current)
-      }
-
-      return () => observer.disconnect()
-    }, [ref, loadMore])
-
-    return currentUserQuery.isSuccess ? (
+  return currentUserQuery.isSuccess ? (
+    <Navigation
+      top={{
+        title: "예약",
+        isNotification: true,
+        isProfile: true,
+      }}
+      bottom
+    >
       <PageContainer>
         <TabContainer>
           <Text
@@ -132,9 +130,9 @@ const Page = withNavigation(
 
         <div ref={ref} style={{ height: 20 }} />
       </PageContainer>
-    ) : null
-  }
-)
+    </Navigation>
+  ) : null
+}
 
 export default Page
 

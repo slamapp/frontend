@@ -17,7 +17,7 @@ import {
 } from "~/features/reservations"
 import { withSuspense } from "~/hocs"
 import { useScrollContainer } from "~/layouts"
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
 
 dayjs.extend(utc)
@@ -25,99 +25,100 @@ dayjs.extend(timezone)
 
 type Props = { courtId: string; date: string }
 
-const Page = withNavigation<Props>(
-  {
-    top: { isBack: true, title: "" },
-    bottom: false,
-  },
-  withSuspense(({ courtId, date }) => {
-    const theme = useTheme()
-    const router = useRouter()
-    const { scrollContainerWidth } = useScrollContainer()
+const Page = withSuspense<Props>(({ courtId, date }) => {
+  const theme = useTheme()
+  const router = useRouter()
+  const { scrollContainerWidth } = useScrollContainer()
 
-    const createReservationMutation = useCreateReservationMutation({ courtId })
-    const getReservationsInfiniteQuery = useGetReservationsInfiniteQuery({
-      courtId,
-      initialDate: date,
-    })
+  const createReservationMutation = useCreateReservationMutation({ courtId })
+  const getReservationsInfiniteQuery = useGetReservationsInfiniteQuery({
+    courtId,
+    initialDate: date,
+  })
 
-    const [reservation, setReservation] = useState<{
-      courtId: APICourt["id"]
-      startTime: Dayjs
-      endTime: Dayjs | null
-      hasBall: boolean
-    } | null>(null)
+  const [reservation, setReservation] = useState<{
+    courtId: APICourt["id"]
+    startTime: Dayjs
+    endTime: Dayjs | null
+    hasBall: boolean
+  } | null>(null)
 
-    const createReservation = ({ hasBall }: { hasBall: boolean }) => {
-      if (reservation && reservation.endTime) {
-        createReservationMutation.mutate(
-          {
-            startTime: reservation.startTime.toISOString(),
-            endTime: reservation.endTime.toISOString(),
-            hasBall,
+  const createReservation = ({ hasBall }: { hasBall: boolean }) => {
+    if (reservation && reservation.endTime) {
+      createReservationMutation.mutate(
+        {
+          startTime: reservation.startTime.toISOString(),
+          endTime: reservation.endTime.toISOString(),
+          hasBall,
+        },
+        {
+          onSuccess: () => {
+            router.replace("/reservations")
           },
-          {
-            onSuccess: () => {
-              router.replace("/reservations")
-            },
-          }
-        )
-      }
+        }
+      )
     }
+  }
 
-    const clearReservation = () => setReservation(null)
+  const clearReservation = () => setReservation(null)
 
-    const handleClickCell = useCallback<
-      ComponentProps<typeof ReservationTable.Cell>["onClick"]
-    >(
-      (cellTime) => {
-        let next: typeof reservation = null
-        const clickedTime = cellTime.start
-        const prev = reservation ? { ...reservation } : null
+  const handleClickCell = useCallback<
+    ComponentProps<typeof ReservationTable.Cell>["onClick"]
+  >(
+    (cellTime) => {
+      let next: typeof reservation = null
+      const clickedTime = cellTime.start
+      const prev = reservation ? { ...reservation } : null
 
-        // 1. 현 선택 단계
-        const isSelectingStartTime = prev === null
-        const isSelectingEndTime = !!prev && !!prev.startTime && !prev.endTime
-        const isSelectingNew = !!prev && !!prev.startTime && !!prev.endTime
+      // 1. 현 선택 단계
+      const isSelectingStartTime = prev === null
+      const isSelectingEndTime = !!prev && !!prev.startTime && !prev.endTime
+      const isSelectingNew = !!prev && !!prev.startTime && !!prev.endTime
 
-        // 2. 선택 단계별 동작
-        if (isSelectingStartTime) {
-          next = {
-            courtId,
-            startTime: clickedTime,
-            endTime: null,
-            hasBall: false,
+      // 2. 선택 단계별 동작
+      if (isSelectingStartTime) {
+        next = {
+          courtId,
+          startTime: clickedTime,
+          endTime: null,
+          hasBall: false,
+        }
+      }
+
+      if (isSelectingEndTime) {
+        const isBeforeStartTime = clickedTime.isBefore(prev.startTime)
+        const isOverMaxHour =
+          cellTime.end.diff(prev.startTime, "minute") / 60 > 4 // 4시간을 초과하는 경우
+
+        if (isBeforeStartTime || isOverMaxHour) {
+          if (isOverMaxHour) {
+            Toast.show("예약시간을 4시간 이하로 해주세요", {
+              marginBottom: "bottomNavigation",
+            })
           }
+
+          next = { ...prev, startTime: clickedTime }
+        } else {
+          next = { ...prev, endTime: cellTime.end }
         }
+      }
 
-        if (isSelectingEndTime) {
-          const isBeforeStartTime = clickedTime.isBefore(prev.startTime)
-          const isOverMaxHour =
-            cellTime.end.diff(prev.startTime, "minute") / 60 > 4 // 4시간을 초과하는 경우
+      if (isSelectingNew) {
+        next = { ...prev, startTime: clickedTime, endTime: null }
+      }
 
-          if (isBeforeStartTime || isOverMaxHour) {
-            if (isOverMaxHour) {
-              Toast.show("예약시간을 4시간 이하로 해주세요", {
-                marginBottom: "bottomNavigation",
-              })
-            }
+      setReservation(next)
+    },
+    [courtId, reservation]
+  )
 
-            next = { ...prev, startTime: clickedTime }
-          } else {
-            next = { ...prev, endTime: cellTime.end }
-          }
-        }
-
-        if (isSelectingNew) {
-          next = { ...prev, startTime: clickedTime, endTime: null }
-        }
-
-        setReservation(next)
-      },
-      [courtId, reservation]
-    )
-
-    return (
+  return (
+    <Navigation
+      top={{
+        isBack: true,
+        title: "",
+      }}
+    >
       <Flex direction="column">
         <ReservationTable courtId={courtId} date={date}>
           {({ dates }) => (
@@ -320,9 +321,9 @@ const Page = withNavigation<Props>(
           </Flex>
         </BottomModal>
       </Flex>
-    )
-  })
-)
+    </Navigation>
+  )
+})
 
 export default Page
 

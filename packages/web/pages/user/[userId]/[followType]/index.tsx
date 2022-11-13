@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react"
 import { Fragment } from "react"
-import type { GetServerSideProps } from "next"
+import type { GetServerSideProps, NextPage } from "next"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { NoItemMessage, ProfileAvatar } from "~/components/domains"
 import { Button, InfiniteScrollSensor, Skeleton } from "~/components/uis"
@@ -8,29 +8,29 @@ import {
   useUserFollowerInfiniteQuery,
   useUserFollowingInfiniteQuery,
 } from "~/features/users"
-import { useSetNavigation, withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 import type { APIUser } from "~/types/domains/objects"
 
 type FollowType = "following" | "follower"
 
-const Page = withNavigation<{ userId: APIUser["id"]; followType: FollowType }>(
-  {
-    top: { title: "", isBack: true },
-    bottom: false,
-  },
-  ({ userId, followType }) => {
-    const setNavigation = useSetNavigation()
+const Page: NextPage<{ userId: APIUser["id"]; followType: FollowType }> = ({
+  userId,
+  followType,
+}) => {
+  const userFollowerInfiniteQuery = useUserFollowerInfiniteQuery(userId, {
+    enabled: followType === "follower",
+  })
+  const userFollowingInfiniteQuery = useUserFollowingInfiniteQuery(userId, {
+    enabled: followType === "following",
+  })
 
-    const userFollowerInfiniteQuery = useUserFollowerInfiniteQuery(userId, {
-      enabled: followType === "follower",
-      onSuccess: () => setNavigation.title("팔로워"),
-    })
-    const userFollowingInfiniteQuery = useUserFollowingInfiniteQuery(userId, {
-      enabled: followType === "following",
-      onSuccess: () => setNavigation.title("팔로잉"),
-    })
-
-    return (
+  return (
+    <Navigation
+      top={{
+        title: followType === "follower" ? "팔로워" : "팔로잉",
+        isBack: true,
+      }}
+    >
       <VStack spacing="16px" mt="16px">
         {userFollowerInfiniteQuery.isSuccess &&
           userFollowerInfiniteQuery.data.pages.map(
@@ -103,9 +103,9 @@ const Page = withNavigation<{ userId: APIUser["id"]; followType: FollowType }>(
             )
           )}
       </VStack>
-    )
-  }
-)
+    </Navigation>
+  )
+}
 
 export default Page
 

@@ -15,38 +15,37 @@ import { InfiniteScrollSensor, Skeleton } from "~/components/uis"
 import { key } from "~/features"
 import { useGetInfiniteNotificationsQuery } from "~/features/notifications"
 import { useCurrentUserQuery } from "~/features/users"
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 import type { APINotification } from "~/types/domains/objects"
 
 dayjs.extend(relativeTime)
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const Page: NextPage = withNavigation(
-  {
-    top: {
-      title: "알림",
-      isBack: true,
-    },
-  },
-  () => {
-    const queryClient = useQueryClient()
-    const currentUserQuery = useCurrentUserQuery()
-    const notifications = useGetInfiniteNotificationsQuery()
+const Page: NextPage = () => {
+  const queryClient = useQueryClient()
+  const currentUserQuery = useCurrentUserQuery()
+  const notifications = useGetInfiniteNotificationsQuery()
 
-    useEffect(() => {
-      return () => {
-        api.notifications.readAllNotifications().then(() => {
-          queryClient.invalidateQueries([...key.notifications.all])
-        })
-      }
-    }, [])
-
-    if (!currentUserQuery.isSuccess || !notifications.isSuccess) {
-      return null
+  useEffect(() => {
+    return () => {
+      api.notifications.readAllNotifications().then(() => {
+        queryClient.invalidateQueries([...key.notifications.all])
+      })
     }
+  }, [])
 
-    return (
+  if (!currentUserQuery.isSuccess || !notifications.isSuccess) {
+    return null
+  }
+
+  return (
+    <Navigation
+      top={{
+        title: "알림",
+        isBack: true,
+      }}
+    >
       <Box mx="16px" mt="24px">
         {notifications.data.pages.length === 0 && (
           <NoItemMessage
@@ -86,9 +85,9 @@ const Page: NextPage = withNavigation(
           </Fragment>
         ))}
       </Box>
-    )
-  }
-)
+    </Navigation>
+  )
+}
 
 export default Page
 

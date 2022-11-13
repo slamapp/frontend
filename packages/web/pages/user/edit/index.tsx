@@ -39,22 +39,18 @@ import {
 } from "~/features/users"
 import { withSuspense } from "~/hocs"
 import { BottomFixedGradient, useScrollContainer } from "~/layouts"
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 import type { APIUser } from "~/types/domains/objects"
 
-const Page = withNavigation(
-  {
-    top: { isBack: true, title: "프로필 수정" },
-    bottom: false,
-  },
-  withSuspense(() => {
-    const myProfileQuery = useMyProfileQuery()
+const Page = withSuspense(() => {
+  const myProfileQuery = useMyProfileQuery()
 
-    return myProfileQuery.isSuccess ? (
+  return myProfileQuery.isSuccess ? (
+    <Navigation top={{ isBack: true, title: "프로필 수정" }}>
       <EditForm initialData={myProfileQuery.data} />
-    ) : null
-  })
-)
+    </Navigation>
+  ) : null
+})
 
 export default Page
 

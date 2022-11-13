@@ -9,7 +9,7 @@ import { CourtItem, NoItemMessage } from "~/components/domains"
 import { Button, Icon, Skeleton } from "~/components/uis"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import { withSuspense } from "~/hocs"
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 import type { APIFavorite } from "~/types/domains/objects"
 
 const SkeletonName = () => {
@@ -33,22 +33,22 @@ const getFavoriteItemVariants = (index: number): Variants => ({
   whileTap: { backgroundColor: "white" },
 })
 
-const Page = withNavigation(
-  {
-    top: {
-      title: "즐겨찾기",
-      isNotification: true,
-      isProfile: true,
-    },
-  },
-  withSuspense(
-    () => {
-      const getFavoritesQuery = useGetFavoritesQuery()
-      const [favorites] = useState<APIFavorite[]>([
-        ...(getFavoritesQuery.isSuccess ? getFavoritesQuery.data.contents : []),
-      ])
+const Page = withSuspense(
+  () => {
+    const getFavoritesQuery = useGetFavoritesQuery()
+    const [favorites] = useState<APIFavorite[]>([
+      ...(getFavoritesQuery.isSuccess ? getFavoritesQuery.data.contents : []),
+    ])
 
-      return (
+    return (
+      <Navigation
+        top={{
+          title: "즐겨찾기",
+          isNotification: true,
+          isProfile: true,
+        }}
+        bottom
+      >
         <Box flex={1}>
           <Head>
             <title>Slam - 우리 주변 농구장을 빠르게</title>
@@ -131,8 +131,17 @@ const Page = withNavigation(
             )}
           </VStack>
         </Box>
-      )
-    },
+      </Navigation>
+    )
+  },
+  <Navigation
+    top={{
+      title: "즐겨찾기",
+      isNotification: true,
+      isProfile: true,
+    }}
+    bottom
+  >
     <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
       <VStack spacing="18px" align="stretch">
         {Array.from({ length: 6 }).map((_, index) => (
@@ -158,7 +167,7 @@ const Page = withNavigation(
         ))}
       </VStack>
     </VStack>
-  )
+  </Navigation>
 )
 
 export default Page

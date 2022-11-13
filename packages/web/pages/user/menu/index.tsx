@@ -6,28 +6,27 @@ import { useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
 import { Button, Icon, LayerOver } from "~/components/uis"
-import { env } from "~/constants"
 import { useScrollContainer } from "~/layouts"
-import { withNavigation } from "~/layouts/Layout/navigations"
+import { Navigation } from "~/layouts/Layout/navigations"
 
 interface Props {
   buildTime: string
 }
 
-const Page = withNavigation<InferGetStaticPropsType<typeof getStaticProps>>(
-  {
-    top: {
-      title: "메뉴",
-      isBack: true,
-    },
-    bottom: false,
-  },
-  ({ buildTime }) => {
-    const router = useRouter()
-    const { scrollContainerWidth } = useScrollContainer()
-    const queryClient = useQueryClient()
+const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  buildTime,
+}) => {
+  const router = useRouter()
+  const { scrollContainerWidth } = useScrollContainer()
+  const queryClient = useQueryClient()
 
-    return (
+  return (
+    <Navigation
+      top={{
+        title: "메뉴",
+        isBack: true,
+      }}
+    >
       <Flex flexDir="column" h="100%">
         <VStack align="stretch" flex={1}>
           <LayerOver
@@ -99,9 +98,9 @@ const Page = withNavigation<InferGetStaticPropsType<typeof getStaticProps>>(
           )}
         </div>
       </Flex>
-    )
-  }
-)
+    </Navigation>
+  )
+}
 
 export default Page
 
