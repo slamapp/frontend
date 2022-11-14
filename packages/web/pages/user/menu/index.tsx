@@ -92,11 +92,11 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
             )}
           />
         </VStack>
-        <div>
-          {dayjs(buildTime).format(
-            "빌드 버전: YYYY년 MM월 DD일 HH시 MM분 ss초"
-          )}
-        </div>
+        <Center>
+          <Text fontSize="8px">
+            Builded at {dayjs(buildTime).format("YY.MM.DD(dd) HH:mm:ss")}
+          </Text>
+        </Center>
       </Flex>
     </Navigation>
   )
