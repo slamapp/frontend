@@ -5,6 +5,9 @@ import DefaultList from "./DefaultList"
 import DefaultTemplate from "./DefaultTemplate"
 import DoAfterDuration from "./DoAfterDuration"
 import { iterateCallWithDelay } from "./helpers"
+import { useIsMounted } from "./hooks"
+
+type CloseSelf = () => void
 
 const Manager = ({
   bind,
@@ -14,14 +17,10 @@ const Manager = ({
       content: ComponentProps<typeof DefaultTemplate>["content"],
       options: ComponentProps<typeof DefaultTemplate>["options"] &
         ComponentProps<typeof DefaultList>["options"]
-    ) => void
+    ) => CloseSelf
   ) => void
 }) => {
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const isMounted = useIsMounted()
 
   const { Template = DefaultTemplate, List = DefaultList } = useContext(Context)
 
@@ -35,8 +34,12 @@ const Manager = ({
   useEffect(() => {
     bind((content, options) => {
       const id = `${new Date().getTime()}`
+      setToastItems((old) => [...old, { id, content, options }])
 
-      return setToastItems((old) => [...old, { id, content, options }])
+      const close = () =>
+        setToastItems((old) => old.filter((toastItem) => toastItem.id !== id))
+
+      return close
     })
   }, [bind])
 
@@ -53,44 +56,42 @@ const Manager = ({
         marginBottom:
           toastItems[toastItems.length - 1]?.options?.marginBottom ?? 0,
       }}
-      templates={toastItems.map(({ id, content: Content, options }) => {
-        return (
-          <DoAfterDuration
-            key={id}
-            options={{
-              delay: options.delay,
-              duration: options.duration,
-            }}
-            onDelayedAfterDone={() =>
-              setToastItems((oldToastItems) =>
-                oldToastItems.filter((toast) => toast.id !== id)
-              )
-            }
-            onMount={({ doEarly }) => closes.current.push(doEarly)}
-          >
-            {({ isDone: isClosed, doEarly: close }) => (
-              <Template
-                options={options}
-                isShow={!isClosed}
-                close={close}
-                closeAll={closeAll}
-                content={
-                  typeof Content === "function" ? (
-                    <Content
-                      close={close}
-                      isShow={!isClosed}
-                      options={options}
-                      closeAll={closeAll}
-                    />
-                  ) : (
-                    Content
-                  )
-                }
-              />
-            )}
-          </DoAfterDuration>
-        )
-      })}
+      templates={toastItems.map(({ id, content: Content, options }) => (
+        <DoAfterDuration
+          key={id}
+          options={{
+            delay: options.delay,
+            duration: options.duration,
+          }}
+          onDelayedAfterDone={() =>
+            setToastItems((oldToastItems) =>
+              oldToastItems.filter((toast) => toast.id !== id)
+            )
+          }
+          onMount={({ doEarly }) => closes.current.push(doEarly)}
+        >
+          {({ isDone: isClosed, doEarly: close }) => (
+            <Template
+              options={options}
+              isShow={!isClosed}
+              close={close}
+              closeAll={closeAll}
+              content={
+                typeof Content === "function" ? (
+                  <Content
+                    close={close}
+                    isShow={!isClosed}
+                    options={options}
+                    closeAll={closeAll}
+                  />
+                ) : (
+                  Content
+                )
+              }
+            />
+          )}
+        </DoAfterDuration>
+      ))}
     />
   ) : null
 }

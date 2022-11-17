@@ -12,9 +12,8 @@ import Manager from "./Manager"
 class Toast<ExtraOptions extends { [x: string]: any }> {
   portal: HTMLElement | null = null
 
-  createToast:
-    | Parameters<ComponentPropsWithoutRef<typeof Manager>["bind"]>[0]
-    | null = null
+  createToast: Parameters<ComponentPropsWithoutRef<typeof Manager>["bind"]>[0] =
+    () => () => {}
 
   defaultOptions: ComponentPropsWithoutRef<typeof DefaultTemplate>["options"] &
     ComponentPropsWithoutRef<typeof DefaultList>["options"] = {
@@ -131,7 +130,7 @@ class Toast<ExtraOptions extends { [x: string]: any }> {
           >
         >)
   ) {
-    this.createToast?.(content, { ...this.defaultOptions, ...options })
+    return this.createToast(content, { ...this.defaultOptions, ...options })
   }
 }
 
