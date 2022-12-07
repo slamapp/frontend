@@ -1,6 +1,7 @@
-import { Flex, HStack, Text, VStack } from "@chakra-ui/react"
+import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import dayjs from "dayjs"
 import { CourtItem } from "~/components/domains"
+import { Icon } from "~/components/uis"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import type { APIReservation } from "~/types/domains/objects"
 
@@ -12,21 +13,27 @@ const ReservationItem = ({ reservation }: Props) => {
   const getFavoritesQuery = useGetFavoritesQuery()
 
   return (
-    <VStack align="stretch" p="16px" borderRadius="16px">
-      <Flex justify="space-between">
-        <CourtItem.Header>{reservation.court.name}</CourtItem.Header>
+    <VStack
+      mt="16px"
+      align="stretch"
+      p="16px"
+      borderRadius="16px"
+      backgroundColor="white"
+    >
+      <Box>
+        <Text fontSize="18px" fontWeight="bold">
+          {dayjs(reservation.startTime).format("YYYY. MM. DD (dd)")}
+        </Text>
+        <Text>
+          {dayjs(reservation.startTime).format("HH:mm")}-
+          {dayjs(reservation.endTime).format("HH:mm")}
+        </Text>
+      </Box>
 
-        <HStack>
-          <Text>
-            {dayjs(reservation.startTime).format("YYYY년 MM월 DD일")} (
-            {dayjs(reservation.startTime).day()})
-          </Text>
-          <Text>
-            {dayjs(reservation.startTime).format("HH:mm")} -{" "}
-            {dayjs(reservation.endTime).format("HH:mm")}
-          </Text>
-        </HStack>
-      </Flex>
+      <HStack>
+        <Icon name="map-pin" color="#FE6D04" />
+        <Text>{reservation.court.name}</Text>
+      </HStack>
 
       <HStack justify="flex-end" spacing="8px" m="16px 0 20px 0">
         {getFavoritesQuery.isSuccess && (

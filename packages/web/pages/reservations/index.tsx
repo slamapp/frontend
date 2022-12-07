@@ -22,12 +22,12 @@ const Page = () => (
     <PageContainer>
       <Tab defaultTabName="다가올 예약">
         <Tab.Panel tabName="다가올 예약">
-          <VStack align="stretch" spacing="8px">
+          <VStack align="stretch" spacing="12px">
             <UpcomingReservations />
           </VStack>
         </Tab.Panel>
         <Tab.Panel tabName="지난 예약">
-          <VStack align="stretch" spacing="8px">
+          <VStack align="stretch" spacing="12px">
             <Suspense>
               <ExpiredReservations />
             </Suspense>
@@ -120,4 +120,5 @@ const PageContainer = styled.div`
   flex-direction: column;
   flex: 1;
   margin: 0 20px;
+  padding-top: 16px;
 `
