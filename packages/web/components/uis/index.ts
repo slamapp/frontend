@@ -7,5 +7,6 @@ export { default as Skeleton } from "./Skeleton"
 export { default as LayerOver } from "./LayerOver"
 export { default as InfiniteScrollSensor } from "./InfiniteScrollSensor"
 export { default as BottomModal } from "./BottomModal"
+export { default as Tab } from "./Tab"
 /* eslint-disable import/no-cycle */
 export { default as IconButton } from "./IconButton"

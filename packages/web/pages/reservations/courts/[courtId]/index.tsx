@@ -4,13 +4,13 @@ import type { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
+import { Suspense } from "@suspensive/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
 import { AnimatePresence, motion } from "framer-motion"
 import { ReservationTable } from "~/components/domains"
-import { SSRSafeSuspense } from "~/components/ssrs"
 import { BottomModal, Button, LayerOver, Toast } from "~/components/uis"
 import {
   useCreateReservationMutation,
@@ -33,9 +33,9 @@ const Page: NextPage<Props> = ({ courtId, date }) => {
         title: "",
       }}
     >
-      <SSRSafeSuspense>
+      <Suspense.CSROnly>
         <Contents courtId={courtId} date={date} />
-      </SSRSafeSuspense>
+      </Suspense.CSROnly>
     </Navigation>
   )
 }

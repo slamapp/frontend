@@ -28,13 +28,12 @@ import type {
 } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
 import { DevTool } from "@hookform/devtools"
+import { Suspense } from "@suspensive/react"
 import { motion } from "framer-motion"
 import { Controller, useForm } from "react-hook-form"
-import { SSRSafeSuspense } from "~/components/ssrs"
 import { Button, Icon, Toast, Upload } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
 import {
-  useCurrentUserQuery,
   useMyProfileMutation,
   useMyProfileQuery,
   useUpdateMyProfileImageMutation,
@@ -45,9 +44,9 @@ import type { APIUser } from "~/types/domains/objects"
 
 const Page: NextPage = () => {
   return (
-    <SSRSafeSuspense>
+    <Suspense.CSROnly>
       <Contents />
-    </SSRSafeSuspense>
+    </Suspense.CSROnly>
   )
 }
 

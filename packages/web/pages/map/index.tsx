@@ -3,6 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
+import { Suspense } from "@suspensive/react"
 import dayjs from "dayjs"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
@@ -13,7 +14,6 @@ import {
   EssentialImagePreload,
 } from "~/components/domains"
 import { Map } from "~/components/kakaos"
-import { SSRSafeSuspense } from "~/components/ssrs"
 import { BottomModal, Button, Icon, Skeleton, Toast } from "~/components/uis"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useGetFavoritesQuery } from "~/features/favorites"
@@ -58,9 +58,9 @@ const Custom = () => {
 
 const Page = () => {
   return (
-    <SSRSafeSuspense>
+    <Suspense.CSROnly>
       <Contents />
-    </SSRSafeSuspense>
+    </Suspense.CSROnly>
   )
 }
 

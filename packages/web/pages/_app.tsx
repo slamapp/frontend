@@ -1,4 +1,3 @@
-import type { ComponentProps } from "react"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import { ChakraProvider } from "@chakra-ui/react"
@@ -12,11 +11,7 @@ import { useSentry } from "~/hooks/domain"
 import { Layout } from "~/layouts"
 import { GlobalCSS, chakraTheme, emotionTheme } from "~/styles"
 
-type PageProps = {
-  hydrateState: ComponentProps<typeof QueryClientProvider>["hydrateState"]
-}
-
-const App = ({ Component, pageProps }: AppProps<PageProps>) => {
+const App = ({ Component, pageProps }: AppProps) => {
   useSentry({
     dsn: env.SENTRY_DSN,
     allowUrls: ["https://slams.app", "https://dev.slams.app"],
@@ -32,7 +27,7 @@ const App = ({ Component, pageProps }: AppProps<PageProps>) => {
         description="슬램 | 농구할 사람이 없다고?"
       />
       <RecoilRoot>
-        <QueryClientProvider hydrateState={pageProps.hydrateState}>
+        <QueryClientProvider>
           <ChakraProvider resetCSS theme={chakraTheme}>
             <ThemeProvider theme={emotionTheme}>
               <GlobalCSS />
