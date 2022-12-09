@@ -10,7 +10,7 @@ export default {
     {
       isFirst = false,
       lastId = null,
-      size = 1,
+      size = 4,
     }: CursorListRequestOption<APIUser>
   ) =>
     http.get<CursorList<APIFollowing>>(`/follow/${userId}/followings`, {
@@ -22,7 +22,7 @@ export default {
     {
       isFirst = false,
       lastId = null,
-      size = 1,
+      size = 4,
     }: CursorListRequestOption<APIUser>
   ) =>
     http.get<CursorList<APIFollower>>(`/follow/${userId}/followers`, {

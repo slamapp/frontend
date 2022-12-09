@@ -1,5 +1,5 @@
-import type { ReactElement, RefObject } from "react"
 import { useEffect, useRef } from "react"
+import type { ReactElement, RefObject } from "react"
 import { useIntersectionObserver } from "~/hooks"
 
 const InfiniteScrollSensor = ({
@@ -16,7 +16,7 @@ const InfiniteScrollSensor = ({
     if (entry?.isIntersecting) {
       onIntersected(entry)
     }
-  }, [entry?.isIntersecting])
+  }, [entry?.isIntersecting, onIntersected, entry])
 
   return render(ref)
 }

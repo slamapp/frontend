@@ -3,9 +3,10 @@ import { useRouter } from "next/router"
 import { Center } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
+import { Suspense } from "@suspensive/react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
-import { Badge, Icon } from "~/components/uis"
+import { Badge, Icon, Skeleton } from "~/components/uis"
 import { useGetNotificationsQuery } from "~/features/notifications"
 import { useCurrentUserQuery } from "~/features/users"
 import { useScrollContainer } from "~/layouts"
@@ -84,7 +85,9 @@ const TopNavigation = ({ isShrink }: Props) => {
             </IconGroup>
             <IconGroup>
               {currentUserQuery.isSuccess && navigation.top.isNotification && (
-                <Notification />
+                <Suspense.CSROnly fallback={<Skeleton.Circle size={24} />}>
+                  <Notification />
+                </Suspense.CSROnly>
               )}
               {navigation.top.isProfile && currentUserQuery.isSuccess && (
                 <ProfileAvatar
@@ -181,12 +184,12 @@ const Notification = () => {
   const getNotificationsQuery = useGetNotificationsQuery()
 
   const unreadNotificationsCount =
-    getNotificationsQuery.data?.contents.reduce(
+    getNotificationsQuery.data.contents.reduce(
       (acc, { isRead }) => acc + (isRead ? 0 : 1),
       0
     ) || 0
 
-  return getNotificationsQuery.isSuccess ? (
+  return (
     <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>
       <Link href="/notifications" passHref>
         <motion.div
@@ -209,5 +212,5 @@ const Notification = () => {
         </motion.div>
       </Link>
     </Badge>
-  ) : null
+  )
 }

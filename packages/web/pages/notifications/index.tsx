@@ -3,6 +3,7 @@ import type { NextPage } from "next"
 import Link from "next/link"
 import { Box, HStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
+import { Suspense } from "@suspensive/react"
 import { useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
@@ -14,7 +15,7 @@ import { NoItemMessage, ProfileAvatar } from "~/components/domains"
 import { InfiniteScrollSensor, Skeleton } from "~/components/uis"
 import { key } from "~/features"
 import { useGetInfiniteNotificationsQuery } from "~/features/notifications"
-import { useCurrentUserQuery } from "~/features/users"
+import { useIsMounted } from "~/hooks"
 import { Navigation } from "~/layouts/Layout/navigations"
 import type { APINotification } from "~/types/domains/objects"
 
@@ -22,74 +23,78 @@ dayjs.extend(relativeTime)
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const Page: NextPage = () => {
+const Page: NextPage = () => (
+  <Navigation
+    top={{
+      title: "알림",
+      isBack: true,
+    }}
+  >
+    <Suspense.CSROnly>
+      <Contents />
+    </Suspense.CSROnly>
+  </Navigation>
+)
+
+export default Page
+
+const Contents = () => {
   const queryClient = useQueryClient()
-  const currentUserQuery = useCurrentUserQuery()
   const notifications = useGetInfiniteNotificationsQuery()
+  const isMounted = useIsMounted()
 
   useEffect(() => {
     return () => {
-      api.notifications.readAllNotifications().then(() => {
-        queryClient.invalidateQueries([...key.notifications.all])
-      })
+      if (isMounted) {
+        api.notifications.readAllNotifications().then(() => {
+          queryClient.invalidateQueries(key.notifications.all)
+        })
+      }
     }
-  }, [])
-
-  if (!currentUserQuery.isSuccess || !notifications.isSuccess) {
-    return null
-  }
+  }, [isMounted])
 
   return (
-    <Navigation
-      top={{
-        title: "알림",
-        isBack: true,
-      }}
-    >
-      <Box mx="16px" mt="24px">
-        {notifications.data.pages.length === 0 && (
-          <NoItemMessage
-            type="notification"
-            title="알림이 없습니다"
-            description="유용한 정보를 알림에서 모아 보실 수 있어요"
-            buttonTitle="지도에서 내 주변 농구장 찾기"
-          />
-        )}
-        {notifications.data.pages.map(({ contents, lastId }, pageIndex) => (
-          <Fragment key={pageIndex}>
-            {contents.map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                notification={notification}
-              />
-            ))}
-            {notifications.data.pages.length === pageIndex + 1 && lastId && (
-              <InfiniteScrollSensor
-                onIntersected={() => notifications.fetchNextPage()}
-                render={(ref) => (
-                  <div ref={ref} style={{ minHeight: 200 }}>
-                    <SkeletonNotification />
-                    <SkeletonNotification />
-                  </div>
-                )}
-              />
-            )}
-            {notifications.data.pages.length === pageIndex + 1 && !lastId && (
-              <NoItemMessage
-                type="notification"
-                title="더 받아올 알림이 없습니다"
-                description="유용한 정보를 알림에서 모아 보실 수 있어요"
-                buttonTitle="지도에서 내 주변 농구장 찾기"
-              />
-            )}
-          </Fragment>
-        ))}
-      </Box>
-    </Navigation>
+    <Box mx="16px" mt="24px">
+      {notifications.data.pages.length === 0 && (
+        <NoItemMessage
+          type="notification"
+          title="알림이 없습니다"
+          description="유용한 정보를 알림에서 모아 보실 수 있어요"
+          buttonTitle="지도에서 내 주변 농구장 찾기"
+        />
+      )}
+      {notifications.data.pages.map(({ contents, lastId }, pageIndex) => (
+        <Fragment key={pageIndex}>
+          {contents.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+            />
+          ))}
+          {pageIndex !== notifications.data.pages.length - 1 ? null : lastId ? (
+            <InfiniteScrollSensor
+              onIntersected={() => {
+                notifications.fetchNextPage()
+              }}
+              render={(ref) => (
+                <HStack ref={ref} width="100%">
+                  <SkeletonNotification />
+                </HStack>
+              )}
+            />
+          ) : (
+            <NoItemMessage
+              type="notification"
+              title="더 받아올 알림이 없습니다"
+              description="유용한 정보를 알림에서 모아 보실 수 있어요"
+              buttonTitle="지도에서 내 주변 농구장 찾기"
+            />
+          )}
+        </Fragment>
+      ))}
+    </Box>
   )
 }
-
-export default Page
 
 const SkeletonNotification = () => (
   <div style={{ padding: 12 }}>

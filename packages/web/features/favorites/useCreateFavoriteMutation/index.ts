@@ -10,7 +10,7 @@ const useCreateFavoriteMutation = () => {
     ({ courtId }: { courtId: APICourt["id"] }) =>
       api.favorites.createFavorite({ courtId }).then(({ data }) => data),
     {
-      onSuccess: () => queryClient.invalidateQueries([...key.favorites.all]),
+      onSuccess: () => queryClient.invalidateQueries(key.favorites.all),
     }
   )
 }

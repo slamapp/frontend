@@ -66,7 +66,7 @@ const MyTemplate = () => {
   const myProfileQuery = useMyProfileQuery()
   const getFavoritesQuery = useGetFavoritesQuery()
 
-  if (myProfileQuery.isSuccess && getFavoritesQuery.isSuccess) {
+  if (myProfileQuery.isSuccess) {
     const favoriteCourts = getFavoritesQuery.data.contents.map(({ court }) => ({
       id: court.id,
       name: court.name,

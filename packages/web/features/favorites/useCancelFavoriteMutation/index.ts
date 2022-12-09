@@ -10,7 +10,7 @@ const useCancelFavoriteMutation = () => {
     ({ favoriteId }: { favoriteId: APIFavorite["id"] }) =>
       api.favorites.deleteFavorite({ favoriteId }).then(({ data }) => data),
     {
-      onSuccess: () => queryClient.invalidateQueries([...key.favorites.all]),
+      onSuccess: () => queryClient.invalidateQueries(key.favorites.all),
     }
   )
 }

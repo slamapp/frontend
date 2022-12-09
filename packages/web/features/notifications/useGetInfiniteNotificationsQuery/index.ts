@@ -1,13 +1,13 @@
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useSuspenseInfiniteQuery } from "@suspensive/react-query"
 import { api } from "~/api"
 import key from "~/features/key"
 
 const useGetInfiniteNotificationsQuery = () =>
-  useInfiniteQuery(
-    [...key.notifications.all],
+  useSuspenseInfiniteQuery(
+    key.notifications.all,
     ({ pageParam = { isFirst: true, lastId: null } }) =>
       api.notifications
-        .getNotifications({ ...pageParam, size: 1 })
+        .getNotifications({ ...pageParam })
         .then(({ data }) => data),
     {
       getNextPageParam: (lastPage) => ({
