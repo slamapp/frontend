@@ -44,7 +44,10 @@ const useCourtQuery = (
 
       return { ...data, address }
     },
-    options
+    {
+      ...options,
+      enabled: !!kakao.maps.services?.Geocoder && courtId !== "not enabled",
+    }
   )
 
 export default useCourtQuery

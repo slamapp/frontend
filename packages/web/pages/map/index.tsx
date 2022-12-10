@@ -106,7 +106,6 @@ const Contents = () => {
     selectedCourtId ?? "not enabled",
     { date: selectedDateFormatted, time: "morning" },
     {
-      enabled: !!selectedCourtId,
       onSuccess: ({ latitude, longitude }) => {
         setCenter({ latitude, longitude })
         mapRef.current?.relayout()

@@ -11,7 +11,6 @@ export interface ContextProps {
     callback?: ({ isAddedCells }: { isAddedCells: boolean }) => void
   ) => void
   courtId: APICourt["id"]
-  isFetching: boolean
 }
 
 export const Context = createContext({} as ContextProps)

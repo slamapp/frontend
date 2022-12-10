@@ -116,7 +116,6 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
         setDates,
         replaceNewDate,
         courtId,
-        isFetching: getReservationsInfiniteQuery.isFetching,
       }}
     >
       <VStack

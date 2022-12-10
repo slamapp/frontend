@@ -145,30 +145,24 @@ const Contents = ({ courtId, date }: Props) => {
           <>
             <ReservationTable.VerticalDivider />
             <ReservationTable.MoreCellSensor.Top />
-            {getReservationsInfiniteQuery.isLoading ? (
-              <>loading...</>
-            ) : (
-              dates
-                .map(
-                  (date) =>
-                    Array.from(Array(48).keys()).map((_, index) => ({
-                      timeNumber: index,
-                      date,
-                    })) // 하루의 표 48개 생성
-                )
-                .map((cells) =>
-                  cells.map(({ date, timeNumber }) => {
-                    return (
-                      <ReservationTable.Cell
-                        key={`${date}-${timeNumber}`}
-                        onClick={handleClickCell}
-                        timeNumber={timeNumber}
-                        date={date}
-                      />
-                    )
-                  })
-                )
-            )}
+            {dates
+              .map(
+                (date) =>
+                  Array.from(Array(48).keys()).map((_, index) => ({
+                    timeNumber: index,
+                    date,
+                  })) // 하루의 표 48개 생성
+              )
+              .map((cells) =>
+                cells.map(({ date, timeNumber }) => (
+                  <ReservationTable.Cell
+                    key={`${date}-${timeNumber}`}
+                    onClick={handleClickCell}
+                    timeNumber={timeNumber}
+                    date={date}
+                  />
+                ))
+              )}
             <ReservationTable.MoreCellSensor.Bottom />
             {reservation && (
               <ReservationTable.Cursor
