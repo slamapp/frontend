@@ -4,7 +4,7 @@ import { api } from "~/api"
 import { key } from "~/features"
 
 const useCourtQuery = (
-  courtId: Parameters<typeof api.courts.getCourtDetail>[0] | null,
+  courtId: Parameters<typeof api.courts.getCourtDetail>[0],
   filter: Parameters<typeof api.courts.getCourtDetail>[1],
   options?: Pick<
     UseQueryOptions<
@@ -14,17 +14,15 @@ const useCourtQuery = (
     >,
     "onSuccess" | "enabled"
   >
-) => {
-  return useQuery(
+) =>
+  useQuery(
     key.courts.oneFilter(courtId || "", filter),
     async () => {
-      const { data } = await api.courts.getCourtDetail(courtId || "", filter)
-
-      const latLng = new kakao.maps.LatLng(data.latitude, data.longitude)
-      const geocoder = new kakao.maps.services.Geocoder()
+      const { data } = await api.courts.getCourtDetail(courtId, filter)
 
       const address = await new Promise((resolve) => {
-        geocoder.coord2RegionCode(
+        const latLng = new kakao.maps.LatLng(data.latitude, data.longitude)
+        new kakao.maps.services.Geocoder().coord2RegionCode(
           latLng.getLng(),
           latLng.getLat(),
           (result, status) => {
@@ -46,16 +44,7 @@ const useCourtQuery = (
 
       return { ...data, address }
     },
-    { enabled: !!courtId && !!kakao.maps.services?.Geocoder, ...options }
+    options
   )
-}
 
 export default useCourtQuery
-
-function searchAddrFromCoords(
-  coords: kakao.maps.LatLng,
-  callback: (
-    result: kakao.maps.services.RegionCode[],
-    status: kakao.maps.services.Status
-  ) => void
-) {}
