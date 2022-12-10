@@ -1,9 +1,9 @@
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useSuspenseInfiniteQuery } from "@suspensive/react-query"
 import { api } from "~/api"
 import key from "~/features/key"
 
 const useGetExpiredReservationsInfiniteQuery = () =>
-  useInfiniteQuery(
+  useSuspenseInfiniteQuery(
     key.reservations.expired(),
     ({ pageParam = { isFirst: true, lastId: null } }) =>
       api.reservations

@@ -1,9 +1,9 @@
 import { Fragment } from "react"
-import { VStack } from "@chakra-ui/react"
-import styled from "@emotion/styled"
+import { HStack, VStack } from "@chakra-ui/react"
+import { css } from "@emotion/react"
 import { Suspense } from "@suspensive/react"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
-import { InfiniteScrollSensor, Tab } from "~/components/uis"
+import { InfiniteScrollSensor, Skeleton, Tab } from "~/components/uis"
 import {
   useGetExpiredReservationsInfiniteQuery,
   useGetUpcomingReservationsQuery,
@@ -19,22 +19,32 @@ const Page = () => (
     }}
     bottom
   >
-    <PageContainer>
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin: 0 20px;
+        padding-top: 16px;
+      `}
+    >
       <Tab defaultTabName="다가올 예약">
         <Tab.Panel tabName="다가올 예약">
           <VStack align="stretch" spacing="12px">
-            <UpcomingReservations />
+            <Suspense.CSROnly fallback={fallback}>
+              <UpcomingReservations />
+            </Suspense.CSROnly>
           </VStack>
         </Tab.Panel>
         <Tab.Panel tabName="지난 예약">
           <VStack align="stretch" spacing="12px">
-            <Suspense>
+            <Suspense.CSROnly fallback={fallback}>
               <ExpiredReservations />
-            </Suspense>
+            </Suspense.CSROnly>
           </VStack>
         </Tab.Panel>
       </Tab>
-    </PageContainer>
+    </div>
   </Navigation>
 )
 
@@ -65,60 +75,66 @@ const UpcomingReservations = () => {
 const ExpiredReservations = () => {
   const expiredReservations = useGetExpiredReservationsInfiniteQuery()
 
-  if (expiredReservations.isSuccess) {
-    return (
-      <>
-        {expiredReservations.data.pages.length === 0 && (
-          <NoItemMessage
-            type="reservation"
-            title="지난 예약이 없습니다"
-            description="지난 예약 탭에서 지나간 예약들을 모아 보실 수 있어요"
-            buttonTitle="지도에서 내 주변 농구장 찾기"
-          />
-        )}
-        {expiredReservations.data.pages.map(
-          ({ contents, lastId }, pageIndex) => (
-            <Fragment key={pageIndex}>
-              {contents.map((reservation) => (
-                <ReservationItem
-                  key={reservation.id}
-                  reservation={reservation}
-                />
-              ))}
-              {expiredReservations.data.pages.length === pageIndex + 1 &&
-                lastId && (
-                  <InfiniteScrollSensor
-                    onIntersected={() => expiredReservations.fetchNextPage()}
-                    render={(ref) => (
-                      <div ref={ref} style={{ minHeight: 200 }}>
-                        sensor
-                      </div>
-                    )}
-                  />
-                )}
-              {expiredReservations.data.pages.length === pageIndex + 1 &&
-                !lastId && (
-                  <NoItemMessage
-                    type="reservation"
-                    title="더 받아올 지난 예약이 없습니다"
-                    description="유용한 정보를 지난 예약에서 모아 보실 수 있어요"
-                    buttonTitle="지도에서 내 주변 농구장 찾기"
-                  />
-                )}
-            </Fragment>
-          )
-        )}
-      </>
-    )
-  }
+  return (
+    <>
+      {expiredReservations.data.pages.length === 0 && (
+        <NoItemMessage
+          type="reservation"
+          title="지난 예약이 없습니다"
+          description="지난 예약 탭에서 지나간 예약들을 모아 보실 수 있어요"
+          buttonTitle="지도에서 내 주변 농구장 찾기"
+        />
+      )}
+      {expiredReservations.data.pages.map(({ contents, lastId }, pageIndex) => (
+        <Fragment key={pageIndex}>
+          {contents.map((reservation) => (
+            <ReservationItem key={reservation.id} reservation={reservation} />
+          ))}
 
-  return null
+          {expiredReservations.data.pages.length === pageIndex + 1 && lastId && (
+            <InfiniteScrollSensor
+              onIntersected={() => expiredReservations.fetchNextPage()}
+              render={(ref) => (
+                <div ref={ref}>
+                  <ReservationSkeleton />
+                </div>
+              )}
+            />
+          )}
+          {expiredReservations.data.pages.length === pageIndex + 1 &&
+            !lastId && (
+              <NoItemMessage
+                type="reservation"
+                title="더 받아올 지난 예약이 없습니다"
+                description="유용한 정보를 지난 예약에서 모아 보실 수 있어요"
+                buttonTitle="지도에서 내 주변 농구장 찾기"
+              />
+            )}
+        </Fragment>
+      ))}
+    </>
+  )
 }
 
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  margin: 0 20px;
-  padding-top: 16px;
-`
+const ReservationSkeleton = () => (
+  <VStack justify="stretch" align="start" p="16px" spacing="16px">
+    <VStack justify="stretch" align="start">
+      <Skeleton.Box width={120} height={24} />
+      <Skeleton.Box width={90} height={16} />
+    </VStack>
+    <Skeleton.Box width={42} height={16} />
+    <HStack alignSelf="end">
+      <Skeleton.Box width={42} height={42} />
+      <Skeleton.Box width={42} height={42} />
+      <Skeleton.Box width={42} height={42} />
+    </HStack>
+  </VStack>
+)
+
+const fallback = (
+  <>
+    {Array.from({ length: 5 }).map((_, index) => (
+      <ReservationSkeleton key={index} />
+    ))}
+  </>
+)
