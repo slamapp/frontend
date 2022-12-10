@@ -52,24 +52,21 @@ export default Page
 
 const UpcomingReservations = () => {
   const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
-  if (getUpcomingReservationsQuery.isSuccess) {
-    return getUpcomingReservationsQuery.data.contents.length === 0 ? (
-      <NoItemMessage
-        title="다가올 예약이 아직 없어요 🤔"
-        type="reservation"
-        description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
-        buttonTitle="예약할 농구장 찾기"
-      />
-    ) : (
-      <>
-        {getUpcomingReservationsQuery.data.contents.map((reservation) => (
-          <ReservationItem key={reservation.id} reservation={reservation} />
-        ))}
-      </>
-    )
-  }
 
-  return null
+  return getUpcomingReservationsQuery.data.contents.length === 0 ? (
+    <NoItemMessage
+      title="다가올 예약이 아직 없어요 🤔"
+      type="reservation"
+      description="농구장에 예약하시고 함께 농구할 사람들을 모으세요"
+      buttonTitle="예약할 농구장 찾기"
+    />
+  ) : (
+    <>
+      {getUpcomingReservationsQuery.data.contents.map((reservation) => (
+        <ReservationItem key={reservation.id} reservation={reservation} />
+      ))}
+    </>
+  )
 }
 
 const ExpiredReservations = () => {

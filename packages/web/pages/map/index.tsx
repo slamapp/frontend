@@ -70,7 +70,9 @@ const Contents = () => {
   const theme = useTheme()
   const router = useRouter()
   const currentUserQuery = useCurrentUserQuery()
-  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery()
+  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery({
+    enabled: currentUserQuery.isSuccess,
+  })
   const getFavoritesQuery = useGetFavoritesQuery({
     enabled: currentUserQuery.isSuccess,
   })
