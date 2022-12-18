@@ -141,16 +141,10 @@ const Contents = () => {
           initialValue={selectedDate}
           onChange={(date) => {
             setSelectedDate(date)
-            Toast.show(
-              <>
-                {`${date.format("MM/DD")}`}
-                <>{`${date.format("(dd)")}`}</>의 농구장을 보고 있어요
-              </>,
-              {
-                duration: 1000,
-                marginBottom: "bottomNavigation",
-              }
-            )
+            Toast.show(`${date.format("MM/DD(dd)")}의 농구장을 보고 있어요`, {
+              duration: 1000,
+              marginBottom: "bottomNavigation",
+            })
           }}
         />
         <Map
