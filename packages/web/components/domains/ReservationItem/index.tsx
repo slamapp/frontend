@@ -36,16 +36,14 @@ const ReservationItem = ({ reservation }: Props) => {
       </HStack>
 
       <HStack justify="flex-end" spacing="8px" m="16px 0 20px 0">
-        {getFavoritesQuery.isSuccess && (
-          <CourtItem.FavoritesToggle
-            courtId={reservation.court.id}
-            favoriteId={
-              getFavoritesQuery.data.contents.find(
-                (favorite) => favorite.court.id === reservation.court.id
-              )?.id || null
-            }
-          />
-        )}
+        <CourtItem.FavoritesToggle
+          courtId={reservation.court.id}
+          favoriteId={
+            getFavoritesQuery.data.contents.find(
+              (favorite) => favorite.court.id === reservation.court.id
+            )?.id || null
+          }
+        />
         <CourtItem.Share court={reservation.court} />
         <CourtItem.ChatLink chatroom={{ id: "1" }} />
         <CourtItem.Map court={reservation.court} type="findRoad" />
