@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import { Suspense } from "@suspensive/react"
+import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
@@ -15,6 +16,7 @@ import {
 } from "~/components/domains"
 import { Map } from "~/components/kakaos"
 import { BottomModal, Button, Icon, Skeleton, Toast } from "~/components/uis"
+import { useAddressQuery } from "~/features/addresses"
 import { useCourtQuery, useCourtsQuery } from "~/features/courts"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import { useGetUpcomingReservationsQuery } from "~/features/reservations"
@@ -68,11 +70,9 @@ const Contents = () => {
     dayjs().tz(DEFAULT_TIMEZONE).hour(0).minute(0).second(0).millisecond(0)
   )
 
-  const selectedDateFormatted = selectedDate.format("YYYY-MM-DD")
-
   const courtsQuery = useCourtsQuery(
     {
-      date: selectedDateFormatted,
+      date: selectedDate.format("YYYY-MM-DD"),
       startLatitude: bounds?.getSouthWest().getLat() || 0,
       startLongitude: bounds?.getSouthWest().getLng() || 0,
       endLatitude: bounds?.getNorthEast().getLat() || 0,
@@ -80,18 +80,6 @@ const Contents = () => {
       time: "morning",
     },
     { enabled: !!bounds }
-  )
-
-  const courtQuery = useCourtQuery(
-    selectedCourtId ?? "not enabled",
-    { date: selectedDateFormatted, time: "morning" },
-    {
-      onSuccess: ({ latitude, longitude }) => {
-        setCenter({ latitude, longitude })
-        mapRef.current?.relayout()
-        courtsQuery.refetch()
-      },
-    }
   )
 
   useEffect(() => {
@@ -331,71 +319,110 @@ const Contents = () => {
         </Map>
         <BottomModal isOpen={!!selectedCourtId}>
           <Box p="24px 20px 20px 20px" h="170px">
-            {courtQuery.isLoading ? (
-              <VStack align="stretch" justify="space-between" h="100%">
-                <VStack align="stretch">
-                  <HStack>
-                    <Skeleton.Circle size={32} />
-                    <Skeleton.Box
-                      height={24}
-                      style={{ flex: 1, marginRight: 80 }}
-                    />
-                  </HStack>
-                  <Skeleton.Paragraph fontSize={12} line={2} />
-                </VStack>
-
-                <HStack spacing="8px">
-                  <Skeleton.Box height={36} width={36} />
-                  <Skeleton.Box height={36} width={36} />
-                  <Skeleton.Box height={36} width={36} />
-                  <Skeleton.Box height={36} style={{ flex: 1 }} />
-                </HStack>
-              </VStack>
-            ) : (
-              courtQuery.isSuccess && (
+            <Suspense.CSROnly
+              fallback={
                 <VStack align="stretch" justify="space-between" h="100%">
-                  <VStack align="stretch" spacing={0}>
-                    <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
-                    <CourtItem.Address>
-                      {courtQuery.data.address}
-                    </CourtItem.Address>
-                  </VStack>
-                  <HStack spacing="8px">
-                    {getFavoritesQuery.isSuccess && (
-                      <CourtItem.FavoritesToggle
-                        courtId={courtQuery.data.id}
-                        favoriteId={
-                          getFavoritesQuery.data.contents.find(
-                            (favorite) =>
-                              favorite.court.id === courtQuery.data.id
-                          )?.id || null
-                        }
+                  <VStack align="stretch">
+                    <HStack>
+                      <Skeleton.Circle size={32} />
+                      <Skeleton.Box
+                        height={24}
+                        style={{ flex: 1, marginRight: 80 }}
                       />
-                    )}
-                    <CourtItem.Share court={courtQuery.data} />
-                    <CourtItem.ChatLink chatroom={{ id: "1" }} />
-                    <CourtItem.Map court={courtQuery.data} />
-                    <Box flex={1}>
-                      <Link
-                        href={
-                          currentUserQuery.isSuccess
-                            ? `reservations/courts/${courtQuery.data.id}?date=${selectedDateFormatted}`
-                            : "/login"
-                        }
-                        passHref
-                      >
-                        <Button size="lg" fullWidth>
-                          예약하기
-                        </Button>
-                      </Link>
-                    </Box>
+                    </HStack>
+                    <Skeleton.Paragraph fontSize={12} line={2} />
+                  </VStack>
+
+                  <HStack spacing="8px">
+                    <Skeleton.Box height={36} width={36} />
+                    <Skeleton.Box height={36} width={36} />
+                    <Skeleton.Box height={36} width={36} />
+                    <Skeleton.Box height={36} style={{ flex: 1 }} />
                   </HStack>
                 </VStack>
-              )
-            )}
+              }
+            >
+              {selectedCourtId && (
+                <CourtData
+                  courtId={selectedCourtId}
+                  selectedDate={selectedDate}
+                  onSuccess={({ latitude, longitude }) => {
+                    setCenter({ latitude, longitude })
+                    mapRef.current?.relayout()
+                    courtsQuery.refetch()
+                  }}
+                />
+              )}
+            </Suspense.CSROnly>
           </Box>
         </BottomModal>
       </Flex>
     </Navigation>
+  )
+}
+
+const CourtData = ({
+  courtId,
+  selectedDate,
+  onSuccess,
+}: {
+  courtId: APICourt["id"]
+  selectedDate: Dayjs
+  onSuccess: Parameters<typeof useCourtQuery>[2]["onSuccess"]
+}) => {
+  const currentUserQuery = useCurrentUserQuery()
+  const getFavoritesQuery = useGetFavoritesQuery({
+    enabled: currentUserQuery.isSuccess,
+  })
+
+  const courtQuery = useCourtQuery(
+    courtId,
+    { date: selectedDate.format("YYYY-MM-DD"), time: "morning" },
+    { onSuccess }
+  )
+
+  const addressQuery = useAddressQuery({
+    latitude: courtQuery.data.latitude,
+    longitude: courtQuery.data.longitude,
+  })
+
+  return (
+    <VStack align="stretch" justify="space-between" h="100%">
+      <VStack align="stretch" spacing={0}>
+        <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
+        <CourtItem.Address>{addressQuery.data}</CourtItem.Address>
+      </VStack>
+      <HStack spacing="8px">
+        {getFavoritesQuery.isSuccess && (
+          <CourtItem.FavoritesToggle
+            courtId={courtQuery.data.id}
+            favoriteId={
+              getFavoritesQuery.data.contents.find(
+                (favorite) => favorite.court.id === courtQuery.data.id
+              )?.id || null
+            }
+          />
+        )}
+        <CourtItem.Share court={courtQuery.data} />
+        <CourtItem.ChatLink chatroom={{ id: "1" }} />
+        <CourtItem.Map court={courtQuery.data} />
+        <Box flex={1}>
+          <Link
+            href={
+              currentUserQuery.isSuccess
+                ? `reservations/courts/${
+                    courtQuery.data.id
+                  }?date=${selectedDate.format("YYYY-MM-DD")}`
+                : "/login"
+            }
+            passHref
+          >
+            <Button size="lg" fullWidth>
+              예약하기
+            </Button>
+          </Link>
+        </Box>
+      </HStack>
+    </VStack>
   )
 }

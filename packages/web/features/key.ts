@@ -1,3 +1,4 @@
+import addresses from "./addresses/key"
 import courts from "./courts/key"
 import favorites from "./favorites/key"
 import follows from "./follows/key"
@@ -12,6 +13,7 @@ const key = {
   notifications,
   reservations,
   users,
+  addresses,
 } as const
 
 export default key
