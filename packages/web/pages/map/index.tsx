@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react"
+import type { Dispatch, SetStateAction } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
@@ -38,28 +39,10 @@ const DEFAULT_POSITION = {
   longitude: 126.978,
 }
 
-const Page = () => (
-  <Suspense.CSROnly>
-    <Contents />
-  </Suspense.CSROnly>
-)
-
-export default Page
-
-const Contents = () => {
-  const theme = useTheme()
+const Page = () => {
   const router = useRouter()
-  const currentUserQuery = useCurrentUserQuery()
-  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery({
-    enabled: currentUserQuery.isSuccess,
-  })
-  const getFavoritesQuery = useGetFavoritesQuery({
-    enabled: currentUserQuery.isSuccess,
-  })
 
-  const [selectedCourtId, setSelectedCourtId] = useState<APICourt["id"] | null>(
-    null
-  )
+  const selectedCourtId = router.query.courtId as string | undefined
 
   const [center, setCenter] = useLocalStorage("center", DEFAULT_POSITION)
   const [bounds, setBounds] = useState<kakao.maps.LatLngBounds>()
@@ -69,41 +52,6 @@ const Contents = () => {
   const [selectedDate, setSelectedDate] = useState(() =>
     dayjs().tz(DEFAULT_TIMEZONE).hour(0).minute(0).second(0).millisecond(0)
   )
-
-  const courtsQuery = useCourtsQuery(
-    {
-      date: selectedDate.format("YYYY-MM-DD"),
-      startLatitude: bounds?.getSouthWest().getLat() || 0,
-      startLongitude: bounds?.getSouthWest().getLng() || 0,
-      endLatitude: bounds?.getNorthEast().getLat() || 0,
-      endLongitude: bounds?.getNorthEast().getLng() || 0,
-      time: "morning",
-    },
-    { enabled: !!bounds }
-  )
-
-  useEffect(() => {
-    if (bounds) {
-      courtsQuery.refetch()
-    }
-  }, [
-    bounds?.getNorthEast().getLat(),
-    bounds?.getNorthEast().getLng(),
-    bounds?.getSouthWest().getLat(),
-    bounds?.getSouthWest().getLng(),
-    selectedDate,
-  ])
-
-  useEffect(() => {
-    setSelectedCourtId((router.query.courtId as string) || null)
-
-    if (bounds && !router.query.courtId) {
-      setTimeout(() => {
-        mapRef.current?.relayout()
-        courtsQuery.refetch()
-      }, 200)
-    }
-  }, [router.isReady, router.query.courtId])
 
   return (
     <Navigation
@@ -119,12 +67,13 @@ const Contents = () => {
           return (
             <HStack
               spacing="4px"
-              onClick={() => {
+              onClick={() =>
                 router.push(
                   currentUserQuery.isSuccess ? "/courts/create" : "/login"
                 )
-              }}
+              }
             >
+              <EssentialImagePreload lazyLoadTime={10} />
               <Text color={theme.colors.gray0500} fontSize="12px">
                 새 농구장을 추가해보세요
               </Text>
@@ -135,7 +84,6 @@ const Contents = () => {
       }}
       bottom
     >
-      <EssentialImagePreload lazyLoadTime={10} />
       <Flex direction="column" h="100%">
         <DatePicker
           initialValue={selectedDate}
@@ -151,165 +99,28 @@ const Contents = () => {
           center={center}
           level={6}
           maxLevel={7}
-          onClick={() => {
-            router.replace({ pathname: "/map" })
-          }}
-          onDragStart={() => {
-            router.replace({ pathname: "/map" })
-          }}
+          onClick={() => router.replace({ pathname: "/map" })}
+          onDragStart={() => router.replace({ pathname: "/map" })}
           onLoaded={(map) => {
             setBounds(map.getBounds())
             mapRef.current = map
           }}
-          onBoundChange={(map) => {
-            setBounds(map.getBounds())
-          }}
-          onZoomChanged={(map) => {
-            setBounds(map.getBounds())
-          }}
+          onBoundChange={(map) => setBounds(map.getBounds())}
+          onZoomChanged={(map) => setBounds(map.getBounds())}
           style={{ flex: 1 }}
         >
           <Map.Button.CurrentLocation />
           <Map.Button.ZoomInOut />
-          {courtsQuery.isFetching && <Map.LoadingIndicator />}
-          {courtsQuery.isSuccess &&
-            courtsQuery.data.map(({ court, reservationMaxCount }) => {
-              let imageSrc = "/assets/basketball/animation_off_400.png"
-
-              const isReservatedCourt =
-                getUpcomingReservationsQuery.isSuccess &&
-                getUpcomingReservationsQuery.data.contents.some(
-                  ({ court: { id } }) => id === court.id
-                )
-              const isFavoritedCourt =
-                getFavoritesQuery.isSuccess &&
-                getFavoritesQuery.data.contents.some(
-                  ({ court: { id } }) => id === court.id
-                )
-
-              if (isFavoritedCourt) {
-                imageSrc = "/assets/basketball/animation_off_favorited.png"
-              }
-
-              if (
-                reservationMaxCount > PAUSE_COURT_NUMBER &&
-                reservationMaxCount < FIRE_COURT_NUMBER
-              ) {
-                if (isReservatedCourt && isFavoritedCourt) {
-                  imageSrc = "/assets/basketball/fire_off_all_tagged.gif"
-                } else if (isReservatedCourt) {
-                  imageSrc = "/assets/basketball/fire_off_reservated.gif"
-                } else if (isFavoritedCourt) {
-                  imageSrc = "/assets/basketball/fire_off_favorited.gif"
-                } else {
-                  imageSrc = "/assets/basketball/fire_off_400.gif"
-                }
-              }
-
-              if (reservationMaxCount >= FIRE_COURT_NUMBER) {
-                if (isReservatedCourt && isFavoritedCourt) {
-                  imageSrc = "/assets/basketball/fire_on_all_tagged.gif"
-                } else if (isReservatedCourt) {
-                  imageSrc = "/assets/basketball/fire_on_reservated.gif"
-                } else if (isFavoritedCourt) {
-                  imageSrc = "/assets/basketball/fire_on_favorited.gif"
-                } else {
-                  imageSrc = "/assets/basketball/fire_on_400.gif"
-                }
-              }
-
-              return (
-                <Map.Marker.CustomMarkerOverlay
-                  key={court.id}
-                  position={{
-                    latitude: court.latitude,
-                    longitude: court.longitude,
-                  }}
-                >
-                  <motion.div
-                    css={css`
-                      width: 50;
-                      height: 50;
-                    `}
-                    onTap={() => {
-                      router.replace({
-                        pathname: "/map",
-                        query: { courtId: court.id },
-                      })
-                    }}
-                  >
-                    <Flex
-                      as={motion.div}
-                      initial={{ scale: 0, y: 40 }}
-                      animate={{ scale: 1, y: 0 }}
-                      whileHover={{ scale: 1.2 }}
-                      whileTap={{ scale: 0.9 }}
-                      style={{
-                        width: 50,
-                        height: 50,
-                        position: "relative",
-                        borderRadius: 25,
-                        cursor: "pointer",
-                      }}
-                      justify="center"
-                    >
-                      <Box
-                        style={{
-                          position: "absolute",
-                          bottom: -4,
-                          backgroundColor: "rgba(0,0,0,0.6)",
-                          filter: "blur(4px)",
-                          width: 45,
-                          height: 45,
-                          borderRadius: 25,
-                          overflow: "visible",
-                        }}
-                      />
-                      <img
-                        src={imageSrc}
-                        style={{
-                          position: "absolute",
-                          bottom: -8,
-                          minWidth: 100,
-                          minHeight: 150,
-                          pointerEvents: "none",
-                          userSelect: "none",
-                        }}
-                      />
-                      <HStack
-                        as={motion.div}
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        pos="absolute"
-                        bottom="-34px"
-                        whiteSpace="nowrap"
-                        textAlign="center"
-                        bgColor={
-                          selectedCourtId === court.id ? "black" : "#00000095"
-                        }
-                        transition="background-color 200ms"
-                        backdropFilter="blur(2px)"
-                        color="white"
-                        borderRadius="8px"
-                        py="4px"
-                        px="8px"
-                        pointerEvents="none"
-                        boxShadow="0 0 16px #00000040"
-                      >
-                        <Icon
-                          name="map-pin"
-                          size={12}
-                          color={theme.colors.orange0600}
-                        />
-                        <Text fontSize="12px" fontWeight="bold">
-                          {court.name}
-                        </Text>
-                      </HStack>
-                    </Flex>
-                  </motion.div>
-                </Map.Marker.CustomMarkerOverlay>
-              )
-            })}
+          {mapRef.current && bounds && (
+            <Suspense.CSROnly fallback={<Map.LoadingIndicator />}>
+              <Markers
+                bounds={bounds}
+                setBounds={setBounds}
+                selectedDate={selectedDate}
+                map={mapRef.current}
+              />
+            </Suspense.CSROnly>
+          )}
         </Map>
         <BottomModal isOpen={!!selectedCourtId}>
           <Box p="24px 20px 20px 20px" h="170px">
@@ -343,7 +154,6 @@ const Contents = () => {
                   onSuccess={({ latitude, longitude }) => {
                     setCenter({ latitude, longitude })
                     mapRef.current?.relayout()
-                    courtsQuery.refetch()
                   }}
                 />
               )}
@@ -352,6 +162,201 @@ const Contents = () => {
         </BottomModal>
       </Flex>
     </Navigation>
+  )
+}
+
+export default Page
+
+const Markers = ({
+  selectedDate,
+  bounds,
+  setBounds,
+  map,
+}: {
+  selectedDate: Dayjs
+  bounds: kakao.maps.LatLngBounds
+  setBounds: Dispatch<SetStateAction<kakao.maps.LatLngBounds | undefined>>
+  map: kakao.maps.Map
+}) => {
+  const currentUserQuery = useCurrentUserQuery()
+  const getUpcomingReservationsQuery = useGetUpcomingReservationsQuery({
+    enabled: currentUserQuery.isSuccess,
+  })
+  const getFavoritesQuery = useGetFavoritesQuery({
+    enabled: currentUserQuery.isSuccess,
+  })
+
+  const theme = useTheme()
+  const router = useRouter()
+  const selectedCourtId = router.query.courtId as string | undefined
+  const { startLatitude, startLongitude, endLatitude, endLongitude } = useMemo(
+    () => ({
+      startLatitude: bounds.getSouthWest().getLat(),
+      startLongitude: bounds.getSouthWest().getLng(),
+      endLatitude: bounds.getNorthEast().getLat(),
+      endLongitude: bounds.getNorthEast().getLng(),
+    }),
+    [bounds]
+  )
+
+  const courtsQuery = useCourtsQuery({
+    date: selectedDate.format("YYYY-MM-DD"),
+    startLatitude,
+    startLongitude,
+    endLatitude,
+    endLongitude,
+    time: "morning",
+  })
+
+  useEffect(() => {
+    courtsQuery.refetch()
+  }, [startLatitude, startLongitude, endLatitude, endLongitude, selectedDate])
+
+  useEffect(() => {
+    if (!selectedCourtId) {
+      map.relayout()
+      setBounds(map.getBounds())
+    }
+  }, [selectedCourtId])
+
+  return (
+    <>
+      {courtsQuery.data.map(({ court, reservationMaxCount }) => {
+        let imageSrc = "/assets/basketball/animation_off_400.png"
+
+        const isReservatedCourt =
+          getUpcomingReservationsQuery.isSuccess &&
+          getUpcomingReservationsQuery.data.contents.some(
+            ({ court: { id } }) => id === court.id
+          )
+        const isFavoritedCourt =
+          getFavoritesQuery.isSuccess &&
+          getFavoritesQuery.data.contents.some(
+            ({ court: { id } }) => id === court.id
+          )
+
+        if (isFavoritedCourt) {
+          imageSrc = "/assets/basketball/animation_off_favorited.png"
+        }
+
+        if (
+          reservationMaxCount > PAUSE_COURT_NUMBER &&
+          reservationMaxCount < FIRE_COURT_NUMBER
+        ) {
+          if (isReservatedCourt && isFavoritedCourt) {
+            imageSrc = "/assets/basketball/fire_off_all_tagged.gif"
+          } else if (isReservatedCourt) {
+            imageSrc = "/assets/basketball/fire_off_reservated.gif"
+          } else if (isFavoritedCourt) {
+            imageSrc = "/assets/basketball/fire_off_favorited.gif"
+          } else {
+            imageSrc = "/assets/basketball/fire_off_400.gif"
+          }
+        }
+
+        if (reservationMaxCount >= FIRE_COURT_NUMBER) {
+          if (isReservatedCourt && isFavoritedCourt) {
+            imageSrc = "/assets/basketball/fire_on_all_tagged.gif"
+          } else if (isReservatedCourt) {
+            imageSrc = "/assets/basketball/fire_on_reservated.gif"
+          } else if (isFavoritedCourt) {
+            imageSrc = "/assets/basketball/fire_on_favorited.gif"
+          } else {
+            imageSrc = "/assets/basketball/fire_on_400.gif"
+          }
+        }
+
+        return (
+          <Map.Marker.CustomMarkerOverlay
+            key={court.id}
+            position={{
+              latitude: court.latitude,
+              longitude: court.longitude,
+            }}
+          >
+            <motion.div
+              css={css`
+                width: 50;
+                height: 50;
+              `}
+              onTap={() => {
+                router.replace({
+                  pathname: "/map",
+                  query: { courtId: court.id },
+                })
+              }}
+            >
+              <Flex
+                as={motion.div}
+                initial={{ scale: 0, y: 40 }}
+                animate={{ scale: 1, y: 0 }}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                style={{
+                  width: 50,
+                  height: 50,
+                  position: "relative",
+                  borderRadius: 25,
+                  cursor: "pointer",
+                }}
+                justify="center"
+              >
+                <Box
+                  style={{
+                    position: "absolute",
+                    bottom: -4,
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    filter: "blur(4px)",
+                    width: 45,
+                    height: 45,
+                    borderRadius: 25,
+                    overflow: "visible",
+                  }}
+                />
+                <img
+                  src={imageSrc}
+                  style={{
+                    position: "absolute",
+                    bottom: -8,
+                    minWidth: 100,
+                    minHeight: 150,
+                    pointerEvents: "none",
+                    userSelect: "none",
+                  }}
+                />
+                <HStack
+                  as={motion.div}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  pos="absolute"
+                  bottom="-34px"
+                  whiteSpace="nowrap"
+                  textAlign="center"
+                  bgColor={selectedCourtId === court.id ? "black" : "#00000095"}
+                  transition="background-color 200ms"
+                  backdropFilter="blur(2px)"
+                  color="white"
+                  borderRadius="8px"
+                  py="4px"
+                  px="8px"
+                  pointerEvents="none"
+                  boxShadow="0 0 16px #00000040"
+                >
+                  <Icon
+                    name="map-pin"
+                    size={12}
+                    color={theme.colors.orange0600}
+                  />
+                  <Text fontSize="12px" fontWeight="bold">
+                    {court.name}
+                  </Text>
+                </HStack>
+              </Flex>
+            </motion.div>
+          </Map.Marker.CustomMarkerOverlay>
+        )
+      })}
+    </>
   )
 }
 
