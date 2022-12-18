@@ -1,6 +1,6 @@
 import type { NextMiddleware } from "next/server"
 import { NextResponse } from "next/server"
-import { COOKIE_TOKEN_EXPIRES, PROXY_PRE_FIX, env } from "~/constants"
+import { PROXY_PRE_FIX, env } from "~/constants"
 import { deleteCookie } from "~/middlewares/cookies"
 import { verify } from "~/middlewares/jwt"
 
@@ -29,10 +29,8 @@ const middleware: NextMiddleware = async (request) => {
 
   // 로그인 리다이렉트
   if (request.nextUrl.pathname.startsWith("/login/redirect")) {
-    const token = request.nextUrl.searchParams.get("token")
-    const isJwtVerified = token
-      ? await verify(token, env.JWT_SECRET_KEY)
-      : false
+    const token = request.nextUrl.searchParams.get("token") ?? ""
+    const isJwtVerified = await verify(token, env.JWT_SECRET_KEY)
 
     const nextUrl = request.nextUrl.clone()
     nextUrl.pathname = isJwtVerified
@@ -48,7 +46,6 @@ const middleware: NextMiddleware = async (request) => {
         sameSite: "strict",
         path: "/",
         secure: env.IS_PRODUCTION_MODE,
-        expires: COOKIE_TOKEN_EXPIRES(),
       })
     }
 

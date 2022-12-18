@@ -36,33 +36,11 @@ const DEFAULT_POSITION = {
   longitude: 126.978,
 }
 
-const Custom = () => {
-  const theme = useTheme()
-  const router = useRouter()
-  const currentUserQuery = useCurrentUserQuery()
-
-  return (
-    <HStack
-      spacing="4px"
-      onClick={() => {
-        router.push(currentUserQuery.isSuccess ? "/courts/create" : "/login")
-      }}
-    >
-      <Text color={theme.colors.gray0500} fontSize="12px">
-        새 농구장을 추가해보세요
-      </Text>
-      <Icon name="plus-circle" />
-    </HStack>
-  )
-}
-
-const Page = () => {
-  return (
-    <Suspense.CSROnly>
-      <Contents />
-    </Suspense.CSROnly>
-  )
-}
+const Page = () => (
+  <Suspense.CSROnly>
+    <Contents />
+  </Suspense.CSROnly>
+)
 
 export default Page
 
@@ -145,7 +123,27 @@ const Contents = () => {
         title: selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?",
         isNotification: false,
         isProfile: false,
-        Custom,
+        Custom: () => {
+          const theme = useTheme()
+          const router = useRouter()
+          const currentUserQuery = useCurrentUserQuery()
+
+          return (
+            <HStack
+              spacing="4px"
+              onClick={() => {
+                router.push(
+                  currentUserQuery.isSuccess ? "/courts/create" : "/login"
+                )
+              }}
+            >
+              <Text color={theme.colors.gray0500} fontSize="12px">
+                새 농구장을 추가해보세요
+              </Text>
+              <Icon name="plus-circle" />
+            </HStack>
+          )
+        },
       }}
       bottom
     >
