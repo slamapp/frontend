@@ -70,18 +70,12 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
             <VStack
               key={date.toISOString()}
               as={motion.div}
-              initial={{ scale: 0.9, x: 40, opacity: 0 }}
-              animate={{
-                scale: 1,
-                x: 0,
-                opacity: 1,
-                transition: { delay: index / 50 },
-              }}
+              initial={{ x: 40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1, transition: { delay: index / 50 } }}
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.1 }}
               cursor="pointer"
-              bgColor={selected ? theme.colors.black : "#ffffff90"}
-              border={`1px solid ${selected ? theme.colors.black : "white"}`}
+              bgColor={theme.colors[selected ? "black" : "white"]}
               transition="background-color border 200ms"
               boxShadow="0 8px 32px -16px #00000040"
               borderRadius="12px"
@@ -109,7 +103,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
                 <Text
                   fontSize="21px"
                   fontWeight="bold"
-                  color={selected ? theme.colors.white : theme.colors.gray0900}
+                  color={theme.colors[selected ? "white" : "gray0900"]}
                 >
                   {date.date()}
                 </Text>
