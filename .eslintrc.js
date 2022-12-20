@@ -14,6 +14,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: [
       "./tsconfig.eslint.json",
+      "./apps/*/tsconfig.json",
       "./packages/*/tsconfig.json",
       "./libs/*/tsconfig.json",
     ],

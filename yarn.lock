@@ -2604,16 +2604,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"admin@workspace:packages/admin":
+"admin@workspace:apps/admin":
   version: 0.0.0-use.local
-  resolution: "admin@workspace:packages/admin"
+  resolution: "admin@workspace:apps/admin"
   dependencies:
     "@types/node": 18.7.18
     "@types/react": 18.0.20
     "@types/react-dom": 18.0.6
     eslint: 8.23.1
     eslint-config-next: 12.3.0
-    next: 12.3.0
+    next: ^13.0.0
     react: 18.2.0
     react-dom: 18.2.0
     typescript: 4.8.3
@@ -5903,7 +5903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:12.3.0, next@npm:^12.3.0":
+"next@npm:^12.3.0":
   version: 12.3.0
   resolution: "next@npm:12.3.0"
   dependencies:
@@ -7976,9 +7976,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web@workspace:packages/web":
+"web@workspace:apps/web":
   version: 0.0.0-use.local
-  resolution: "web@workspace:packages/web"
+  resolution: "web@workspace:apps/web"
   dependencies:
     "@chakra-ui/react": ^2.3.6
     "@chakra-ui/styled-system": ^2.3.4
