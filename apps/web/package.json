@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "next build",
     "dev": "next dev",
     "dev:turbo": "next dev --turbo",
-    "build": "next build",
-    "start": "next start",
     "lint": "next lint",
     "lint:error": "next lint . --quiet",
     "lint:fix": "next lint --fix --ext .ts,.tsx,.js,.jsx .",
+    "start": "next start",
     "type": "tsc --noEmit"
   },
   "dependencies": {

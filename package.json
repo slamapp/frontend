@@ -7,16 +7,15 @@
       "packages/*"
     ]
   },
-  "packageManager": "yarn@3.2.3",
   "scripts": {
     "build": "yarn workspaces foreach -ptiv run build",
-    "dev:web": "yarn workspace web run dev",
     "commit": "cz-customizable",
+    "dev:web": "yarn workspace web run dev",
+    "postinstall": "husky install",
     "lint": "yarn workspaces foreach run lint",
+    "lint-staged": "lint-staged",
     "lint:error": "eslint . --quiet",
     "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
-    "lint-staged": "lint-staged",
-    "postinstall": "husky install",
     "type": "yarn workspaces foreach run type"
   },
   "dependencies": {
@@ -51,5 +50,6 @@
     "next": "^12.3.0",
     "prettier": "^2.7.1",
     "typescript": "^4.8.3"
-  }
+  },
+  "packageManager": "yarn@3.2.3"
 }
