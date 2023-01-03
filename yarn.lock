@@ -2193,24 +2193,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@suspensive/react-query@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@suspensive/react-query@npm:0.7.0"
+"@suspensive/react-query@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "@suspensive/react-query@npm:0.8.2"
+  dependencies:
+    "@suspensive/react": ^0.8.2
   peerDependencies:
-    "@suspensive/react": "workspace:^0.5.17"
     "@tanstack/react-query": "*"
     react: ^16.8 || ^17 || ^18
-  checksum: 6bc1ba84a12afd6cf69eba9172d46a44ed1aa878557ccf76f3ffe273756a644dc2cfe8f7310b91873909e143c1b3746657890b37a85e10f95a6415d3917d1f60
+  checksum: 1cf4ff88401213dcc5e3f4173690397aed463e7005866c681ca86076da00a7a4a5cdf7ddccfabd9e9473d13c342e1fa9b9ac6c92f953be3175ec0d3cb42bbab6
   languageName: node
   linkType: hard
 
-"@suspensive/react@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@suspensive/react@npm:0.7.0"
+"@suspensive/react@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "@suspensive/react@npm:0.8.2"
   peerDependencies:
     react: ^16.8 || ^17 || ^18
     react-dom: "*"
-  checksum: 1190975cda87d7325c2f2371ab965c34a9a62cc8517af53d48ec0271c45e552862786af4354c4ef630d3a514f67a86cb304df1c4e22fa0d1a17e10442580c1ce
+  checksum: a9c055a27c88472c045eef9a64fff3e04c54876f31f76b02bff708884fcd1ea74d6be18a428fc2f15f83a7481cbda0475b4ba0f3bcba7d84a9d77935a3b3cfb6
   languageName: node
   linkType: hard
 
@@ -7987,8 +7988,8 @@ __metadata:
     "@hookform/devtools": ^4.2.2
     "@hookform/resolvers": ^2.9.8
     "@sentry/nextjs": ^7.15.0
-    "@suspensive/react": ^0.7.0
-    "@suspensive/react-query": ^0.7.0
+    "@suspensive/react": ^0.8.2
+    "@suspensive/react-query": ^0.8.2
     "@tanstack/react-query": ^4.13.0
     "@tanstack/react-query-devtools": ^4.13.0
     "@types/feather-icons": ^4.7.0
