@@ -24,11 +24,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
   const theme = useTheme()
   const [selectedDate, setSelectedDate] = useState(
     initialValue ||
-      (() => {
-        const timezone = "Asia/Seoul"
-
-        return dayjs().tz(timezone).hour(0).minute(0).second(0).millisecond(0)
-      })
+      (() => dayjs().tz().hour(0).minute(0).second(0).millisecond(0))
   )
 
   const twoWeekDates = useMemo(

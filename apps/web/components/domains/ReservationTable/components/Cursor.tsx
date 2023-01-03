@@ -13,12 +13,12 @@ type Props = {
 const Cursor = ({ startTime, endTime }: Props) => {
   const { tableCellHeight, dates } = useReservationTable()
 
-  const startDay = dayjs(startTime)
-  const diff = endTime?.diff(startDay, "minute")
+  const diff = endTime?.diff(startTime, "minute")
   const height = diff ? (tableCellHeight * diff) / 30 : tableCellHeight
   const topSensorHeight = tableCellHeight * 6
   const topMargin =
-    (startDay.diff(dayjs(dates[0]), "minute") / 30) * tableCellHeight
+    (startTime.diff(dayjs(dates[0]).tz().startOf("d"), "minute") / 30) *
+    tableCellHeight
 
   return (
     <motion.div

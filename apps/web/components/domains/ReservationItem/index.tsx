@@ -22,11 +22,11 @@ const ReservationItem = ({ reservation }: Props) => {
     >
       <Box>
         <Text fontSize="18px" fontWeight="bold">
-          {dayjs(reservation.startTime).format("YYYY. MM. DD (dd)")}
+          {dayjs(reservation.startTime).tz().format("YYYY. MM. DD (dd)")}
         </Text>
         <Text>
-          {dayjs(reservation.startTime).format("HH:mm")}-
-          {dayjs(reservation.endTime).format("HH:mm")}
+          {dayjs(reservation.startTime).tz().format("HH:mm")}-
+          {dayjs(reservation.endTime).tz().format("HH:mm")}
         </Text>
       </Box>
 

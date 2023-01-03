@@ -7,8 +7,6 @@ import { css, useTheme } from "@emotion/react"
 import { Suspense } from "@suspensive/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
-import timezone from "dayjs/plugin/timezone"
-import utc from "dayjs/plugin/utc"
 import { motion } from "framer-motion"
 import {
   CourtItem,
@@ -26,14 +24,10 @@ import { useLocalStorage } from "~/hooks"
 import { Navigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
 
-dayjs.extend(utc)
-dayjs.extend(timezone)
-
 const PAUSE_COURT_NUMBER = 0
 const FIRE_COURT_NUMBER = 6
 
 // 서울
-const DEFAULT_TIMEZONE = "Asia/Seoul"
 const DEFAULT_POSITION = {
   latitude: 37.5665,
   longitude: 126.978,
@@ -50,7 +44,7 @@ const Page = () => {
   const mapRef = useRef<kakao.maps.Map>()
 
   const [selectedDate, setSelectedDate] = useState(() =>
-    dayjs().tz(DEFAULT_TIMEZONE).hour(0).minute(0).second(0).millisecond(0)
+    dayjs().tz().hour(0).minute(0).second(0).millisecond(0)
   )
 
   return (

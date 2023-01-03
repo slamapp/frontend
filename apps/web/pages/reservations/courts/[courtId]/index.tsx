@@ -6,9 +6,6 @@ import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
 import { Suspense } from "@suspensive/react"
 import type { Dayjs } from "dayjs"
-import dayjs from "dayjs"
-import timezone from "dayjs/plugin/timezone"
-import utc from "dayjs/plugin/utc"
 import { AnimatePresence, motion } from "framer-motion"
 import { ReservationTable } from "~/components/domains"
 import { BottomModal, Button, LayerOver, Toast } from "~/components/uis"
@@ -19,9 +16,6 @@ import {
 import { useScrollContainer } from "~/layouts"
 import { Navigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 type Props = { courtId: string; date: string }
 
@@ -94,6 +88,7 @@ const Contents = ({ courtId, date }: Props) => {
     (cellTime) => {
       let next: typeof reservation = null
       const clickedTime = cellTime.start
+
       const prev = reservation ? { ...reservation } : null
 
       // 1. 현 선택 단계
@@ -192,7 +187,7 @@ const Contents = ({ courtId, date }: Props) => {
               text={
                 reservation
                   ? `${reservation.startTime
-                      .tz("Asia/Seoul")
+                      .tz()
                       .format("YYYY.MM.DD(dd) HH:mm")} 부터`
                   : undefined
               }
@@ -204,7 +199,7 @@ const Contents = ({ courtId, date }: Props) => {
                 text={
                   reservation.endTime
                     ? `${reservation.endTime
-                        .tz("Asia/Seoul")
+                        .tz()
                         .format("YYYY.MM.DD(dd) HH:mm")} 까지`
                     : undefined
                 }
@@ -286,13 +281,13 @@ const Contents = ({ courtId, date }: Props) => {
                             <Text fontSize="sm">
                               {"•시작: "}
                               {`${reservation.startTime
-                                .tz("Asia/Seoul")
+                                .tz()
                                 .format("YYYY.MM.DD(dd) HH:mm")} 부터`}
                             </Text>
                             <Text fontSize="sm">
                               {"•종료: "}
                               {`${reservation.endTime
-                                .tz("Asia/Seoul")
+                                .tz()
                                 .format("YYYY.MM.DD(dd) HH:mm")} 까지`}
                             </Text>
                           </VStack>

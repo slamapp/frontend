@@ -52,7 +52,7 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
   }, [entry?.isIntersecting])
 
   const cellTime = useMemo(() => {
-    const start = dayjs(`${date}T${time}:00+09:00`)
+    const start = dayjs(`${date}T${time}:00+09:00`).tz()
 
     return {
       start,
@@ -84,9 +84,9 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
       <Center flex={5}>
         <Box textAlign="center">
           {isTop && <div>{date}</div>}
-          {cellTime.start.tz("Asia/Seoul").format("HH:mm")}
+          {cellTime.start.tz().format("HH:mm")}
           {" - "}
-          {cellTime.end.tz("Asia/Seoul").format("HH:mm")}
+          {cellTime.end.tz().format("HH:mm")}
           {isBottom && <div>{date}</div>}
         </Box>
       </Center>

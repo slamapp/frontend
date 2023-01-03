@@ -2,6 +2,10 @@ import type { AppProps } from "next/app"
 import Head from "next/head"
 import { ChakraProvider } from "@chakra-ui/react"
 import { ThemeProvider } from "@emotion/react"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { RecoilRoot } from "recoil"
 import { OpenGraph } from "~/components/common"
 import { env } from "~/constants"
@@ -10,6 +14,11 @@ import { QueryClientProvider } from "~/features"
 import { useSentry } from "~/hooks/domain"
 import { Layout } from "~/layouts"
 import { GlobalCSS, chakraTheme, emotionTheme } from "~/styles"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(relativeTime)
+dayjs.tz.setDefault("Asia/Seoul")
 
 const App = ({ Component, pageProps }: AppProps) => {
   useSentry({

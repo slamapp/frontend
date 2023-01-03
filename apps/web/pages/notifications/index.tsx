@@ -6,9 +6,6 @@ import { css, useTheme } from "@emotion/react"
 import { Suspense } from "@suspensive/react"
 import { useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-import timezone from "dayjs/plugin/timezone"
-import utc from "dayjs/plugin/utc"
 import { motion } from "framer-motion"
 import { api } from "~/api"
 import { NoItemMessage, ProfileAvatar } from "~/components/domains"
@@ -18,10 +15,6 @@ import { useGetInfiniteNotificationsQuery } from "~/features/notifications"
 import { useIsMounted } from "~/hooks"
 import { Navigation } from "~/layouts/Layout/navigations"
 import type { APINotification } from "~/types/domains/objects"
-
-dayjs.extend(relativeTime)
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 const Page: NextPage = () => (
   <Navigation
@@ -115,9 +108,7 @@ const NotificationItem = ({
 }: {
   notification: APINotification
 }) => {
-  const fromCreatedAt = dayjs(notification.createdAt, { utc: true })
-    .locale("ko")
-    .from(dayjs().tz())
+  const fromCreatedAt = dayjs(notification.createdAt).fromNow()
   const theme = useTheme()
 
   return (

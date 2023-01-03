@@ -94,7 +94,8 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         </VStack>
         <Center>
           <Text fontSize="8px">
-            Builded at {dayjs(buildTime).format("YY.MM.DD(dd) HH:mm:ss")}
+            Builded at KST{" "}
+            {dayjs(buildTime).tz().format("YY.MM.DD(dd) HH:mm:ss")}
           </Text>
         </Center>
       </Flex>
