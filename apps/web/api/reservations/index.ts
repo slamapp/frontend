@@ -23,34 +23,31 @@ export default {
     courtId,
     startTime,
     endTime,
-  }: {
+  }: Pick<APIReservation, "startTime" | "endTime"> & {
     courtId: APICourt["id"]
-    startTime: APIReservation["startTime"]
-    endTime: APIReservation["endTime"]
   }) =>
     http.get<{
-      participants: {
+      participants: (Pick<APIUser, "nickname" | "profileImage"> & {
         userId: APIUser["id"]
-        nickname: APIUser["nickname"]
-        profileImage: APIUser["profileImage"]
         isFollowed: boolean
-      }[]
+      })[]
     }>(`/reservations/${courtId}/${startTime}/${endTime}`),
 
-  createReservation: (data: {
-    courtId: APIReservation["court"]["id"]
-    startTime: APIReservation["startTime"]
-    endTime: APIReservation["endTime"]
-    hasBall: boolean
-  }) =>
-    http.post<{
-      reservationId: APIReservation["id"]
-      courtId: APIReservation["court"]["id"]
-      startTime: APIReservation["startTime"]
-      endTime: APIReservation["endTime"]
-      hasBall: APIReservation["hasBall"]
-      userId: APIReservation["creator"]["id"]
-      createdAt: APIReservation["createdAt"]
-      updatedAt: APIReservation["updatedAt"]
-    }>("/reservations", { data }),
+  createReservation: (
+    courtId: APICourt["id"],
+    data: Pick<APIReservation, "startTime" | "endTime" | "hasBall">
+  ) =>
+    http.post<
+      Pick<
+        APIReservation,
+        "startTime" | "endTime" | "hasBall" | "createdAt" | "updatedAt"
+      > & {
+        reservationId: APIReservation["id"]
+        courtId: APIReservation["court"]["id"]
+        userId: APIReservation["creator"]["id"]
+      }
+    >("/reservations", { data: { courtId, ...data } }),
+
+  deleteReservation: (reservationId: APIReservation["id"]) =>
+    http.delete(`/reservations/${reservationId}`),
 } as const

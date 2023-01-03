@@ -5,10 +5,12 @@ import { useRouter } from "next/router"
 import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
 import { Suspense } from "@suspensive/react"
+import { useQueryClient } from "@tanstack/react-query"
 import type { Dayjs } from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
 import { ReservationTable } from "~/components/domains"
 import { BottomModal, Button, LayerOver, Toast } from "~/components/uis"
+import { key } from "~/features"
 import {
   useCreateReservationMutation,
   useGetReservationsInfiniteQuery,
@@ -49,8 +51,9 @@ const Contents = ({ courtId, date }: Props) => {
   const theme = useTheme()
   const router = useRouter()
   const { scrollContainerWidth } = useScrollContainer()
+  const queryClient = useQueryClient()
 
-  const createReservationMutation = useCreateReservationMutation({ courtId })
+  const createReservationMutation = useCreateReservationMutation(courtId)
   const getReservationsInfiniteQuery = useGetReservationsInfiniteQuery({
     courtId,
     initialDate: date,
@@ -72,8 +75,13 @@ const Contents = ({ courtId, date }: Props) => {
           hasBall,
         },
         {
-          onSuccess: () => {
-            router.replace("/reservations")
+          onSuccess: async () => {
+            await queryClient.resetQueries(key.reservations.upcoming())
+            await router.replace("/reservations")
+            Toast.show("성공적으로 예약했어요", {
+              status: "success",
+              marginBottom: "bottomNavigation",
+            })
           },
         }
       )
@@ -218,18 +226,18 @@ const Contents = ({ courtId, date }: Props) => {
           </VStack>
           {reservation && (
             <LayerOver
-              trigger={({ isOpen, open }) =>
+              trigger={(layer) =>
                 reservation.endTime && (
                   <Button
                     initial={{ opacity: 0, y: 40 }}
                     animate={{
                       opacity: 1,
                       y: 0,
-                      scale: isOpen ? 1 : [1, 1, 1, 1, 1.05, 1, 1.05, 1],
+                      scale: layer.isOpen ? 1 : [1, 1, 1, 1, 1.05, 1, 1.05, 1],
                     }}
                     fullWidth
                     size="lg"
-                    onClick={open}
+                    onClick={layer.open}
                     disabled={!reservation.endTime}
                   >
                     예약하기

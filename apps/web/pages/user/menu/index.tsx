@@ -30,14 +30,14 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <Flex flexDir="column" h="100%">
         <VStack align="stretch" flex={1}>
           <LayerOver
-            trigger={({ open }) => (
-              <MenuItem onClick={open}>
+            trigger={(layer) => (
+              <MenuItem onClick={layer.open}>
                 <Icon name="log-out" /> 로그아웃
               </MenuItem>
             )}
-            layer={({ close, isOpen }) => (
+            layer={(layer) => (
               <AnimatePresence mode="wait">
-                {isOpen && (
+                {layer.isOpen && (
                   <Center
                     as={motion.div}
                     initial={{ opacity: 0 }}
@@ -51,7 +51,7 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     backdropFilter="blur(3px)"
                   >
                     <Box
-                      onClick={close}
+                      onClick={layer.close}
                       pos="fixed"
                       top={0}
                       bottom={0}
@@ -71,14 +71,14 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                       <VStack align="stretch" spacing="24px">
                         <Text>정말 로그아웃할까요? 🤔</Text>
                         <Flex justify="space-between">
-                          <Button scheme="white" onClick={() => close()}>
+                          <Button scheme="white" onClick={layer.close}>
                             닫기
                           </Button>
                           <Button
                             onClick={async () => {
                               await router.replace("/logout")
                               await queryClient.resetQueries()
-                              close()
+                              layer.close()
                             }}
                           >
                             로그아웃하기
