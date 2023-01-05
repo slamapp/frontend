@@ -115,6 +115,8 @@ const ReservationItem = ({ reservation }: Props) => {
                             닫기
                           </Button>
                           <Button
+                            disabled={deleteReservationMutation.isLoading}
+                            loading={deleteReservationMutation.isLoading}
                             onClick={() => {
                               deleteReservationMutation.mutate(reservation.id, {
                                 onSuccess: async () => {
