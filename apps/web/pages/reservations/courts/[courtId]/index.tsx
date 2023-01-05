@@ -303,6 +303,8 @@ const Contents = ({ courtId, date }: Props) => {
                             <Button
                               fullWidth
                               size="lg"
+                              disabled={createReservationMutation.isLoading}
+                              loading={createReservationMutation.isLoading}
                               onClick={() =>
                                 createReservation({ hasBall: true })
                               }
@@ -312,6 +314,8 @@ const Contents = ({ courtId, date }: Props) => {
                             <Button
                               fullWidth
                               size="lg"
+                              disabled={createReservationMutation.isLoading}
+                              loading={createReservationMutation.isLoading}
                               onClick={() =>
                                 createReservation({ hasBall: false })
                               }
