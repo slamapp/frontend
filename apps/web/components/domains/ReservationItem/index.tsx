@@ -53,7 +53,7 @@ const ReservationItem = ({ reservation }: Props) => {
           }
         />
         <CourtItem.Share court={reservation.court} />
-        <CourtItem.ChatLink chatroom={{ id: "1" }} />
+        {/* <CourtItem.ChatLink chatroom={{ id: "1" }} /> */}
         <CourtItem.Map court={reservation.court} type="findRoad" />
         {dayjs(reservation.startTime).diff(dayjs()) > 0 && (
           <LayerOver

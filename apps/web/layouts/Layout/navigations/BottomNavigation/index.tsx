@@ -16,11 +16,11 @@ const navIconPropsList: ComponentProps<typeof NavIcon>[] = [
     href: "/map",
     iconName: "map",
   },
-  {
-    label: "채팅",
-    href: "/chat/list",
-    iconName: "message-circle",
-  },
+  // {
+  //   label: "채팅",
+  //   href: "/chat/list",
+  //   iconName: "message-circle",
+  // },
   {
     label: "예약",
     href: "/reservations",

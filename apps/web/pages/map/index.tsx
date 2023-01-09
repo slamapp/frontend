@@ -397,7 +397,7 @@ const CourtData = ({
           />
         )}
         <CourtItem.Share court={courtQuery.data} />
-        <CourtItem.ChatLink chatroom={{ id: "1" }} />
+        {/* <CourtItem.ChatLink chatroom={{ id: "1" }} /> */}
         <CourtItem.Map court={courtQuery.data} />
         <Box flex={1}>
           <Link
