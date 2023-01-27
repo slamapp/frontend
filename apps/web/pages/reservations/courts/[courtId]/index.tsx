@@ -59,6 +59,8 @@ const Contents = ({ courtId, date }: Props) => {
     initialDate: date,
   })
 
+  console.log(getReservationsInfiniteQuery.data.pages)
+
   const [reservation, setReservation] = useState<{
     courtId: APICourt["id"]
     startTime: Dayjs

@@ -50,13 +50,7 @@ const Top = () => {
     )
   }
 
-  return (
-    <MoreTableMaker
-      ref={sensorRef}
-      tableCellHeight={tableCellHeight}
-      colorIntersecting={!!sensorEntry?.isIntersecting}
-    />
-  )
+  return <MoreTableMaker ref={sensorRef} height={tableCellHeight} />
 }
 
 const NoAccessScrollMaker = () => {
@@ -112,13 +106,7 @@ const Bottom = () => {
     )
   }
 
-  return (
-    <MoreTableMaker
-      ref={sensorRef}
-      tableCellHeight={tableCellHeight}
-      colorIntersecting={!!sensorEntry?.isIntersecting}
-    />
-  )
+  return <MoreTableMaker ref={sensorRef} height={tableCellHeight} />
 }
 
 const MoreCellSensor = {
@@ -129,12 +117,10 @@ const MoreCellSensor = {
 export default MoreCellSensor
 
 const MoreTableMaker = styled.div<{
-  tableCellHeight: number
-  colorIntersecting: boolean
+  height: number
 }>`
-  background-color: ${({ colorIntersecting }) =>
-    colorIntersecting ? "blue" : "red"};
-  height: ${({ tableCellHeight }) => tableCellHeight * SENSOR_MULTIPLY}px;
+  background-color: ${({ theme }) => theme.colors.gray0300};
+  height: ${({ height }) => height * SENSOR_MULTIPLY}px;
 `
 
 const NoAccess = styled.div<{ height: number }>`
