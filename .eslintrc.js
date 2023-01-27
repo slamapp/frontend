@@ -40,6 +40,7 @@ module.exports = {
     "no-console": "off",
     "import/no-import-module-exports": "off",
     "newline-before-return": "error",
+    "prefer-arrow-callback": "off",
 
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/consistent-type-imports": "error",

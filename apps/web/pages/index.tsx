@@ -3,7 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
-import { Suspense } from "@suspensive/react"
+import { withSuspense } from "@suspensive/react"
 import type { Variants } from "framer-motion"
 import { motion } from "framer-motion"
 import { CourtItem, NoItemMessage } from "~/components/domains"
@@ -11,73 +11,24 @@ import { Button, Icon, Skeleton } from "~/components/uis"
 import { useGetFavoritesQuery } from "~/features/favorites"
 import { Navigation } from "~/layouts/Layout/navigations"
 
-const SkeletonName = () => {
-  const [width, setWidth] = useState("0%")
-
-  useEffect(() => {
-    setWidth(`${Math.random() * 20 + 40}%`)
-  }, [])
-
-  return <Skeleton.Box width={width} height={28} />
-}
-
-const getFavoriteItemVariants = (index: number): Variants => ({
-  initial: { y: 40, opacity: 0 },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: { delay: index / 50 },
-    backgroundColor: "#ffffff90",
-  },
-  whileTap: { backgroundColor: "white" },
-})
-
-const Page = () => (
-  <Navigation
-    top={{
-      title: "즐겨찾기",
-      isNotification: true,
-      isProfile: true,
-    }}
-    bottom
-  >
-    <Suspense.CSROnly
-      fallback={
-        <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
-          <VStack spacing="18px" align="stretch">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <Box key={index} p="12px">
-                <VStack align="stretch" spacing="12px">
-                  <HStack align="stretch">
-                    <Skeleton.Box width={28} height={28} />
-                    <SkeletonName />
-                  </HStack>
-                  <HStack spacing="8px">
-                    <Skeleton.Box width={42} height={42} />
-                    <Skeleton.Box width={42} height={42} />
-                    <Skeleton.Box width={42} height={42} />
-                    <Skeleton.Box
-                      height={42}
-                      css={css`
-                        flex: 1;
-                      `}
-                    />
-                  </HStack>
-                </VStack>
-              </Box>
-            ))}
-          </VStack>
-        </VStack>
-      }
+export default function Page() {
+  return (
+    <Navigation
+      top={{
+        title: "즐겨찾기",
+        isNotification: true,
+        isProfile: true,
+      }}
+      bottom
     >
       <Contents />
-    </Suspense.CSROnly>
-  </Navigation>
-)
+    </Navigation>
+  )
+}
 
-export default Page
+const Contents = withSuspense.CSROnly(Suspended, { fallback: <Fallback /> })
 
-const Contents = () => {
+function Suspended() {
   const getFavoritesQuery = useGetFavoritesQuery()
   const [favorites] = useState(getFavoritesQuery.data.contents)
 
@@ -165,4 +116,57 @@ const Contents = () => {
       </VStack>
     </Box>
   )
+}
+
+function Fallback() {
+  function SkeletonName() {
+    const [width, setWidth] = useState("0%")
+
+    useEffect(() => {
+      setWidth(`${Math.random() * 20 + 40}%`)
+    }, [])
+
+    return <Skeleton.Box width={width} height={28} />
+  }
+
+  return (
+    <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
+      <VStack spacing="18px" align="stretch">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Box key={index} p="12px">
+            <VStack align="stretch" spacing="12px">
+              <HStack align="stretch">
+                <Skeleton.Box width={28} height={28} />
+                <SkeletonName />
+              </HStack>
+              <HStack spacing="8px">
+                <Skeleton.Box width={42} height={42} />
+                <Skeleton.Box width={42} height={42} />
+                <Skeleton.Box width={42} height={42} />
+                <Skeleton.Box
+                  height={42}
+                  css={css`
+                    flex: 1;
+                  `}
+                />
+              </HStack>
+            </VStack>
+          </Box>
+        ))}
+      </VStack>
+    </VStack>
+  )
+}
+
+function getFavoriteItemVariants(index: number): Variants {
+  return {
+    initial: { y: 40, opacity: 0 },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: { delay: index / 50 },
+      backgroundColor: "#ffffff90",
+    },
+    whileTap: { backgroundColor: "white" },
+  }
 }
