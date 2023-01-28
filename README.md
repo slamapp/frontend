@@ -1,7 +1,11 @@
-## 📼 슬램 발표 영상
+# slam/frontend
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+## 📼 슬램 발표 영상
+
 [![Slam 슬램 발표](http://img.youtube.com/vi/V5akCEYSyGQ/0.jpg)](https://youtu.be/V5akCEYSyGQ)
 
 <div align="center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
@@ -26,7 +30,6 @@
 ## 🏀 프로젝트 소개
 
 *Slam*은 길거리 농구인들이 쉽고 빠르게 게임할 수 있도록 주변 농구장의 인원 현황을 제공하는 커뮤니티 웹앱 서비스입니다.
-
 
 <br>
 
@@ -68,49 +71,44 @@
 | <p align="center"><img src="https://user-images.githubusercontent.com/84858773/147078821-289bad97-815b-4657-ab3d-ba6abdec289f.gif" width="300px" /></p> | <p align="center"><img src="https://user-images.githubusercontent.com/84858773/147082497-922b3e48-4180-4b4b-bac4-a913a0853b8d.jpg" width="300px" /></p> |
 | <li>사용자가 추가한 새 농구장 목록 관리</li><li>목록 조회(무한 스크롤)</li><li>새 농구장 승인 및 거절</li>                                              | <li>알림 목록 조회</li> <li>상단 네비게이션 뱃지로 갯수 확인</li>                                                                                       |
 
-
 <br>
 
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/tooo1"><img src="https://avatars.githubusercontent.com/u/77133565?v=4?s=100" width="100px;" alt="퉁이리"/><br /><sub><b>퉁이리</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3Atooooo1" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://chanhyuk.com"><img src="https://avatars.githubusercontent.com/u/69495129?v=4?s=100" width="100px;" alt="박찬혁"/><br /><sub><b>박찬혁</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3AChanhyukPark-Tech" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://bit.ly/jonghyeon"><img src="https://avatars.githubusercontent.com/u/61593290?v=4?s=80" width="80px;" alt="Jonghyeon Ko"/><br /><sub><b>Jonghyeon Ko</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3Amanudeli" title="Bug reports">🐛</a> <a href="https://github.com/slamapp/frontend/commits?author=manudeli" title="Code">💻</a> <a href="#design-manudeli" title="Design">🎨</a> <a href="#ideas-manudeli" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-manudeli" title="Maintenance">🚧</a> <a href="https://github.com/slamapp/frontend/pulls?q=is%3Apr+reviewed-by%3Amanudeli" title="Reviewed Pull Requests">👀</a> <a href="#video-manudeli" title="Videos">📹</a> <a href="#infra-manudeli" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/slamapp/frontend/commits?author=manudeli" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/grighth12"><img src="https://avatars.githubusercontent.com/u/68159627?v=4?s=80" width="80px;" alt="grighth12"/><br /><sub><b>grighth12</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3Agrighth12" title="Bug reports">🐛</a> <a href="https://github.com/slamapp/frontend/commits?author=grighth12" title="Code">💻</a> <a href="https://github.com/slamapp/frontend/commits?author=grighth12" title="Documentation">📖</a> <a href="#design-grighth12" title="Design">🎨</a> <a href="#ideas-grighth12" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/frontend/pulls?q=is%3Apr+reviewed-by%3Agrighth12" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/slamapp/frontend/commits?author=grighth12" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/limkhl"><img src="https://avatars.githubusercontent.com/u/84858773?v=4?s=80" width="80px;" alt="limkhl"/><br /><sub><b>limkhl</b></sub></a><br /><a href="https://github.com/slamapp/frontend/commits?author=limkhl" title="Code">💻</a> <a href="https://github.com/slamapp/frontend/commits?author=limkhl" title="Documentation">📖</a> <a href="#design-limkhl" title="Design">🎨</a> <a href="#ideas-limkhl" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/frontend/pulls?q=is%3Apr+reviewed-by%3Alimkhl" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Parkserim"><img src="https://avatars.githubusercontent.com/u/33405125?v=4?s=80" width="80px;" alt="Parkserim"/><br /><sub><b>Parkserim</b></sub></a><br /><a href="https://github.com/slamapp/frontend/commits?author=Parkserim" title="Code">💻</a> <a href="https://github.com/slamapp/frontend/commits?author=Parkserim" title="Documentation">📖</a> <a href="#design-Parkserim" title="Design">🎨</a> <a href="#ideas-Parkserim" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/frontend/pulls?q=is%3Apr+reviewed-by%3AParkserim" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/locodingve"><img src="https://avatars.githubusercontent.com/u/88185304?v=4?s=80" width="80px;" alt="yun"/><br /><sub><b>yun</b></sub></a><br /><a href="https://github.com/slamapp/frontend/commits?author=locodingve" title="Code">💻</a> <a href="#maintenance-locodingve" title="Maintenance">🚧</a> <a href="#infra-locodingve" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/KwonYeKyeong"><img src="https://avatars.githubusercontent.com/u/65434196?v=4?s=80" width="80px;" alt="KwonYeKyeong"/><br /><sub><b>KwonYeKyeong</b></sub></a><br /><a href="https://github.com/slamapp/frontend/commits?author=KwonYeKyeong" title="Code">💻</a> <a href="#maintenance-KwonYeKyeong" title="Maintenance">🚧</a> <a href="#infra-KwonYeKyeong" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://velog.io/@sds1vrk"><img src="https://avatars.githubusercontent.com/u/51287886?v=4?s=80" width="80px;" alt="SEO DONGSUNG"/><br /><sub><b>SEO DONGSUNG</b></sub></a><br /><a href="https://github.com/slamapp/frontend/commits?author=sds1vrk" title="Code">💻</a> <a href="#infra-sds1vrk" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/tooo1"><img src="https://avatars.githubusercontent.com/u/77133565?v=4?s=80" width="80px;" alt="퉁이리"/><br /><sub><b>퉁이리</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3Atooooo1" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://chanhyuk.com"><img src="https://avatars.githubusercontent.com/u/69495129?v=4?s=80" width="80px;" alt="박찬혁"/><br /><sub><b>박찬혁</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3AChanhyukPark-Tech" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
+  <tfoot>
+    <tr>
+      <td align="center" size="13px" colspan="7">
+        <img src="https://raw.githubusercontent.com/all-contributors/all-contributors-cli/1b8533af435da9854653492b1327a23a4dbd0a10/assets/logo-small.svg">
+          <a href="https://all-contributors.js.org/docs/en/bot/usage">Add your contributions</a>
+        </img>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="http://bit.ly/jonghyeon"><img src="https://avatars.githubusercontent.com/u/61593290?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jonghyeon Ko</b></sub></a><br /><a href="https://github.com/slamapp/client/issues?q=author%3Amanudeli" title="Bug reports">🐛</a> <a href="https://github.com/slamapp/client/commits?author=manudeli" title="Code">💻</a> <a href="#design-manudeli" title="Design">🎨</a> <a href="#ideas-manudeli" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-manudeli" title="Maintenance">🚧</a> <a href="https://github.com/slamapp/client/pulls?q=is%3Apr+reviewed-by%3Amanudeli" title="Reviewed Pull Requests">👀</a> <a href="#video-manudeli" title="Videos">📹</a> <a href="#infra-manudeli" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/slamapp/client/commits?author=manudeli" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/grighth12"><img src="https://avatars.githubusercontent.com/u/68159627?v=4?s=100" width="100px;" alt=""/><br /><sub><b>grighth12</b></sub></a><br /><a href="https://github.com/slamapp/client/issues?q=author%3Agrighth12" title="Bug reports">🐛</a> <a href="https://github.com/slamapp/client/commits?author=grighth12" title="Code">💻</a> <a href="https://github.com/slamapp/client/commits?author=grighth12" title="Documentation">📖</a> <a href="#design-grighth12" title="Design">🎨</a> <a href="#ideas-grighth12" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/client/pulls?q=is%3Apr+reviewed-by%3Agrighth12" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/slamapp/client/commits?author=grighth12" title="Tests">⚠️</a></td>
-    <td align="center"><a href="https://github.com/limkhl"><img src="https://avatars.githubusercontent.com/u/84858773?v=4?s=100" width="100px;" alt=""/><br /><sub><b>limkhl</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=limkhl" title="Code">💻</a> <a href="https://github.com/slamapp/client/commits?author=limkhl" title="Documentation">📖</a> <a href="#design-limkhl" title="Design">🎨</a> <a href="#ideas-limkhl" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/client/pulls?q=is%3Apr+reviewed-by%3Alimkhl" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/Parkserim"><img src="https://avatars.githubusercontent.com/u/33405125?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Parkserim</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=Parkserim" title="Code">💻</a> <a href="https://github.com/slamapp/client/commits?author=Parkserim" title="Documentation">📖</a> <a href="#design-Parkserim" title="Design">🎨</a> <a href="#ideas-Parkserim" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/slamapp/client/pulls?q=is%3Apr+reviewed-by%3AParkserim" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/locodingve"><img src="https://avatars.githubusercontent.com/u/88185304?v=4?s=100" width="100px;" alt=""/><br /><sub><b>yun</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=locodingve" title="Code">💻</a> <a href="#maintenance-locodingve" title="Maintenance">🚧</a> <a href="#infra-locodingve" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://github.com/KwonYeKyeong"><img src="https://avatars.githubusercontent.com/u/65434196?v=4?s=100" width="100px;" alt=""/><br /><sub><b>KwonYeKyeong</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=KwonYeKyeong" title="Code">💻</a> <a href="#maintenance-KwonYeKyeong" title="Maintenance">🚧</a> <a href="#infra-KwonYeKyeong" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://velog.io/@sds1vrk"><img src="https://avatars.githubusercontent.com/u/51287886?v=4?s=100" width="100px;" alt=""/><br /><sub><b>SEO DONGSUNG</b></sub></a><br /><a href="https://github.com/slamapp/client/commits?author=sds1vrk" title="Code">💻</a> <a href="#infra-sds1vrk" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 

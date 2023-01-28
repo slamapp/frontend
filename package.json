@@ -16,7 +16,9 @@
     "lint-staged": "lint-staged",
     "lint:error": "eslint . --quiet",
     "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
-    "type": "yarn workspaces foreach run type"
+    "type": "yarn workspaces foreach run type",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.3.6",
@@ -37,6 +39,7 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
+    "all-contributors-cli": "^6.24.0",
     "cz-customizable": "^7.0.0",
     "eslint": "^8.23.1",
     "eslint-config-airbnb-base": "^15.0.0",
