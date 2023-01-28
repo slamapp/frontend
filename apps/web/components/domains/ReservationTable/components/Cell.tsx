@@ -6,6 +6,7 @@ import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { motion } from "framer-motion"
 import { useIntersectionObserver } from "~/hooks"
+import { useScrollContainer } from "~/layouts"
 import { useSetNavigation } from "~/layouts/Layout/navigations"
 import { useReservationTable } from "../context"
 
@@ -16,9 +17,11 @@ interface Props {
 }
 
 const Cell = ({ timeNumber, date, onClick }: Props) => {
+  const scrollContainer = useScrollContainer()
   const theme = useTheme()
   const setNavigation = useSetNavigation()
-  const { tableCellHeight } = useReservationTable()
+  const { tableCellHeight, isNeedToScrollUnderDisabledCell } =
+    useReservationTable()
   const router = useRouter()
 
   const ref = useRef<HTMLDivElement>(null)
@@ -60,9 +63,24 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
     }
   }, [date, time])
 
-  const isDisabled = cellTime.start.isBefore(dayjs())
+  const today = dayjs()
+  const isDisabled = cellTime.start.isBefore(today)
+  const diff = cellTime.start.diff(today, "m")
+  const isNeedToScrollToThisCell = diff > -15 && diff < 15
 
   const handleClick = useCallback(() => onClick(cellTime), [cellTime, onClick])
+
+  useEffect(() => {
+    // INTENTION: scroll to area under disabled cell to improve UX of user reservation flow
+    if (
+      ref.current &&
+      isNeedToScrollUnderDisabledCell &&
+      isNeedToScrollToThisCell
+    ) {
+      const rect = ref.current.getBoundingClientRect()
+      scrollContainer.scrollTo(rect.bottom + tableCellHeight * 3)
+    }
+  }, [])
 
   return (
     <Flex

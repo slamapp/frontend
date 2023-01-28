@@ -3,6 +3,7 @@ import { createContext, useContext } from "react"
 import type { APICourt } from "~/types/domains/objects/court"
 
 export interface ContextProps {
+  isNeedToScrollUnderDisabledCell: boolean
   tableCellHeight: number
   setDates: Dispatch<SetStateAction<string[]>>
   dates: string[]

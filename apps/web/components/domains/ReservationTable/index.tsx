@@ -34,6 +34,9 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
     Min: dayjsToday,
     Max: dayjs(dayjsToday.clone()).add(13, "day"),
   }
+  const [isNeedToScrollUnderDisabledCell] = useState(
+    dayjs(`${date}`).tz("Asia/Seoul").diff(dayjsToday, "m") < 0
+  )
 
   const [dates, setDates] = useState([
     dayjsDate.Current.format(DATE_QUERY_STRING_FORMAT),
@@ -111,6 +114,7 @@ const ReservationTable = ({ courtId, date, children }: Props) => {
   return (
     <Context.Provider
       value={{
+        isNeedToScrollUnderDisabledCell,
         tableCellHeight,
         dates,
         setDates,

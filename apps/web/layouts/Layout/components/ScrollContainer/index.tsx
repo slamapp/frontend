@@ -3,6 +3,7 @@ import { createContext, useContext, useRef } from "react"
 import { css, useTheme } from "@emotion/react"
 
 type Value = {
+  scrollTo: (top: number) => void
   scrollToTop: () => void
   scrollContainerRef: RefObject<HTMLDivElement>
   scrollContainerHeight: number
@@ -22,9 +23,9 @@ const ScrollContainer = ({ children }: Props) => {
 
   const theme = useTheme()
 
-  const scrollToTop = () => {
-    ref.current?.scrollTo({ top: 0, behavior: "smooth" })
-  }
+  const scrollTo = (top: number) =>
+    ref.current?.scrollTo({ top, behavior: "smooth" })
+  const scrollToTop = () => scrollTo(0)
 
   const scrollContainerHeight = ref.current?.getClientRects()[0].height ?? 0
   const scrollContainerWidth = ref.current?.getClientRects()[0].width ?? 0
@@ -32,8 +33,9 @@ const ScrollContainer = ({ children }: Props) => {
   return (
     <Context.Provider
       value={{
-        scrollContainerRef: ref,
+        scrollTo,
         scrollToTop,
+        scrollContainerRef: ref,
         scrollContainerHeight,
         scrollContainerWidth,
       }}

@@ -4,7 +4,7 @@ import type { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
 import { useTheme } from "@emotion/react"
-import { Suspense } from "@suspensive/react"
+import { withSuspense } from "@suspensive/react"
 import { useQueryClient } from "@tanstack/react-query"
 import type { Dayjs } from "dayjs"
 import { AnimatePresence, motion } from "framer-motion"
@@ -20,24 +20,6 @@ import { Navigation } from "~/layouts/Layout/navigations"
 import type { APICourt } from "~/types/domains/objects"
 
 type Props = { courtId: string; date: string }
-
-const Page: NextPage<Props> = ({ courtId, date }) => {
-  return (
-    <Navigation
-      top={{
-        isBack: true,
-        title: "",
-      }}
-    >
-      <Suspense.CSROnly>
-        <Contents courtId={courtId} date={date} />
-      </Suspense.CSROnly>
-    </Navigation>
-  )
-}
-
-export default Page
-
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   query,
 }) => ({
@@ -46,8 +28,20 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     courtId: query.courtId as string,
   },
 })
+const Page: NextPage<Props> = (props) => (
+  <Navigation
+    top={{
+      isBack: true,
+      title: props.date,
+    }}
+  >
+    <Contents {...props} />
+  </Navigation>
+)
+export default Page
 
-const Contents = ({ courtId, date }: Props) => {
+const Contents = withSuspense.CSROnly(Suspended, { fallback: undefined })
+function Suspended({ courtId, date }: Props) {
   const theme = useTheme()
   const router = useRouter()
   const { scrollContainerWidth } = useScrollContainer()
@@ -58,8 +52,6 @@ const Contents = ({ courtId, date }: Props) => {
     courtId,
     initialDate: date,
   })
-
-  console.log(getReservationsInfiniteQuery.data.pages)
 
   const [reservation, setReservation] = useState<{
     courtId: APICourt["id"]
