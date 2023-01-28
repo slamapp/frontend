@@ -92,7 +92,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://velog.io/@sds1vrk"><img src="https://avatars.githubusercontent.com/u/51287886?v=4?s=80" width="80px;" alt="SEO DONGSUNG"/><br /><sub><b>SEO DONGSUNG</b></sub></a><br /><a href="https://github.com/slamapp/frontend/commits?author=sds1vrk" title="Code">💻</a> <a href="#infra-sds1vrk" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/tooo1"><img src="https://avatars.githubusercontent.com/u/77133565?v=4?s=80" width="80px;" alt="퉁이리"/><br /><sub><b>퉁이리</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3Atooooo1" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/tooo1"><img src="https://avatars.githubusercontent.com/u/77133565?v=4?s=80" width="80px;" alt="퉁이리"/><br /><sub><b>퉁이리</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3Atooooo1" title="Bug reports">🐛</a> <a href="#example-tooooo1" title="Examples">💡</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://chanhyuk.com"><img src="https://avatars.githubusercontent.com/u/69495129?v=4?s=80" width="80px;" alt="박찬혁"/><br /><sub><b>박찬혁</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3AChanhyukPark-Tech" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
