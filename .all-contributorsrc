@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "tooooo1",
+      "name": "퉁이리",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77133565?v=4",
+      "profile": "https://www.linkedin.com/in/tooo1",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "frontend",
+  "projectOwner": "slamapp"
+}
