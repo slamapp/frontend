@@ -1,6 +1,6 @@
 ## 📼 슬램 발표 영상
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Slam 슬램 발표](http://img.youtube.com/vi/V5akCEYSyGQ/0.jpg)](https://youtu.be/V5akCEYSyGQ)
 
@@ -81,6 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/tooo1"><img src="https://avatars.githubusercontent.com/u/77133565?v=4?s=100" width="100px;" alt="퉁이리"/><br /><sub><b>퉁이리</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3Atooooo1" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://chanhyuk.com"><img src="https://avatars.githubusercontent.com/u/69495129?v=4?s=100" width="100px;" alt="박찬혁"/><br /><sub><b>박찬혁</b></sub></a><br /><a href="https://github.com/slamapp/frontend/issues?q=author%3AChanhyukPark-Tech" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
