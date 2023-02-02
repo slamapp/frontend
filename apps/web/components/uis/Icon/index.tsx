@@ -28,8 +28,8 @@ const Icon = ({
     <i
       css={css`
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         width: ${sizeNumber}px;
         height: ${sizeNumber}px;
 

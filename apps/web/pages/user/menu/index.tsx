@@ -107,12 +107,12 @@ export default Page
 
 const MenuItem = styled.div`
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
   padding: 12px 16px;
-  transition: background 200ms;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray0050};
   cursor: pointer;
+  transition: background 200ms;
 
   &:hover {
     background: ${({ theme }) => theme.colors.gray0100};

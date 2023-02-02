@@ -98,10 +98,10 @@ const CourtItem = {
         <Text
           color={theme.colors.gray0700}
           css={css`
+            display: box;
             overflow: hidden;
             text-overflow: ellipsis;
             word-wrap: break-word;
-            display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
           `}

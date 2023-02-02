@@ -35,20 +35,20 @@ const TopNavigation = ({ isShrink }: Props) => {
       {!navigation.isLoading && (
         <motion.nav
           css={css`
-            z-index: 1000;
             position: sticky;
             top: 0;
+            z-index: 1000;
 
             &::before {
-              content: "";
               position: absolute;
               top: 0;
-              left: 0;
               right: 0;
               bottom: 0;
+              left: 0;
               display: block;
               height: 56px;
               transition: opacity 200ms;
+              content: "";
             }
           `}
           initial={{ background: undefined }}
@@ -65,10 +65,10 @@ const TopNavigation = ({ isShrink }: Props) => {
           <div
             css={css`
               display: flex;
-              justify-content: space-between;
               align-items: center;
-              padding: 0px 12px;
+              justify-content: space-between;
               height: 50px;
+              padding: 0px 12px;
             `}
           >
             <IconGroup>
@@ -123,16 +123,16 @@ const TopNavigation = ({ isShrink }: Props) => {
             <motion.div
               onClick={scrollToTop}
               css={css`
-                font-size: 28px;
-                height: 42px;
-                font-weight: 700;
                 display: flex;
-                justify-content: flex-start;
                 align-items: center;
+                justify-content: flex-start;
+                height: 42px;
                 padding-left: 22px;
+                color: ${theme.colors.black};
+                font-weight: 700;
+                font-size: 28px;
                 cursor: pointer;
                 user-select: none;
-                color: ${theme.colors.black};
               `}
               initial={{
                 originX: 0,
@@ -176,8 +176,8 @@ export default TopNavigation
 const IconGroup = styled.div`
   z-index: 1000;
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: center;
 `
 
 const Notification = () => {

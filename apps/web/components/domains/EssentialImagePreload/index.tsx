@@ -17,11 +17,11 @@ const EssentialImagePreload = ({ lazyLoadTime = 5000 }: Props) => {
     <div
       css={css`
         position: absolute;
-        opacity: 0;
-        pointer-events: none;
         width: 1px;
         height: 1px;
         overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
       `}
     >
       {[

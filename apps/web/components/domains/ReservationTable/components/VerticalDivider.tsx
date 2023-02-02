@@ -9,8 +9,8 @@ const VerticalDivider = () => {
       css={css`
         position: absolute;
         top: 0;
-        bottom: 0;
         right: ${tableCellHeight}px;
+        bottom: 0;
         width: 4px;
         background-color: black;
       `}

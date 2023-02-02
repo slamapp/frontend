@@ -44,8 +44,8 @@ const Layout = ({ children }: Props) => {
                     src="/assets/basketball/animation_off_400.png"
                     alt="basketball"
                     css={css`
-                      filter: saturate(0);
                       margin-top: -100px;
+                      filter: saturate(0);
                     `}
                   />
                   <Text>오류가 발생했습니다.</Text>

@@ -79,13 +79,9 @@ const PageLoader = () => {
             }}
             exit={{ width: `100%`, height: 0 }}
             css={css`
-              border-radius: 0 16px 16px 0;
+              position: absolute;
+              top: 0;
               height: 8px;
-              animation-duration: 2s;
-              animation-fill-mode: forwards;
-              animation-iteration-count: infinite;
-              animation-name: placeHolderShimmer;
-              animation-timing-function: linear;
               background: linear-gradient(
                 to right,
                 ${theme.colors.gray0100} 8%,
@@ -93,8 +89,12 @@ const PageLoader = () => {
                 ${theme.colors.gray0100} 33%
               );
               background-size: 800px 104px;
-              position: absolute;
-              top: 0;
+              border-radius: 0 16px 16px 0;
+              animation-name: placeHolderShimmer;
+              animation-duration: 2s;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+              animation-fill-mode: forwards;
               @keyframes placeHolderShimmer {
                 0% {
                   background-position: -800px 0;

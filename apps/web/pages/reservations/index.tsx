@@ -22,8 +22,8 @@ const Page = () => (
     <div
       css={css`
         display: flex;
-        flex-direction: column;
         flex: 1;
+        flex-direction: column;
         margin: 0 20px;
         padding-top: 16px;
       `}

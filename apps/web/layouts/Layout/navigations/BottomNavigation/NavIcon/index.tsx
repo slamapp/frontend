@@ -4,7 +4,6 @@ import { VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import { motion } from "framer-motion"
 import { Icon } from "~/components/uis"
-import { useScrollContainer } from "~/layouts"
 
 const tap = { scale: 0.7 }
 
@@ -36,10 +35,10 @@ const NavIcon = ({
     <motion.a
       css={css`
         display: flex;
-        justify-content: center;
         align-items: center;
-        height: 50px;
+        justify-content: center;
         width: 50px;
+        height: 50px;
       `}
       onTapStart={handleTap}
       whileTap={tap}
@@ -48,9 +47,9 @@ const NavIcon = ({
         <Icon name={iconName} color={color} />
         <span
           css={css`
-            pointer-events: none;
-            font-size: 10px;
             color: ${color};
+            font-size: 10px;
+            pointer-events: none;
           `}
         >
           {label}

@@ -44,12 +44,12 @@ const ScrollContainer = ({ children }: Props) => {
         ref={ref}
         id="scrolled-container"
         css={css`
-          display: flex;
-          flex-direction: column;
           position: relative;
+          display: flex;
+          flex: 1;
+          flex-direction: column;
           overflow-x: hidden;
           background-color: ${theme.colors.gray0050};
-          flex: 1;
           ::-webkit-scrollbar {
             width: 0px;
           }

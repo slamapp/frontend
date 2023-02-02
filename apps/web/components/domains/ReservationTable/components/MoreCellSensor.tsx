@@ -72,11 +72,11 @@ const NoAccessScrollMaker = () => {
       ref={ref}
       css={css`
         display: flex;
-        justify-content: center;
         align-items: center;
-        background-color: ${theme.colors.gray0200};
-        color: ${theme.colors.gray0500};
+        justify-content: center;
         height: ${tableCellHeight * (SENSOR_MULTIPLY - 1)}px;
+        color: ${theme.colors.gray0500};
+        background-color: ${theme.colors.gray0200};
       `}
     />
   )
@@ -119,17 +119,17 @@ export default MoreCellSensor
 const MoreTableMaker = styled.div<{
   height: number
 }>`
-  background-color: ${({ theme }) => theme.colors.gray0300};
   height: ${({ height }) => height * SENSOR_MULTIPLY}px;
+  background-color: ${({ theme }) => theme.colors.gray0300};
 `
 
 const NoAccess = styled.div<{ height: number }>`
   ${({ theme, height }) => css`
     display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: ${theme.colors.gray0200};
-    color: ${theme.colors.gray0500};
+    justify-content: center;
     height: ${height}px;
+    color: ${theme.colors.gray0500};
+    background-color: ${theme.colors.gray0200};
   `}
 `

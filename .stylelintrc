@@ -6,7 +6,8 @@
     "stylelint-config-rational-order"
   ],
   "rules": {
-    "property-no-vendor-prefix": null
+    "property-no-vendor-prefix": null,
+    "function-no-unknown": null
   },
   "overrides": [
     {

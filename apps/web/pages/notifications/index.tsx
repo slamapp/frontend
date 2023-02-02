@@ -116,16 +116,16 @@ const NotificationItem = ({
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       css={css`
-        align-items: center;
         gap: 12px;
-        padding: 12px;
+        align-items: center;
         margin-bottom: 12px;
-        background: ${notification.type === "FOLLOW"
-          ? theme.colors.white
-          : "linear-gradient(to right, #262625, #35332F)"};
+        padding: 12px;
         color: ${notification.type === "FOLLOW"
           ? theme.colors.gray0900
           : theme.colors.white};
+        background: ${notification.type === "FOLLOW"
+          ? theme.colors.white
+          : "linear-gradient(to right, #262625, #35332F)"};
         border-radius: 10px;
         box-shadow: 0px 12px 12px -12px rgb(0 0 0 / 10%);
       `}

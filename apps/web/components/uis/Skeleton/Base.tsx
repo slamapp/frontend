@@ -7,19 +7,19 @@ const Base = styled.div`
   `}
 
   display: inline-block;
-  border-radius: 4px;
-  background-size: 200% 200%;
   background-position: 0 center;
+  background-size: 200% 200%;
+  border-radius: 4px;
   animation: skeleton--zoom-in 0.2s ease-out, skeleton--loading 1s infinite;
 
   @keyframes skeleton--zoom-in {
     0% {
-      opacity: 0;
       transform: scale(0.95);
+      opacity: 0;
     }
     100% {
-      opacity: 1;
       transform: scale(1);
+      opacity: 1;
     }
   }
 

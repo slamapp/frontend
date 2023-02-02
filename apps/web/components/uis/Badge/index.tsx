@@ -68,16 +68,16 @@ const Super = styled.sup`
   align-items: center;
   height: 20px;
   padding: 0 8px;
-  font-size: 12px;
   color: white;
-  border-radius: 20px;
+  font-size: 12px;
   background-color: #f44;
+  border-radius: 20px;
   transform: translate(50%, -50%);
 
   &.dot {
-    padding: 0;
     width: 6px;
     height: 6px;
+    padding: 0;
     border-radius: 50%;
   }
 `

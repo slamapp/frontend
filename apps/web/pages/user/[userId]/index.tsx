@@ -196,8 +196,8 @@ const Template = ({
                 dd {
                   box-sizing: border-box;
                   margin: 0;
-                  font-weight: bold;
                   padding: ${theme.gaps.xs} 0;
+                  font-weight: bold;
                 }
               `}
             >

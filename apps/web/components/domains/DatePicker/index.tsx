@@ -122,15 +122,15 @@ const GradientCover = ({ position }: { position: "left" | "right" }) => {
   return (
     <motion.div
       css={css`
-        width: ${DATE_ITEM_GAP}px;
         position: absolute;
-        ${position}: 0;
         top: 0;
         bottom: 0;
+        width: ${DATE_ITEM_GAP}px;
         background: ${position === "left"
           ? `linear-gradient(0.25turn,${theme.colors.gray0050},transparent)`
           : `linear-gradient(0.25turn,transparent,${theme.colors.gray0050})`};
         pointer-events: none;
+        ${position}: 0;
       `}
     />
   )

@@ -24,8 +24,8 @@ const Page = () => {
       <div
         css={css`
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: center;
           height: 90%;
         `}
       >
@@ -38,8 +38,8 @@ const Page = () => {
           <Logo width={130} />
           <span
             css={css`
-              font-size: 16;
               font-weight: 900;
+              font-size: 16;
             `}
           >
             같이 농구할 사람이 없다고?

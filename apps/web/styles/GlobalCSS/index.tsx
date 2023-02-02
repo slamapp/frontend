@@ -25,20 +25,20 @@ const GlobalCSS = () => {
         h4,
         h5,
         h6 {
-          font-size: 1em;
-          font-weight: normal;
           margin: 0;
+          font-weight: normal;
+          font-size: 1em;
         }
         body {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          box-sizing: border-box;
           font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
             Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
             "Noto Sans KR", "Malgun Gothic", sans-serif;
-          box-sizing: border-box;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
         }
 
         a {

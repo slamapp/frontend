@@ -26,27 +26,27 @@ const Cursor = ({ startTime, endTime }: Props) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       css={css`
-        border-radius: ${endTime ? "16px" : "16px 16px 0 0"};
+        position: absolute;
+        top: ${topSensorHeight + topMargin}px;
+        left: 0px;
         width: ${tableCellHeight * 5}px;
         height: ${height}px;
         overflow: hidden;
-        position: absolute;
         background-color: #00000040;
-        top: ${topSensorHeight + topMargin}px;
-        left: 0px;
+        border-radius: ${endTime ? "16px" : "16px 16px 0 0"};
         pointer-events: none;
       `}
     >
       {startTime && (
         <Center
           css={css`
-            background-color: black;
-            color: white;
             position: absolute;
             top: 0;
-            left: 0;
             right: 0;
+            left: 0;
             height: 16px;
+            color: white;
+            background-color: black;
           `}
         >
           <Pin />
@@ -55,13 +55,13 @@ const Cursor = ({ startTime, endTime }: Props) => {
       {endTime && (
         <Center
           css={css`
-            background-color: black;
-            color: white;
             position: absolute;
+            right: 0;
             bottom: 0;
             left: 0;
-            right: 0;
             height: 16px;
+            color: white;
+            background-color: black;
           `}
         >
           <Pin />
