@@ -3,7 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
-import { withSuspense } from "@suspensive/react"
+import { Delay, withSuspense } from "@suspensive/react"
 import type { Variants } from "framer-motion"
 import { motion } from "framer-motion"
 import { CourtItem, NoItemMessage } from "~/components/domains"
@@ -26,7 +26,13 @@ export default function Page() {
   )
 }
 
-const Contents = withSuspense.CSROnly(Suspended, { fallback: <Fallback /> })
+const Contents = withSuspense.CSROnly(Suspended, {
+  fallback: (
+    <Delay>
+      <Fallback />
+    </Delay>
+  ),
+})
 
 function Suspended() {
   const getFavoritesQuery = useGetFavoritesQuery()
