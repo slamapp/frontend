@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import { Suspense } from "@suspensive/react"
+import { Delay, Suspense } from "@suspensive/react"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import { motion } from "framer-motion"
@@ -106,7 +106,13 @@ const Page = () => {
           <Map.Button.CurrentLocation />
           <Map.Button.ZoomInOut />
           {mapRef.current && bounds && (
-            <Suspense.CSROnly fallback={<Map.LoadingIndicator />}>
+            <Suspense.CSROnly
+              fallback={
+                <Delay>
+                  <Map.LoadingIndicator />
+                </Delay>
+              }
+            >
               <Markers
                 bounds={bounds}
                 setBounds={setBounds}

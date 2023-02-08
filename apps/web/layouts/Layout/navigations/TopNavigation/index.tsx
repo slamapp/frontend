@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { Center } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
 import styled from "@emotion/styled"
-import { Suspense } from "@suspensive/react"
+import { Delay, Suspense } from "@suspensive/react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProfileAvatar } from "~/components/domains"
 import { Badge, Icon, Skeleton } from "~/components/uis"
@@ -85,7 +85,13 @@ const TopNavigation = ({ isShrink }: Props) => {
             </IconGroup>
             <IconGroup>
               {currentUserQuery.isSuccess && navigation.top.isNotification && (
-                <Suspense.CSROnly fallback={<Skeleton.Circle size={24} />}>
+                <Suspense.CSROnly
+                  fallback={
+                    <Delay>
+                      <Skeleton.Circle size={24} />
+                    </Delay>
+                  }
+                >
                   <Notification />
                 </Suspense.CSROnly>
               )}

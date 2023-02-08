@@ -1,9 +1,9 @@
-import { Fragment, useEffect } from "react"
+import { Fragment, forwardRef, useEffect } from "react"
 import type { NextPage } from "next"
 import Link from "next/link"
 import { Box, HStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import { Suspense } from "@suspensive/react"
+import { Delay, Suspense } from "@suspensive/react"
 import { useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { motion } from "framer-motion"
@@ -23,7 +23,13 @@ const Page: NextPage = () => (
       isBack: true,
     }}
   >
-    <Suspense.CSROnly>
+    <Suspense.CSROnly
+      fallback={
+        <Delay>
+          <SkeletonNotification />
+        </Delay>
+      }
+    >
       <Contents />
     </Suspense.CSROnly>
   </Navigation>
@@ -69,11 +75,7 @@ const Contents = () => {
               onIntersected={() => {
                 notifications.fetchNextPage()
               }}
-              render={(ref) => (
-                <HStack ref={ref} width="100%">
-                  <SkeletonNotification />
-                </HStack>
-              )}
+              render={(ref) => <SkeletonNotification ref={ref} />}
             />
           ) : (
             <NoItemMessage
@@ -89,8 +91,8 @@ const Contents = () => {
   )
 }
 
-const SkeletonNotification = () => (
-  <div style={{ padding: 12 }}>
+const SkeletonNotification = forwardRef<HTMLDivElement>((_, ref) => (
+  <div ref={ref} style={{ padding: 12 }}>
     <div style={{ display: "flex" }}>
       <div style={{ float: "left", marginRight: 16 }}>
         <Skeleton.Circle size={60} />
@@ -101,7 +103,7 @@ const SkeletonNotification = () => (
       <div style={{ clear: "both" }} />
     </div>
   </div>
-)
+))
 
 const NotificationItem = ({
   notification,

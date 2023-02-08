@@ -1,7 +1,7 @@
-import { Fragment } from "react"
+import { Fragment, forwardRef } from "react"
 import type { GetServerSideProps, NextPage } from "next"
 import { Box, HStack, VStack } from "@chakra-ui/react"
-import { Suspense } from "@suspensive/react"
+import { Delay, Suspense } from "@suspensive/react"
 import { FollowListItem, NoItemMessage } from "~/components/domains"
 import { InfiniteScrollSensor, Skeleton } from "~/components/uis"
 import { useUserFollowerInfiniteQuery } from "~/features/users"
@@ -17,7 +17,13 @@ const Page: NextPage<Props> = ({ userId }) => {
         isBack: true,
       }}
     >
-      <Suspense.CSROnly>
+      <Suspense.CSROnly
+        fallback={
+          <Delay>
+            <NotificationItemSkeleton />
+          </Delay>
+        }
+      >
         <Contents userId={userId} />
       </Suspense.CSROnly>
     </Navigation>
@@ -43,15 +49,7 @@ const Contents = ({ userId }: Props) => {
                   onIntersected={() =>
                     userFollowerInfiniteQuery.fetchNextPage()
                   }
-                  render={(ref) => (
-                    <HStack ref={ref} width="100%" px="16px" my="16px">
-                      <Skeleton.Circle size={32} />
-                      <Box flex={1}>
-                        <Skeleton.Box width={80} height={20} />
-                      </Box>
-                      <Skeleton.Box width={70} height={30} />
-                    </HStack>
-                  )}
+                  render={(ref) => <NotificationItemSkeleton ref={ref} />}
                 />
               ) : (
                 <NoItemMessage
@@ -73,3 +71,13 @@ export default Page
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   query,
 }) => ({ props: { userId: query.userId as string } })
+
+const NotificationItemSkeleton = forwardRef<HTMLDivElement>((_, ref) => (
+  <HStack ref={ref} width="100%" px="16px" my="16px">
+    <Skeleton.Circle size={32} />
+    <Box flex={1}>
+      <Skeleton.Box width={80} height={20} />
+    </Box>
+    <Skeleton.Box width={70} height={30} />
+  </HStack>
+))

@@ -3,7 +3,7 @@ import type { GetServerSideProps, NextPage } from "next"
 import Link from "next/link"
 import { Avatar, Box, Flex, HStack, Tag, Text, VStack } from "@chakra-ui/react"
 import { css, useTheme } from "@emotion/react"
-import { Suspense } from "@suspensive/react"
+import { Delay, Suspense } from "@suspensive/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { Button, Icon, Skeleton } from "~/components/uis"
 import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
@@ -53,7 +53,13 @@ const Contents = ({ userId }: Props) => {
     const isMe = currentUserQuery.data.id === userId
 
     return (
-      <Suspense.CSROnly fallback={<Fallback />}>
+      <Suspense.CSROnly
+        fallback={
+          <Delay>
+            <Fallback />
+          </Delay>
+        }
+      >
         {isMe ? <MyTemplate /> : <OtherTemplate userId={userId} />}
       </Suspense.CSROnly>
     )

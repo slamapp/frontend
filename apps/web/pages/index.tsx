@@ -3,8 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { Box, HStack, Text, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
-import { Delay, withSuspense } from "@suspensive/react"
-import type { Variants } from "framer-motion"
+import { Delay, Suspense } from "@suspensive/react"
 import { motion } from "framer-motion"
 import { CourtItem, NoItemMessage } from "~/components/domains"
 import { Button, Icon, Skeleton } from "~/components/uis"
@@ -21,20 +20,20 @@ export default function Page() {
       }}
       bottom
     >
-      <Contents />
+      <Suspense.CSROnly
+        fallback={
+          <Delay>
+            <Fallback />
+          </Delay>
+        }
+      >
+        <Contents />
+      </Suspense.CSROnly>
     </Navigation>
   )
 }
 
-const Contents = withSuspense.CSROnly(Suspended, {
-  fallback: (
-    <Delay>
-      <Fallback />
-    </Delay>
-  ),
-})
-
-function Suspended() {
+const Contents = () => {
   const getFavoritesQuery = useGetFavoritesQuery()
   const [favorites] = useState(getFavoritesQuery.data.contents)
 
@@ -57,7 +56,16 @@ function Suspended() {
               <VStack
                 key={id}
                 as={motion.div}
-                variants={getFavoriteItemVariants(index)}
+                variants={{
+                  initial: { y: 40, opacity: 0 },
+                  animate: {
+                    y: 0,
+                    opacity: 1,
+                    transition: { delay: index / 50 },
+                    backgroundColor: "#ffffff90",
+                  },
+                  whileTap: { backgroundColor: "white" },
+                }}
                 initial="initial"
                 animate="animate"
                 whileTap="whileTap"
@@ -162,17 +170,4 @@ function Fallback() {
       </VStack>
     </VStack>
   )
-}
-
-function getFavoriteItemVariants(index: number): Variants {
-  return {
-    initial: { y: 40, opacity: 0 },
-    animate: {
-      y: 0,
-      opacity: 1,
-      transition: { delay: index / 50 },
-      backgroundColor: "#ffffff90",
-    },
-    whileTap: { backgroundColor: "white" },
-  }
 }

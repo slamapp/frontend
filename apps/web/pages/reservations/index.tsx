@@ -1,7 +1,7 @@
 import { Fragment } from "react"
 import { HStack, VStack } from "@chakra-ui/react"
 import { css } from "@emotion/react"
-import { Suspense } from "@suspensive/react"
+import { Delay, Suspense } from "@suspensive/react"
 import { NoItemMessage, ReservationItem } from "~/components/domains"
 import { InfiniteScrollSensor, Skeleton, Tab } from "~/components/uis"
 import {
@@ -31,14 +31,14 @@ const Page = () => (
       <Tab defaultTabName="다가올 예약">
         <Tab.Panel tabName="다가올 예약">
           <VStack align="stretch" spacing="12px">
-            <Suspense.CSROnly fallback={fallback}>
+            <Suspense.CSROnly fallback={<Delay>{fallback}</Delay>}>
               <UpcomingReservations />
             </Suspense.CSROnly>
           </VStack>
         </Tab.Panel>
         <Tab.Panel tabName="지난 예약">
           <VStack align="stretch" spacing="12px">
-            <Suspense.CSROnly fallback={fallback}>
+            <Suspense.CSROnly fallback={<Delay>{fallback}</Delay>}>
               <ExpiredReservations />
             </Suspense.CSROnly>
           </VStack>

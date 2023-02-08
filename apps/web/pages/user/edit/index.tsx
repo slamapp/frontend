@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { useEffect, useState } from "react"
-import type { GetServerSideProps, NextPage } from "next"
+import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import {

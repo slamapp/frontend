@@ -1,19 +1,15 @@
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import { ChakraProvider, Spinner } from "@chakra-ui/react"
-import { ThemeProvider } from "@emotion/react"
-import {
-  AsyncBoundary,
-  Delay,
-  SuspensiveConfigs,
-  SuspensiveProvider,
-} from "@suspensive/react"
+import { ThemeProvider, css } from "@emotion/react"
+import { Delay, SuspensiveConfigs, SuspensiveProvider } from "@suspensive/react"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import timezone from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
 import { RecoilRoot } from "recoil"
 import { OpenGraph } from "~/components/common"
+import { FullHeight } from "~/components/uis"
 import { env } from "~/constants"
 import { AnalyticsProvider } from "~/contexts"
 import { QueryClientProvider } from "~/features"
@@ -32,7 +28,15 @@ const suspensiveConfigs = new SuspensiveConfigs({
     suspense: {
       fallback: (
         <Delay>
-          <Spinner />
+          <FullHeight
+            css={css`
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            `}
+          >
+            <Spinner />
+          </FullHeight>
         </Delay>
       ),
     },
