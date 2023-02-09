@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ReservationItem = ({ reservation }: Props) => {
-  const { scrollContainerWidth } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
   const getFavoritesQuery = useGetFavoritesQuery()
   const deleteReservationMutation = useDeleteReservationMutation()
   const queryClient = useQueryClient()
@@ -87,7 +87,7 @@ const ReservationItem = ({ reservation }: Props) => {
                     />
                     <Box
                       width="90%"
-                      maxWidth={`${scrollContainerWidth - 60}px`}
+                      maxWidth={`${scrollContainer.width - 60}px`}
                       bgColor="white"
                       borderRadius="16px"
                       p="16px"

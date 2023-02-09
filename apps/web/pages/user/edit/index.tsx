@@ -63,7 +63,7 @@ const Contents = () => {
 }
 
 const EditForm = ({ initialData }: { initialData: APIUser }) => {
-  const { scrollContainerHeight } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
   const router = useRouter()
   const myProfileMutation = useMyProfileMutation()
 
@@ -239,7 +239,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
             as={motion.div}
             initial={{ padding: 16 }}
             animate={
-              scrollContainerHeight > 400 ? { padding: 16 } : { padding: 0 }
+              scrollContainer.height > 400 ? { padding: 16 } : { padding: 0 }
             }
           >
             <Button
@@ -248,7 +248,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               loading={isSubmitting || isSubmitSuccessful}
               disabled={!isDirty || !isValid || isSubmitSuccessful}
               onClick={handleSubmit(onSubmit)}
-              style={{ borderRadius: scrollContainerHeight > 400 ? 16 : 0 }}
+              style={{ borderRadius: scrollContainer.height > 400 ? 16 : 0 }}
             >
               {!isDirty || !isValid
                 ? "프로필을 먼저 수정하세요"

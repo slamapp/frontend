@@ -14,7 +14,7 @@ const PageLoader = () => {
   })
   const [isProgressBar, setIsProgressBar] = useState(false)
 
-  const { scrollContainerWidth } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
   const setNavigation = useSetNavigation()
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const PageLoader = () => {
         <div
           css={css`
             position: fixed;
-            width: ${scrollContainerWidth}px;
+            width: ${scrollContainer.width}px;
             height: 100%;
           `}
         >

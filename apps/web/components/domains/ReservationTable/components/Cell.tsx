@@ -78,7 +78,7 @@ const Cell = ({ timeNumber, date, onClick }: Props) => {
       isNeedToScrollToThisCell
     ) {
       const rect = ref.current.getBoundingClientRect()
-      scrollContainer.scrollTo(rect.bottom + tableCellHeight * 3)
+      scrollContainer.to(rect.bottom + tableCellHeight * 3)
     }
   }, [])
 

@@ -21,7 +21,7 @@ const TopNavigation = ({ isShrink }: Props) => {
   const router = useRouter()
 
   const currentUserQuery = useCurrentUserQuery()
-  const { scrollToTop } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
   const navigation = useNavigationValue()
 
   if (!navigation.top) {
@@ -127,7 +127,7 @@ const TopNavigation = ({ isShrink }: Props) => {
 
           <AnimatePresence mode="wait" key={navigation.top.title}>
             <motion.div
-              onClick={scrollToTop}
+              onClick={scrollContainer.toTop}
               css={css`
                 display: flex;
                 align-items: center;

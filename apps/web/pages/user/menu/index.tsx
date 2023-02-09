@@ -17,7 +17,7 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   buildTime,
 }) => {
   const router = useRouter()
-  const { scrollContainerWidth } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
   const queryClient = useQueryClient()
 
   return (
@@ -62,7 +62,7 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     />
                     <Box
                       width="90%"
-                      maxWidth={`${scrollContainerWidth - 60}px`}
+                      maxWidth={`${scrollContainer.width - 60}px`}
                       bgColor="white"
                       borderRadius="16px"
                       p="16px"

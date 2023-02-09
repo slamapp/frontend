@@ -39,8 +39,7 @@ type FieldValues = Pick<
 const Page = () => {
   const router = useRouter()
   const courtCreateMutation = useCourtCreateMutation()
-
-  const { scrollContainerHeight } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
 
   const {
     control,
@@ -159,7 +158,7 @@ const Page = () => {
           as={motion.div}
           initial={{ padding: 16 }}
           animate={
-            scrollContainerHeight > 400 ? { padding: 16 } : { padding: 0 }
+            scrollContainer.height > 400 ? { padding: 16 } : { padding: 0 }
           }
         >
           <Button
@@ -193,7 +192,7 @@ const Page = () => {
             )}
             fullWidth
             size="lg"
-            style={{ borderRadius: scrollContainerHeight > 400 ? 16 : 0 }}
+            style={{ borderRadius: scrollContainer.height > 400 ? 16 : 0 }}
           >
             새 농구장 추가 제안하기
           </Button>
@@ -267,7 +266,6 @@ const MapEditor = ({
         height: isEdited ? 200 : 400,
         borderRadius: 16,
         zIndex: 0,
-        // transition: "height 1s ease 200ms",
       }}
       onBoundChange={(map) => {
         map.relayout()

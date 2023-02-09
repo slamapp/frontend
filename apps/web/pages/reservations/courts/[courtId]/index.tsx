@@ -44,7 +44,7 @@ const Contents = withSuspense.CSROnly(Suspended, { fallback: undefined })
 function Suspended({ courtId, date }: Props) {
   const theme = useTheme()
   const router = useRouter()
-  const { scrollContainerWidth } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
   const queryClient = useQueryClient()
 
   const createReservationMutation = useCreateReservationMutation(courtId)
@@ -265,7 +265,7 @@ function Suspended({ courtId, date }: Props) {
                       />
                       <Box
                         width="90%"
-                        maxWidth={`${scrollContainerWidth - 60}px`}
+                        maxWidth={`${scrollContainer.width - 60}px`}
                         bgColor="white"
                         borderRadius="16px"
                         p="16px"

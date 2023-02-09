@@ -11,7 +11,7 @@ const BottomFixedGradient = ({
   children,
 }: ComponentPropsWithoutRef<typeof Flex>) => {
   const theme = useTheme()
-  const { scrollContainerWidth, scrollContainerRef } = useScrollContainer()
+  const scrollContainer = useScrollContainer()
 
   const [portal, setPortal] = useState<ReactPortal | null>(null)
 
@@ -23,7 +23,7 @@ const BottomFixedGradient = ({
             as={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            w={`${scrollContainerWidth}px`}
+            w={`${scrollContainer.width}px`}
             h="120px"
             pos="fixed"
             bottom={0}
@@ -39,7 +39,7 @@ const BottomFixedGradient = ({
             as={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            w={`${scrollContainerWidth}px`}
+            w={`${scrollContainer.width}px`}
             pos="fixed"
             bottom={0}
             maxW="640px"
@@ -48,10 +48,10 @@ const BottomFixedGradient = ({
             {children}
           </Box>
         </>,
-        scrollContainerRef.current!
+        scrollContainer.ref.current!
       )
     )
-  }, [children, scrollContainerWidth, scrollContainerRef, theme.colors.white])
+  }, [children, scrollContainer.width, scrollContainer.ref, theme.colors.white])
 
   return portal
 }
