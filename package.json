@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "yarn workspaces foreach -ptiv run build",
-    "commit": "cz-customizable",
+    "commit": "cz",
     "dev:web": "yarn workspace web run dev",
     "postinstall": "husky install",
     "lint": "yarn workspaces foreach run lint",
@@ -43,7 +43,8 @@
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "all-contributors-cli": "^6.24.0",
-    "cz-customizable": "^7.0.0",
+    "commitizen": "^4.2.6",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.23.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
