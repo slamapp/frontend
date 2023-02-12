@@ -1,7 +1,4 @@
-const iterateCallWithDelay = (
-  arr: ((...props: any[]) => any)[],
-  delay: number
-) => {
+const iterateCallWithDelay = (arr: ((...props: any[]) => any)[], delay: number) => {
   const newArr = [...arr]
 
   function next() {

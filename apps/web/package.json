@@ -1,16 +1,12 @@
 {
-  "name": "web",
-  "version": "0.1.0",
+  "name": "@slamapp/web",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "dev:turbo": "next dev --turbo",
     "lint": "next lint",
-    "lint:error": "next lint . --quiet",
-    "lint:fix": "next lint --fix --ext .ts,.tsx,.js,.jsx .",
-    "start": "next start",
-    "type": "tsc --noEmit"
+    "start": "next start"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.3.6",
@@ -20,6 +16,7 @@
     "@hookform/devtools": "^4.2.2",
     "@hookform/resolvers": "^2.9.8",
     "@sentry/nextjs": "^7.15.0",
+    "@slamapp/ui": "workspace:*",
     "@suspensive/react": "^1.9.2",
     "@suspensive/react-query": "^1.9.2",
     "@tanstack/react-query": "^4.13.0",
@@ -32,7 +29,7 @@
     "jose": "^4.10.0",
     "lottie-react": "^2.3.1",
     "next": "^13.0.0",
-    "react": "^18.2.0",
+    "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-ga4": "^1.4.1",
     "react-hook-form": "^7.36.1",
@@ -41,14 +38,17 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@slamapp/eslint": "workspace:*",
     "@types/feather-icons": "^4.7.0",
     "@types/node": "18.7.18",
-    "@types/react": "18.0.20",
-    "@types/react-dom": "18.0.6",
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
     "@types/uuid": "^8.3.4",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.0",
     "kakao.maps.d.ts": "^0.1.33",
+    "tsconfig": "workspace:*",
     "typescript": "4.8.3"
   }
 }

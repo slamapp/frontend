@@ -1,26 +1,26 @@
-import type { AppProps } from "next/app"
-import Head from "next/head"
-import { ChakraProvider, Spinner } from "@chakra-ui/react"
-import { ThemeProvider, css } from "@emotion/react"
-import { Delay, SuspensiveConfigs, SuspensiveProvider } from "@suspensive/react"
-import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-import timezone from "dayjs/plugin/timezone"
-import utc from "dayjs/plugin/utc"
-import { RecoilRoot } from "recoil"
-import { OpenGraph } from "~/components/common"
-import { FullHeight } from "~/components/uis"
-import { env } from "~/constants"
-import { AnalyticsProvider } from "~/contexts"
-import { QueryClientProvider } from "~/features"
-import { useSentry } from "~/hooks/domain"
-import { Layout } from "~/layouts"
-import { GlobalCSS, chakraTheme, emotionTheme } from "~/styles"
+import { AppProps } from 'next/app'
+import Head from 'next/head'
+import { ChakraProvider, Spinner } from '@chakra-ui/react'
+import { ThemeProvider, css } from '@emotion/react'
+import { Delay, SuspensiveConfigs, SuspensiveProvider } from '@suspensive/react'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+import { RecoilRoot } from 'recoil'
+import { OpenGraph } from '~/components/common'
+import { FullHeight } from '~/components/uis'
+import { env } from '~/constants'
+import { AnalyticsProvider } from '~/contexts'
+import { QueryClientProvider } from '~/features'
+import { useSentry } from '~/hooks/domain'
+import { Layout } from '~/layouts'
+import { GlobalCSS, chakraTheme, emotionTheme } from '~/styles'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(relativeTime)
-dayjs.tz.setDefault("Asia/Seoul")
+dayjs.tz.setDefault('Asia/Seoul')
 
 const suspensiveConfigs = new SuspensiveConfigs({
   defaultOptions: {
@@ -46,7 +46,7 @@ const suspensiveConfigs = new SuspensiveConfigs({
 const App = ({ Component, pageProps }: AppProps) => {
   useSentry({
     dsn: env.SENTRY_DSN,
-    allowUrls: ["https://slams.app", "https://dev.slams.app"],
+    allowUrls: ['https://slams.app', 'https://dev.slams.app'],
   })
 
   return (
@@ -54,10 +54,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Head>
         <title>함께 농구할 사람을 가장 쉽게 찾아보세요</title>
       </Head>
-      <OpenGraph
-        title="함께 농구할 사람을 가장 쉽게 찾아보세요"
-        description="슬램 | 농구할 사람이 없다고?"
-      />
+      <OpenGraph title="함께 농구할 사람을 가장 쉽게 찾아보세요" description="슬램 | 농구할 사람이 없다고?" />
       <SuspensiveProvider configs={suspensiveConfigs}>
         <RecoilRoot>
           <QueryClientProvider>

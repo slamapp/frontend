@@ -1,27 +1,21 @@
-import type { ComponentProps } from "react"
-import { useRouter } from "next/router"
-import { VStack } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
-import { motion } from "framer-motion"
-import { Icon } from "~/components/uis"
+import { ComponentProps } from 'react'
+import { useRouter } from 'next/router'
+import { VStack } from '@chakra-ui/react'
+import { css, useTheme } from '@emotion/react'
+import { motion } from 'framer-motion'
+import { Icon } from '~/components/uis'
 
 const tap = { scale: 0.7 }
 
 interface Props {
   href: string
-  iconName: ComponentProps<typeof Icon>["name"]
+  iconName: ComponentProps<typeof Icon>['name']
   label: string
   isActive?: boolean
   onTap?: (href: string) => void
 }
 
-const NavIcon = ({
-  href,
-  iconName,
-  label = "이름",
-  isActive,
-  onTap,
-}: Props) => {
+const NavIcon = ({ href, iconName, label = '이름', isActive, onTap }: Props) => {
   const router = useRouter()
   const theme = useTheme()
   const color = isActive ? theme.colors.black : theme.colors.gray0500

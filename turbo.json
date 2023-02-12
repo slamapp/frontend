@@ -1,0 +1,27 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    }
+  },
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_SLAM_TOKEN_KEY",
+    "NEXT_PUBLIC_JWT_SECRET_KEY",
+    "NEXT_PUBLIC_SERVICE_API_END_POINT",
+    "NEXT_PUBLIC_SERVICE_API_SUB_FIX",
+    "NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID",
+    "NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY",
+    "NEXT_PUBLIC_REDIRECT_URI",
+    "NEXT_PUBLIC_SENTRY_DSN"
+  ]
+}

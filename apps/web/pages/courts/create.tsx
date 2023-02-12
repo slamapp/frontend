@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
-import Head from "next/head"
-import { useRouter } from "next/router"
+import { useEffect, useState } from 'react'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 import {
   Box,
   Flex,
@@ -13,27 +13,24 @@ import {
   InputRightElement,
   Text,
   VStack,
-} from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
-import { DevTool } from "@hookform/devtools"
-import { motion } from "framer-motion"
-import { Controller, useForm } from "react-hook-form"
-import type { api } from "~/api"
-import { Map } from "~/components/kakaos"
-import { Button, Icon, IconButton, Toast } from "~/components/uis"
-import { useCourtCreateMutation } from "~/features/courts"
-import { BottomFixedGradient, useScrollContainer } from "~/layouts"
-import { Navigation } from "~/layouts/Layout/navigations"
-import type { APICourt } from "~/types/domains/objects/court"
+} from '@chakra-ui/react'
+import { css, useTheme } from '@emotion/react'
+import { DevTool } from '@hookform/devtools'
+import { motion } from 'framer-motion'
+import { Controller, useForm } from 'react-hook-form'
+import { api } from '~/api'
+import { Map } from '~/components/kakaos'
+import { Button, Icon, IconButton, Toast } from '~/components/uis'
+import { useCourtCreateMutation } from '~/features/courts'
+import { BottomFixedGradient, useScrollContainer } from '~/layouts'
+import { Navigation } from '~/layouts/Layout/navigations'
+import { APICourt } from '~/types/domains/objects/court'
 
 type FieldValues = Pick<
   Parameters<typeof api.courts.createNewCourt>[0],
-  "basketCount" | "image" | "name" | "texture"
+  'basketCount' | 'image' | 'name' | 'texture'
 > & {
-  position: Pick<
-    Parameters<typeof api.courts.createNewCourt>[0],
-    "latitude" | "longitude"
-  > | null
+  position: Pick<Parameters<typeof api.courts.createNewCourt>[0], 'latitude' | 'longitude'> | null
 }
 
 const Page = () => {
@@ -48,20 +45,20 @@ const Page = () => {
     register,
     watch,
   } = useForm<FieldValues>({
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       basketCount: 1,
       image: null,
       position: null,
-      name: "",
-      texture: "ETC",
+      name: '',
+      texture: 'ETC',
     },
   })
 
   return (
     <Navigation
       top={{
-        title: "새 농구장 추가",
+        title: '새 농구장 추가',
         isBack: true,
       }}
     >
@@ -82,7 +79,7 @@ const Page = () => {
                   display="none"
                   id={field.name}
                   {...register(field.name, {
-                    required: "농구장 위치를 등록해주세요",
+                    required: '농구장 위치를 등록해주세요',
                   })}
                 />
                 <MapEditor
@@ -95,7 +92,7 @@ const Page = () => {
               </FormControl>
             )}
           />
-          {watch("position") && (
+          {watch('position') && (
             <FormControl
               as={motion.div}
               initial={{ opacity: 0, y: 40 }}
@@ -108,15 +105,15 @@ const Page = () => {
                 <Input
                   id="basketCount"
                   type="number"
-                  {...register("basketCount", {
-                    required: "농구장에 있는 골대개수를 적어주세요",
+                  {...register('basketCount', {
+                    required: '농구장에 있는 골대개수를 적어주세요',
                     max: {
                       value: 10,
-                      message: "골대 개수는 10개 이하여야 해요",
+                      message: '골대 개수는 10개 이하여야 해요',
                     },
                     min: {
                       value: 1,
-                      message: "골대 개수는 1개 이상여야 해요",
+                      message: '골대 개수는 1개 이상여야 해요',
                     },
                   })}
                 />
@@ -127,7 +124,7 @@ const Page = () => {
               <FormErrorMessage>{errors.basketCount?.message}</FormErrorMessage>
             </FormControl>
           )}
-          {watch("position") && (
+          {watch('position') && (
             <FormControl
               as={motion.div}
               initial={{ opacity: 0, y: 40 }}
@@ -140,10 +137,10 @@ const Page = () => {
                 id="name"
                 placeholder="ex) 서울 광화문역 앞 농구장"
                 type="text"
-                {...register("name", {
-                  required: "농구장 이름을 적어주세요",
-                  minLength: { value: 2, message: "2자 이상으로 적어주세요" },
-                  maxLength: { value: 15, message: "15자 이하로 적어주세요" },
+                {...register('name', {
+                  required: '농구장 이름을 적어주세요',
+                  minLength: { value: 2, message: '2자 이상으로 적어주세요' },
+                  maxLength: { value: 15, message: '15자 이하로 적어주세요' },
                 })}
               />
               <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
@@ -157,39 +154,32 @@ const Page = () => {
         <Box
           as={motion.div}
           initial={{ padding: 16 }}
-          animate={
-            scrollContainer.height > 400 ? { padding: 16 } : { padding: 0 }
-          }
+          animate={scrollContainer.height > 400 ? { padding: 16 } : { padding: 0 }}
         >
           <Button
             loading={isSubmitting}
-            onClick={handleSubmit(
-              async ({ basketCount, image, name, position, texture }) => {
-                if (position) {
-                  const { latitude, longitude } = position
-                  const { data } = await courtCreateMutation.mutateAsync({
-                    basketCount,
-                    image,
-                    latitude,
-                    longitude,
-                    name,
-                    texture,
-                  })
+            onClick={handleSubmit(async ({ basketCount, image, name, position, texture }) => {
+              if (position) {
+                const { latitude, longitude } = position
+                const { data } = await courtCreateMutation.mutateAsync({
+                  basketCount,
+                  image,
+                  latitude,
+                  longitude,
+                  name,
+                  texture,
+                })
 
-                  await router.replace(
-                    "/map" // TODO: 내가 제안한 농구장 리스트 페이지 만들면 그 페이지로 라우팅)
-                  )
+                await router.replace(
+                  '/map' // TODO: 내가 제안한 농구장 리스트 페이지 만들면 그 페이지로 라우팅)
+                )
 
-                  Toast.show(
-                    `농구장을 잘 등록했어요 (${data.name}, 골대 개수: ${data.basketCount})`,
-                    {
-                      status: "success",
-                      marginBottom: "bottomFixedGradient",
-                    }
-                  )
-                }
+                Toast.show(`농구장을 잘 등록했어요 (${data.name}, 골대 개수: ${data.basketCount})`, {
+                  status: 'success',
+                  marginBottom: 'bottomFixedGradient',
+                })
               }
-            )}
+            })}
             fullWidth
             size="lg"
             style={{ borderRadius: scrollContainer.height > 400 ? 16 : 0 }}
@@ -209,14 +199,11 @@ export default Page
 const MapEditor = ({
   onChange,
 }: {
-  onChange?: (position: Pick<APICourt, "latitude" | "longitude"> | null) => void
+  onChange?: (position: Pick<APICourt, 'latitude' | 'longitude'> | null) => void
 }) => {
   const theme = useTheme()
 
-  const [courtPosition, setCourtPosition] = useState<Pick<
-    APICourt,
-    "latitude" | "longitude"
-  > | null>(null)
+  const [courtPosition, setCourtPosition] = useState<Pick<APICourt, 'latitude' | 'longitude'> | null>(null)
 
   const clearCourtPosition = () => {
     setCourtPosition(null)
@@ -226,10 +213,7 @@ const MapEditor = ({
   const [address, setAddress] = useState<string | null>(null)
 
   useEffect(() => {
-    const searchAddrFromCoords = ({
-      latitude,
-      longitude,
-    }: Pick<APICourt, "latitude" | "longitude">) => {
+    const searchAddrFromCoords = ({ latitude, longitude }: Pick<APICourt, 'latitude' | 'longitude'>) => {
       setAddress(null)
       const geocoder = new kakao.maps.services.Geocoder()
 
@@ -245,7 +229,7 @@ const MapEditor = ({
           }
           // 주소가 없는 경우
           else {
-            setAddress("주소가 존재하지 않습니다.")
+            setAddress('주소가 존재하지 않습니다.')
           }
         }
       })
@@ -287,13 +271,13 @@ const MapEditor = ({
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           whileHover={{ scale: 1.2 }}
-          icon={{ name: "x" }}
+          icon={{ name: 'x' }}
           style={{
-            color: "#6B94E5",
-            backgroundColor: "white",
-            border: "none",
-            position: "absolute",
-            boxShadow: "0 0 32px rgba(0,0,0,0.3)",
+            color: '#6B94E5',
+            backgroundColor: 'white',
+            border: 'none',
+            position: 'absolute',
+            boxShadow: '0 0 32px rgba(0,0,0,0.3)',
             zIndex: 1,
             top: 15,
             right: 15,
@@ -324,34 +308,35 @@ const MapEditor = ({
               style={{
                 width: 50,
                 height: 50,
-                position: "relative",
+                position: 'relative',
                 borderRadius: 25,
-                cursor: "pointer",
+                cursor: 'pointer',
               }}
               justify="center"
             >
               <Box
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   bottom: -4,
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  filter: "blur(4px)",
+                  backgroundColor: 'rgba(0,0,0,0.6)',
+                  filter: 'blur(4px)',
                   width: 45,
                   height: 45,
                   borderRadius: 25,
-                  overflow: "visible",
+                  overflow: 'visible',
                 }}
               />
               <img
                 src="/assets/basketball/animation_off_400.png"
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   bottom: -8,
                   minWidth: 100,
                   minHeight: 150,
-                  pointerEvents: "none",
-                  userSelect: "none",
+                  pointerEvents: 'none',
+                  userSelect: 'none',
                 }}
+                alt="basketball_animation_off"
               />
               {address && (
                 <HStack
@@ -371,11 +356,7 @@ const MapEditor = ({
                   pointerEvents="none"
                   boxShadow="0 0 16px #00000040"
                 >
-                  <Icon
-                    name="map-pin"
-                    size={12}
-                    color={theme.colors.orange0600}
-                  />
+                  <Icon name="map-pin" size={12} color={theme.colors.orange0600} />
                   <Text fontSize="12px" fontWeight="bold">
                     {address}
                   </Text>

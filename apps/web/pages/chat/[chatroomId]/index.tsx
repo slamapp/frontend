@@ -1,4 +1,4 @@
-import type { NextPage } from "next"
+import { NextPage } from 'next'
 
 const Page: NextPage = () => {
   return <div>Chatroom Page</div>

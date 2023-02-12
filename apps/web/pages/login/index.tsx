@@ -1,14 +1,14 @@
-import Head from "next/head"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { HStack, VStack } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { Logo } from "~/components/domains"
-import { Button, IconButton } from "~/components/uis"
-import { env } from "~/constants"
-import { BottomFixedGradient } from "~/layouts"
-import { Navigation } from "~/layouts/Layout/navigations"
+import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { HStack, VStack } from '@chakra-ui/react'
+import { css } from '@emotion/react'
+import { Logo } from '~/components/domains'
+import { Button, IconButton } from '~/components/uis'
+import { env } from '~/constants'
+import { BottomFixedGradient } from '~/layouts'
+import { Navigation } from '~/layouts/Layout/navigations'
 
 const Page = () => {
   const router = useRouter()
@@ -49,20 +49,10 @@ const Page = () => {
       <BottomFixedGradient>
         <HStack m="16px" spacing="8px">
           <Link href="/map" passHref>
-            <IconButton icon={{ name: "map" }} />
+            <IconButton icon={{ name: 'map' }} />
           </Link>
-          <Button
-            onClick={handleClickLogin}
-            size="lg"
-            style={{ flex: 1 }}
-            scheme="kakao"
-          >
-            <Image
-              src="/assets/icon-kakao.svg"
-              alt="카카오 로그인 로고"
-              width={21}
-              height={19}
-            />
+          <Button onClick={handleClickLogin} size="lg" style={{ flex: 1 }} scheme="kakao">
+            <Image src="/assets/icon-kakao.svg" alt="카카오 로그인 로고" width={21} height={19} />
             카카오 로그인
           </Button>
         </HStack>

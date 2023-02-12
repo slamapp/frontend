@@ -1,10 +1,7 @@
 module.exports = {
-  extends: ["next/core-web-vitals"],
-  rules: {
-    "react/display-name": "off",
-    "react/jsx-curly-brace-presence": [
-      "error",
-      { props: "never", children: "never" },
-    ],
+  ...require('@slamapp/eslint/next.js'),
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: './tsconfig.json',
   },
 }

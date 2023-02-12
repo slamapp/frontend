@@ -1,9 +1,9 @@
-import { useSuspenseInfiniteQuery } from "@suspensive/react-query"
-import { api } from "~/api"
-import key from "~/features/key"
-import type { APIUser } from "~/types/domains/objects"
+import { useSuspenseInfiniteQuery } from '@suspensive/react-query'
+import { api } from '~/api'
+import key from '~/features/key'
+import { APIUser } from '~/types/domains/objects'
 
-const useUserFollowingInfiniteQuery = (userId: APIUser["id"]) =>
+const useUserFollowingInfiniteQuery = (userId: APIUser['id']) =>
   useSuspenseInfiniteQuery(
     key.users.oneFollowings(userId),
     ({ pageParam = { isFirst: true, lastId: null } }) =>

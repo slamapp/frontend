@@ -1,10 +1,7 @@
-import type { Dispatch, SetStateAction } from "react"
-import { useCallback, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react'
 
 // 루프 내에서 주어진 함수를 호출합니다.
-const useRafState = <T>(
-  initialState: T
-): [state: T, setRafState: Dispatch<SetStateAction<T>>] => {
+const useRafState = <T>(initialState: T): [state: T, setRafState: Dispatch<SetStateAction<T>>] => {
   const frame = useRef<number>(0)
   const [state, setState] = useState<T>(initialState)
 

@@ -1,70 +1,40 @@
 {
   "name": "frontend",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*"
-    ]
-  },
+  "packageManager": "pnpm@7.24.3",
+  "workspaces": [
+    "apps/*",
+    "configs/*",
+    "packages/*"
+  ],
   "scripts": {
-    "build": "yarn workspaces foreach -ptiv run build",
+    "build": "turbo run build",
     "commit": "cz",
-    "dev:web": "yarn workspace web run dev",
-    "postinstall": "husky install",
-    "lint": "yarn workspaces foreach run lint",
-    "lint-staged": "lint-staged",
-    "lint:error": "eslint . --quiet",
-    "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx .",
-    "type": "yarn workspaces foreach run type",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "stylelint": "stylelint './apps/**/*.{ts,tsx}'",
-    "stylelint:fix": "stylelint './apps/**/*.{ts,tsx}' --fix"
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:pack": "packlint sort -R",
+    "postinstall": "husky install",
+    "type:check": "turbo run type:check --parallel"
   },
-  "dependencies": {
-    "@chakra-ui/react": "^2.3.6",
-    "@chakra-ui/styled-system": "^2.3.4",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "axios": "^0.27.2",
-    "feather-icons": "^4.29.0",
-    "framer-motion": "^7.3.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "uuid": "^9.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
-    "@stylelint/postcss-css-in-js": "^0.38.0",
-    "@types/feather-icons": "^4.7.0",
-    "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^5.37.0",
-    "@typescript-eslint/parser": "^5.37.0",
+    "@commitlint/cli": "^17.4.0",
+    "@commitlint/config-conventional": "^17.4.0",
     "all-contributors-cli": "^6.24.0",
     "commitizen": "^4.2.6",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.23.1",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-next": "^12.3.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "next": "^12.3.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "packlint": "^0.2.4",
     "postcss": "^8.4.21",
     "postcss-syntax": "^0.36.2",
-    "prettier": "^2.7.1",
-    "stylelint": "^14.16.1",
-    "stylelint-config-prettier": "^9.0.4",
-    "stylelint-config-rational-order": "^0.1.2",
-    "stylelint-config-recommended": "^9.0.0",
-    "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-processor-styled-components": "^1.10.0",
-    "typescript": "^4.8.3"
+    "prettier": "^2.8.2",
+    "turbo": "latest",
+    "typescript": "^4.9.4"
   },
-  "packageManager": "yarn@3.2.3"
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }

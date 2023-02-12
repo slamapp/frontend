@@ -1,9 +1,9 @@
-import type { CSSProperties, ReactNode } from "react"
-import Button from "./Button"
-import Container from "./Container"
-import { Provider } from "./context/Provider"
-import LoadingIndicator from "./LoadingIndicator"
-import Marker from "./Marker"
+import { CSSProperties, ReactNode } from 'react'
+import Button from './Button'
+import Container from './Container'
+import { Provider } from './context/Provider'
+import LoadingIndicator from './LoadingIndicator'
+import Marker from './Marker'
 
 // 서울의 경도, 위도
 export const DEFAULT_INITIAL_CENTER = { latitude: 37.5665, longitude: 126.978 }
@@ -22,7 +22,6 @@ type Props = {
   onLoaded?: (map: kakao.maps.Map) => void
   onBoundChange?: (map: kakao.maps.Map) => void
   style?: CSSProperties
-  fallback?: ReactNode
   children?: ReactNode
 }
 
@@ -54,7 +53,6 @@ const Map = ({
       zoomable={zoomable}
     >
       <Container
-        center={center}
         onClick={onClick}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}

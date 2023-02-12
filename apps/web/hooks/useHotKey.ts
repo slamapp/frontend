@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from 'react'
 
-type BitMask = "alt" | "ctrl" | "meta" | "shift"
+type BitMask = 'alt' | 'ctrl' | 'meta' | 'shift'
 const ModifierBitMasks = {
   alt: 1,
   ctrl: 2,
@@ -9,60 +9,60 @@ const ModifierBitMasks = {
 }
 
 type ShitKeyMask =
-  | "~"
-  | "!"
-  | "@"
-  | "#"
-  | "$"
-  | "%"
-  | "^"
-  | "&"
-  | "*"
-  | "("
-  | ")"
-  | "_"
-  | "+"
-  | "{"
-  | "}"
-  | "|"
-  | "|"
+  | '~'
+  | '!'
+  | '@'
+  | '#'
+  | '$'
+  | '%'
+  | '^'
+  | '&'
+  | '*'
+  | '('
+  | ')'
+  | '_'
+  | '+'
+  | '{'
+  | '}'
+  | '|'
+  | '|'
   | '"'
-  | "<"
-  | ">"
-  | "?"
+  | '<'
+  | '>'
+  | '?'
 const ShiftKeys = {
-  "~": "`",
-  "!": "1",
-  "@": "2",
-  "#": "3",
-  $: "4",
-  "%": "5",
-  "^": "6",
-  "&": "7",
-  "*": "8",
-  "(": "9",
-  ")": "0",
-  _: "-",
-  "+": "=",
-  "{": "[",
-  "}": "]",
-  "|": "\\",
-  ":": ";",
+  '~': '`',
+  '!': '1',
+  '@': '2',
+  '#': '3',
+  $: '4',
+  '%': '5',
+  '^': '6',
+  '&': '7',
+  '*': '8',
+  '(': '9',
+  ')': '0',
+  _: '-',
+  '+': '=',
+  '{': '[',
+  '}': ']',
+  '|': '\\',
+  ':': ';',
   '"': "'",
-  "<": ",",
-  ">": ".",
-  "?": "/",
+  '<': ',',
+  '>': '.',
+  '?': '/',
 }
 
-type AliasMask = "win" | "window" | "cmd" | "command" | "esc" | "opt" | "option"
+type AliasMask = 'win' | 'window' | 'cmd' | 'command' | 'esc' | 'opt' | 'option'
 const Aliases = {
-  win: "meta",
-  window: "meta",
-  cmd: "meta",
-  command: "meta",
-  esc: "escape",
-  opt: "alt",
-  option: "alt",
+  win: 'meta',
+  window: 'meta',
+  cmd: 'meta',
+  command: 'meta',
+  esc: 'escape',
+  opt: 'alt',
+  option: 'alt',
 }
 
 interface KeyCombo {
@@ -70,7 +70,7 @@ interface KeyCombo {
   key?: string
 }
 const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
-  const key = e.key !== " " ? e.key.toLowerCase() : "space"
+  const key = e.key !== ' ' ? e.key.toLowerCase() : 'space'
 
   let modifiers = 0
   if (e.altKey) {
@@ -90,7 +90,7 @@ const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
 }
 
 const parseKeyCombo = (combo: string): KeyCombo => {
-  const pieces = combo.replace(/\s/g, "").toLowerCase().split("+")
+  const pieces = combo.replace(/\s/g, '').toLowerCase().split('+')
   let modifiers = 0
   let key
   ;(pieces as BitMask[]).forEach((piece) => {
@@ -109,10 +109,9 @@ const parseKeyCombo = (combo: string): KeyCombo => {
   return { modifiers, key }
 }
 
-const comboMatches = (a: KeyCombo, b: KeyCombo) =>
-  a.modifiers === b.modifiers && a.key === b.key
+const comboMatches = (a: KeyCombo, b: KeyCombo) => a.modifiers === b.modifiers && a.key === b.key
 
-type CallbackName = "onKeyDown" | "onKeyUp"
+type CallbackName = 'onKeyDown' | 'onKeyUp'
 
 interface Hotkey {
   global: boolean
@@ -126,12 +125,7 @@ const useHotKey = (hotkeys: Hotkey[]) => {
   const globalKeys = useMemo(() => hotkeys.filter((k) => k.global), [hotkeys])
 
   const invokeCallback = useCallback(
-    (
-      global: boolean,
-      combo: KeyCombo,
-      callbackName: CallbackName,
-      e: KeyboardEvent
-    ) => {
+    (global: boolean, combo: KeyCombo, callbackName: CallbackName, e: KeyboardEvent) => {
       const keys = global ? globalKeys : localKeys
       keys.forEach((hotkey) => {
         if (comboMatches(parseKeyCombo(hotkey.combo), combo)) {
@@ -146,49 +140,39 @@ const useHotKey = (hotkeys: Hotkey[]) => {
 
   const handleGlobalKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      invokeCallback(true, getKeyCombo(e), "onKeyDown", e)
+      invokeCallback(true, getKeyCombo(e), 'onKeyDown', e)
     },
     [invokeCallback]
   )
 
   const handleGlobalKeyUp = useCallback(
     (e: KeyboardEvent) => {
-      invokeCallback(true, getKeyCombo(e), "onKeyUp", e)
+      invokeCallback(true, getKeyCombo(e), 'onKeyUp', e)
     },
     [invokeCallback]
   )
 
   const handleLocalKeyDown = useCallback(
     (e: { nativeEvent: KeyboardEvent }) => {
-      invokeCallback(
-        false,
-        getKeyCombo(e.nativeEvent),
-        "onKeyDown",
-        e.nativeEvent
-      )
+      invokeCallback(false, getKeyCombo(e.nativeEvent), 'onKeyDown', e.nativeEvent)
     },
     [invokeCallback]
   )
 
   const handleLocalKeyUp = useCallback(
     (e: { nativeEvent: KeyboardEvent }) => {
-      invokeCallback(
-        false,
-        getKeyCombo(e.nativeEvent),
-        "onKeyUp",
-        e.nativeEvent
-      )
+      invokeCallback(false, getKeyCombo(e.nativeEvent), 'onKeyUp', e.nativeEvent)
     },
     [invokeCallback]
   )
 
   useEffect(() => {
-    document.addEventListener("keydown", handleGlobalKeyDown)
-    document.addEventListener("keyup", handleGlobalKeyUp)
+    document.addEventListener('keydown', handleGlobalKeyDown)
+    document.addEventListener('keyup', handleGlobalKeyUp)
 
     return () => {
-      document.removeEventListener("keydown", handleGlobalKeyDown)
-      document.removeEventListener("keyup", handleGlobalKeyUp)
+      document.removeEventListener('keydown', handleGlobalKeyDown)
+      document.removeEventListener('keyup', handleGlobalKeyUp)
     }
   }, [handleGlobalKeyDown, handleGlobalKeyUp])
 

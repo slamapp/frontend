@@ -1,5 +1,5 @@
 const key = {
-  all: ["favorites"] as const,
+  all: ['favorites'] as const,
 } as const
 
 export default key

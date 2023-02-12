@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { api } from "~/api"
-import key from "~/features/key"
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '~/api'
+import key from '~/features/key'
 
 const useUpdateMyProfileImageMutation = () => {
   const queryClient = useQueryClient()

@@ -1,6 +1,6 @@
-import { useState } from "react"
-import { css } from "@emotion/react"
-import { useTimeout } from "~/hooks"
+import { useState } from 'react'
+import { css } from '@emotion/react'
+import { useTimeout } from '~/hooks'
 
 type Props = {
   lazyLoadTime: number
@@ -25,20 +25,20 @@ const EssentialImagePreload = ({ lazyLoadTime = 5000 }: Props) => {
       `}
     >
       {[
-        "/assets/basketball/only_ball_500.png",
-        "/assets/basketball/animation_off_400.png",
-        "/assets/basketball/animation_off_favorited.png",
-        "/assets/basketball/fire_off_400.gif",
-        "/assets/basketball/fire_off_all_tagged.gif",
-        "/assets/basketball/fire_off_favorited.gif",
-        "/assets/basketball/fire_off_reservated.gif",
-        "/assets/basketball/fire_on_400.gif",
-        "/assets/basketball/fire_on_all_tagged.gif",
-        "/assets/basketball/fire_on_favorited.gif",
-        "/assets/basketball/fire_on_reservated.gif",
-        "/assets/basketball/only_ball_500.gif",
+        '/assets/basketball/only_ball_500.png',
+        '/assets/basketball/animation_off_400.png',
+        '/assets/basketball/animation_off_favorited.png',
+        '/assets/basketball/fire_off_400.gif',
+        '/assets/basketball/fire_off_all_tagged.gif',
+        '/assets/basketball/fire_off_favorited.gif',
+        '/assets/basketball/fire_off_reservated.gif',
+        '/assets/basketball/fire_on_400.gif',
+        '/assets/basketball/fire_on_all_tagged.gif',
+        '/assets/basketball/fire_on_favorited.gif',
+        '/assets/basketball/fire_on_reservated.gif',
+        '/assets/basketball/only_ball_500.gif',
       ].map((url) => (
-        <img key={url} src={url} />
+        <img key={url} src={url} alt={url} />
       ))}
     </div>
   ) : null

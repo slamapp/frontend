@@ -1,7 +1,5 @@
-import type { DependencyList } from "react"
-import { useEffect } from "react"
-import type { AsyncFn } from "./useAsyncFn"
-import useAsyncFn from "./useAsyncFn"
+import { DependencyList, useEffect } from 'react'
+import useAsyncFn, { AsyncFn } from './useAsyncFn'
 
 interface StateProps {
   isLoading: boolean

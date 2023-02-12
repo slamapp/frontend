@@ -1,5 +1,5 @@
-import type { FC } from "react"
-import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import { FC } from 'react'
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 const navigationState = atom<{
   isLoading: boolean
@@ -13,7 +13,7 @@ const navigationState = atom<{
   } | null
   bottom?: boolean
 }>({
-  key: "navigation",
+  key: 'navigation',
   default: { isLoading: true },
 })
 

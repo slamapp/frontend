@@ -1,8 +1,8 @@
-import { css } from "@emotion/react"
-import { motion } from "framer-motion"
-import { IconButton } from "~/components/uis"
-import type { Coord } from "~/types/domains/objects/court"
-import { useMap } from "../../context"
+import { css } from '@emotion/react'
+import { motion } from 'framer-motion'
+import { IconButton } from '~/components/uis'
+import { Coord } from '~/types/domains/objects/court'
+import { useMap } from '../../context'
 
 // 서울의 경도, 위도
 export const DEFAULT_POSITION: Coord = [37.5665, 126.978]
@@ -26,11 +26,7 @@ const getCurrentLocation = (callback: (coord: Coord) => void) => {
   }
 
   if (navigator) {
-    navigator.geolocation.getCurrentPosition(
-      successCallback,
-      failCallback,
-      options
-    )
+    navigator.geolocation.getCurrentPosition(successCallback, failCallback, options)
   }
 }
 
@@ -58,11 +54,7 @@ const CurrentLocationButton = () => {
         z-index: 10;
       `}
     >
-      <IconButton
-        icon={{ name: "crosshair", color: "#6B94E5" }}
-        border="none"
-        bgColor="white"
-      />
+      <IconButton icon={{ name: 'crosshair', color: '#6B94E5' }} border="none" bgColor="white" />
     </motion.div>
   )
 }

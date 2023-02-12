@@ -1,21 +1,19 @@
-import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
-import { useRouter } from "next/router"
-import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
-import styled from "@emotion/styled"
-import { useQueryClient } from "@tanstack/react-query"
-import dayjs from "dayjs"
-import { AnimatePresence, motion } from "framer-motion"
-import { Button, Icon, LayerOver } from "~/components/uis"
-import { useScrollContainer } from "~/layouts"
-import { Navigation } from "~/layouts/Layout/navigations"
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { Box, Center, Flex, Text, VStack } from '@chakra-ui/react'
+import styled from '@emotion/styled'
+import { useQueryClient } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Button, Icon, LayerOver } from '~/components/uis'
+import { useScrollContainer } from '~/layouts'
+import { Navigation } from '~/layouts/Layout/navigations'
 
 interface Props {
   buildTime: string
 }
 
-const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  buildTime,
-}) => {
+const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ buildTime }) => {
   const router = useRouter()
   const scrollContainer = useScrollContainer()
   const queryClient = useQueryClient()
@@ -23,7 +21,7 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <Navigation
       top={{
-        title: "메뉴",
+        title: '메뉴',
         isBack: true,
       }}
     >
@@ -76,7 +74,7 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                           </Button>
                           <Button
                             onClick={async () => {
-                              await router.replace("/logout")
+                              await router.replace('/logout')
                               await queryClient.resetQueries()
                               layer.close()
                             }}
@@ -93,10 +91,7 @@ const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           />
         </VStack>
         <Center>
-          <Text fontSize="8px">
-            Builded at KST{" "}
-            {dayjs(buildTime).tz().format("YY.MM.DD(dd) HH:mm:ss")}
-          </Text>
+          <Text fontSize="8px">Builded at KST {dayjs(buildTime).tz().format('YY.MM.DD(dd) HH:mm:ss')}</Text>
         </Center>
       </Flex>
     </Navigation>
@@ -125,10 +120,8 @@ const MenuItem = styled.div`
   }
 `
 
-export const getStaticProps: GetStaticProps<Props> = () => {
-  return {
-    props: {
-      buildTime: new Date().toISOString(),
-    },
-  }
-}
+export const getStaticProps: GetStaticProps<Props> = () => ({
+  props: {
+    buildTime: new Date().toISOString(),
+  },
+})

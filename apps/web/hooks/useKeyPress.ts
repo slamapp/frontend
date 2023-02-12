@@ -1,5 +1,5 @@
-import { useEffect, useCallback, useState } from "react"
-import type { EventKeyValue } from "./EventKeyValueType"
+import { useCallback, useEffect, useState } from 'react'
+import { EventKeyValue } from './EventKeyValueType'
 
 const useKeyPress = (targetKey: EventKeyValue) => {
   const [keyPressed, setKeyPressed] = useState<boolean>(false)
@@ -23,12 +23,12 @@ const useKeyPress = (targetKey: EventKeyValue) => {
   )
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown)
-    window.addEventListener("keyup", handleKeyUp)
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-      window.removeEventListener("keyup", handleKeyUp)
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
     }
   })
 

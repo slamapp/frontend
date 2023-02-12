@@ -1,6 +1,6 @@
-import type { ReactNode } from "react"
-import { css } from "@emotion/react"
-import styled from "@emotion/styled"
+import { ReactNode } from 'react'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 
 interface Props {
   children: ReactNode
@@ -31,11 +31,7 @@ const Badge = ({
     if (dot) {
       badge = <Super className="dot" style={colorStyle} />
     } else {
-      badge = (
-        <Super style={colorStyle}>
-          {maxCount && count > maxCount ? `${maxCount}+` : count}
-        </Super>
-      )
+      badge = <Super style={colorStyle}>{maxCount && count > maxCount ? `${maxCount}+` : count}</Super>
     }
   } else if (count === 0) {
     if (dot) {

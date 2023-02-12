@@ -1,37 +1,26 @@
-import type { PropsWithChildren } from "react"
-import {
-  Children,
-  createContext,
-  isValidElement,
-  useContext,
-  useState,
-} from "react"
-import { Box, HStack } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { motion } from "framer-motion"
+import { Children, PropsWithChildren, createContext, isValidElement, useContext, useMemo, useState } from 'react'
+import { Box, HStack } from '@chakra-ui/react'
+import { css } from '@emotion/react'
+import { motion } from 'framer-motion'
 
-const TabContext = createContext({ tabName: "" })
-TabContext.displayName = "TabContext"
+const TabContext = createContext({ tabName: '' })
+TabContext.displayName = 'TabContext'
 const useTab = () => useContext(TabContext)
 
-const Tab = ({
-  children,
-  defaultTabName,
-}: PropsWithChildren<{ defaultTabName: string }>) => {
+const Tab = ({ children, defaultTabName }: PropsWithChildren<{ defaultTabName: string }>) => {
   const [tabName, setTabName] = useState(defaultTabName)
 
+  const value = useMemo(() => ({ tabName }), [tabName])
+
   return (
-    <TabContext.Provider value={{ tabName }}>
+    <TabContext.Provider value={value}>
       <HStack spacing={0}>
         {Children.map(children, (child) => {
           if (!isValidElement<PanelProps>(child)) {
             return null
           }
 
-          const style =
-            tabName === child.props.tabName
-              ? { backgroundColor: "#000000", color: "#ffffff" }
-              : {}
+          const style = tabName === child.props.tabName ? { backgroundColor: '#000000', color: '#ffffff' } : {}
 
           return (
             <Box

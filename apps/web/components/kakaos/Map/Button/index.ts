@@ -1,5 +1,5 @@
-import CurrentLocation from "./CurrentLocation"
-import ZoomInOut from "./ZoomInOut"
+import CurrentLocation from './CurrentLocation'
+import ZoomInOut from './ZoomInOut'
 
 const Button = {
   CurrentLocation,

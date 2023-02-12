@@ -1,10 +1,5 @@
-import { http } from "~/api/core"
-import type {
-  APICourt,
-  APINewCourt,
-  APIReservation,
-  APIUser,
-} from "~/types/domains/objects"
+import { http } from '~/api/core'
+import { APICourt, APINewCourt, APIReservation, APIUser } from '~/types/domains/objects'
 
 const courtApi = {
   getCourtsByCoordsAndDate: ({
@@ -16,11 +11,11 @@ const courtApi = {
     endLongitude,
   }: {
     date: string
-    startLatitude: APICourt["latitude"]
-    startLongitude: APICourt["longitude"]
-    endLatitude: APICourt["latitude"]
-    endLongitude: APICourt["longitude"]
-    time: "dawn" | "morning" | "afternoon" | "night"
+    startLatitude: APICourt['latitude']
+    startLongitude: APICourt['longitude']
+    endLatitude: APICourt['latitude']
+    endLongitude: APICourt['longitude']
+    time: 'dawn' | 'morning' | 'afternoon' | 'night'
   }) =>
     http.get<{ court: APICourt; reservationMaxCount: number }[]>(`/courts`, {
       params: {
@@ -31,35 +26,23 @@ const courtApi = {
       },
     }),
 
-  createNewCourt: (
-    data: Pick<
-      APICourt,
-      "longitude" | "latitude" | "image" | "texture" | "basketCount" | "name"
-    >
-  ) => http.post<APINewCourt>(`/courts/new`, { data }),
+  createNewCourt: (data: Pick<APICourt, 'longitude' | 'latitude' | 'image' | 'texture' | 'basketCount' | 'name'>) =>
+    http.post<APINewCourt>(`/courts/new`, { data }),
 
   getCourtDetail: (
-    courtId: APICourt["id"],
+    courtId: APICourt['id'],
     {
       date,
       time,
     }: {
       date: string
-      time: "dawn" | "morning" | "afternoon" | "night"
+      time: 'dawn' | 'morning' | 'afternoon' | 'night'
     }
   ) =>
     http.get<
       Pick<
         APICourt,
-        | "basketCount"
-        | "createdAt"
-        | "id"
-        | "image"
-        | "latitude"
-        | "longitude"
-        | "name"
-        | "texture"
-        | "updatedAt"
+        'basketCount' | 'createdAt' | 'id' | 'image' | 'latitude' | 'longitude' | 'name' | 'texture' | 'updatedAt'
       > & {
         reservationMaxCount: number
       }
@@ -70,17 +53,17 @@ const courtApi = {
       },
     }),
 
-  getAllCourtReservationsByDate: (courtId: APICourt["id"], date: string) =>
+  getAllCourtReservationsByDate: (courtId: APICourt['id'], date: string) =>
     http.get<{
       courtId: number
       date: string
       reservations: {
         userId: number
-        avatarImgSrc: APIUser["profileImage"]
+        avatarImgSrc: APIUser['profileImage']
         courtId: number
         reservationId: number
-        startTime: APIReservation["startTime"]
-        endTime: APIReservation["endTime"]
+        startTime: APIReservation['startTime']
+        endTime: APIReservation['endTime']
       }[]
     }>(`/courts/${courtId}/reservations/${date}`),
 }

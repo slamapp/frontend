@@ -1,1 +1,1 @@
-export { useAddressQuery } from "./useAddressQuery"
+export { useAddressQuery } from './useAddressQuery'

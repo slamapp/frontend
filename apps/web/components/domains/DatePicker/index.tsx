@@ -1,11 +1,10 @@
-import { useMemo, useRef, useState } from "react"
-import { HStack, Text, VStack } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
-import type { Dayjs } from "dayjs"
-import dayjs from "dayjs"
-import { motion } from "framer-motion"
+import { useMemo, useRef, useState } from 'react'
+import { HStack, Text, VStack } from '@chakra-ui/react'
+import { css, useTheme } from '@emotion/react'
+import dayjs, { Dayjs } from 'dayjs'
+import { motion } from 'framer-motion'
 
-const week = ["일", "월", "화", "수", "목", "금", "토"] as const
+const week = ['일', '월', '화', '수', '목', '금', '토'] as const
 
 const DAY_RANGE = 14
 
@@ -23,15 +22,11 @@ interface Props {
 const DatePicker = ({ initialValue, onChange }: Props) => {
   const theme = useTheme()
   const [selectedDate, setSelectedDate] = useState(
-    initialValue ||
-      (() => dayjs().tz().hour(0).minute(0).second(0).millisecond(0))
+    initialValue || (() => dayjs().tz().hour(0).minute(0).second(0).millisecond(0))
   )
 
   const twoWeekDates = useMemo(
-    () =>
-      Array.from({ length: DAY_RANGE }, (_, index) =>
-        selectedDate.add(index, "day")
-      ),
+    () => Array.from({ length: DAY_RANGE }, (_, index) => selectedDate.add(index, 'day')),
     []
   )
 
@@ -40,7 +35,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
   return (
     <motion.div
       ref={ref}
-      whileTap={{ cursor: "grabbing" }}
+      whileTap={{ cursor: 'grabbing' }}
       css={css`
         position: relative;
         margin: 12px 0;
@@ -53,9 +48,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
         drag="x"
         dragConstraints={{
           right: 0,
-          left:
-            -(DATE_ITEM_GAP * 3 + (DATE_ITEM_WIDTH + DATE_ITEM_GAP) * 14) +
-            (ref.current?.offsetWidth || 0),
+          left: -(DATE_ITEM_GAP * 3 + (DATE_ITEM_WIDTH + DATE_ITEM_GAP) * 14) + (ref.current?.offsetWidth || 0),
         }}
       >
         {twoWeekDates.map((date, index) => {
@@ -71,7 +64,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.1 }}
               cursor="pointer"
-              bgColor={theme.colors[selected ? "black" : "white"]}
+              bgColor={theme.colors[selected ? 'black' : 'white']}
               transition="background-color border 200ms"
               boxShadow="0 8px 32px -16px #00000040"
               borderRadius="12px"
@@ -90,17 +83,13 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
                       : dayOfWeekIndex === SATURDAY_INDEX
                       ? theme.colors.blue0300
                       : selected
-                      ? "white"
+                      ? 'white'
                       : theme.colors.gray0700
                   }
                 >
                   {week[dayOfWeekIndex]}
                 </Text>
-                <Text
-                  fontSize="21px"
-                  fontWeight="bold"
-                  color={theme.colors[selected ? "white" : "gray0900"]}
-                >
+                <Text fontSize="21px" fontWeight="bold" color={theme.colors[selected ? 'white' : 'gray0900']}>
                   {date.date()}
                 </Text>
               </VStack>
@@ -116,7 +105,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
 
 export default DatePicker
 
-const GradientCover = ({ position }: { position: "left" | "right" }) => {
+const GradientCover = ({ position }: { position: 'left' | 'right' }) => {
   const theme = useTheme()
 
   return (
@@ -126,7 +115,7 @@ const GradientCover = ({ position }: { position: "left" | "right" }) => {
         top: 0;
         bottom: 0;
         width: ${DATE_ITEM_GAP}px;
-        background: ${position === "left"
+        background: ${position === 'left'
           ? `linear-gradient(0.25turn,${theme.colors.gray0050},transparent)`
           : `linear-gradient(0.25turn,transparent,${theme.colors.gray0050})`};
         pointer-events: none;

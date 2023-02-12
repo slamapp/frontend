@@ -1,28 +1,22 @@
-import type { ComponentProps } from "react"
-import { useCallback, useState } from "react"
-import type { GetServerSideProps, NextPage } from "next"
-import { useRouter } from "next/router"
-import { Box, Center, Flex, Text, VStack } from "@chakra-ui/react"
-import { useTheme } from "@emotion/react"
-import { withSuspense } from "@suspensive/react"
-import { useQueryClient } from "@tanstack/react-query"
-import type { Dayjs } from "dayjs"
-import { AnimatePresence, motion } from "framer-motion"
-import { ReservationTable } from "~/components/domains"
-import { BottomModal, Button, LayerOver, Toast } from "~/components/uis"
-import { key } from "~/features"
-import {
-  useCreateReservationMutation,
-  useGetReservationsInfiniteQuery,
-} from "~/features/reservations"
-import { useScrollContainer } from "~/layouts"
-import { Navigation } from "~/layouts/Layout/navigations"
-import type { APICourt } from "~/types/domains/objects"
+import { ComponentProps, useCallback, useState } from 'react'
+import { GetServerSideProps, NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { Box, Center, Flex, Text, VStack } from '@chakra-ui/react'
+import { useTheme } from '@emotion/react'
+import { Suspense, withSuspense } from '@suspensive/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { Dayjs } from 'dayjs'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ReservationTable } from '~/components/domains'
+import { BottomModal, Button, LayerOver, Toast } from '~/components/uis'
+import { key } from '~/features'
+import { useCreateReservationMutation, useGetReservationsInfiniteQuery } from '~/features/reservations'
+import { useScrollContainer } from '~/layouts'
+import { Navigation } from '~/layouts/Layout/navigations'
+import { APICourt } from '~/types/domains/objects'
 
 type Props = { courtId: string; date: string }
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  query,
-}) => ({
+export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => ({
   props: {
     date: query.date as string,
     courtId: query.courtId as string,
@@ -35,13 +29,14 @@ const Page: NextPage<Props> = (props) => (
       title: props.date,
     }}
   >
-    <Contents {...props} />
+    <Suspense.CSROnly>
+      <Contents {...props} />
+    </Suspense.CSROnly>
   </Navigation>
 )
 export default Page
 
-const Contents = withSuspense.CSROnly(Suspended, { fallback: undefined })
-function Suspended({ courtId, date }: Props) {
+const Contents = ({ courtId, date }: Props) => {
   const theme = useTheme()
   const router = useRouter()
   const scrollContainer = useScrollContainer()
@@ -54,7 +49,7 @@ function Suspended({ courtId, date }: Props) {
   })
 
   const [reservation, setReservation] = useState<{
-    courtId: APICourt["id"]
+    courtId: APICourt['id']
     startTime: Dayjs
     endTime: Dayjs | null
     hasBall: boolean
@@ -71,10 +66,10 @@ function Suspended({ courtId, date }: Props) {
         {
           onSuccess: async () => {
             await queryClient.resetQueries(key.reservations.upcoming())
-            await router.replace("/reservations")
-            Toast.show("성공적으로 예약했어요", {
-              status: "success",
-              marginBottom: "bottomNavigation",
+            await router.replace('/reservations')
+            Toast.show('성공적으로 예약했어요', {
+              status: 'success',
+              marginBottom: 'bottomNavigation',
             })
           },
         }
@@ -84,9 +79,7 @@ function Suspended({ courtId, date }: Props) {
 
   const clearReservation = () => setReservation(null)
 
-  const handleClickCell = useCallback<
-    ComponentProps<typeof ReservationTable.Cell>["onClick"]
-  >(
+  const handleClickCell = useCallback<ComponentProps<typeof ReservationTable.Cell>['onClick']>(
     (cellTime) => {
       let next: typeof reservation = null
       const clickedTime = cellTime.start
@@ -110,13 +103,12 @@ function Suspended({ courtId, date }: Props) {
 
       if (isSelectingEndTime) {
         const isBeforeStartTime = clickedTime.isBefore(prev.startTime)
-        const isOverMaxHour =
-          cellTime.end.diff(prev.startTime, "minute") / 60 > 4 // 4시간을 초과하는 경우
+        const isOverMaxHour = cellTime.end.diff(prev.startTime, 'minute') / 60 > 4 // 4시간을 초과하는 경우
 
         if (isBeforeStartTime || isOverMaxHour) {
           if (isOverMaxHour) {
-            Toast.show("예약시간을 4시간 이하로 해주세요", {
-              marginBottom: "bottomNavigation",
+            Toast.show('예약시간을 4시간 이하로 해주세요', {
+              marginBottom: 'bottomNavigation',
             })
           }
 
@@ -161,49 +153,28 @@ function Suspended({ courtId, date }: Props) {
                 ))
               )}
             <ReservationTable.MoreCellSensor.Bottom />
-            {reservation && (
-              <ReservationTable.Cursor
-                startTime={reservation.startTime}
-                endTime={reservation.endTime}
-              />
-            )}
+            {reservation && <ReservationTable.Cursor startTime={reservation.startTime} endTime={reservation.endTime} />}
           </>
         )}
       </ReservationTable>
 
       <BottomModal>
-        <Flex
-          flexDir="column"
-          justify="space-between"
-          p="24px 20px 20px 20px"
-          gap="16px"
-          bgColor={theme.colors.white}
-        >
+        <Flex flexDir="column" justify="space-between" p="24px 20px 20px 20px" gap="16px" bgColor={theme.colors.white}>
           <VStack align="stretch">
             <Text fontSize="1xl" fontWeight="bold">
               {!reservation?.startTime || !reservation?.endTime
-                ? "예약시간을 먼저 선택하세요"
-                : "예약하기를 눌러 확정하세요"}
+                ? '예약시간을 먼저 선택하세요'
+                : '예약하기를 눌러 확정하세요'}
             </Text>
             <DateInput
-              text={
-                reservation
-                  ? `${reservation.startTime
-                      .tz()
-                      .format("YYYY.MM.DD(dd) HH:mm")} 부터`
-                  : undefined
-              }
+              text={reservation ? `${reservation.startTime.tz().format('YYYY.MM.DD(dd) HH:mm')} 부터` : undefined}
               clear={reservation?.startTime ? clearReservation : null}
               placeHolder="시작시간을 눌러주세요"
             />
             {reservation && (
               <DateInput
                 text={
-                  reservation.endTime
-                    ? `${reservation.endTime
-                        .tz()
-                        .format("YYYY.MM.DD(dd) HH:mm")} 까지`
-                    : undefined
+                  reservation.endTime ? `${reservation.endTime.tz().format('YYYY.MM.DD(dd) HH:mm')} 까지` : undefined
                 }
                 placeHolder="종료시간을 눌러주세요"
                 clear={
@@ -272,25 +243,17 @@ function Suspended({ courtId, date }: Props) {
                         boxShadow="0 8px 32px -16px #00000020"
                       >
                         <VStack align="stretch" spacing="24px">
-                          <Text
-                            fontSize="2xl"
-                            textAlign="center"
-                            fontWeight="bold"
-                          >
+                          <Text fontSize="2xl" textAlign="center" fontWeight="bold">
                             농구공을 가져가나요?
                           </Text>
                           <VStack>
                             <Text fontSize="sm">
-                              {"•시작: "}
-                              {`${reservation.startTime
-                                .tz()
-                                .format("YYYY.MM.DD(dd) HH:mm")} 부터`}
+                              {'•시작: '}
+                              {`${reservation.startTime.tz().format('YYYY.MM.DD(dd) HH:mm')} 부터`}
                             </Text>
                             <Text fontSize="sm">
-                              {"•종료: "}
-                              {`${reservation.endTime
-                                .tz()
-                                .format("YYYY.MM.DD(dd) HH:mm")} 까지`}
+                              {'•종료: '}
+                              {`${reservation.endTime.tz().format('YYYY.MM.DD(dd) HH:mm')} 까지`}
                             </Text>
                           </VStack>
                           <VStack align="stretch">
@@ -299,9 +262,7 @@ function Suspended({ courtId, date }: Props) {
                               size="lg"
                               disabled={createReservationMutation.isLoading}
                               loading={createReservationMutation.isLoading}
-                              onClick={() =>
-                                createReservation({ hasBall: true })
-                              }
+                              onClick={() => createReservation({ hasBall: true })}
                             >
                               공을 가져갈게요 🏀 (예약하기)
                             </Button>
@@ -310,18 +271,11 @@ function Suspended({ courtId, date }: Props) {
                               size="lg"
                               disabled={createReservationMutation.isLoading}
                               loading={createReservationMutation.isLoading}
-                              onClick={() =>
-                                createReservation({ hasBall: false })
-                              }
+                              onClick={() => createReservation({ hasBall: false })}
                             >
                               공 없이 몸만 갈게요 (예약하기)
                             </Button>
-                            <Button
-                              fullWidth
-                              size="lg"
-                              scheme="white"
-                              onClick={() => close()}
-                            >
+                            <Button fullWidth size="lg" scheme="white" onClick={() => close()}>
                               닫기
                             </Button>
                           </VStack>

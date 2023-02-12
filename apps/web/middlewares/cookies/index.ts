@@ -1,1 +1,1 @@
-export { default as deleteCookie } from "./deleteCookie"
+export { default as deleteCookie } from './deleteCookie'

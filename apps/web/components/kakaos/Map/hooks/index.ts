@@ -1,1 +1,1 @@
-export { default as useMapEvent } from "./useMapEvent"
+export { default as useMapEvent } from './useMapEvent'

@@ -1,4 +1,4 @@
-import CustomMarkerOverlay from "./CustomMarkerOverlay"
+import CustomMarkerOverlay from './CustomMarkerOverlay'
 
 const Marker = { CustomMarkerOverlay }
 

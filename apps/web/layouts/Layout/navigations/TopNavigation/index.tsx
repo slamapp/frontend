@@ -1,16 +1,16 @@
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { Center } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
-import styled from "@emotion/styled"
-import { Delay, Suspense } from "@suspensive/react"
-import { AnimatePresence, motion } from "framer-motion"
-import { ProfileAvatar } from "~/components/domains"
-import { Badge, Icon, Skeleton } from "~/components/uis"
-import { useGetNotificationsQuery } from "~/features/notifications"
-import { useCurrentUserQuery } from "~/features/users"
-import { useScrollContainer } from "~/layouts"
-import { useNavigationValue } from "../atoms"
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { Center } from '@chakra-ui/react'
+import { css, useTheme } from '@emotion/react'
+import styled from '@emotion/styled'
+import { Delay, Suspense } from '@suspensive/react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ProfileAvatar } from '~/components/domains'
+import { Badge, Icon, Skeleton } from '~/components/uis'
+import { useGetNotificationsQuery } from '~/features/notifications'
+import { useCurrentUserQuery } from '~/features/users'
+import { useScrollContainer } from '~/layouts'
+import { useNavigationValue } from '../atoms'
 
 type Props = {
   isShrink: boolean
@@ -23,6 +23,8 @@ const TopNavigation = ({ isShrink }: Props) => {
   const currentUserQuery = useCurrentUserQuery()
   const scrollContainer = useScrollContainer()
   const navigation = useNavigationValue()
+
+  console.log(navigation)
 
   if (!navigation.top) {
     return null
@@ -48,15 +50,14 @@ const TopNavigation = ({ isShrink }: Props) => {
               display: block;
               height: 56px;
               transition: opacity 200ms;
-              content: "";
+              content: '';
             }
           `}
           initial={{ background: undefined }}
           animate={
             isShrink
               ? {
-                  background:
-                    "linear-gradient(#fafafa,#fafafa,#fafafa, transparent)",
+                  background: 'linear-gradient(#fafafa,#fafafa,#fafafa, transparent)',
                 }
               : { background: undefined }
           }
@@ -73,12 +74,7 @@ const TopNavigation = ({ isShrink }: Props) => {
           >
             <IconGroup>
               {navigation.top.isBack && (
-                <Center
-                  h="32px"
-                  w="24px"
-                  cursor="pointer"
-                  onClick={() => router.back()}
-                >
+                <Center h="32px" w="24px" cursor="pointer" onClick={() => router.back()}>
                   <Icon name="chevron-left" size="md" />
                 </Center>
               )}
@@ -142,26 +138,14 @@ const TopNavigation = ({ isShrink }: Props) => {
               `}
               initial={{
                 originX: 0,
-                x: isShrink
-                  ? navigation.top.isBack
-                    ? 30
-                    : 6
-                  : navigation.top.isBack
-                  ? 0
-                  : 0,
+                x: isShrink ? (navigation.top.isBack ? 30 : 6) : navigation.top.isBack ? 0 : 0,
                 y: isShrink ? -45 : 0,
                 scale: isShrink ? 0.7 : 1,
                 opacity: 0,
               }}
               animate={{
                 originX: 0,
-                x: isShrink
-                  ? navigation.top.isBack
-                    ? 30
-                    : 6
-                  : navigation.top.isBack
-                  ? 0
-                  : 0,
+                x: isShrink ? (navigation.top.isBack ? 30 : 6) : navigation.top.isBack ? 0 : 0,
                 y: isShrink ? -45 : 0,
                 scale: isShrink ? 0.7 : 1,
                 opacity: 1,
@@ -190,10 +174,7 @@ const Notification = () => {
   const getNotificationsQuery = useGetNotificationsQuery()
 
   const unreadNotificationsCount =
-    getNotificationsQuery.data.contents.reduce(
-      (acc, { isRead }) => acc + (isRead ? 0 : 1),
-      0
-    ) || 0
+    getNotificationsQuery.data.contents.reduce((acc, { isRead }) => acc + (isRead ? 0 : 1), 0) || 0
 
   return (
     <Badge count={unreadNotificationsCount} dot={false} maxCount={10}>

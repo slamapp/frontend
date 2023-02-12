@@ -1,14 +1,12 @@
-import { useSuspenseInfiniteQuery } from "@suspensive/react-query"
-import { api } from "~/api"
-import key from "~/features/key"
+import { useSuspenseInfiniteQuery } from '@suspensive/react-query'
+import { api } from '~/api'
+import key from '~/features/key'
 
 const useGetExpiredReservationsInfiniteQuery = () =>
   useSuspenseInfiniteQuery(
     key.reservations.expired(),
     ({ pageParam = { isFirst: true, lastId: null } }) =>
-      api.reservations
-        .getMyExpiredReservations({ ...pageParam, size: 4 })
-        .then(({ data }) => data),
+      api.reservations.getMyExpiredReservations({ ...pageParam, size: 4 }).then(({ data }) => data),
     {
       getNextPageParam: (lastPage) => ({
         isFirst: false,

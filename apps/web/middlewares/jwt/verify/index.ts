@@ -1,10 +1,6 @@
-import type { JWTPayload } from "jose"
-import { jwtVerify } from "jose"
+import { JWTPayload, jwtVerify } from 'jose'
 
-async function verify(
-  token: string,
-  secret: string
-): Promise<JWTPayload | false> {
+async function verify(token: string, secret: string): Promise<JWTPayload | false> {
   try {
     const { payload } = await jwtVerify(token, new TextEncoder().encode(secret))
 

@@ -1,1 +1,1 @@
-export { default as verify } from "./verify"
+export { default as verify } from './verify'

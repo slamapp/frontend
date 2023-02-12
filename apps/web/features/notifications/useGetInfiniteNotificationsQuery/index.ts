@@ -1,14 +1,12 @@
-import { useSuspenseInfiniteQuery } from "@suspensive/react-query"
-import { api } from "~/api"
-import key from "~/features/key"
+import { useSuspenseInfiniteQuery } from '@suspensive/react-query'
+import { api } from '~/api'
+import key from '~/features/key'
 
 const useGetInfiniteNotificationsQuery = () =>
   useSuspenseInfiniteQuery(
     key.notifications.all,
     ({ pageParam = { isFirst: true, lastId: null } }) =>
-      api.notifications
-        .getNotifications({ ...pageParam })
-        .then(({ data }) => data),
+      api.notifications.getNotifications({ ...pageParam }).then(({ data }) => data),
     {
       getNextPageParam: (lastPage) => ({
         isFirst: false,

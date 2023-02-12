@@ -1,27 +1,22 @@
-import type { ComponentPropsWithoutRef, ReactNode } from "react"
-import { Flex, Spinner } from "@chakra-ui/react"
-import { useTheme } from "@emotion/react"
-import { motion } from "framer-motion"
-import type { EmotionTheme } from "~/styles/emotionTheme"
+import { ComponentPropsWithoutRef, ReactNode } from 'react'
+import { Flex, Spinner } from '@chakra-ui/react'
+import { useTheme } from '@emotion/react'
+import { motion } from 'framer-motion'
+import { EmotionTheme } from '~/styles/emotionTheme'
 
 interface Props
-  extends Partial<
-      Pick<ComponentPropsWithoutRef<typeof Flex>, "onClick" | "style">
-    >,
-    Pick<
-      ComponentPropsWithoutRef<typeof motion.button>,
-      "initial" | "animate" | "disabled" | "type"
-    > {
-  size?: keyof EmotionTheme["sizes"]["buttonHeight"] | number
-  scheme?: keyof EmotionTheme["scheme"]["buttons"]
+  extends Partial<Pick<ComponentPropsWithoutRef<typeof Flex>, 'onClick' | 'style'>>,
+    Pick<ComponentPropsWithoutRef<typeof motion.button>, 'initial' | 'animate' | 'disabled' | 'type'> {
+  size?: keyof EmotionTheme['sizes']['buttonHeight'] | number
+  scheme?: keyof EmotionTheme['scheme']['buttons']
   loading?: boolean
   fullWidth?: boolean
   children?: ReactNode
 }
 
 const Button = ({
-  size = "md",
-  scheme = "black",
+  size = 'md',
+  scheme = 'black',
   loading = false,
   disabled = false,
   fullWidth = false,
@@ -29,8 +24,7 @@ const Button = ({
 }: Props) => {
   const theme = useTheme()
 
-  const height =
-    typeof size === "string" ? theme.sizes.buttonHeight[size] : size
+  const height = typeof size === 'string' ? theme.sizes.buttonHeight[size] : size
 
   const selectedScheme = theme.scheme.buttons[scheme]
 
@@ -43,7 +37,7 @@ const Button = ({
       align="center"
       gap="6px"
       h={height}
-      w={fullWidth ? "100%" : undefined}
+      w={fullWidth ? '100%' : undefined}
       px="18px"
       whiteSpace="nowrap"
       borderRadius="16px"
@@ -51,7 +45,7 @@ const Button = ({
       transition="background-color 200ms"
       disabled={disabled}
       opacity={disabled ? 0.7 : undefined}
-      cursor={disabled ? "not-allowed" : "pointer"}
+      cursor={disabled ? 'not-allowed' : 'pointer'}
       {...selectedScheme}
       {...props}
     >

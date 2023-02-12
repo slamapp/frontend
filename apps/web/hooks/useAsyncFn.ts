@@ -1,5 +1,4 @@
-import type { DependencyList } from "react"
-import { useCallback, useRef, useState } from "react"
+import { DependencyList, useCallback, useRef, useState } from 'react'
 
 export type AsyncFn = (...args: any[]) => Promise<any>
 

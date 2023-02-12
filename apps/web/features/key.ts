@@ -1,10 +1,10 @@
-import addresses from "./addresses/key"
-import courts from "./courts/key"
-import favorites from "./favorites/key"
-import follows from "./follows/key"
-import notifications from "./notifications/key"
-import reservations from "./reservations/key"
-import users from "./users/key"
+import addresses from './addresses/key'
+import courts from './courts/key'
+import favorites from './favorites/key'
+import follows from './follows/key'
+import notifications from './notifications/key'
+import reservations from './reservations/key'
+import users from './users/key'
 
 const key = {
   courts,

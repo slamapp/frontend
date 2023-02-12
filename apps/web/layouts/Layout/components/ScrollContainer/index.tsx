@@ -1,6 +1,5 @@
-import type { ReactNode, RefObject } from "react"
-import { createContext, useContext, useRef } from "react"
-import { css, useTheme } from "@emotion/react"
+import { ReactNode, RefObject, createContext, useContext, useMemo, useRef } from 'react'
+import { css, useTheme } from '@emotion/react'
 
 type Value = {
   to: (top: number) => void
@@ -21,18 +20,15 @@ type Props = {
 const ScrollContainer = ({ children }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const theme = useTheme()
-  const to = (top: number) => ref.current?.scrollTo({ top, behavior: "smooth" })
+  const to = (top: number) => ref.current?.scrollTo({ top, behavior: 'smooth' })
+  const toTop = () => to(0)
+  const height = ref.current?.getClientRects()[0].height ?? 0
+  const width = ref.current?.getClientRects()[0].width ?? 0
+
+  const value = useMemo(() => ({ to, toTop, ref, height, width }), [to, toTop, ref, height, width])
 
   return (
-    <Context.Provider
-      value={{
-        to,
-        toTop: () => to(0),
-        ref,
-        height: ref.current?.getClientRects()[0].height ?? 0,
-        width: ref.current?.getClientRects()[0].width ?? 0,
-      }}
-    >
+    <Context.Provider value={value}>
       <div
         ref={ref}
         id="scrolled-container"

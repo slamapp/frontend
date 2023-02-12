@@ -1,13 +1,8 @@
-import { http } from "~/api/core"
-import type {
-  APICourt,
-  APINotification,
-  APIUser,
-} from "~/types/domains/objects"
+import { http } from '~/api/core'
+import { APICourt, APINotification, APIUser } from '~/types/domains/objects'
 
 export default {
-  getUserData: () =>
-    http.get<APIUser & { notifications: APINotification[] }>("/users/me"),
+  getUserData: () => http.get<APIUser & { notifications: APINotification[] }>('/users/me'),
 
   getMyProfile: () =>
     http.get<
@@ -15,35 +10,27 @@ export default {
         followerCount: number
         followingCount: number
       }
-    >("/users/myprofile"),
+    >('/users/myprofile'),
 
-  getUserProfile: ({ id }: { id: APIUser["id"] }) =>
+  getUserProfile: ({ id }: { id: APIUser['id'] }) =>
     http.get<
       APIUser & {
-        favoriteCourts: Pick<APICourt, "id" | "name">[]
+        favoriteCourts: Pick<APICourt, 'id' | 'name'>[]
         followerCount: number
         followingCount: number
         isFollowing: boolean
       }
     >(`/users/${id}`),
 
-  updateMyProfile: (
-    data: Pick<
-      APIUser,
-      "nickname" | "description" | "proficiency" | "positions"
-    >
-  ) =>
-    http.put<APIUser>("/users/myprofile", {
+  updateMyProfile: (data: Pick<APIUser, 'nickname' | 'description' | 'proficiency' | 'positions'>) =>
+    http.put<APIUser>('/users/myprofile', {
       data,
     }),
 
   updateMyProfileImage: (imageFile: File) => {
     const formData = new FormData()
-    formData.append("profileImage", imageFile)
+    formData.append('profileImage', imageFile)
 
-    return http.file.put<{ profileImage: APIUser["profileImage"] }>(
-      "/users/myprofile/image",
-      { data: formData }
-    )
+    return http.file.put<{ profileImage: APIUser['profileImage'] }>('/users/myprofile/image', { data: formData })
   },
 } as const

@@ -1,17 +1,13 @@
-import React, { useRef } from "react"
-import Image from "next/image"
-import { useRouter } from "next/router"
-import { Box, Center, Text, VStack } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { QueryErrorBoundary } from "@suspensive/react-query"
-import { Button } from "~/components/uis"
-import { useIntersectionObserver } from "~/hooks"
-import { PageLoader, ScrollContainer } from "./components"
-import {
-  BottomNavigation,
-  TopNavigation,
-  useNavigationValue,
-} from "./navigations"
+import React, { useRef } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { Box, Center, Text, VStack } from '@chakra-ui/react'
+import { css } from '@emotion/react'
+import { QueryErrorBoundary } from '@suspensive/react-query'
+import { Button } from '~/components/uis'
+import { useIntersectionObserver } from '~/hooks'
+import { PageLoader, ScrollContainer } from './components'
+import { BottomNavigation, TopNavigation, useNavigationValue } from './navigations'
 
 interface Props {
   children: React.ReactNode
@@ -22,13 +18,10 @@ const Layout = ({ children }: Props) => {
   const topIntersectionObserverRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  const topIntersectionObserverEntry = useIntersectionObserver(
-    topIntersectionObserverRef,
-    {}
-  )
+  const topIntersectionObserverEntry = useIntersectionObserver(topIntersectionObserverRef, {})
 
   return (
-    <VStack align="stretch" maxW="560px" m="auto" h="100%" spacing={0}>
+    <VStack align="stretch" justify="stretch" maxW="560px" m="auto" h="100%" spacing={0}>
       <ScrollContainer>
         <QueryErrorBoundary
           fallback={(queryError) => {
@@ -51,7 +44,7 @@ const Layout = ({ children }: Props) => {
                   <Text>오류가 발생했습니다.</Text>
                   <Button
                     onClick={async () => {
-                      await router.push("/logout")
+                      await router.push('/logout')
                       queryError.reset()
                     }}
                   >
@@ -62,17 +55,8 @@ const Layout = ({ children }: Props) => {
             )
           }}
         >
-          <Box
-            ref={topIntersectionObserverRef}
-            pos="absolute"
-            minH="30px"
-            w="100%"
-          />
-          {top && (
-            <TopNavigation
-              isShrink={!topIntersectionObserverEntry?.isIntersecting}
-            />
-          )}
+          <Box ref={topIntersectionObserverRef} pos="absolute" minH="30px" w="100%" />
+          {top && <TopNavigation isShrink={!topIntersectionObserverEntry?.isIntersecting} />}
           {children}
         </QueryErrorBoundary>
         <PageLoader />

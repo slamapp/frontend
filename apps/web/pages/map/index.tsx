@@ -1,28 +1,22 @@
-import type { Dispatch, SetStateAction } from "react"
-import { useEffect, useMemo, useRef, useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
-import { Delay, Suspense } from "@suspensive/react"
-import type { Dayjs } from "dayjs"
-import dayjs from "dayjs"
-import { motion } from "framer-motion"
-import {
-  CourtItem,
-  DatePicker,
-  EssentialImagePreload,
-} from "~/components/domains"
-import { Map } from "~/components/kakaos"
-import { BottomModal, Button, Icon, Skeleton, Toast } from "~/components/uis"
-import { useAddressQuery } from "~/features/addresses"
-import { useCourtQuery, useCourtsQuery } from "~/features/courts"
-import { useGetFavoritesQuery } from "~/features/favorites"
-import { useGetUpcomingReservationsQuery } from "~/features/reservations"
-import { useCurrentUserQuery } from "~/features/users"
-import { useLocalStorage } from "~/hooks"
-import { Navigation } from "~/layouts/Layout/navigations"
-import type { APICourt } from "~/types/domains/objects"
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react'
+import { css, useTheme } from '@emotion/react'
+import { Delay, Suspense } from '@suspensive/react'
+import dayjs, { Dayjs } from 'dayjs'
+import { motion } from 'framer-motion'
+import { CourtItem, DatePicker, EssentialImagePreload } from '~/components/domains'
+import { Map } from '~/components/kakaos'
+import { BottomModal, Button, Icon, Skeleton, Toast } from '~/components/uis'
+import { useAddressQuery } from '~/features/addresses'
+import { useCourtQuery, useCourtsQuery } from '~/features/courts'
+import { useGetFavoritesQuery } from '~/features/favorites'
+import { useGetUpcomingReservationsQuery } from '~/features/reservations'
+import { useCurrentUserQuery } from '~/features/users'
+import { useLocalStorage } from '~/hooks'
+import { Navigation } from '~/layouts/Layout/navigations'
+import { APICourt } from '~/types/domains/objects'
 
 const PAUSE_COURT_NUMBER = 0
 const FIRE_COURT_NUMBER = 6
@@ -38,19 +32,17 @@ const Page = () => {
 
   const selectedCourtId = router.query.courtId as string | undefined
 
-  const [center, setCenter] = useLocalStorage("center", DEFAULT_POSITION)
+  const [center, setCenter] = useLocalStorage('center', DEFAULT_POSITION)
   const [bounds, setBounds] = useState<kakao.maps.LatLngBounds>()
 
   const mapRef = useRef<kakao.maps.Map>()
 
-  const [selectedDate, setSelectedDate] = useState(() =>
-    dayjs().tz().hour(0).minute(0).second(0).millisecond(0)
-  )
+  const [selectedDate, setSelectedDate] = useState(() => dayjs().tz().hour(0).minute(0).second(0).millisecond(0))
 
   return (
     <Navigation
       top={{
-        title: selectedCourtId ? "여기에서 농구할까요?" : "어디서 농구할까요?",
+        title: selectedCourtId ? '여기에서 농구할까요?' : '어디서 농구할까요?',
         isNotification: false,
         isProfile: false,
         Custom: () => {
@@ -59,14 +51,7 @@ const Page = () => {
           const currentUserQuery = useCurrentUserQuery()
 
           return (
-            <HStack
-              spacing="4px"
-              onClick={() =>
-                router.push(
-                  currentUserQuery.isSuccess ? "/courts/create" : "/login"
-                )
-              }
-            >
+            <HStack spacing="4px" onClick={() => router.push(currentUserQuery.isSuccess ? '/courts/create' : '/login')}>
               <EssentialImagePreload lazyLoadTime={10} />
               <Text color={theme.colors.gray0500} fontSize="12px">
                 새 농구장을 추가해보세요
@@ -83,9 +68,9 @@ const Page = () => {
           initialValue={selectedDate}
           onChange={(date) => {
             setSelectedDate(date)
-            Toast.show(`${date.format("MM/DD(dd)")}의 농구장을 보고 있어요`, {
+            Toast.show(`${date.format('MM/DD(dd)')}의 농구장을 보고 있어요`, {
               duration: 1000,
-              marginBottom: "bottomNavigation",
+              marginBottom: 'bottomNavigation',
             })
           }}
         />
@@ -93,8 +78,8 @@ const Page = () => {
           center={center}
           level={6}
           maxLevel={7}
-          onClick={() => router.replace({ pathname: "/map" })}
-          onDragStart={() => router.replace({ pathname: "/map" })}
+          onClick={() => router.replace({ pathname: '/map' })}
+          onDragStart={() => router.replace({ pathname: '/map' })}
           onLoaded={(map) => {
             setBounds(map.getBounds())
             mapRef.current = map
@@ -113,12 +98,7 @@ const Page = () => {
                 </Delay>
               }
             >
-              <Markers
-                bounds={bounds}
-                setBounds={setBounds}
-                selectedDate={selectedDate}
-                map={mapRef.current}
-              />
+              <Markers bounds={bounds} setBounds={setBounds} selectedDate={selectedDate} map={mapRef.current} />
             </Suspense.CSROnly>
           )}
         </Map>
@@ -130,10 +110,7 @@ const Page = () => {
                   <VStack align="stretch">
                     <HStack>
                       <Skeleton.Circle size={32} />
-                      <Skeleton.Box
-                        height={24}
-                        style={{ flex: 1, marginRight: 80 }}
-                      />
+                      <Skeleton.Box height={24} style={{ flex: 1, marginRight: 80 }} />
                     </HStack>
                     <Skeleton.Paragraph fontSize={12} line={2} />
                   </VStack>
@@ -200,12 +177,12 @@ const Markers = ({
   )
 
   const courtsQuery = useCourtsQuery({
-    date: selectedDate.format("YYYY-MM-DD"),
+    date: selectedDate.format('YYYY-MM-DD'),
     startLatitude,
     startLongitude,
     endLatitude,
     endLongitude,
-    time: "morning",
+    time: 'morning',
   })
 
   useEffect(() => {
@@ -222,47 +199,39 @@ const Markers = ({
   return (
     <>
       {courtsQuery.data.map(({ court, reservationMaxCount }) => {
-        let imageSrc = "/assets/basketball/animation_off_400.png"
+        let imageSrc = '/assets/basketball/animation_off_400.png'
 
         const isReservatedCourt =
           getUpcomingReservationsQuery.isSuccess &&
-          getUpcomingReservationsQuery.data.contents.some(
-            ({ court: { id } }) => id === court.id
-          )
+          getUpcomingReservationsQuery.data.contents.some(({ court: { id } }) => id === court.id)
         const isFavoritedCourt =
-          getFavoritesQuery.isSuccess &&
-          getFavoritesQuery.data.contents.some(
-            ({ court: { id } }) => id === court.id
-          )
+          getFavoritesQuery.isSuccess && getFavoritesQuery.data.contents.some(({ court: { id } }) => id === court.id)
 
         if (isFavoritedCourt) {
-          imageSrc = "/assets/basketball/animation_off_favorited.png"
+          imageSrc = '/assets/basketball/animation_off_favorited.png'
         }
 
-        if (
-          reservationMaxCount > PAUSE_COURT_NUMBER &&
-          reservationMaxCount < FIRE_COURT_NUMBER
-        ) {
+        if (reservationMaxCount > PAUSE_COURT_NUMBER && reservationMaxCount < FIRE_COURT_NUMBER) {
           if (isReservatedCourt && isFavoritedCourt) {
-            imageSrc = "/assets/basketball/fire_off_all_tagged.gif"
+            imageSrc = '/assets/basketball/fire_off_all_tagged.gif'
           } else if (isReservatedCourt) {
-            imageSrc = "/assets/basketball/fire_off_reservated.gif"
+            imageSrc = '/assets/basketball/fire_off_reservated.gif'
           } else if (isFavoritedCourt) {
-            imageSrc = "/assets/basketball/fire_off_favorited.gif"
+            imageSrc = '/assets/basketball/fire_off_favorited.gif'
           } else {
-            imageSrc = "/assets/basketball/fire_off_400.gif"
+            imageSrc = '/assets/basketball/fire_off_400.gif'
           }
         }
 
         if (reservationMaxCount >= FIRE_COURT_NUMBER) {
           if (isReservatedCourt && isFavoritedCourt) {
-            imageSrc = "/assets/basketball/fire_on_all_tagged.gif"
+            imageSrc = '/assets/basketball/fire_on_all_tagged.gif'
           } else if (isReservatedCourt) {
-            imageSrc = "/assets/basketball/fire_on_reservated.gif"
+            imageSrc = '/assets/basketball/fire_on_reservated.gif'
           } else if (isFavoritedCourt) {
-            imageSrc = "/assets/basketball/fire_on_favorited.gif"
+            imageSrc = '/assets/basketball/fire_on_favorited.gif'
           } else {
-            imageSrc = "/assets/basketball/fire_on_400.gif"
+            imageSrc = '/assets/basketball/fire_on_400.gif'
           }
         }
 
@@ -281,7 +250,7 @@ const Markers = ({
               `}
               onTap={() => {
                 router.replace({
-                  pathname: "/map",
+                  pathname: '/map',
                   query: { courtId: court.id },
                 })
               }}
@@ -295,34 +264,35 @@ const Markers = ({
                 style={{
                   width: 50,
                   height: 50,
-                  position: "relative",
+                  position: 'relative',
                   borderRadius: 25,
-                  cursor: "pointer",
+                  cursor: 'pointer',
                 }}
                 justify="center"
               >
                 <Box
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     bottom: -4,
-                    backgroundColor: "rgba(0,0,0,0.6)",
-                    filter: "blur(4px)",
+                    backgroundColor: 'rgba(0,0,0,0.6)',
+                    filter: 'blur(4px)',
                     width: 45,
                     height: 45,
                     borderRadius: 25,
-                    overflow: "visible",
+                    overflow: 'visible',
                   }}
                 />
                 <img
                   src={imageSrc}
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     bottom: -8,
                     minWidth: 100,
                     minHeight: 150,
-                    pointerEvents: "none",
-                    userSelect: "none",
+                    pointerEvents: 'none',
+                    userSelect: 'none',
                   }}
+                  alt="basketball court status"
                 />
                 <HStack
                   as={motion.div}
@@ -332,7 +302,7 @@ const Markers = ({
                   bottom="-34px"
                   whiteSpace="nowrap"
                   textAlign="center"
-                  bgColor={selectedCourtId === court.id ? "black" : "#00000095"}
+                  bgColor={selectedCourtId === court.id ? 'black' : '#00000095'}
                   transition="background-color 200ms"
                   backdropFilter="blur(2px)"
                   color="white"
@@ -342,11 +312,7 @@ const Markers = ({
                   pointerEvents="none"
                   boxShadow="0 0 16px #00000040"
                 >
-                  <Icon
-                    name="map-pin"
-                    size={12}
-                    color={theme.colors.orange0600}
-                  />
+                  <Icon name="map-pin" size={12} color={theme.colors.orange0600} />
                   <Text fontSize="12px" fontWeight="bold">
                     {court.name}
                   </Text>
@@ -365,20 +331,16 @@ const CourtData = ({
   selectedDate,
   onSuccess,
 }: {
-  courtId: APICourt["id"]
+  courtId: APICourt['id']
   selectedDate: Dayjs
-  onSuccess: Parameters<typeof useCourtQuery>[2]["onSuccess"]
+  onSuccess: Parameters<typeof useCourtQuery>[2]['onSuccess']
 }) => {
   const currentUserQuery = useCurrentUserQuery()
   const getFavoritesQuery = useGetFavoritesQuery({
     enabled: currentUserQuery.isSuccess,
   })
 
-  const courtQuery = useCourtQuery(
-    courtId,
-    { date: selectedDate.format("YYYY-MM-DD"), time: "morning" },
-    { onSuccess }
-  )
+  const courtQuery = useCourtQuery(courtId, { date: selectedDate.format('YYYY-MM-DD'), time: 'morning' }, { onSuccess })
 
   const addressQuery = useAddressQuery({
     latitude: courtQuery.data.latitude,
@@ -396,9 +358,7 @@ const CourtData = ({
           <CourtItem.FavoritesToggle
             courtId={courtQuery.data.id}
             favoriteId={
-              getFavoritesQuery.data.contents.find(
-                (favorite) => favorite.court.id === courtQuery.data.id
-              )?.id || null
+              getFavoritesQuery.data.contents.find((favorite) => favorite.court.id === courtQuery.data.id)?.id || null
             }
           />
         )}
@@ -409,10 +369,8 @@ const CourtData = ({
           <Link
             href={
               currentUserQuery.isSuccess
-                ? `reservations/courts/${
-                    courtQuery.data.id
-                  }?date=${selectedDate.format("YYYY-MM-DD")}`
-                : "/login"
+                ? `reservations/courts/${courtQuery.data.id}?date=${selectedDate.format('YYYY-MM-DD')}`
+                : '/login'
             }
             passHref
           >

@@ -1,6 +1,6 @@
-import { css } from "@emotion/react"
-import Lottie from "lottie-react"
-import * as animationData from "../../../public/assets/lottie/basketball.json"
+import { css } from '@emotion/react'
+import Lottie from 'lottie-react'
+import * as animationData from '../../../public/assets/lottie/basketball.json'
 
 type Props = {
   width?: number
@@ -48,7 +48,7 @@ const Logo = ({ width = 160 }: Props) => {
         autoplay
         animationData={animationData}
         rendererSettings={{
-          preserveAspectRatio: "xMidYMid slice",
+          preserveAspectRatio: 'xMidYMid slice',
         }}
         style={{
           width: width * 0.16,

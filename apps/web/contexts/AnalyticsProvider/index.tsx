@@ -1,8 +1,7 @@
-import type { ReactNode } from "react"
-import { createContext, useEffect } from "react"
-import { useRouter } from "next/router"
-import GA from "react-ga4"
-import { env } from "~/constants"
+import { ReactNode, createContext, useEffect, useMemo } from 'react'
+import { useRouter } from 'next/router'
+import GA from 'react-ga4'
+import { env } from '~/constants'
 
 interface ContextProps {
   sendPageview: (pathname: string) => void
@@ -14,24 +13,21 @@ interface Props {
 }
 
 const sendPageview = (pathname: string) => {
-  GA.send({ hitType: "pageview", page: pathname })
+  GA.send({ hitType: 'pageview', page: pathname })
 }
 
 const AnalyticsProvider = ({ children }: Props) => {
   const router = useRouter()
 
-  useEffect(
-    () => GA.initialize([{ trackingId: env.GOOGLE_ANALYTICS_TRACKING_ID }]),
-    []
-  )
+  useEffect(() => GA.initialize([{ trackingId: env.GOOGLE_ANALYTICS_TRACKING_ID }]), [])
 
   useEffect(() => {
     sendPageview(router.pathname)
   }, [router.pathname])
 
-  return (
-    <Context.Provider value={{ sendPageview }}>{children}</Context.Provider>
-  )
+  const value = useMemo(() => ({ sendPageview }), [sendPageview])
+
+  return <Context.Provider value={value}>{children}</Context.Provider>
 }
 
 export default AnalyticsProvider

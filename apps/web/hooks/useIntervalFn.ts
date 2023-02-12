@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from 'react'
 
 const useIntervalFn = (fn: () => void, ms: number) => {
   const intervalId = useRef<NodeJS.Timeout>()

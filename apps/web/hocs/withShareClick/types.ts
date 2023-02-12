@@ -1,14 +1,10 @@
-import type { OmitAt } from "~/types/domains/helpers"
-import type {
-  APICourt,
-  APICourtChatroom,
-  APIUser,
-} from "~/types/domains/objects"
+import { OmitAt } from '~/types/domains/helpers'
+import { APICourt, APICourtChatroom, APIUser } from '~/types/domains/objects'
 
 export type ShareArgs = CourtArgs | CourtChatroomArgs | UserArgs
 
 type CourtArgs = Args<{
-  court: Pick<APICourt, "id" | "latitude" | "longitude" | "name">
+  court: Pick<APICourt, 'id' | 'latitude' | 'longitude' | 'name'>
 }>
 type CourtChatroomArgs = Args<{
   courtChatroom: OmitAt<APICourtChatroom>

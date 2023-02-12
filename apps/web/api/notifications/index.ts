@@ -1,18 +1,14 @@
-import type { AxiosPromise } from "axios"
-import { http } from "~/api/core"
-import type { CursorListRequestOption } from "~/types/domains/lists/CursorList"
-import type { APINotification } from "~/types/domains/objects"
+import { AxiosPromise } from 'axios'
+import { http } from '~/api/core'
+import { CursorListRequestOption } from '~/types/domains/lists/CursorList'
+import { APINotification } from '~/types/domains/objects'
 
 export default {
-  getNotifications: ({
-    size = 3,
-    lastId,
-    isFirst = false,
-  }: CursorListRequestOption<APINotification>) =>
+  getNotifications: ({ size = 3, lastId, isFirst = false }: CursorListRequestOption<APINotification>) =>
     http.get<{
       contents: APINotification[]
-      lastId: APINotification["id"] | null
-    }>("/notifications", {
+      lastId: APINotification['id'] | null
+    }>('/notifications', {
       params: {
         size,
         lastId: lastId || 0,
@@ -20,5 +16,5 @@ export default {
       },
     }),
 
-  readAllNotifications: () => http.put<AxiosPromise>("/notifications/read"),
+  readAllNotifications: () => http.put<AxiosPromise>('/notifications/read'),
 } as const

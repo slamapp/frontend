@@ -1,35 +1,14 @@
-import type {
-  ChangeEvent,
-  DragEvent,
-  InputHTMLAttributes,
-  ReactNode,
-} from "react"
-import { useEffect, useRef, useState } from "react"
-import { css } from "@emotion/react"
+import { ChangeEvent, DragEvent, InputHTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react'
+import { css } from '@emotion/react'
 
-interface Props
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    "value" | "onChange" | "children"
-  > {
-  children?:
-    | ((props: { file?: File; dragging: boolean }) => ReactNode)
-    | ReactNode
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'children'> {
+  children?: ((props: { file?: File; dragging: boolean }) => ReactNode) | ReactNode
   droppable?: boolean
   value?: File
   onChange?: (file: File) => void
 }
 
-const Upload = ({
-  children,
-  droppable = false,
-  name,
-  accept,
-  value,
-  onChange,
-  className,
-  ...props
-}: Props) => {
+const Upload = ({ children, droppable = false, name, accept, value, onChange, className, ...props }: Props) => {
   const [file, setFile] = useState(value)
   const [dragging, setDragging] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
@@ -113,7 +92,7 @@ const Upload = ({
         accept={accept}
         onChange={handleFileChange}
       />
-      {typeof children === "function" ? children({ file, dragging }) : children}
+      {typeof children === 'function' ? children({ file, dragging }) : children}
     </div>
   )
 }

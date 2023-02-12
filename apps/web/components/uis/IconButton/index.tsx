@@ -1,24 +1,17 @@
-import type { ComponentProps, MouseEventHandler } from "react"
-import { Center } from "@chakra-ui/react"
-import { useTheme } from "@emotion/react"
-import { motion } from "framer-motion"
-import { Icon } from "~/components/uis"
+import { ComponentProps, MouseEventHandler } from 'react'
+import { Center } from '@chakra-ui/react'
+import { useTheme } from '@emotion/react'
+import { motion } from 'framer-motion'
+import { Icon } from '~/components/uis'
 
 interface Props extends ComponentProps<typeof Center> {
-  icon: Pick<ComponentProps<typeof Icon>, "name" | "size" | "color" | "fill">
-  size?: "sm" | "md" | "lg"
-  type?: ComponentProps<typeof motion.button>["type"]
-  onClick?: MouseEventHandler<HTMLDivElement> &
-    MouseEventHandler<HTMLButtonElement>
+  icon: Pick<ComponentProps<typeof Icon>, 'name' | 'size' | 'color' | 'fill'>
+  size?: 'sm' | 'md' | 'lg'
+  type?: ComponentProps<typeof motion.button>['type']
+  onClick?: MouseEventHandler<HTMLDivElement> & MouseEventHandler<HTMLButtonElement>
 }
 
-const IconButton = ({
-  icon,
-  size = "lg",
-  type = "button",
-  onClick,
-  ...props
-}: Props) => {
+const IconButton = ({ icon, size = 'lg', type = 'button', onClick, ...props }: Props) => {
   const theme = useTheme()
 
   return (

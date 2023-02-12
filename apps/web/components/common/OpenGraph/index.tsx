@@ -1,5 +1,4 @@
-import type { ComponentType } from "react"
-import { Fragment } from "react"
+import { ComponentType, Fragment } from 'react'
 
 interface Props {
   title?: string
@@ -19,12 +18,7 @@ interface Props {
  *    imageUrl="https://static.slams.app/assets/basketball/200.png"
  * />
  */
-const OpenGraph = ({
-  title,
-  description,
-  imageUrl,
-  container: Container = Fragment,
-}: Props) => {
+const OpenGraph = ({ title, description, imageUrl, container: Container = Fragment }: Props) => {
   return (
     <Container>
       {title !== undefined && (

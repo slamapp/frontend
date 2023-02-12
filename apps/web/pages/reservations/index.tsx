@@ -1,19 +1,18 @@
-import { Fragment } from "react"
-import { HStack, VStack } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { Delay, Suspense } from "@suspensive/react"
-import { NoItemMessage, ReservationItem } from "~/components/domains"
-import { InfiniteScrollSensor, Skeleton, Tab } from "~/components/uis"
-import {
-  useGetExpiredReservationsInfiniteQuery,
-  useGetUpcomingReservationsQuery,
-} from "~/features/reservations"
-import { Navigation } from "~/layouts/Layout/navigations"
+import { Fragment } from 'react'
+import { Box, HStack, VStack } from '@chakra-ui/react'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
+import { Delay, Suspense } from '@suspensive/react'
+import { motion } from 'framer-motion'
+import { NoItemMessage, ReservationItem } from '~/components/domains'
+import { InfiniteScrollSensor, Skeleton, Tab } from '~/components/uis'
+import { useGetExpiredReservationsInfiniteQuery, useGetUpcomingReservationsQuery } from '~/features/reservations'
+import { Navigation } from '~/layouts/Layout/navigations'
 
 const Page = () => (
   <Navigation
     top={{
-      title: "예약",
+      title: '예약',
       isNotification: true,
       isProfile: true,
     }}
@@ -98,15 +97,14 @@ const ExpiredReservations = () => {
               )}
             />
           )}
-          {expiredReservations.data.pages.length === pageIndex + 1 &&
-            !lastId && (
-              <NoItemMessage
-                type="reservation"
-                title="더 받아올 지난 예약이 없습니다"
-                description="유용한 정보를 지난 예약에서 모아 보실 수 있어요"
-                buttonTitle="지도에서 내 주변 농구장 찾기"
-              />
-            )}
+          {expiredReservations.data.pages.length === pageIndex + 1 && !lastId && (
+            <NoItemMessage
+              type="reservation"
+              title="더 받아올 지난 예약이 없습니다"
+              description="유용한 정보를 지난 예약에서 모아 보실 수 있어요"
+              buttonTitle="지도에서 내 주변 농구장 찾기"
+            />
+          )}
         </Fragment>
       ))}
     </>

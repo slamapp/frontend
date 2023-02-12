@@ -1,10 +1,10 @@
-import { Navigation } from "~/layouts/Layout/navigations"
+import { Navigation } from '~/layouts/Layout/navigations'
 
 const Page = () => {
   return (
     <Navigation
       top={{
-        title: "채팅",
+        title: '채팅',
         isNotification: true,
         isProfile: true,
       }}

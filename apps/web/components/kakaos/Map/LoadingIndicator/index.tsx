@@ -1,6 +1,6 @@
-import { Spinner } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { motion } from "framer-motion"
+import { Spinner } from '@chakra-ui/react'
+import { css } from '@emotion/react'
+import { motion } from 'framer-motion'
 
 const LoadingIndicator = () => (
   <motion.div

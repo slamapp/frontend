@@ -1,8 +1,8 @@
-import { ThemeProvider, css } from "@emotion/react"
-import styled from "@emotion/styled"
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion"
-import Toast from "~/libs/Toast"
-import emotionTheme from "~/styles/emotionTheme"
+import { ThemeProvider, css } from '@emotion/react'
+import styled from '@emotion/styled'
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
+import Toast from '~/libs/Toast'
+import emotionTheme from '~/styles/emotionTheme'
 
 const marginBottoms = {
   bottomNavigation: 52,
@@ -10,23 +10,23 @@ const marginBottoms = {
 } as const
 
 const badge = {
-  success: "✅",
-  error: "⛔️",
-  warning: "🚧",
-  info: "ⓘ",
+  success: '✅',
+  error: '⛔️',
+  warning: '🚧',
+  info: 'ⓘ',
 } as const
 
 interface ExtraOptions {
   isShowProgressBar?: boolean
   isShowClose?: boolean
-  marginBottom?: "bottomNavigation" | "bottomFixedGradient" | number
+  marginBottom?: 'bottomNavigation' | 'bottomFixedGradient' | number
 }
 
 export default new Toast<ExtraOptions>({
   defaultOptions: {
     duration: 4000,
     delay: 100,
-    status: "info",
+    status: 'info',
     marginBottom: 0,
   },
   Adapter: ({ children }) => (
@@ -38,10 +38,7 @@ export default new Toast<ExtraOptions>({
     return (
       <motion.div
         style={{
-          marginBottom:
-            typeof marginBottom === "string"
-              ? marginBottoms[marginBottom]
-              : marginBottom ?? 0,
+          marginBottom: typeof marginBottom === 'string' ? marginBottoms[marginBottom] : marginBottom ?? 0,
         }}
       >
         {templates}
@@ -51,13 +48,7 @@ export default new Toast<ExtraOptions>({
   Template: ({
     content,
     isShow,
-    options: {
-      delay,
-      duration,
-      status,
-      isShowClose = true,
-      isShowProgressBar = false,
-    },
+    options: { delay, duration, status, isShowClose = true, isShowProgressBar = false },
     close,
   }) => {
     return (
@@ -67,8 +58,8 @@ export default new Toast<ExtraOptions>({
             layout
             style={{
               maxWidth: 560,
-              margin: "0 auto",
-              padding: "0 16px 16px 16px",
+              margin: '0 auto',
+              padding: '0 16px 16px 16px',
             }}
             initial={{ y: 40, opacity: 0 }}
             animate={{
@@ -83,14 +74,12 @@ export default new Toast<ExtraOptions>({
             }}
           >
             <Container>
-              {isShowProgressBar && (
-                <ProgressBar style={{ animationDuration: `${duration}ms` }} />
-              )}
+              {isShowProgressBar && <ProgressBar style={{ animationDuration: `${duration}ms` }} />}
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "0 16px",
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0 16px',
                 }}
               >
                 {status && badge[status]}
@@ -103,15 +92,16 @@ export default new Toast<ExtraOptions>({
                   {content}
                 </div>
                 {isShowClose && (
-                  <div
+                  <button
+                    type="button"
+                    onClick={close}
                     css={css`
                       width: 10px;
                       cursor: pointer;
                     `}
-                    onClick={close}
                   >
                     ×
-                  </div>
+                  </button>
                 )}
               </div>
             </Container>

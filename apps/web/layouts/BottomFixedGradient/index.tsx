@@ -1,15 +1,11 @@
-import type { ComponentPropsWithoutRef, ReactPortal } from "react"
-import { useEffect, useState } from "react"
-import type { Flex } from "@chakra-ui/react"
-import { Box } from "@chakra-ui/react"
-import { useTheme } from "@emotion/react"
-import { motion } from "framer-motion"
-import ReactDOM from "react-dom"
-import { useScrollContainer } from "~/layouts"
+import { ComponentPropsWithoutRef, ReactPortal, useEffect, useState } from 'react'
+import { Box, Flex } from '@chakra-ui/react'
+import { useTheme } from '@emotion/react'
+import { motion } from 'framer-motion'
+import ReactDOM from 'react-dom'
+import { useScrollContainer } from '~/layouts'
 
-const BottomFixedGradient = ({
-  children,
-}: ComponentPropsWithoutRef<typeof Flex>) => {
+const BottomFixedGradient = ({ children }: ComponentPropsWithoutRef<typeof Flex>) => {
   const theme = useTheme()
   const scrollContainer = useScrollContainer()
 

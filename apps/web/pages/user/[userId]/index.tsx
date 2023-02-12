@@ -1,46 +1,32 @@
-import type { ReactNode } from "react"
-import type { GetServerSideProps, NextPage } from "next"
-import Link from "next/link"
-import { Avatar, Box, Flex, HStack, Tag, Text, VStack } from "@chakra-ui/react"
-import { css, useTheme } from "@emotion/react"
-import { Delay, Suspense } from "@suspensive/react"
-import { useQueryClient } from "@tanstack/react-query"
-import { Button, Icon, Skeleton } from "~/components/uis"
-import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
-import { key } from "~/features"
-import { useGetFavoritesQuery } from "~/features/favorites"
-import {
-  useFollowCancelMutation,
-  useFollowCreateMutation,
-} from "~/features/notifications"
-import {
-  useCurrentUserQuery,
-  useMyProfileQuery,
-  useUserProfileQuery,
-} from "~/features/users"
-import { Navigation } from "~/layouts/Layout/navigations"
-import type { APICourt, APIUser } from "~/types/domains/objects"
-import type {
-  positionType,
-  proficiencyType,
-} from "~/types/domains/objects/user"
-import type { Keyof, ValueOf } from "~/types/helpers"
+import { ReactNode } from 'react'
+import { GetServerSideProps, NextPage } from 'next'
+import Link from 'next/link'
+import { Avatar, Box, Flex, HStack, Tag, Text, VStack } from '@chakra-ui/react'
+import { css, useTheme } from '@emotion/react'
+import { Delay, Suspense } from '@suspensive/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { Button, Icon, Skeleton } from '~/components/uis'
+import { DEFAULT_PROFILE_IMAGE_URL } from '~/constants'
+import { key } from '~/features'
+import { useGetFavoritesQuery } from '~/features/favorites'
+import { useFollowCancelMutation, useFollowCreateMutation } from '~/features/notifications'
+import { useCurrentUserQuery, useMyProfileQuery, useUserProfileQuery } from '~/features/users'
+import { Navigation } from '~/layouts/Layout/navigations'
+import { APICourt, APIUser } from '~/types/domains/objects'
+import { positionType, proficiencyType } from '~/types/domains/objects/user'
+import { Keyof, ValueOf } from '~/types/helpers'
 
 type Props = { userId: string }
 
-const Page: NextPage<Props> = ({ userId }) => {
-  return (
-    <Navigation top={{ isBack: true, isMenu: true, title: "" }} bottom>
-      <Contents userId={userId} />
-    </Navigation>
-  )
-}
+const Page: NextPage<Props> = ({ userId }) => (
+  <Navigation top={{ isBack: true, isMenu: true, title: '' }} bottom>
+    <Contents userId={userId} />
+  </Navigation>
+)
 
 export default Page
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  query,
-}) => ({
+export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => ({
   props: {
     userId: query.userId as string,
   },
@@ -96,7 +82,7 @@ const MyTemplate = () => {
   return null
 }
 
-const OtherTemplate = ({ userId }: { userId: APIUser["id"] }) => {
+const OtherTemplate = ({ userId }: { userId: APIUser['id'] }) => {
   const queryClient = useQueryClient()
   const userProfileQuery = useUserProfileQuery({ userId })
 
@@ -112,27 +98,16 @@ const OtherTemplate = ({ userId }: { userId: APIUser["id"] }) => {
         favoriteCourts={userProfileQuery.data.favoriteCourts}
         buttonArea={
           <Flex gap="8px">
-            <Link
-              href={`/chat/${userProfileQuery.data.id}`}
-              passHref
-              style={{ width: "100%" }}
-            >
+            <Link href={`/chat/${userProfileQuery.data.id}`} passHref style={{ width: '100%' }}>
               <Button fullWidth>메시지</Button>
             </Link>
             <Button
               fullWidth
-              loading={
-                followCreateMutation.isLoading || followCancelMutation.isLoading
-              }
-              disabled={
-                followCreateMutation.isLoading || followCancelMutation.isLoading
-              }
-              scheme={userProfileQuery.data.isFollowing ? "black" : "white"}
+              loading={followCreateMutation.isLoading || followCancelMutation.isLoading}
+              disabled={followCreateMutation.isLoading || followCancelMutation.isLoading}
+              scheme={userProfileQuery.data.isFollowing ? 'black' : 'white'}
               onClick={() =>
-                (userProfileQuery.data.isFollowing
-                  ? followCancelMutation
-                  : followCreateMutation
-                ).mutate(
+                (userProfileQuery.data.isFollowing ? followCancelMutation : followCreateMutation).mutate(
                   { receiverId: userId },
                   {
                     onSuccess: () =>
@@ -162,38 +137,21 @@ const Template = ({
   favoriteCourts,
   buttonArea,
 }: {
-  user: Pick<
-    APIUser,
-    | "profileImage"
-    | "id"
-    | "description"
-    | "positions"
-    | "proficiency"
-    | "nickname"
-  >
+  user: Pick<APIUser, 'profileImage' | 'id' | 'description' | 'positions' | 'proficiency' | 'nickname'>
 } & {
   followingCount: number
   followerCount: number
-  favoriteCourts: Pick<APICourt, "id" | "name">[]
+  favoriteCourts: Pick<APICourt, 'id' | 'name'>[]
   buttonArea: ReactNode
 }) => {
   const theme = useTheme()
 
   return (
-    <Navigation
-      top={{ isBack: true, isMenu: true, title: user.nickname }}
-      bottom
-    >
-      <VStack
-        align="stretch"
-        p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}
-      >
+    <Navigation top={{ isBack: true, isMenu: true, title: user.nickname }} bottom>
+      <VStack align="stretch" p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}>
         <VStack align="stretch">
           <Flex justify="space-between" align="center">
-            <Avatar
-              size="xl"
-              src={user.profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
-            />
+            <Avatar size="xl" src={user.profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
             <Flex
               textAlign="center"
               flexGrow={1}
@@ -240,9 +198,7 @@ const Template = ({
             <Text>포지션</Text>
             <HStack>
               {user.positions.length ? (
-                getTranslatedPositions(user.positions).map(
-                  ({ english, korean }) => <Tag key={english}>{korean}</Tag>
-                )
+                getTranslatedPositions(user.positions).map(({ english, korean }) => <Tag key={english}>{korean}</Tag>)
               ) : (
                 <Tag>선택한 포지션이 없습니다</Tag>
               )}
@@ -251,11 +207,7 @@ const Template = ({
           <VStack align="stretch">
             <Text>숙련도</Text>
             <HStack>
-              <Tag>
-                {user.proficiency === null
-                  ? "미정"
-                  : getTranslatedProficiency(user.proficiency).korean}
-              </Tag>
+              <Tag>{user.proficiency === null ? '미정' : getTranslatedProficiency(user.proficiency).korean}</Tag>
             </HStack>
           </VStack>
           <VStack align="stretch">
@@ -267,21 +219,13 @@ const Template = ({
             ) : (
               <VStack spacing="4px" align="stretch">
                 {favoriteCourts.map((court) => (
-                  <Flex
-                    key={court.id}
-                    justify="space-between"
-                    align="center"
-                    py="8px"
-                  >
+                  <Flex key={court.id} justify="space-between" align="center" py="8px">
                     <HStack spacing="10px">
                       <Icon name="map-pin" color="#FE6D04" />
                       <Text size="base">{court.name}</Text>
                     </HStack>
 
-                    <Link
-                      href={{ pathname: "/map", query: { courtId: court.id } }}
-                      passHref
-                    >
+                    <Link href={{ pathname: '/map', query: { courtId: court.id } }} passHref>
                       <Button>지도 보기</Button>
                     </Link>
                   </Flex>
@@ -302,32 +246,32 @@ const getTranslatedProficiency = (
   korean: ValueOf<typeof proficiencyType>
 } => {
   switch (englishProficiency) {
-    case "BEGINNER":
-      return { english: englishProficiency, korean: "뉴비" }
-    case "INTERMEDIATE":
-      return { english: englishProficiency, korean: "중수" }
-    case "MASTER":
-      return { english: englishProficiency, korean: "고수" }
+    case 'BEGINNER':
+      return { english: englishProficiency, korean: '뉴비' }
+    case 'INTERMEDIATE':
+      return { english: englishProficiency, korean: '중수' }
+    case 'MASTER':
+      return { english: englishProficiency, korean: '고수' }
 
     default:
-      return { english: englishProficiency, korean: "뉴비" }
+      return { english: englishProficiency, korean: '뉴비' }
   }
 }
 
 const getKoreanPosition = (englishPosition: Keyof<typeof positionType>) => {
   switch (englishPosition) {
-    case "C":
-      return "센터"
-    case "PF":
-      return "파워포워드"
-    case "SF":
-      return "스몰포워드"
-    case "PG":
-      return "포인트가드"
-    case "SG":
-      return "슈팅가드"
+    case 'C':
+      return '센터'
+    case 'PF':
+      return '파워포워드'
+    case 'SF':
+      return '스몰포워드'
+    case 'PG':
+      return '포인트가드'
+    case 'SG':
+      return '슈팅가드'
     default:
-      return "미정"
+      return '미정'
   }
 }
 
@@ -346,10 +290,7 @@ const Fallback = () => {
   const theme = useTheme()
 
   return (
-    <VStack
-      align="stretch"
-      p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}
-    >
+    <VStack align="stretch" p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}>
       <Flex justify="space-between" align="center">
         <Skeleton.Circle size={96} />
         <HStack spacing="16px">

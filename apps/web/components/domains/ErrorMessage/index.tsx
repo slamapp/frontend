@@ -1,7 +1,7 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Text, VStack } from "@chakra-ui/react"
-import { Button, Icon } from "~/components/uis"
+import Image from 'next/image'
+import Link from 'next/link'
+import { Text, VStack } from '@chakra-ui/react'
+import { Button, Icon } from '~/components/uis'
 
 interface Props {
   title: string

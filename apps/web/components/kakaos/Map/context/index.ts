@@ -1,5 +1,4 @@
-import type { RefObject } from "react"
-import { createContext, useContext } from "react"
+import { RefObject, createContext, useContext } from 'react'
 
 export const Context = createContext({
   map: null,

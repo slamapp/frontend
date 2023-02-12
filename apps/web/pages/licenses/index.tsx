@@ -1,5 +1,5 @@
-import type { NextPage } from "next"
-import Head from "next/head"
+import { NextPage } from 'next'
+import Head from 'next/head'
 
 const Licenses: NextPage = () => {
   return (

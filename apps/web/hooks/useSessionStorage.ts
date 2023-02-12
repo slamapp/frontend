@@ -1,9 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const useLocalStorage = <T = any>(
-  key: string,
-  initialValue: T
-): [storedValue: T, setValue: (value: T) => void] => {
+const useLocalStorage = <T = any>(key: string, initialValue: T): [storedValue: T, setValue: (value: T) => void] => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = sessionStorage.getItem(key)
@@ -11,7 +8,7 @@ const useLocalStorage = <T = any>(
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       // 서버사이드에서 실행되지 않도록 처리
-      if (typeof document !== "undefined") {
+      if (typeof document !== 'undefined') {
         console.error(error)
       }
 
@@ -21,8 +18,7 @@ const useLocalStorage = <T = any>(
 
   const setValue = (value: T) => {
     try {
-      const valueToStore =
-        typeof value === "function" ? value(storedValue) : value
+      const valueToStore = typeof value === 'function' ? value(storedValue) : value
 
       setStoredValue(valueToStore)
       sessionStorage.setItem(key, JSON.stringify(value))

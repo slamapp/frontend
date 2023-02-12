@@ -1,14 +1,14 @@
-import { Box, Center, Flex, HStack, Text, VStack } from "@chakra-ui/react"
-import { useQueryClient } from "@tanstack/react-query"
-import dayjs from "dayjs"
-import { AnimatePresence, motion } from "framer-motion"
-import { CourtItem } from "~/components/domains"
-import { Button, Icon, IconButton, LayerOver, Toast } from "~/components/uis"
-import { key } from "~/features"
-import { useGetFavoritesQuery } from "~/features/favorites"
-import { useDeleteReservationMutation } from "~/features/reservations"
-import { useScrollContainer } from "~/layouts"
-import type { APIReservation } from "~/types/domains/objects"
+import { Box, Center, Flex, HStack, Text, VStack } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import { AnimatePresence, motion } from 'framer-motion'
+import { CourtItem } from '~/components/domains'
+import { Button, Icon, IconButton, LayerOver, Toast } from '~/components/uis'
+import { key } from '~/features'
+import { useGetFavoritesQuery } from '~/features/favorites'
+import { useDeleteReservationMutation } from '~/features/reservations'
+import { useScrollContainer } from '~/layouts'
+import { APIReservation } from '~/types/domains/objects'
 
 interface Props {
   reservation: APIReservation
@@ -21,20 +21,13 @@ const ReservationItem = ({ reservation }: Props) => {
   const queryClient = useQueryClient()
 
   return (
-    <VStack
-      mt="16px"
-      align="stretch"
-      p="16px"
-      borderRadius="16px"
-      backgroundColor="white"
-    >
+    <VStack mt="16px" align="stretch" p="16px" borderRadius="16px" backgroundColor="white">
       <Box>
         <Text fontSize="18px" fontWeight="bold">
-          {dayjs(reservation.startTime).tz().format("YYYY. MM. DD (dd)")}
+          {dayjs(reservation.startTime).tz().format('YYYY. MM. DD (dd)')}
         </Text>
         <Text>
-          {dayjs(reservation.startTime).tz().format("HH:mm")}-
-          {dayjs(reservation.endTime).tz().format("HH:mm")}
+          {dayjs(reservation.startTime).tz().format('HH:mm')}-{dayjs(reservation.endTime).tz().format('HH:mm')}
         </Text>
       </Box>
 
@@ -47,9 +40,7 @@ const ReservationItem = ({ reservation }: Props) => {
         <CourtItem.FavoritesToggle
           courtId={reservation.court.id}
           favoriteId={
-            getFavoritesQuery.data.contents.find(
-              (favorite) => favorite.court.id === reservation.court.id
-            )?.id || null
+            getFavoritesQuery.data.contents.find((favorite) => favorite.court.id === reservation.court.id)?.id || null
           }
         />
         <CourtItem.Share court={reservation.court} />
@@ -57,9 +48,7 @@ const ReservationItem = ({ reservation }: Props) => {
         <CourtItem.Map court={reservation.court} type="findRoad" />
         {dayjs(reservation.startTime).diff(dayjs()) > 0 && (
           <LayerOver
-            trigger={(layer) => (
-              <IconButton icon={{ name: "x" }} onClick={layer.open} />
-            )}
+            trigger={(layer) => <IconButton icon={{ name: 'x' }} onClick={layer.open} />}
             layer={(layer) => (
               <AnimatePresence mode="wait">
                 {layer.isOpen && (
@@ -97,13 +86,11 @@ const ReservationItem = ({ reservation }: Props) => {
                         <Text>정말 예약을 삭제할까요? 🤔</Text>
                         <Box>
                           <Text fontSize="18px" fontWeight="bold">
-                            {dayjs(reservation.startTime)
-                              .tz()
-                              .format("YYYY. MM. DD (dd)")}
+                            {dayjs(reservation.startTime).tz().format('YYYY. MM. DD (dd)')}
                           </Text>
                           <Text>
-                            {dayjs(reservation.startTime).tz().format("HH:mm")}-
-                            {dayjs(reservation.endTime).tz().format("HH:mm")}
+                            {dayjs(reservation.startTime).tz().format('HH:mm')}-
+                            {dayjs(reservation.endTime).tz().format('HH:mm')}
                           </Text>
                         </Box>
                         <HStack>
@@ -120,13 +107,11 @@ const ReservationItem = ({ reservation }: Props) => {
                             onClick={() => {
                               deleteReservationMutation.mutate(reservation.id, {
                                 onSuccess: async () => {
-                                  await queryClient.invalidateQueries(
-                                    key.reservations.upcoming()
-                                  )
+                                  await queryClient.invalidateQueries(key.reservations.upcoming())
                                   layer.close()
-                                  Toast.show("성공적으로 예약을 삭제했어요", {
-                                    status: "info",
-                                    marginBottom: "bottomNavigation",
+                                  Toast.show('성공적으로 예약을 삭제했어요', {
+                                    status: 'info',
+                                    marginBottom: 'bottomNavigation',
                                   })
                                 },
                               })

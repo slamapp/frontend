@@ -1,8 +1,7 @@
-import type { ReactNode } from "react"
-import { useEffect, useState } from "react"
-import type { NextPage } from "next"
-import Head from "next/head"
-import { useRouter } from "next/router"
+import { ReactNode, useEffect, useState } from 'react'
+import { NextPage } from 'next'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 import {
   Avatar,
   Box,
@@ -13,42 +12,34 @@ import {
   FormLabel,
   Input,
   Text,
+  UseCheckboxGroupProps,
+  UseCheckboxProps,
+  UseRadioGroupProps,
+  UseRadioProps,
   VStack,
   chakra,
   useCheckbox,
   useCheckboxGroup,
   useRadio,
   useRadioGroup,
-} from "@chakra-ui/react"
-import type {
-  UseCheckboxGroupProps,
-  UseCheckboxProps,
-  UseRadioGroupProps,
-  UseRadioProps,
-} from "@chakra-ui/react"
-import { useTheme } from "@emotion/react"
-import { DevTool } from "@hookform/devtools"
-import { Suspense } from "@suspensive/react"
-import { motion } from "framer-motion"
-import { Controller, useForm } from "react-hook-form"
-import { Button, Icon, Toast, Upload } from "~/components/uis"
-import { DEFAULT_PROFILE_IMAGE_URL } from "~/constants"
-import {
-  useMyProfileMutation,
-  useMyProfileQuery,
-  useUpdateMyProfileImageMutation,
-} from "~/features/users"
-import { BottomFixedGradient, useScrollContainer } from "~/layouts"
-import { Navigation } from "~/layouts/Layout/navigations"
-import type { APIUser } from "~/types/domains/objects"
+} from '@chakra-ui/react'
+import { useTheme } from '@emotion/react'
+import { DevTool } from '@hookform/devtools'
+import { Suspense } from '@suspensive/react'
+import { motion } from 'framer-motion'
+import { Controller, useForm } from 'react-hook-form'
+import { Button, Icon, Toast, Upload } from '~/components/uis'
+import { DEFAULT_PROFILE_IMAGE_URL } from '~/constants'
+import { useMyProfileMutation, useMyProfileQuery, useUpdateMyProfileImageMutation } from '~/features/users'
+import { BottomFixedGradient, useScrollContainer } from '~/layouts'
+import { Navigation } from '~/layouts/Layout/navigations'
+import { APIUser } from '~/types/domains/objects'
 
-const Page: NextPage = () => {
-  return (
-    <Suspense.CSROnly>
-      <Contents />
-    </Suspense.CSROnly>
-  )
-}
+const Page: NextPage = () => (
+  <Suspense.CSROnly>
+    <Contents />
+  </Suspense.CSROnly>
+)
 
 export default Page
 
@@ -56,7 +47,7 @@ const Contents = () => {
   const myProfileQuery = useMyProfileQuery()
 
   return myProfileQuery.isSuccess ? (
-    <Navigation top={{ isBack: true, title: "프로필 수정" }}>
+    <Navigation top={{ isBack: true, title: '프로필 수정' }}>
       <EditForm initialData={myProfileQuery.data} />
     </Navigation>
   ) : null
@@ -73,36 +64,31 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
     handleSubmit,
     formState: { errors, isDirty, isSubmitting, isSubmitSuccessful, isValid },
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       description: initialData.description,
       email: initialData.email,
       nickname: initialData.nickname,
       positions: initialData.positions,
-      proficiency: initialData.proficiency ?? "BEGINNER",
+      proficiency: initialData.proficiency ?? 'BEGINNER',
       profileImage: initialData.profileImage,
     },
   })
 
-  const onSubmit: Parameters<typeof handleSubmit>[0] = ({
-    description,
-    nickname,
-    positions,
-    proficiency,
-  }) =>
+  const onSubmit: Parameters<typeof handleSubmit>[0] = ({ description, nickname, positions, proficiency }) =>
     myProfileMutation.mutateAsync(
       { description, nickname, positions, proficiency },
       {
         onSuccess: async (data) => {
           await router.replace(`/user/${data.id}`)
 
-          Toast.show("성공적으로 내 프로필 정보를 수정했어요", {
-            status: "success",
+          Toast.show('성공적으로 내 프로필 정보를 수정했어요', {
+            status: 'success',
           })
         },
         onError: () => {
-          Toast.show("내 프로필 정보를 수정을 실패했습니다.", {
-            status: "error",
+          Toast.show('내 프로필 정보를 수정을 실패했습니다.', {
+            status: 'error',
           })
         },
       }
@@ -116,48 +102,44 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
       </Head>
       <form>
         <VStack px="16px" spacing="24px">
-          <AvatarEdit
-            src={initialData.profileImage ?? DEFAULT_PROFILE_IMAGE_URL}
-          />
+          <AvatarEdit src={initialData.profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
           <FormControl isInvalid={!!errors.nickname}>
             <FormLabel htmlFor="nickname">닉네임</FormLabel>
             <Input
               id="nickname"
               placeholder="ex) 수도권 강백호"
               type="text"
-              {...register("nickname", {
-                required: "닉네임을 채워주세요",
+              {...register('nickname', {
+                required: '닉네임을 채워주세요',
                 minLength: {
                   value: 2,
-                  message: "닉네임을 2자 이상 적어주세요",
+                  message: '닉네임을 2자 이상 적어주세요',
                 },
                 maxLength: {
                   value: 15,
-                  message: "닉네임을 15자 이하 적어주세요",
+                  message: '닉네임을 15자 이하 적어주세요',
                 },
               })}
-              aria-invalid={errors.nickname ? "true" : "false"}
+              aria-invalid={errors.nickname ? 'true' : 'false'}
             />
             <FormErrorMessage>{errors.nickname?.message}</FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={!!errors.description}>
-            <FormLabel htmlFor="description">
-              나를 한 마디로 표현해주세요
-            </FormLabel>
+            <FormLabel htmlFor="description">나를 한 마디로 표현해주세요</FormLabel>
             <Input
               id="description"
               placeholder="ex) 슬램에서 한판 기대하고 있을게요"
               type="text"
-              {...register("description", {
-                required: "한마디를 채워주세요",
+              {...register('description', {
+                required: '한마디를 채워주세요',
                 minLength: {
                   value: 2,
-                  message: "한마디를 2자 이상로 적어주세요",
+                  message: '한마디를 2자 이상로 적어주세요',
                 },
                 maxLength: {
                   value: 30,
-                  message: "한마디를 30자 이하로 적어주세요",
+                  message: '한마디를 30자 이하로 적어주세요',
                 },
               })}
             />
@@ -173,23 +155,23 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               render={({ field }) => (
                 <ChipCheckboxGroup
                   options={[
-                    { value: "C", label: "센터" },
-                    { value: "PF", label: "파워포워드" },
-                    { value: "SF", label: "스몰포워드" },
-                    { value: "SG", label: "슈팅가드" },
-                    { value: "PG", label: "포인트가드" },
-                    { value: "TBD", label: "미정" },
+                    { value: 'C', label: '센터' },
+                    { value: 'PF', label: '파워포워드' },
+                    { value: 'SF', label: '스몰포워드' },
+                    { value: 'SG', label: '슈팅가드' },
+                    { value: 'PG', label: '포인트가드' },
+                    { value: 'TBD', label: '미정' },
                   ]}
                   {...field}
                   onChange={(values) => {
                     field.onChange(
                       (() => {
-                        if (values.length === 2 && values[0] === "TBD") {
+                        if (values.length === 2 && values[0] === 'TBD') {
                           return [values[1]]
                         }
 
-                        if (values.includes("TBD")) {
-                          return ["TBD"]
+                        if (values.includes('TBD')) {
+                          return ['TBD']
                         }
 
                         if (values.length > 2) {
@@ -197,7 +179,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
                         }
 
                         if (values.length === 0) {
-                          return ["TBD"]
+                          return ['TBD']
                         }
 
                         return [...values]
@@ -219,9 +201,9 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               render={({ field }) => (
                 <ChipRadioGroup
                   options={[
-                    { value: "BEGINNER", label: "뉴비" },
-                    { value: "INTERMEDIATE", label: "중수" },
-                    { value: "MASTER", label: "고수" },
+                    { value: 'BEGINNER', label: '뉴비' },
+                    { value: 'INTERMEDIATE', label: '중수' },
+                    { value: 'MASTER', label: '고수' },
                   ]}
                   {...field}
                   onChange={(value) => {
@@ -238,9 +220,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
           <Box
             as={motion.div}
             initial={{ padding: 16 }}
-            animate={
-              scrollContainer.height > 400 ? { padding: 16 } : { padding: 0 }
-            }
+            animate={scrollContainer.height > 400 ? { padding: 16 } : { padding: 0 }}
           >
             <Button
               fullWidth
@@ -251,10 +231,10 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               style={{ borderRadius: scrollContainer.height > 400 ? 16 : 0 }}
             >
               {!isDirty || !isValid
-                ? "프로필을 먼저 수정하세요"
+                ? '프로필을 먼저 수정하세요'
                 : isSubmitSuccessful
-                ? "내 프로필페이지로 이동 중이에요"
-                : "프로필 수정 완료하기"}
+                ? '내 프로필페이지로 이동 중이에요'
+                : '프로필 수정 완료하기'}
             </Button>
           </Box>
         </BottomFixedGradient>
@@ -284,12 +264,8 @@ const ChipCheckboxGroup = ({
   )
 }
 
-const ChipCheckbox = ({
-  children,
-  ...props
-}: UseCheckboxProps & { children: ReactNode }) => {
-  const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
-    useCheckbox(props)
+const ChipCheckbox = ({ children, ...props }: UseCheckboxProps & { children: ReactNode }) => {
+  const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } = useCheckbox(props)
 
   const theme = useTheme()
 
@@ -299,11 +275,9 @@ const ChipCheckbox = ({
       <Box
         cursor="pointer"
         border="2px solid"
-        borderColor={
-          state.isChecked ? theme.colors.black : theme.colors.gray0100
-        }
+        borderColor={state.isChecked ? theme.colors.black : theme.colors.gray0100}
         borderRadius="full"
-        bgColor={state.isChecked ? theme.colors.black : "transparent"}
+        bgColor={state.isChecked ? theme.colors.black : 'transparent'}
         color={state.isChecked ? theme.colors.white : theme.colors.black}
         px="16px"
         py="4px"
@@ -336,12 +310,8 @@ const ChipRadioGroup = ({
   )
 }
 
-const ChipRadio = ({
-  children,
-  ...props
-}: UseRadioProps & { children: ReactNode }) => {
-  const { getCheckboxProps, getInputProps, getLabelProps, htmlProps, state } =
-    useRadio(props)
+const ChipRadio = ({ children, ...props }: UseRadioProps & { children: ReactNode }) => {
+  const { getCheckboxProps, getInputProps, getLabelProps, htmlProps, state } = useRadio(props)
 
   const theme = useTheme()
 
@@ -351,11 +321,9 @@ const ChipRadio = ({
       <Box
         cursor="pointer"
         border="2px solid"
-        borderColor={
-          state.isChecked ? theme.colors.black : theme.colors.gray0100
-        }
+        borderColor={state.isChecked ? theme.colors.black : theme.colors.gray0100}
         borderRadius="full"
-        bgColor={state.isChecked ? theme.colors.black : "transparent"}
+        bgColor={state.isChecked ? theme.colors.black : 'transparent'}
         color={state.isChecked ? theme.colors.white : theme.colors.black}
         px="16px"
         py="4px"
@@ -381,13 +349,12 @@ const AvatarEdit = ({ src }: { src: string }) => {
       fileReaderDataURL.readAsDataURL(file)
     }
 
-    fileReaderDataURL.addEventListener("load", async (e) => {
-      const newSrc =
-        typeof e.target?.result === "string" ? e.target?.result : undefined
+    fileReaderDataURL.addEventListener('load', async (e) => {
+      const newSrc = typeof e.target?.result === 'string' ? e.target?.result : undefined
 
       if (file && newSrc) {
         await updateMyProfileImageMutation.mutateAsync(file)
-        Toast.show("프로필 사진을 성공적으로 바꿨어요", { status: "success" })
+        Toast.show('프로필 사진을 성공적으로 바꿨어요', { status: 'success' })
       }
     })
   }, [file])
@@ -397,11 +364,7 @@ const AvatarEdit = ({ src }: { src: string }) => {
       <Upload droppable value={file} onChange={(file) => setFile(file)}>
         {({ dragging }) => (
           <Box pointerEvents="none" pos="relative">
-            <Avatar
-              size="xl"
-              src={src}
-              border={dragging ? "5px solid black" : undefined}
-            />
+            <Avatar size="xl" src={src} border={dragging ? '5px solid black' : undefined} />
             <Center pos="absolute" top={0} right={0} left={0} bottom={0}>
               <Icon name="plus" color={theme.colors.gray0900} />
             </Center>

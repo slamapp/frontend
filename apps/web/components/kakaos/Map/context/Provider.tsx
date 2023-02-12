@@ -1,7 +1,6 @@
-import type { ReactNode } from "react"
-import { useEffect, useRef, useState } from "react"
-import { useDebounce } from "~/hooks"
-import { Context } from "."
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { useDebounce } from '~/hooks'
+import { Context } from '.'
 
 type Props = {
   center: { latitude: number; longitude: number }
@@ -93,27 +92,14 @@ export const Provider = ({
   const debouncedSouthWestLng = useDebounce(southWest?.getLng(), debounceDelay)
 
   useEffect(() => {
-    if (
-      map &&
-      debouncedNorthEastLat &&
-      debouncedNorthEastLng &&
-      debouncedSouthWestLat &&
-      debouncedSouthWestLng
-    ) {
+    if (map && debouncedNorthEastLat && debouncedNorthEastLng && debouncedSouthWestLat && debouncedSouthWestLng) {
       requestAnimationFrame(() => {
         onBoundChange?.(map)
       })
     }
-  }, [
-    debouncedNorthEastLat,
-    debouncedNorthEastLng,
-    debouncedSouthWestLat,
-    debouncedSouthWestLng,
-  ])
+  }, [debouncedNorthEastLat, debouncedNorthEastLng, debouncedSouthWestLat, debouncedSouthWestLng])
 
-  return (
-    <Context.Provider value={{ map, mapRef, render }}>
-      {children}
-    </Context.Provider>
-  )
+  const value = useMemo(() => ({ map, mapRef, render }), [map, mapRef, render])
+
+  return <Context.Provider value={value}>{children}</Context.Provider>
 }

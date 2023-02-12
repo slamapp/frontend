@@ -1,24 +1,24 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Heading, Text, VStack } from "@chakra-ui/react"
-import { Button, Icon } from "~/components/uis"
+import Image from 'next/image'
+import Link from 'next/link'
+import { Heading, Text, VStack } from '@chakra-ui/react'
+import { Button, Icon } from '~/components/uis'
 
 type Props = {
   title: string
   description: string
   buttonTitle: string
-  type: "reservation" | "favorite" | "notification" | "follow"
+  type: 'reservation' | 'favorite' | 'notification' | 'follow'
 }
 
 const NoItemMessage = ({ title, description, buttonTitle, type }: Props) => {
   const src =
-    type === "favorite"
-      ? "/assets/basketball/fire_off_favorited.gif"
-      : type === "reservation"
-      ? "/assets/basketball/fire_off_reservated.gif"
-      : type === "notification"
-      ? "/assets/basketball/animation_off_400.png"
-      : "/assets/basketball/fire_off_400.gif"
+    type === 'favorite'
+      ? '/assets/basketball/fire_off_favorited.gif'
+      : type === 'reservation'
+      ? '/assets/basketball/fire_off_reservated.gif'
+      : type === 'notification'
+      ? '/assets/basketball/animation_off_400.png'
+      : '/assets/basketball/fire_off_400.gif'
 
   return (
     <VStack spacing={3}>
@@ -37,7 +37,7 @@ const NoItemMessage = ({ title, description, buttonTitle, type }: Props) => {
           {buttonTitle}
         </Button>
       </Link>
-      <div style={{ height: 40 }}></div>
+      <div style={{ height: 40 }} />
     </VStack>
   )
 }

@@ -1,25 +1,23 @@
-import dayjs from "dayjs"
+import dayjs from 'dayjs'
 
-export const DEFAULT_PROFILE_IMAGE_URL = "/assets/default_profile.svg"
+export const DEFAULT_PROFILE_IMAGE_URL = '/assets/default_profile.svg'
 
-export const PROXY_PRE_FIX = "/proxy"
+export const PROXY_PRE_FIX = '/proxy'
 
-export const COOKIE_TOKEN_EXPIRES = () => dayjs().add(365, "day").toDate()
+export const COOKIE_TOKEN_EXPIRES = () => dayjs().add(365, 'day').toDate()
 
 export const env = {
-  IS_PRODUCTION_MODE: process.env.NODE_ENV === "production",
+  IS_PRODUCTION_MODE: process.env.NODE_ENV === 'production',
 
   SLAM_TOKEN_KEY: process.env.NEXT_PUBLIC_SLAM_TOKEN_KEY as string,
 
   JWT_SECRET_KEY: process.env.NEXT_PUBLIC_JWT_SECRET_KEY as string,
 
-  SERVICE_API_END_POINT: process.env
-    .NEXT_PUBLIC_SERVICE_API_END_POINT as string,
+  SERVICE_API_END_POINT: process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string,
 
   SERVICE_API_SUB_FIX: process.env.NEXT_PUBLIC_SERVICE_API_SUB_FIX as string,
 
-  GOOGLE_ANALYTICS_TRACKING_ID: process.env
-    .NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID as string,
+  GOOGLE_ANALYTICS_TRACKING_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID as string,
 
   KAKAO_JAVASCRIPT_KEY: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string,
 

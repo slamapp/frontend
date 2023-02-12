@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react"
-import Router, { useRouter } from "next/router"
-import { css, useTheme } from "@emotion/react"
-import { AnimatePresence, motion } from "framer-motion"
-import { useScrollContainer } from "~/layouts"
-import { useSetNavigation } from "../../navigations"
+import { useEffect, useRef, useState } from 'react'
+import Router, { useRouter } from 'next/router'
+import { css, useTheme } from '@emotion/react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useScrollContainer } from '~/layouts'
+import { useSetNavigation } from '../../navigations'
 
 const PageLoader = () => {
   const theme = useTheme()
@@ -19,7 +19,7 @@ const PageLoader = () => {
 
   useEffect(() => {
     const progressBarOn = (url: string) => {
-      const nextPathname = url.split("?")[0]
+      const nextPathname = url.split('?')[0]
       if (!visiteds.current[nextPathname]) {
         setIsProgressBar(true)
         setNavigation.all((prev) => ({
@@ -38,14 +38,14 @@ const PageLoader = () => {
       }))
     }
 
-    Router.events.on("routeChangeStart", progressBarOn)
-    Router.events.on("routeChangeComplete", progressBarOff)
-    Router.events.on("routeChangeError", progressBarOff)
+    Router.events.on('routeChangeStart', progressBarOn)
+    Router.events.on('routeChangeComplete', progressBarOff)
+    Router.events.on('routeChangeError', progressBarOff)
 
     return () => {
-      Router.events.off("routeChangeStart", progressBarOn)
-      Router.events.off("routeChangeComplete", progressBarOff)
-      Router.events.off("routeChangeError", progressBarOff)
+      Router.events.off('routeChangeStart', progressBarOn)
+      Router.events.off('routeChangeComplete', progressBarOff)
+      Router.events.off('routeChangeError', progressBarOff)
     }
   }, [router.pathname])
 
@@ -61,20 +61,7 @@ const PageLoader = () => {
         >
           <motion.div
             animate={{
-              width: [
-                "0%",
-                "80%",
-                "81%",
-                "82%",
-                "83%",
-                "84%",
-                "85%",
-                "86%",
-                "87%",
-                "88%",
-                "89%",
-                "90%",
-              ],
+              width: ['0%', '80%', '81%', '82%', '83%', '84%', '85%', '86%', '87%', '88%', '89%', '90%'],
               transition: { duration: 10 },
             }}
             exit={{ width: `100%`, height: 0 }}

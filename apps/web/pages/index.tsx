@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react"
-import Head from "next/head"
-import Link from "next/link"
-import { Box, HStack, Text, VStack } from "@chakra-ui/react"
-import { css } from "@emotion/react"
-import { Delay, Suspense } from "@suspensive/react"
-import { motion } from "framer-motion"
-import { CourtItem, NoItemMessage } from "~/components/domains"
-import { Button, Icon, Skeleton } from "~/components/uis"
-import { useGetFavoritesQuery } from "~/features/favorites"
-import { Navigation } from "~/layouts/Layout/navigations"
+import { useEffect, useState } from 'react'
+import Head from 'next/head'
+import Link from 'next/link'
+import { Box, HStack, Text, VStack } from '@chakra-ui/react'
+import { css } from '@emotion/react'
+import { Delay, Suspense } from '@suspensive/react'
+import { motion } from 'framer-motion'
+import { CourtItem, NoItemMessage } from '~/components/domains'
+import { Button, Icon, Skeleton } from '~/components/uis'
+import { useGetFavoritesQuery } from '~/features/favorites'
+import { Navigation } from '~/layouts/Layout/navigations'
 
-export default function Page() {
+const Page = () => {
   return (
     <Navigation
       top={{
-        title: "즐겨찾기",
+        title: '즐겨찾기',
         isNotification: true,
         isProfile: true,
       }}
@@ -32,6 +32,8 @@ export default function Page() {
     </Navigation>
   )
 }
+
+export default Page
 
 const Contents = () => {
   const getFavoritesQuery = useGetFavoritesQuery()
@@ -62,9 +64,9 @@ const Contents = () => {
                     y: 0,
                     opacity: 1,
                     transition: { delay: index / 50 },
-                    backgroundColor: "#ffffff90",
+                    backgroundColor: '#ffffff90',
                   },
-                  whileTap: { backgroundColor: "white" },
+                  whileTap: { backgroundColor: 'white' },
                 }}
                 initial="initial"
                 animate="animate"
@@ -78,13 +80,7 @@ const Contents = () => {
               >
                 <HStack spacing="4px">
                   <Icon name="map-pin" size="sm" color="#FE6D04" />
-                  <Text
-                    fontSize="xl"
-                    overflow="hidden"
-                    whiteSpace="nowrap"
-                    textOverflow="ellipsis"
-                    fontWeight="bold"
-                  >
+                  <Text fontSize="xl" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight="bold">
                     {court.name}
                   </Text>
                 </HStack>
@@ -93,9 +89,7 @@ const Contents = () => {
                     <CourtItem.FavoritesToggle
                       courtId={court.id}
                       favoriteId={
-                        getFavoritesQuery.data?.contents.find(
-                          (favorite) => favorite.court.id === court.id
-                        )?.id || null
+                        getFavoritesQuery.data?.contents.find((favorite) => favorite.court.id === court.id)?.id || null
                       }
                     />
                     <CourtItem.Share
@@ -110,13 +104,13 @@ const Contents = () => {
                   </HStack>
                   <Link
                     href={{
-                      pathname: "/map",
+                      pathname: '/map',
                       query: {
                         courtId: court.id,
                       },
                     }}
                     passHref
-                    style={{ flex: 1, display: "flex" }}
+                    style={{ flex: 1, display: 'flex' }}
                   >
                     <Button size="lg" fullWidth>
                       예약하기
@@ -132,9 +126,9 @@ const Contents = () => {
   )
 }
 
-function Fallback() {
-  function SkeletonName() {
-    const [width, setWidth] = useState("0%")
+const Fallback = () => {
+  const SkeletonName = () => {
+    const [width, setWidth] = useState('0%')
 
     useEffect(() => {
       setWidth(`${Math.random() * 20 + 40}%`)

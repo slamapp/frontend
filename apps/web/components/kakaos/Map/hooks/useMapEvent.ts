@@ -1,5 +1,5 @@
-import { useEffect } from "react"
-import { useMap } from "../context"
+import { useEffect } from 'react'
+import { useMap } from '../context'
 
 const useMapEvent = (
   target: kakao.maps.event.EventTarget | null,
