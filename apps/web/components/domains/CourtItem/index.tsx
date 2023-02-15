@@ -73,10 +73,10 @@ const CourtItem = {
         <Text
           color={theme.colors.gray0700}
           css={css`
-            overflow: hidden;
             display: box;
-            word-wrap: break-word;
+            overflow: hidden;
             text-overflow: ellipsis;
+            word-wrap: break-word;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
           `}

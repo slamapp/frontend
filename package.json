@@ -28,8 +28,6 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
     "packlint": "^0.2.4",
-    "postcss": "^8.4.21",
-    "postcss-syntax": "^0.36.2",
     "prettier": "^2.8.2",
     "turbo": "latest",
     "typescript": "^4.9.4"
