@@ -166,6 +166,16 @@ importers:
   configs/tsconfig:
     specifiers: {}
 
+  packages/types:
+    specifiers:
+      '@slamapp/eslint': workspace:*
+      tsconfig: workspace:*
+      typescript: ^4.5.2
+    devDependencies:
+      '@slamapp/eslint': link:../../configs/eslint
+      tsconfig: link:../../configs/tsconfig
+      typescript: 4.9.5
+
   packages/ui:
     specifiers:
       '@types/react': ^18.0.17

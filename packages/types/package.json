@@ -1,0 +1,14 @@
+{
+  "name": "@slamapp/types",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {},
+  "devDependencies": {
+    "@slamapp/eslint": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.5.2"
+  }
+}
