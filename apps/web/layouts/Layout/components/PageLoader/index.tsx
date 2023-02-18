@@ -52,7 +52,10 @@ const PageLoader = () => {
   return (
     <AnimatePresence mode="wait">
       {isProgressBar && (
-        <div
+        <motion.div
+          initial={{ backgroundColor: '#e8e8e800' }}
+          animate={{ backgroundColor: '#e8e8e8' }}
+          exit={{ backgroundColor: '#e8e8e800' }}
           css={css`
             position: fixed;
             width: ${scrollContainer.width}px;
@@ -92,16 +95,7 @@ const PageLoader = () => {
               }
             `}
           />
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            css={css`
-              height: 100%;
-              background-color: ${theme.colors.gray0050};
-            `}
-          />
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   )
