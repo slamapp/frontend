@@ -26,25 +26,16 @@ import { BottomFixedGradient, useScrollContainer } from '~/layouts'
 import { Navigation } from '~/layouts/Layout/navigations'
 import { APICourt } from '~/types/domains/objects/court'
 
-type FieldValues = Pick<
-  Parameters<typeof api.courts.createNewCourt>[0],
-  'basketCount' | 'image' | 'name' | 'texture'
-> & {
-  position: Pick<Parameters<typeof api.courts.createNewCourt>[0], 'latitude' | 'longitude'> | null
-}
-
 const Page = () => {
   const router = useRouter()
   const courtCreateMutation = useCourtCreateMutation()
   const scrollContainer = useScrollContainer()
 
-  const {
-    control,
-    formState: { errors, isSubmitting },
-    handleSubmit,
-    register,
-    watch,
-  } = useForm<FieldValues>({
+  const { control, formState, handleSubmit, register, watch } = useForm<
+    Pick<Parameters<typeof api.courts.createNewCourt>[0], 'basketCount' | 'image' | 'name' | 'texture'> & {
+      position: Pick<Parameters<typeof api.courts.createNewCourt>[0], 'latitude' | 'longitude'> | null
+    }
+  >({
     mode: 'all',
     defaultValues: {
       basketCount: 1,
@@ -73,7 +64,7 @@ const Page = () => {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl w="100%" isInvalid={!!errors[field.name]}>
+              <FormControl w="100%" isInvalid={!!formState.errors[field.name]}>
                 <FormLabel htmlFor={field.name}>농구장 위치</FormLabel>
                 <MapEditor
                   onChange={(courtPosition) => {
@@ -81,7 +72,7 @@ const Page = () => {
                     field.onBlur()
                   }}
                 />
-                <FormErrorMessage>{errors.position?.message}</FormErrorMessage>
+                <FormErrorMessage>{formState.errors.position?.message}</FormErrorMessage>
               </FormControl>
             )}
           />
@@ -91,7 +82,7 @@ const Page = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
               w="100%"
-              isInvalid={!!errors.basketCount}
+              isInvalid={!!formState.errors.basketCount}
             >
               <FormLabel htmlFor="basketCount">골대 개수</FormLabel>
               <InputGroup>
@@ -114,7 +105,7 @@ const Page = () => {
                   <Text>개</Text>
                 </InputRightElement>
               </InputGroup>
-              <FormErrorMessage>{errors.basketCount?.message}</FormErrorMessage>
+              <FormErrorMessage>{formState.errors.basketCount?.message}</FormErrorMessage>
             </FormControl>
           )}
           {watch('position') && (
@@ -123,7 +114,7 @@ const Page = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.4 } }}
               w="100%"
-              isInvalid={!!errors.name}
+              isInvalid={!!formState.errors.name}
             >
               <FormLabel htmlFor="name">농구장 이름</FormLabel>
               <Input
@@ -136,7 +127,7 @@ const Page = () => {
                   maxLength: { value: 15, message: '15자 이하로 적어주세요' },
                 })}
               />
-              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+              <FormErrorMessage>{formState.errors.name?.message}</FormErrorMessage>
             </FormControl>
           )}
 
@@ -150,7 +141,7 @@ const Page = () => {
           animate={scrollContainer.height > 400 ? { padding: 16 } : { padding: 0 }}
         >
           <Button
-            loading={isSubmitting}
+            loading={formState.isSubmitting}
             onClick={handleSubmit(async ({ basketCount, image, name, position, texture }) => {
               if (position) {
                 const { latitude, longitude } = position
