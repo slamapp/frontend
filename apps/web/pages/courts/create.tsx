@@ -64,7 +64,7 @@ const Page = () => {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl w="100%" isInvalid={!!formState.errors[field.name]}>
+              <FormControl isRequired w="100%" isInvalid={!!formState.errors[field.name]}>
                 <FormLabel htmlFor={field.name}>농구장 위치</FormLabel>
                 <MapEditor
                   onChange={(courtPosition) => {
@@ -78,6 +78,7 @@ const Page = () => {
           />
           {watch('position') && (
             <FormControl
+              isRequired
               as={motion.div}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
@@ -110,6 +111,7 @@ const Page = () => {
           )}
           {watch('position') && (
             <FormControl
+              isRequired
               as={motion.div}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0, transition: { delay: 0.4 } }}
