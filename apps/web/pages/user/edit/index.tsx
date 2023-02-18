@@ -103,7 +103,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
       <form>
         <VStack px="16px" spacing="24px">
           <AvatarEdit src={initialData.profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
-          <FormControl isInvalid={!!errors.nickname}>
+          <FormControl isRequired isInvalid={!!errors.nickname}>
             <FormLabel htmlFor="nickname">닉네임</FormLabel>
             <Input
               id="nickname"
@@ -125,7 +125,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
             <FormErrorMessage>{errors.nickname?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.description}>
+          <FormControl isRequired isInvalid={!!errors.description}>
             <FormLabel htmlFor="description">나를 한 마디로 표현해주세요</FormLabel>
             <Input
               id="description"
@@ -146,7 +146,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
             <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel htmlFor="positions">포지션</FormLabel>
             <Controller
               name="positions"
@@ -192,7 +192,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
             />
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel htmlFor="proficiency">숙련도</FormLabel>
             <Controller
               name="proficiency"
