@@ -75,13 +75,6 @@ const Page = () => {
             render={({ field }) => (
               <FormControl w="100%" isInvalid={!!errors[field.name]}>
                 <FormLabel htmlFor={field.name}>농구장 위치</FormLabel>
-                <Input
-                  display="none"
-                  id={field.name}
-                  {...register(field.name, {
-                    required: '농구장 위치를 등록해주세요',
-                  })}
-                />
                 <MapEditor
                   onChange={(courtPosition) => {
                     field.onChange(courtPosition)
@@ -244,7 +237,6 @@ const MapEditor = ({
 
   return (
     <Map
-      maxLevel={6}
       center={courtPosition ? { ...courtPosition } : undefined}
       style={{
         height: isEdited ? 200 : 400,
