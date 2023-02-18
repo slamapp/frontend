@@ -24,7 +24,6 @@ const PageLoader = () => {
         setIsProgressBar(true)
         setNavigation.all((prev) => ({
           ...prev,
-          isLoading: true,
         }))
         visiteds.current[nextPathname] = true
       }
@@ -34,7 +33,6 @@ const PageLoader = () => {
       setIsProgressBar(false)
       setNavigation.all((prev) => ({
         ...prev,
-        isLoading: false,
       }))
     }
 

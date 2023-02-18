@@ -12,7 +12,6 @@ const Navigation = ({ top = null, bottom = false, children }: Props) => {
     set.all({
       top,
       bottom,
-      isLoading: false,
     })
 
     return () =>

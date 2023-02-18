@@ -2,7 +2,6 @@ import { FC } from 'react'
 import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 const navigationState = atom<{
-  isLoading: boolean
   top?: {
     title?: string
     isBack?: boolean
@@ -14,7 +13,7 @@ const navigationState = atom<{
   bottom?: boolean
 }>({
   key: 'navigation',
-  default: { isLoading: true },
+  default: { top: null, bottom: undefined },
 })
 
 const useNavigation = () => useRecoilState(navigationState)
