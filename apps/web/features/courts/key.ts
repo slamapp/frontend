@@ -1,5 +1,5 @@
+import { APICourt } from '@slam/types'
 import { api } from '~/api'
-import { APICourt } from '~/types/domains/objects'
 
 const key = {
   all: ['courts'] as const,

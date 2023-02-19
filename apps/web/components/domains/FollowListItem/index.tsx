@@ -1,6 +1,6 @@
 import { HStack, Text } from '@chakra-ui/react'
+import { APIUser } from '@slam/types'
 import { Button } from '~/components/uis'
-import { APIUser } from '~/types/domains/objects'
 import ProfileAvatar from '../ProfileAvatar'
 
 const FollowListItem = ({

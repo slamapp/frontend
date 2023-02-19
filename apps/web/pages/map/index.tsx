@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { APICourt } from '@slam/types'
 import { Delay, Suspense } from '@suspensive/react'
 import dayjs, { Dayjs } from 'dayjs'
 import { motion } from 'framer-motion'
@@ -16,7 +17,6 @@ import { useGetUpcomingReservationsQuery } from '~/features/reservations'
 import { useCurrentUserQuery } from '~/features/users'
 import { useLocalStorage } from '~/hooks'
 import { Navigation } from '~/layouts/Layout/navigations'
-import { APICourt } from '~/types/domains/objects'
 
 const PAUSE_COURT_NUMBER = 0
 const FIRE_COURT_NUMBER = 6

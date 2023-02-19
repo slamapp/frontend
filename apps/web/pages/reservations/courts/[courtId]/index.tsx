@@ -3,7 +3,8 @@ import { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { Box, Center, Flex, Text, VStack } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
-import { Suspense, withSuspense } from '@suspensive/react'
+import { APICourt } from '@slam/types'
+import { Suspense } from '@suspensive/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Dayjs } from 'dayjs'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -13,7 +14,6 @@ import { key } from '~/features'
 import { useCreateReservationMutation, useGetReservationsInfiniteQuery } from '~/features/reservations'
 import { useScrollContainer } from '~/layouts'
 import { Navigation } from '~/layouts/Layout/navigations'
-import { APICourt } from '~/types/domains/objects'
 
 type Props = { courtId: string; date: string }
 export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => ({
@@ -43,10 +43,9 @@ const Contents = ({ courtId, date }: Props) => {
   const queryClient = useQueryClient()
 
   const createReservationMutation = useCreateReservationMutation(courtId)
-  const getReservationsInfiniteQuery = useGetReservationsInfiniteQuery({
-    courtId,
-    initialDate: date,
-  })
+  const getReservationsInfiniteQuery = useGetReservationsInfiniteQuery({ courtId, initialDate: date })
+
+  console.log(getReservationsInfiniteQuery.data)
 
   const [reservation, setReservation] = useState<{
     courtId: APICourt['id']

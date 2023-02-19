@@ -1,8 +1,5 @@
+import { APIFollower, APIFollowing, APIUser, CursorList, CursorListRequestOption } from '@slam/types'
 import { http } from '~/api/core'
-import { CursorList } from '~/types/domains/lists'
-import { CursorListRequestOption } from '~/types/domains/lists/CursorList'
-import { APIUser } from '~/types/domains/objects'
-import { APIFollower, APIFollowing } from '~/types/domains/objects/follow'
 
 export default {
   getUserFollowings: (

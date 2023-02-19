@@ -1,4 +1,4 @@
-import { APICourt } from '~/types/domains/objects/court'
+import { APICourt } from '@slam/types'
 
 const key = {
   all: ['reservations'] as const,

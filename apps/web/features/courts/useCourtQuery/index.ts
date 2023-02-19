@@ -1,7 +1,7 @@
+import { APICourt } from '@slam/types'
 import { UseSuspenseQueryOptions, useSuspenseQuery } from '@suspensive/react-query'
 import { api } from '~/api'
 import { key } from '~/features'
-import { APICourt } from '~/types/domains/objects/court'
 
 const useCourtQuery = (
   courtId: APICourt['id'],

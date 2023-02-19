@@ -1,7 +1,7 @@
+import { APIFavorite } from '@slam/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '~/api'
 import key from '~/features/key'
-import { APIFavorite } from '~/types/domains/objects'
 
 const useCancelFavoriteMutation = () => {
   const queryClient = useQueryClient()

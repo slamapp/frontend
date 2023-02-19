@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
 import { DevTool } from '@hookform/devtools'
+import { APICourt } from '@slam/types'
 import { motion } from 'framer-motion'
 import { Controller, useForm } from 'react-hook-form'
 import { api } from '~/api'
@@ -24,7 +25,6 @@ import { Button, Icon, IconButton, Toast } from '~/components/uis'
 import { useCourtCreateMutation } from '~/features/courts'
 import { BottomFixedGradient, useScrollContainer } from '~/layouts'
 import { Navigation } from '~/layouts/Layout/navigations'
-import { APICourt } from '~/types/domains/objects/court'
 
 const Page = () => {
   const router = useRouter()

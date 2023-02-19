@@ -1,5 +1,5 @@
+import { APICourt, APINewCourt, APIReservation, APIUser } from '@slam/types'
 import { http } from '~/api/core'
-import { APICourt, APINewCourt, APIReservation, APIUser } from '~/types/domains/objects'
 
 const courtApi = {
   getCourtsByCoordsAndDate: ({

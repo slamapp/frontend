@@ -25,6 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
 import { DevTool } from '@hookform/devtools'
+import { APIUser } from '@slam/types'
 import { Suspense } from '@suspensive/react'
 import { motion } from 'framer-motion'
 import { Controller, useForm } from 'react-hook-form'
@@ -33,7 +34,6 @@ import { DEFAULT_PROFILE_IMAGE_URL } from '~/constants'
 import { useMyProfileMutation, useMyProfileQuery, useUpdateMyProfileImageMutation } from '~/features/users'
 import { BottomFixedGradient, useScrollContainer } from '~/layouts'
 import { Navigation } from '~/layouts/Layout/navigations'
-import { APIUser } from '~/types/domains/objects'
 
 const Page: NextPage = () => (
   <Suspense.CSROnly>

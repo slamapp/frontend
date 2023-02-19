@@ -1,4 +1,4 @@
 module.exports = {
   reactStrictMode: true,
-  transpilePackages: ['@slamapp/ui'],
+  transpilePackages: ['@slam/ui'],
 }

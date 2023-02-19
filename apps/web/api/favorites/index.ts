@@ -1,6 +1,5 @@
+import { APICourt, APIFavorite, List } from '@slam/types'
 import { http } from '~/api/core'
-import { List } from '~/types/domains/lists'
-import { APICourt, APIFavorite } from '~/types/domains/objects'
 
 export default {
   getMyFavorites: () => http.get<List<APIFavorite>>('/favorites'),

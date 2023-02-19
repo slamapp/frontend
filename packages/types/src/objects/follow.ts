@@ -1,6 +1,5 @@
-import type { OmitAt } from "../helpers"
-import type { Create, Receive, Send } from "./abstracts"
-import type { APIUser } from "./user"
+import type { APIUser } from './user'
+import type { Create, OmitAt, Receive, Send } from '../abstracts'
 
 export interface APIFollow extends Send {
   receiver: OmitAt<APIUser>

@@ -1,7 +1,6 @@
-import type { OmitAt } from "../helpers"
-import type { Default } from "./abstracts"
-import type { APICourt } from "./court"
-import type { APIUser } from "./user"
+import type { APICourt } from './court'
+import type { APIUser } from './user'
+import type { Default, OmitAt } from '../abstracts'
 
 export interface APIReservation extends Default {
   numberOfReservations: number

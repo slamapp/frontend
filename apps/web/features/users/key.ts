@@ -1,4 +1,4 @@
-import { APIUser } from '~/types/domains/objects'
+import { APIUser } from '@slam/types'
 
 const key = {
   all: ['users'] as const,

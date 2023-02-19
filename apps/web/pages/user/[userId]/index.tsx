@@ -3,6 +3,8 @@ import { GetServerSideProps, NextPage } from 'next'
 import Link from 'next/link'
 import { Avatar, Box, Flex, HStack, Tag, Text, VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { APICourt, APIUser, positionType, proficiencyType } from '@slam/types'
+import { Keyof, ValueOf } from '@slam/utility-types'
 import { Delay, Suspense } from '@suspensive/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button, Icon, Skeleton } from '~/components/uis'
@@ -12,9 +14,6 @@ import { useGetFavoritesQuery } from '~/features/favorites'
 import { useFollowCancelMutation, useFollowCreateMutation } from '~/features/notifications'
 import { useCurrentUserQuery, useMyProfileQuery, useUserProfileQuery } from '~/features/users'
 import { Navigation } from '~/layouts/Layout/navigations'
-import { APICourt, APIUser } from '~/types/domains/objects'
-import { positionType, proficiencyType } from '~/types/domains/objects/user'
-import { Keyof, ValueOf } from '~/types/helpers'
 
 type Props = { userId: string }
 

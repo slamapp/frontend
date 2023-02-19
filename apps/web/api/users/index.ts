@@ -1,5 +1,5 @@
+import { APICourt, APINotification, APIUser } from '@slam/types'
 import { http } from '~/api/core'
-import { APICourt, APINotification, APIUser } from '~/types/domains/objects'
 
 export default {
   getUserData: () => http.get<APIUser & { notifications: APINotification[] }>('/users/me'),

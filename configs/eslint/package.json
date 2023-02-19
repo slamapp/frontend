@@ -1,11 +1,12 @@
 {
-  "name": "@slamapp/eslint",
+  "name": "@slam/eslint",
   "private": true,
   "license": "MIT",
   "main": "index.js",
   "files": [
     "next.js",
-    "react.js"
+    "react.js",
+    "common.js"
   ],
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.7.0",

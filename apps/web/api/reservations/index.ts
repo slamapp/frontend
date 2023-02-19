@@ -1,7 +1,5 @@
+import { APICourt, APIReservation, APIUser, CursorList, CursorListRequestOption, List } from '@slam/types'
 import { http } from '~/api/core'
-import { CursorList, List } from '~/types/domains/lists'
-import { CursorListRequestOption } from '~/types/domains/lists/CursorList'
-import { APICourt, APIReservation, APIUser } from '~/types/domains/objects'
 
 export default {
   getMyUpcomingReservations: () => http.get<List<APIReservation>>('/reservations/upcoming'),

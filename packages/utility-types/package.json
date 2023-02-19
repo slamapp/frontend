@@ -1,5 +1,5 @@
 {
-  "name": "@slam/types",
+  "name": "@slam/utility-types",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -8,7 +8,6 @@
   "scripts": {},
   "devDependencies": {
     "@slam/eslint": "workspace:*",
-    "@slam/utility-types": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2"
   }

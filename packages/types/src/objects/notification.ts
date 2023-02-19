@@ -1,18 +1,17 @@
-import type { Keyof } from "~/types/helpers"
-import type { OmitAt } from "../helpers"
-import type { Default } from "./abstracts"
-import type { APIFollow } from "./follow"
-import type { APILoudspeaker } from "./loudspeaker"
+import type { Keyof } from '@slam/utility-types'
+import type { APIFollow } from './follow'
+import type { APILoudspeaker } from './loudspeaker'
+import type { Default, OmitAt } from '../abstracts'
 
 export type APINotification = APINotificationFollow | APINotificationLoudspeaker
 
 interface APINotificationFollow extends DefaultNotification {
-  type: "FOLLOW"
+  type: 'FOLLOW'
   follow: OmitAt<APIFollow>
 }
 
 interface APINotificationLoudspeaker extends DefaultNotification {
-  type: "LOUDSPEAKER"
+  type: 'LOUDSPEAKER'
   loudspeaker: OmitAt<APILoudspeaker>
 }
 interface DefaultNotification extends Default {
@@ -22,6 +21,6 @@ interface DefaultNotification extends Default {
 }
 
 export const notificationType = {
-  FOLLOW: "FOLLOW",
-  LOUDSPEAKER: "LOUDSPEAKER",
+  FOLLOW: 'FOLLOW',
+  LOUDSPEAKER: 'LOUDSPEAKER',
 } as const

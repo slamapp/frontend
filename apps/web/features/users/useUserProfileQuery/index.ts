@@ -1,7 +1,7 @@
+import { APIUser } from '@slam/types'
 import { useSuspenseQuery } from '@suspensive/react-query'
 import { api } from '~/api'
 import { key } from '~/features'
-import { APIUser } from '~/types/domains/objects'
 
 const useUserProfileQuery = ({ userId }: { userId: APIUser['id'] }) =>
   useSuspenseQuery(key.users.otherProfile(userId), () =>

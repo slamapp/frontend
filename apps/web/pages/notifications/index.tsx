@@ -3,6 +3,7 @@ import { NextPage } from 'next'
 import Link from 'next/link'
 import { Box, HStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { APINotification } from '@slam/types'
 import { Delay, Suspense } from '@suspensive/react'
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
@@ -14,7 +15,6 @@ import { key } from '~/features'
 import { useGetInfiniteNotificationsQuery } from '~/features/notifications'
 import { useIsMounted } from '~/hooks'
 import { Navigation } from '~/layouts/Layout/navigations'
-import { APINotification } from '~/types/domains/objects'
 
 const Page: NextPage = () => (
   <Navigation

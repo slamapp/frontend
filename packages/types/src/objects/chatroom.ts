@@ -1,8 +1,8 @@
-import type { Keyof } from "~/types/helpers"
-import type { Default } from "./abstracts"
-import type { APIChat } from "./chat"
-import type { APICourt } from "./court"
-import type { APIUser } from "./user"
+import type { Keyof } from '@slam/utility-types'
+import type { APIChat } from './chat'
+import type { APICourt } from './court'
+import type { APIUser } from './user'
+import type { Default } from '../abstracts'
 
 export interface APIChatRoom extends Default {
   admins: Admin[]
@@ -18,17 +18,17 @@ export interface APICourtChatroom extends APIChatRoom {
 export type APIUsersChatroom = APIChatRoom
 
 type Admin = {
-  id: APIUser["id"]
+  id: APIUser['id']
   type: Keyof<typeof chatroomAdminType>
 }
 
 export const chatroomType = {
-  USER: "USER",
-  GROUP: "GROUP",
-  COURT: "COURT",
+  USER: 'USER',
+  GROUP: 'GROUP',
+  COURT: 'COURT',
 } as const
 
 export const chatroomAdminType = {
-  OWNER: "OWNER",
-  MAINTAINER: "MAINTAINER",
+  OWNER: 'OWNER',
+  MAINTAINER: 'MAINTAINER',
 } as const

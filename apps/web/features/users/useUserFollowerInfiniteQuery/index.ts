@@ -1,7 +1,7 @@
+import { APIUser } from '@slam/types'
 import { useSuspenseInfiniteQuery } from '@suspensive/react-query'
 import { api } from '~/api'
 import key from '~/features/key'
-import { APIUser } from '~/types/domains/objects'
 
 const useUserFollowerInfiniteQuery = (userId: APIUser['id']) =>
   useSuspenseInfiniteQuery(

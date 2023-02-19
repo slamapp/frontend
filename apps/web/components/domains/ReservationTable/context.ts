@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
-import { APICourt } from '~/types/domains/objects/court'
+import { APICourt } from '@slam/types'
 
 export interface ContextProps {
   isNeedToScrollUnderDisabledCell: boolean

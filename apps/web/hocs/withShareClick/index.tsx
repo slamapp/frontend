@@ -1,7 +1,7 @@
 import { ComponentType, UIEvent } from 'react'
+import { positionType, proficiencyType } from '@slam/types'
 import copy from 'copy-to-clipboard'
 import { Toast } from '~/components/uis'
-import { positionType, proficiencyType } from '~/types/domains/objects/user'
 import { sendKakaoLink } from './sendKakaoLink'
 import { ShareArgs } from './types'
 

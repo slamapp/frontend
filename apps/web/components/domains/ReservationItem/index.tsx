@@ -1,4 +1,5 @@
 import { Box, Center, Flex, HStack, Text, VStack } from '@chakra-ui/react'
+import { APIReservation } from '@slam/types'
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -8,7 +9,6 @@ import { key } from '~/features'
 import { useGetFavoritesQuery } from '~/features/favorites'
 import { useDeleteReservationMutation } from '~/features/reservations'
 import { useScrollContainer } from '~/layouts'
-import { APIReservation } from '~/types/domains/objects'
 
 interface Props {
   reservation: APIReservation

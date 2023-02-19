@@ -1,17 +1,12 @@
+import { APICourt } from '@slam/types'
 import { useSuspenseInfiniteQuery } from '@suspensive/react-query'
 import dayjs from 'dayjs'
 import { api } from '~/api'
-import { APICourt } from '~/types/domains/objects'
-import key from '../key'
+import key from '~/features/key'
 
 const useGetReservationsInfiniteQuery = ({ courtId, initialDate }: { courtId: APICourt['id']; initialDate: string }) =>
-  useSuspenseInfiniteQuery(key.court(courtId), async ({ pageParam: date = dayjs(initialDate).toISOString() }) => {
-    const { data } = await api.reservations.getReservationsAtDate({
-      courtId,
-      date,
-    })
-
-    return { ...data, date }
-  })
+  useSuspenseInfiniteQuery(key.reservations.court(courtId), ({ pageParam: date = dayjs(initialDate).toISOString() }) =>
+    api.reservations.getReservationsAtDate({ courtId, date }).then(({ data }) => ({ ...data, date }))
+  )
 
 export default useGetReservationsInfiniteQuery

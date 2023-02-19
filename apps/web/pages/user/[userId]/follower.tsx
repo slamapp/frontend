@@ -1,12 +1,12 @@
 import { Fragment, forwardRef } from 'react'
 import { GetServerSideProps, NextPage } from 'next'
 import { Box, HStack, VStack } from '@chakra-ui/react'
+import { APIUser } from '@slam/types'
 import { Delay, Suspense } from '@suspensive/react'
 import { FollowListItem, NoItemMessage } from '~/components/domains'
 import { InfiniteScrollSensor, Skeleton } from '~/components/uis'
 import { useUserFollowerInfiniteQuery } from '~/features/users'
 import { Navigation } from '~/layouts/Layout/navigations'
-import { APIUser } from '~/types/domains/objects'
 
 type Props = { userId: APIUser['id'] }
 const Page: NextPage<Props> = ({ userId }) => (
