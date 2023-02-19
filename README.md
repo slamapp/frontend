@@ -19,7 +19,7 @@
 
 </div>
 
-[슬램 모노레포 의존성 그래프](./dependencies-graph.html)
+[슬램 모노레포 의존성 그래프](https://slamapp.github.io/frontend/dependencies-graph.html)
 
 ## 📼 슬램 발표 영상
 
