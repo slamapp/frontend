@@ -1,4 +1,5 @@
-import { ComponentType, Fragment } from 'react'
+import type { ComponentType } from 'react'
+import { Fragment } from 'react'
 
 interface Props {
   title?: string

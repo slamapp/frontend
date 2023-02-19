@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { useRouter } from 'next/router'
 import { VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'

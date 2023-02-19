@@ -1,5 +1,7 @@
-import { ReactNode, useEffect } from 'react'
-import { useNavigationValue, useSetNavigation } from '../atoms'
+import type { ReactNode } from 'react'
+import { useEffect } from 'react'
+import type { useNavigationValue } from '../atoms'
+import { useSetNavigation } from '../atoms'
 
 type Props = Pick<ReturnType<typeof useNavigationValue>, 'top' | 'bottom'> & {
   children: ReactNode

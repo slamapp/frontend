@@ -1,9 +1,9 @@
-import { ComponentType, UIEvent } from 'react'
+import type { ComponentType, UIEvent } from 'react'
 import { positionType, proficiencyType } from '@slam/types'
 import copy from 'copy-to-clipboard'
 import { Toast } from '~/components/uis'
 import { sendKakaoLink } from './sendKakaoLink'
-import { ShareArgs } from './types'
+import type { ShareArgs } from './types'
 
 const handleShareClick = (isKakaoInitialized: boolean, options: Parameters<typeof sendKakaoLink>[0]) => {
   if (isKakaoInitialized) {

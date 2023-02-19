@@ -1,4 +1,4 @@
-import { APICourt } from '@slam/types'
+import type { APICourt } from '@slam/types'
 import { useSuspenseInfiniteQuery } from '@suspensive/react-query'
 import dayjs from 'dayjs'
 import { api } from '~/apis'

@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
 import { HStack, Text, VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import { motion } from 'framer-motion'
 
 const week = ['일', '월', '화', '수', '목', '금', '토'] as const

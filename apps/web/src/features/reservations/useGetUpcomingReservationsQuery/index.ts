@@ -1,8 +1,5 @@
-import {
-  UseSuspenseQueryResultOnLoading,
-  UseSuspenseQueryResultOnSuccess,
-  useSuspenseQuery,
-} from '@suspensive/react-query'
+import type { UseSuspenseQueryResultOnLoading, UseSuspenseQueryResultOnSuccess } from '@suspensive/react-query'
+import { useSuspenseQuery } from '@suspensive/react-query'
 import { api } from '~/apis'
 import key from '~/features/key'
 

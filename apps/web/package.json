@@ -18,9 +18,9 @@
     "@hookform/devtools": "^4.2.2",
     "@hookform/resolvers": "^2.9.8",
     "@sentry/nextjs": "^7.15.0",
+    "@slam/hooks": "workspace:*",
     "@slam/types": "workspace:*",
     "@slam/utility-types": "workspace:*",
-    "@slam/ui": "workspace:*",
     "@suspensive/react": "^1.9.2",
     "@suspensive/react-query": "^1.9.2",
     "@tanstack/react-query": "^4.13.0",
@@ -44,6 +44,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@slam/eslint": "workspace:*",
+    "@slam/tsconfig": "workspace:*",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@types/feather-icons": "^4.7.0",
     "@types/node": "18.7.18",
@@ -63,7 +64,6 @@
     "stylelint-config-recommended": "^9.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.10.0",
-    "tsconfig": "workspace:*",
     "typescript": "4.8.3"
   }
 }

@@ -1,4 +1,5 @@
-import { ReactNode, forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react'
+import type { ReactNode } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useMap } from '../context'
 

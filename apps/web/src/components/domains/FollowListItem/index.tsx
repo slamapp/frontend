@@ -1,5 +1,5 @@
 import { HStack, Text } from '@chakra-ui/react'
-import { APIUser } from '@slam/types'
+import type { APIUser } from '@slam/types'
 import { Button } from '~/components/uis'
 import ProfileAvatar from '../ProfileAvatar'
 

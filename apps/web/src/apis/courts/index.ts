@@ -1,4 +1,4 @@
-import { APICourt, APINewCourt, APIReservation, APIUser } from '@slam/types'
+import type { APICourt, APINewCourt, APIReservation, APIUser } from '@slam/types'
 import { http } from '~/apis/core'
 
 const courtApi = {

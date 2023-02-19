@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest, NextResponse } from 'next/server'
 
 const deleteCookie = (request: NextRequest, response: NextResponse, cookie: string) => {
   const cookieValue = request.cookies.get(cookie)

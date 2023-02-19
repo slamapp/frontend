@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { Coord } from '@slam/types'
+import type { Coord } from '@slam/types'
 import { motion } from 'framer-motion'
 import { IconButton } from '~/components/uis'
 import { useMap } from '../../context'

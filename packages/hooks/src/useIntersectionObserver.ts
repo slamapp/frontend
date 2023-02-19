@@ -1,4 +1,5 @@
-import { RefObject, useEffect, useState } from 'react'
+import type { RefObject } from 'react'
+import { useEffect, useState } from 'react'
 
 interface Args extends IntersectionObserverInit {
   freezeOnceVisible?: boolean
@@ -30,8 +31,6 @@ function useIntersectionObserver(
     observer.observe(node)
 
     return () => observer.disconnect()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elementRef, JSON.stringify(threshold), root, rootMargin, frozen])
 
   return entry

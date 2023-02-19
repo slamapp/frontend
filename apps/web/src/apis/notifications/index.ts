@@ -1,5 +1,5 @@
-import { APINotification, CursorListRequestOption } from '@slam/types'
-import { AxiosPromise } from 'axios'
+import type { APINotification, CursorListRequestOption } from '@slam/types'
+import type { AxiosPromise } from 'axios'
 import { http } from '~/apis/core'
 
 export default {

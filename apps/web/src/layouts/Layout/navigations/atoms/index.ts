@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 const navigationState = atom<{

@@ -1,15 +1,5 @@
-import {
-  ComponentProps,
-  ComponentPropsWithoutRef,
-  FunctionComponent,
-  ReactElement,
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import type { ComponentProps, ComponentPropsWithoutRef, FunctionComponent, ReactElement, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { iterateCallWithDelay } from './helpers'
 import { useIsMounted, useTimeout, useTimeoutFn } from './hooks'

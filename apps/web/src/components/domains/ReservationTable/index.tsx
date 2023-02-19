@@ -1,21 +1,35 @@
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Center, Flex, VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
-import { APICourt } from '@slam/types'
-import dayjs, { Dayjs } from 'dayjs'
+import { useIntersectionObserver } from '@slam/hooks'
+import type { APICourt } from '@slam/types'
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import { motion } from 'framer-motion'
 import { useGetReservationsInfiniteQuery } from '~/features/reservations'
-import { useIntersectionObserver } from '~/hooks'
 import { useScrollContainer } from '~/layouts'
 import { useSetNavigation } from '~/layouts/Layout/navigations'
-import { Context, ContextProps, useReservationTable } from './context'
 import 'dayjs/locale/ko'
 
 dayjs.locale('ko')
 
 const DATE_QUERY_STRING_FORMAT = 'YYYY-MM-DD'
+
+export interface ContextProps {
+  isNeedToScrollUnderDisabledCell: boolean
+  tableCellHeight: number
+  setDates: Dispatch<SetStateAction<string[]>>
+  dates: string[]
+  replaceNewDate: (option: 'add' | 'subtract', callback?: ({ isAddedCells }: { isAddedCells: boolean }) => void) => void
+  courtId: APICourt['id']
+}
+
+export const Context = createContext({} as ContextProps)
+
+export const useReservationTable = () => useContext(Context)
 
 interface ReservationTableProps {
   courtId: APICourt['id']

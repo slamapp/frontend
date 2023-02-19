@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { css } from '@emotion/react'
-import { useTimeout } from '~/hooks'
+import { useTimeout } from '@slam/hooks'
 
 type Props = {
   lazyLoadTime: number

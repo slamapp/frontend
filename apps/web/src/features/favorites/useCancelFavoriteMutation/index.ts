@@ -1,4 +1,4 @@
-import { APIFavorite } from '@slam/types'
+import type { APIFavorite } from '@slam/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '~/apis'
 import key from '~/features/key'

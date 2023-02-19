@@ -1,4 +1,4 @@
-import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
+import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { Box, Center, Flex, Text, VStack } from '@chakra-ui/react'
 import styled from '@emotion/styled'

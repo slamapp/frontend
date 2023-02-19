@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { useDisclosure } from './hooks'
 

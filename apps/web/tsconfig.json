@@ -1,13 +1,13 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "@slam/tsconfig/nextjs.json",
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "jsxImportSource": "@emotion/react",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "types": ["kakao.maps.d.ts"],
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./src/*"]
     }
   }
 }

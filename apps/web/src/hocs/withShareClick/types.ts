@@ -1,4 +1,4 @@
-import { APICourt, APICourtChatroom, APIUser, OmitAt } from '@slam/types'
+import type { APICourt, APICourtChatroom, APIUser, OmitAt } from '@slam/types'
 
 export type ShareArgs = CourtArgs | CourtChatroomArgs | UserArgs
 

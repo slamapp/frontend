@@ -5,11 +5,13 @@
   "license": "MIT",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint src/*"
+  },
   "devDependencies": {
     "@slam/eslint": "workspace:*",
+    "@slam/tsconfig": "workspace:*",
     "@slam/utility-types": "workspace:*",
-    "tsconfig": "workspace:*",
     "typescript": "^4.5.2"
   }
 }

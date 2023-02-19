@@ -1,4 +1,4 @@
-import { APIUser } from '@slam/types'
+import type { APIUser } from '@slam/types'
 import { useSuspenseInfiniteQuery } from '@suspensive/react-query'
 import { api } from '~/apis'
 import key from '~/features/key'

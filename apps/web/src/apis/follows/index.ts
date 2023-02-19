@@ -1,4 +1,4 @@
-import { APIFollower, APIFollowing, APIUser, CursorList, CursorListRequestOption } from '@slam/types'
+import type { APIFollower, APIFollowing, APIUser, CursorList, CursorListRequestOption } from '@slam/types'
 import { http } from '~/apis/core'
 
 export default {

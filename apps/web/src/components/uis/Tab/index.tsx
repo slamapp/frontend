@@ -1,4 +1,5 @@
-import { Children, PropsWithChildren, createContext, isValidElement, useContext, useMemo, useState } from 'react'
+import type { PropsWithChildren } from 'react'
+import { Children, createContext, isValidElement, useContext, useMemo, useState } from 'react'
 import { Box, HStack } from '@chakra-ui/react'
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'

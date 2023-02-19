@@ -13,6 +13,7 @@
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
     "dev": "turbo run dev",
+    "graph": "turbo run build --graph=dependencies-graph.html",
     "lint": "turbo run lint",
     "lint:pack": "packlint sort -R",
     "postinstall": "husky install",

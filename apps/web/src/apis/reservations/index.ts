@@ -1,4 +1,4 @@
-import { APICourt, APIReservation, APIUser, CursorList, CursorListRequestOption, List } from '@slam/types'
+import type { APICourt, APIReservation, APIUser, CursorList, CursorListRequestOption, List } from '@slam/types'
 import { http } from '~/apis/core'
 
 export default {

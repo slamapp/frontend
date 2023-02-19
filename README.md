@@ -1,45 +1,33 @@
-# slam/frontend
+<div><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="300px"></div>
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+<div>같이 농구할 사람이 없다고? ⛹🏻‍♀️</div>
+길거리 농구인들이 쉽고 빠르게 게임할 수 있도록 주변 농구장의 인원 현황을 제공하는 커뮤니티 웹앱 서비스입니다.
+
+<br>
+<br>
+
+<div>
+
+![Turborepo](https://img.shields.io/static/v1?style=for-the-badge&message=Turborepo&color=000000&logo=Turborepo&logoColor=FF2956&label=)
+![TypeScript](https://img.shields.io/static/v1?style=for-the-badge&message=TypeScript&color=3178C6&logo=TypeScript&logoColor=FFFFFF&label=)
+![React](https://img.shields.io/static/v1?style=for-the-badge&message=React&color=222222&logo=React&logoColor=61DAFB&label=)
+![Next](https://img.shields.io/static/v1?style=for-the-badge&message=Next&color=000000&logo=Next.js&logoColor=FFFFFF&label=)
+![Recoil](https://img.shields.io/static/v1?style=for-the-badge&message=Recoil&color=3677E5&logo=React&logoColor=white&label=)
+![React Query](https://img.shields.io/static/v1?style=for-the-badge&message=React+Query&color=111827&logo=React+Query&logoColor=EF4444&label=)
+![React Hook Form](https://img.shields.io/static/v1?style=for-the-badge&message=React+Hook+Form&color=EC5990&logo=React+Hook+Form&logoColor=FFFFFF&label=)
+![Vercel](https://img.shields.io/static/v1?style=for-the-badge&message=Vercel&color=000000&logo=Vercel&logoColor=FFFFFF&label=)
+
+</div>
+
+[슬램 모노레포 의존성 그래프](./dependencies-graph.html)
 
 ## 📼 슬램 발표 영상
 
 [![Slam 슬램 발표](http://img.youtube.com/vi/V5akCEYSyGQ/0.jpg)](https://youtu.be/V5akCEYSyGQ)
 
-<div align="center"><img src="https://user-images.githubusercontent.com/84858773/147056456-b9bf8e99-0b5b-46fe-bd86-01e9cba8e6ca.png" width="250px"></div>
-
-<div align="center">
-<div>같이 농구할 사람이 없다고? ⛹🏻‍♀️</div>
-
-<br>
-<div>
-
-<img alt="TypeScript" src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
-<img alt="React" src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-<img alt="Next" src="https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=next.js&logoColor=white">
-<img alt="Recoil" src="https://img.shields.io/badge/recoil-3677E5.svg?&style=for-the-badge&logo=react&logoColor=white">
-<img alt="React-Query" src="https://img.shields.io/badge/reactquery-111827.svg?&style=for-the-badge&logo=reactquery&logoColor=EF4444">
-<img alt="React-Hook-Form" src="https://img.shields.io/badge/reacthookform-EC5990.svg?&style=for-the-badge&logo=reacthookform&logoColor=white">
-<img alt="Vercel" src="https://img.shields.io/badge/Vercel-000000.svg?&style=for-the-badge&logo=Vercel&logoColor=white">
-</div>
-
 <br>
 
-## 🏀 프로젝트 소개
-
-*Slam*은 길거리 농구인들이 쉽고 빠르게 게임할 수 있도록 주변 농구장의 인원 현황을 제공하는 커뮤니티 웹앱 서비스입니다.
-
-<br>
-
-## 📝 요구사항 명세
-
-💁‍ [요구사항 명세 보러가기](https://github.com/slamapp/frontend/wiki/%EC%8A%AC%EB%9E%A8-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%AA%85%EC%84%B8)
-
-<br>
-
-# ✨ 주요 기능 및 페이지 소개
+# 주요 기능 및 페이지 소개
 
 | 스플래시                                                                                                                                                | 로그인 페이지                                                                                                                                            |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -76,6 +64,12 @@
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->

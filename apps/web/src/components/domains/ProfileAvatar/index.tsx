@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Avatar } from '@chakra-ui/react'
-import { APIUser } from '@slam/types'
+import type { APIUser } from '@slam/types'
 import { DEFAULT_PROFILE_IMAGE_URL } from '~/constants'
 
 const ProfileAvatar = ({ user }: { user: Pick<APIUser, 'id' | 'profileImage'> }) => {

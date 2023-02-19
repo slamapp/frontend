@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: ['next', 'airbnb', 'airbnb-typescript', 'plugin:import/recommended', 'plugin:import/typescript', 'prettier'],
+  extends: ['airbnb', 'airbnb-typescript', 'plugin:import/recommended', 'plugin:import/typescript', 'prettier'],
   plugins: ['@typescript-eslint', 'import', 'prettier'],
   settings: {
     'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
@@ -38,7 +38,6 @@ module.exports = {
     '@typescript-eslint/consistent-type-imports': ['error'],
     '@typescript-eslint/no-unused-vars': ['warn'],
     'react/display-name': ['error'],
-    '@next/next/no-html-link-for-pages': 'off',
     'import/order': [
       'error',
       {
@@ -46,16 +45,6 @@ module.exports = {
         pathGroups: [
           {
             pattern: 'react',
-            group: 'external',
-            position: 'before',
-          },
-          {
-            pattern: 'next',
-            group: 'external',
-            position: 'before',
-          },
-          {
-            pattern: 'next/**',
             group: 'external',
             position: 'before',
           },
@@ -75,12 +64,12 @@ module.exports = {
             position: 'before',
           },
         ],
-        pathGroupsExcludedImportTypes: ['react', 'next', 'next/**', '@emotion/**'],
+        pathGroupsExcludedImportTypes: ['react', '@emotion/**'],
         'newlines-between': 'never',
         alphabetize: { order: 'asc', caseInsensitive: true },
       },
     ],
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
   },
-  ignorePatterns: ['**/*.js', '**/*.json', 'node_modules', 'public', 'styles', '.next', 'coverage', 'dist', '.turbo'],
+  ignorePatterns: ['**/*.js', '**/*.json', 'node_modules', 'public', 'styles', 'coverage', 'dist', '.turbo'],
 }

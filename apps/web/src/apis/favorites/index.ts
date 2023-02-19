@@ -1,4 +1,4 @@
-import { APICourt, APIFavorite, List } from '@slam/types'
+import type { APICourt, APIFavorite, List } from '@slam/types'
 import { http } from '~/apis/core'
 
 export default {

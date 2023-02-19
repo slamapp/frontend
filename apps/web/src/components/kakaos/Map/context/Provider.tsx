@@ -1,5 +1,6 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
-import { useDebounce } from '~/hooks'
+import type { ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useDebounce } from '@slam/hooks'
 import { Context } from '.'
 
 type Props = {

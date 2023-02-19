@@ -1,4 +1,5 @@
-import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import { PROXY_PRE_FIX, env } from '~/constants'
 
 type RequestType = 'DEFAULT' | 'FILE'

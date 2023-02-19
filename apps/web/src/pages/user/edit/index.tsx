@@ -1,7 +1,9 @@
-import { ReactNode, useEffect, useState } from 'react'
-import { NextPage } from 'next'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import type { UseCheckboxGroupProps, UseCheckboxProps, UseRadioGroupProps, UseRadioProps } from '@chakra-ui/react'
 import {
   Avatar,
   Box,
@@ -12,10 +14,6 @@ import {
   FormLabel,
   Input,
   Text,
-  UseCheckboxGroupProps,
-  UseCheckboxProps,
-  UseRadioGroupProps,
-  UseRadioProps,
   VStack,
   chakra,
   useCheckbox,
@@ -25,7 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
 import { DevTool } from '@hookform/devtools'
-import { APIUser } from '@slam/types'
+import type { APIUser } from '@slam/types'
 import { Suspense } from '@suspensive/react'
 import { motion } from 'framer-motion'
 import { Controller, useForm } from 'react-hook-form'

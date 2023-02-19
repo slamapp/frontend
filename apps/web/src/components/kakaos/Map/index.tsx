@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import Button from './Button'
 import Container from './Container'
 import { Provider } from './context/Provider'

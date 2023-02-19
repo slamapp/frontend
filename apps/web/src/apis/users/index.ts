@@ -1,4 +1,4 @@
-import { APICourt, APINotification, APIUser } from '@slam/types'
+import type { APICourt, APINotification, APIUser } from '@slam/types'
 import { http } from '~/apis/core'
 
 export default {

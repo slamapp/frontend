@@ -1,5 +1,6 @@
-import { APICourt } from '@slam/types'
-import { UseSuspenseQueryOptions, useSuspenseQuery } from '@suspensive/react-query'
+import type { APICourt } from '@slam/types'
+import type { UseSuspenseQueryOptions } from '@suspensive/react-query'
+import { useSuspenseQuery } from '@suspensive/react-query'
 import { api } from '~/apis'
 import { key } from '~/features'
 

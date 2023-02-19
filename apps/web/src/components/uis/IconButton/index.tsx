@@ -1,4 +1,4 @@
-import { ComponentProps, MouseEventHandler } from 'react'
+import type { ComponentProps, MouseEventHandler } from 'react'
 import { Center } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
 import { motion } from 'framer-motion'

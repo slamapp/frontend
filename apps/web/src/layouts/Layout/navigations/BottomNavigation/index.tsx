@@ -1,4 +1,5 @@
-import { ComponentProps, useEffect, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Flex } from '@chakra-ui/react'
 import { useCurrentUserQuery } from '~/features/users'

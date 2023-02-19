@@ -1,8 +1,8 @@
-import { ComponentPropsWithoutRef, ReactNode } from 'react'
+import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { Flex, Spinner } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
 import { motion } from 'framer-motion'
-import { EmotionTheme } from '~/styles/emotionTheme'
+import type { EmotionTheme } from '~/styles/emotionTheme'
 
 interface Props
   extends Partial<Pick<ComponentPropsWithoutRef<typeof Flex>, 'onClick' | 'style'>>,

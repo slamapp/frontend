@@ -1,4 +1,5 @@
-import { NextMiddleware, NextResponse } from 'next/server'
+import type { NextMiddleware } from 'next/server'
+import { NextResponse } from 'next/server'
 import { PROXY_PRE_FIX, env } from '~/constants'
 import { deleteCookie } from '~/middlewares/cookies'
 import { verify } from '~/middlewares/jwt'

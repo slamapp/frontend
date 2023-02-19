@@ -35,7 +35,7 @@ module.exports = {
     'import/no-cycle': ['warn'],
     '@typescript-eslint/no-shadow': ['off'],
     '@typescript-eslint/no-use-before-define': ['off'],
-    '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'no-type-imports' }],
+    '@typescript-eslint/consistent-type-imports': ['error'],
     '@typescript-eslint/no-unused-vars': ['warn'],
     'react/display-name': ['error'],
     '@next/next/no-html-link-for-pages': 'off',

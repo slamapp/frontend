@@ -1,5 +1,5 @@
 import { Box, Center, Flex, HStack, Text, VStack } from '@chakra-ui/react'
-import { APIReservation } from '@slam/types'
+import type { APIReservation } from '@slam/types'
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { AnimatePresence, motion } from 'framer-motion'

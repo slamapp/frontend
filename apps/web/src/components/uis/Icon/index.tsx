@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { css, useTheme } from '@emotion/react'
 import Icons from 'feather-icons'
-import { EmotionTheme } from '~/styles/emotionTheme'
+import type { EmotionTheme } from '~/styles/emotionTheme'
 
 interface Props {
   name: FeatherIconNameType

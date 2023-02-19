@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useEffect, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import GA from 'react-ga4'
 import { env } from '~/constants'

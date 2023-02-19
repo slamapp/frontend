@@ -1,4 +1,4 @@
-import { APIReservation } from '@slam/types'
+import type { APIReservation } from '@slam/types'
 import { useMutation } from '@tanstack/react-query'
 import { api } from '~/apis'
 

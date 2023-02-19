@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'
 import { IconButton } from '~/components/uis'
