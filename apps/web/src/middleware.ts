@@ -4,6 +4,7 @@ import { PROXY_PRE_FIX, env } from '~/constants'
 import { deleteCookie } from '~/middlewares/cookies'
 import { verify } from '~/middlewares/jwt'
 
+const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY as string
 const PRIVATE_PATHS = ['/user', '/courts/create', '/chat/list', '/reservations']
 const PRIVATE_REDIRECT_PATH = '/map'
 
@@ -30,7 +31,7 @@ const middleware: NextMiddleware = async (request) => {
   // 로그인 리다이렉트
   if (request.nextUrl.pathname.startsWith('/login/redirect')) {
     const token = request.nextUrl.searchParams.get('token') ?? ''
-    const isJwtVerified = await verify(token, env.JWT_SECRET_KEY)
+    const isJwtVerified = await verify(token, jwtSecretKey)
 
     const nextUrl = request.nextUrl.clone()
     nextUrl.pathname = isJwtVerified ? PREVENTED_REDIRECT_PATH : PRIVATE_REDIRECT_PATH
@@ -68,7 +69,7 @@ const middleware: NextMiddleware = async (request) => {
 
   // 토큰이 있는 경우
   if (slamToken) {
-    const isJwtVerified = await verify(slamToken.value, env.JWT_SECRET_KEY)
+    const isJwtVerified = await verify(slamToken.value, jwtSecretKey)
 
     if (PREVENTED_PATHS.reduce((acc, path) => acc || request.nextUrl.pathname.includes(path), false)) {
       if (isJwtVerified) {
@@ -86,7 +87,7 @@ const middleware: NextMiddleware = async (request) => {
 
   if (isPrivatePath) {
     if (slamToken) {
-      const isJwtVerified = await verify(slamToken.value, env.JWT_SECRET_KEY)
+      const isJwtVerified = await verify(slamToken.value, jwtSecretKey)
 
       if (!isJwtVerified) {
         const nextUrl = request.nextUrl.clone()

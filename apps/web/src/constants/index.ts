@@ -11,8 +11,6 @@ export const env = {
 
   SLAM_TOKEN_KEY: process.env.NEXT_PUBLIC_SLAM_TOKEN_KEY as string,
 
-  JWT_SECRET_KEY: process.env.NEXT_PUBLIC_JWT_SECRET_KEY as string,
-
   SERVICE_API_END_POINT: process.env.NEXT_PUBLIC_SERVICE_API_END_POINT as string,
 
   SERVICE_API_SUB_FIX: process.env.NEXT_PUBLIC_SERVICE_API_SUB_FIX as string,
