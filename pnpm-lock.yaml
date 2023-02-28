@@ -23,9 +23,9 @@ importers:
       cz-conventional-changelog: 3.3.0
       husky: 8.0.3
       lint-staged: 13.1.1
-      packlint: 0.2.4
+      packlint: 0.2.4_typanion@3.12.1
       prettier: 2.8.4
-      turbo: 1.8.1
+      turbo: 1.8.3
       typescript: 4.9.5
 
   apps/web:
@@ -37,6 +37,7 @@ importers:
       '@emotion/styled': ^11.10.4
       '@hookform/devtools': ^4.2.2
       '@hookform/resolvers': ^2.9.8
+      '@jsxcss/emotion': ^0.2.2
       '@sentry/nextjs': ^7.15.0
       '@slam/eslint': workspace:*
       '@slam/hooks': workspace:*
@@ -89,6 +90,7 @@ importers:
       '@emotion/styled': 11.10.5_cjinou6kcnbro54hfk33pnlsly
       '@hookform/devtools': 4.3.0_rhrpnuwl23ewqfh7btz44ilpmq
       '@hookform/resolvers': 2.9.11_react-hook-form@7.43.1
+      '@jsxcss/emotion': 0.2.2_hp5f5nkljdiwilp4rgxyefcplu
       '@sentry/nextjs': 7.37.1_next@13.1.6+react@18.2.0
       '@slam/hooks': link:../../packages/hooks
       '@slam/types': link:../../packages/types
@@ -156,7 +158,7 @@ importers:
       '@typescript-eslint/eslint-plugin': 5.51.0_z4swst3wuuqk4hlme4ajzslgh4
       '@typescript-eslint/parser': 5.51.0_7kw3g6rralp5ps6mg3uyzz6azm
       eslint: 8.34.0
-      eslint-config-airbnb: 19.0.4_mvgyw3chnqkp6sgfmmtihyjpnm
+      eslint-config-airbnb: 19.0.4_62d2p4fu7szxkx7nyb2jye7o44
       eslint-config-airbnb-base: 15.0.0_mvgyw3chnqkp6sgfmmtihyjpnm
       eslint-config-airbnb-typescript: 16.2.0_oa2w7ymxb2mofo5ivrbmsvaf2m
       eslint-config-next: 12.3.4_7kw3g6rralp5ps6mg3uyzz6azm
@@ -1929,6 +1931,25 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /@jsxcss/core/0.2.2_react@18.2.0:
+    resolution: {integrity: sha512-UucJy0duYJRUxNjOSPqODr3qmzrM7XMX9lcCP9jFW93cHUXv77GXnUJLjuGazuwc60382lxcqhz8AMftdn3x9Q==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /@jsxcss/emotion/0.2.2_hp5f5nkljdiwilp4rgxyefcplu:
+    resolution: {integrity: sha512-57DBI26FhmTO7rd+z4yG5Rn/MjzZ4fp7/bY8WhBl0KhD1VZ3A9BajoXV3OWj49KiAcfY86LlEeWfja9cwR2hhw==}
+    peerDependencies:
+      '@emotion/react': ^11.10.6
+      react: ^16.8 || ^17 || ^18
+    dependencies:
+      '@emotion/react': 11.10.5_wkiylh6bncbdhwh6tncqb3s2nm
+      '@jsxcss/core': 0.2.2_react@18.2.0
+      react: 18.2.0
+    dev: false
+
   /@motionone/animation/10.15.1:
     resolution: {integrity: sha512-mZcJxLjHor+bhcPuIFErMDNyrdb2vJur8lSfMCsuCB4UyV8ILZLvK+t+pg56erv8ud9xQGK/1OGPt10agPrCyQ==}
     dependencies:
@@ -2140,16 +2161,17 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  /@packlint/command/0.2.0:
+  /@packlint/command/0.2.0_typanion@3.12.1:
     resolution: {integrity: sha512-pvz6LKyH+Az5Y4ukZ7l6ioWna64/aE3ScUxuewQLLQ2L7RcF5WcRD2lq7j7lm4faVLlwPL+zQjKWRkk9yloqFw==}
     dependencies:
       '@packlint/core': 0.2.0
       '@types/ramda': 0.28.23
-      clipanion: 3.2.0-rc.16
+      clipanion: 3.2.0-rc.16_typanion@3.12.1
       ramda: 0.28.0
       zod: 3.19.1
     transitivePeerDependencies:
       - fast-check
+      - typanion
       - zod-fast-check
     dev: true
 
@@ -3367,8 +3389,10 @@ packages:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
     dev: false
 
-  /clipanion/3.2.0-rc.16:
+  /clipanion/3.2.0-rc.16_typanion@3.12.1:
     resolution: {integrity: sha512-xF72P8TKJ5NWXn66jb3UPw6MF+emGyH7FQizXjMKDFyI1RGS5mJC5p8eKI3+LQQlBiKQ++GamE+RaZ+tuLaolg==}
+    peerDependencies:
+      typanion: '*'
     dependencies:
       typanion: 3.12.1
     dev: true
@@ -4062,7 +4086,7 @@ packages:
       eslint-plugin-import: 2.27.5_quy4g5efgijwa67gk4incjhlny
     dev: false
 
-  /eslint-config-airbnb/19.0.4_mvgyw3chnqkp6sgfmmtihyjpnm:
+  /eslint-config-airbnb/19.0.4_62d2p4fu7szxkx7nyb2jye7o44:
     resolution: {integrity: sha512-T75QYQVQX57jiNgpF9r1KegMICE94VYwoFQyMGhrvc+lB8YF2E/M/PYDaQe1AJcWaEgqLE+ErXV1Og/+6Vyzew==}
     engines: {node: ^10.12.0 || ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -4075,6 +4099,9 @@ packages:
       eslint: 8.34.0
       eslint-config-airbnb-base: 15.0.0_mvgyw3chnqkp6sgfmmtihyjpnm
       eslint-plugin-import: 2.27.5_quy4g5efgijwa67gk4incjhlny
+      eslint-plugin-jsx-a11y: 6.7.1_eslint@8.34.0
+      eslint-plugin-react: 7.31.8_eslint@8.34.0
+      eslint-plugin-react-hooks: 4.6.0_eslint@8.34.0
       object.assign: 4.1.4
       object.entries: 1.1.6
     dev: false
@@ -4094,7 +4121,7 @@ packages:
       eslint: 8.23.1
       eslint-import-resolver-node: 0.3.7
       eslint-import-resolver-typescript: 2.7.1_gm3nckdpyjle62atxfx4boqatm
-      eslint-plugin-import: 2.27.5_dx4uuramxsgncbaqaav352sn74
+      eslint-plugin-import: 2.27.5_eslint@8.23.1
       eslint-plugin-jsx-a11y: 6.7.1_eslint@8.23.1
       eslint-plugin-react: 7.31.8_eslint@8.23.1
       eslint-plugin-react-hooks: 4.6.0_eslint@8.23.1
@@ -4180,7 +4207,7 @@ packages:
     dependencies:
       debug: 4.3.4
       eslint: 8.23.1
-      eslint-plugin-import: 2.27.5_dx4uuramxsgncbaqaav352sn74
+      eslint-plugin-import: 2.27.5_eslint@8.23.1
       glob: 7.2.3
       is-glob: 4.0.3
       resolve: 1.22.1
@@ -4207,7 +4234,7 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-module-utils/2.7.4_gchi4udux5rco6s4vbppj226zi:
+  /eslint-module-utils/2.7.4_7cntepnz7orvtggdlyso4zcsqi:
     resolution: {integrity: sha512-j4GT+rqzCoRKHwURX7pddtIPGySnX9Si/cgMI5ztrcqOPtk5dDEeZ34CQVPphnqkJytlc97Vuk05Um2mJ3gEQA==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -4228,11 +4255,9 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 5.51.0_irgkl5vooow2ydyo6aokmferha
       debug: 3.2.7
       eslint: 8.23.1
       eslint-import-resolver-node: 0.3.7
-      eslint-import-resolver-typescript: 2.7.1_gm3nckdpyjle62atxfx4boqatm
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4278,7 +4303,7 @@ packages:
       regexpp: 3.2.0
     dev: true
 
-  /eslint-plugin-import/2.27.5_dx4uuramxsgncbaqaav352sn74:
+  /eslint-plugin-import/2.27.5_eslint@8.23.1:
     resolution: {integrity: sha512-LmEt3GVofgiGuiE+ORpnvP+kAm3h6MLZJ4Q5HCyHADofsb4VzXFsRiWj3c0OFiV+3DWFh0qg3v9gcPlfc3zRow==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -4288,7 +4313,6 @@ packages:
       '@typescript-eslint/parser':
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 5.51.0_irgkl5vooow2ydyo6aokmferha
       array-includes: 3.1.6
       array.prototype.flat: 1.3.1
       array.prototype.flatmap: 1.3.1
@@ -4296,7 +4320,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.23.1
       eslint-import-resolver-node: 0.3.7
-      eslint-module-utils: 2.7.4_gchi4udux5rco6s4vbppj226zi
+      eslint-module-utils: 2.7.4_7cntepnz7orvtggdlyso4zcsqi
       has: 1.0.3
       is-core-module: 2.11.0
       is-glob: 4.0.3
@@ -6964,15 +6988,16 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /packlint/0.2.4:
+  /packlint/0.2.4_typanion@3.12.1:
     resolution: {integrity: sha512-qaP961LjEMgmu5RiofWIq2zyw8HE1RTSSmqxAN3WBT0Waprgd5gAUIOGIUhxwEP35+IVpB76R0V0LtB8QK7hnQ==}
     hasBin: true
     dependencies:
-      '@packlint/command': 0.2.0
+      '@packlint/command': 0.2.0_typanion@3.12.1
       '@packlint/core': 0.2.0
-      clipanion: 3.2.0-rc.16
+      clipanion: 3.2.0-rc.16_typanion@3.12.1
     transitivePeerDependencies:
       - fast-check
+      - typanion
       - zod-fast-check
     dev: true
 
@@ -8654,65 +8679,65 @@ packages:
       typescript: 4.9.5
     dev: false
 
-  /turbo-darwin-64/1.8.1:
-    resolution: {integrity: sha512-H7pxGF/vsYG7kbY+vB8h+3r8VXn2L6hhYQi0XWA+EjZ1e2zu7+TzEMRWFYmvJPx8TRo5cV5txtg0I22/Y7bxUA==}
+  /turbo-darwin-64/1.8.3:
+    resolution: {integrity: sha512-bLM084Wr17VAAY/EvCWj7+OwYHvI9s/NdsvlqGp8iT5HEYVimcornCHespgJS/yvZDfC+mX9EQkn3V2JmYgGGw==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.8.1:
-    resolution: {integrity: sha512-zMcvplVGluR6v4oJXW7S1/R9QFsHdDkXMhPq8PIdvT3HwTb69ms0MNv7aKiQ0ZFy5D/eKCTyBRUFZvjorZmBqA==}
+  /turbo-darwin-arm64/1.8.3:
+    resolution: {integrity: sha512-4oZjXtzakopMK110kue3z/hqu3WLv+eDLZOX1NGdo49gqca9BeD8GbH+sXpAp6tqyeuzpss+PIliVYuyt7LgbA==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.8.1:
-    resolution: {integrity: sha512-eJNx8iWDn5Lt8d0221RFd6lBjViLiPCVWNFF5JtqOohgRYplvepY3y/THa1GivMxY4px6zjTiy2oPE/VscVP4w==}
+  /turbo-linux-64/1.8.3:
+    resolution: {integrity: sha512-uvX2VKotf5PU14FCxJA5iHItPQno2JWzerMd+g3/h/Asay6dvxvtVjc39MQeGT0H5njSvzVKFkT+3/5q8lgOEg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.8.1:
-    resolution: {integrity: sha512-hFZkm8tq9kLE8tdbOzD6EbNzftdzMR4JEuuoKC6AbTzx1ZsWRvXJ/BGTeSH9/dYYm/wfuIEUiOP7HeXWiZRx7g==}
+  /turbo-linux-arm64/1.8.3:
+    resolution: {integrity: sha512-E1p+oH3XKMaPS4rqWhYsL4j2Pzc0d/9P5KU7Kn1kqVLo2T3iRA7n2KVULEieUNE0nTH+aIJPXYXOpqCI5wFJaA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.8.1:
-    resolution: {integrity: sha512-o3oDg0lTYZl5KZD3Mi753On2vQT51unIiungoUmHDCeDH5JXfWPFu+6p+GAoIyRwQkZPvaEzMLuUtRgklKcBJw==}
+  /turbo-windows-64/1.8.3:
+    resolution: {integrity: sha512-cnzAytHtoLXd0J7aNzRpZFpL/GTjcBmkvAPlbOdf/Pl1iwS4qzGrudZQ+OM1lmLgLIfBPIavsGHBknTwTNib4A==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.8.1:
-    resolution: {integrity: sha512-NDYr2Mra21KOdl18BhMRoH2jQmlu+oqkpqRd+cGB8+c5P0B6LDVCM83cfcXQ+PNqX9S3Y1eZDRENZJx9I03sSw==}
+  /turbo-windows-arm64/1.8.3:
+    resolution: {integrity: sha512-ulIiItNm2w/zYJdD5/oAzjzNns1IjbpweRzpsE8tLXaWwo6+fnXXkyloUug0IUhcd2k6fJXfoiDZfygqpOVuXg==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.8.1:
-    resolution: {integrity: sha512-g8RltmG5zd0nYbKpkBQwnTSXTWUiup9+yileQ1TETNzpjxI3TL5k7kt2WkgUHEqR947IPUV+ckIduZHVITJmIQ==}
+  /turbo/1.8.3:
+    resolution: {integrity: sha512-zGrkU1EuNFmkq6iky6LcMqD4h0OLE8XysVFxQWRIZbcTNnf0XAycbsbeEyiJpiWeqb7qtg2bVuY9EYcNoNhVuQ==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.8.1
-      turbo-darwin-arm64: 1.8.1
-      turbo-linux-64: 1.8.1
-      turbo-linux-arm64: 1.8.1
-      turbo-windows-64: 1.8.1
-      turbo-windows-arm64: 1.8.1
+      turbo-darwin-64: 1.8.3
+      turbo-darwin-arm64: 1.8.3
+      turbo-linux-64: 1.8.3
+      turbo-linux-arm64: 1.8.3
+      turbo-windows-64: 1.8.3
+      turbo-windows-arm64: 1.8.3
     dev: true
 
   /typanion/3.12.1:
