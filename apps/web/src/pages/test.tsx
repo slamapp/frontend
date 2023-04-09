@@ -10,7 +10,7 @@ const boxStyle = css`
 
 const Test = () => {
   return (
-    <AutoLayout direction="horizontal" space={30} spacingMode="space-between">
+    <AutoLayout.Horizontal space={30} spacingMode="space-between">
       <Stack.Vertical as={motion.div} whileTap={{ scale: 0.8 }}>
         <Box css={boxStyle} />
         <Box css={boxStyle} />
@@ -26,7 +26,7 @@ const Test = () => {
         <Box css={boxStyle} />
         <Box css={boxStyle} />
       </Stack.Vertical>
-    </AutoLayout>
+    </AutoLayout.Horizontal>
   )
 }
 
