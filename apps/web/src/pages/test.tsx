@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { Box, Stack } from '@jsxcss/emotion'
+import { AutoLayout, Box, Stack } from '@jsxcss/emotion'
 import { motion } from 'framer-motion'
 
 const boxStyle = css`
@@ -10,13 +10,23 @@ const boxStyle = css`
 
 const Test = () => {
   return (
-    <>
+    <AutoLayout direction="horizontal" space={30} spacingMode="space-between">
       <Stack.Vertical as={motion.div} whileTap={{ scale: 0.8 }}>
         <Box css={boxStyle} />
         <Box css={boxStyle} />
         <Box css={boxStyle} />
       </Stack.Vertical>
-    </>
+      <Stack.Vertical as={motion.div} whileTap={{ scale: 0.8 }}>
+        <Box css={boxStyle} />
+        <Box css={boxStyle} />
+        <Box css={boxStyle} />
+      </Stack.Vertical>
+      <Stack.Vertical as={motion.div} whileTap={{ scale: 0.8 }}>
+        <Box css={boxStyle} />
+        <Box css={boxStyle} />
+        <Box css={boxStyle} />
+      </Stack.Vertical>
+    </AutoLayout>
   )
 }
 

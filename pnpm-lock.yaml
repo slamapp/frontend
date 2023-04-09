@@ -59,8 +59,8 @@ importers:
         specifier: ^2.9.8
         version: 2.9.11(react-hook-form@7.43.1)
       '@jsxcss/emotion':
-        specifier: ^0.2.2
-        version: 0.2.2(@emotion/react@11.10.5)(react@18.2.0)
+        specifier: ^0.3.1
+        version: 0.3.1(@emotion/react@11.10.5)(react@18.2.0)
       '@sentry/nextjs':
         specifier: ^7.15.0
         version: 7.37.1(next@13.1.6)(react@18.2.0)
@@ -2013,22 +2013,22 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@jsxcss/core@0.2.2(react@18.2.0):
-    resolution: {integrity: sha512-UucJy0duYJRUxNjOSPqODr3qmzrM7XMX9lcCP9jFW93cHUXv77GXnUJLjuGazuwc60382lxcqhz8AMftdn3x9Q==}
+  /@jsxcss/core@0.3.1(react@18.2.0):
+    resolution: {integrity: sha512-fyV0HRQQ0frVQfVpUijwYU4/ci/HSOT7oJpeixzewl8pJEqO/x04+tLGCkq9luEP+neOnp6SoHXNvm+bllfE0g==}
     peerDependencies:
       react: ^16.8 || ^17 || ^18
     dependencies:
       react: 18.2.0
     dev: false
 
-  /@jsxcss/emotion@0.2.2(@emotion/react@11.10.5)(react@18.2.0):
-    resolution: {integrity: sha512-57DBI26FhmTO7rd+z4yG5Rn/MjzZ4fp7/bY8WhBl0KhD1VZ3A9BajoXV3OWj49KiAcfY86LlEeWfja9cwR2hhw==}
+  /@jsxcss/emotion@0.3.1(@emotion/react@11.10.5)(react@18.2.0):
+    resolution: {integrity: sha512-OJvsC22P07kOfNUy+ilwA7+zM0ML3WFyZEyRqA140jwo6/9yyFS5NFE4cBg8kydvV+/aGPbu6r/ysugKnPSObQ==}
     peerDependencies:
       '@emotion/react': ^11.10.6
       react: ^16.8 || ^17 || ^18
     dependencies:
       '@emotion/react': 11.10.5(@babel/core@7.20.12)(@types/react@18.0.28)(react@18.2.0)
-      '@jsxcss/core': 0.2.2(react@18.2.0)
+      '@jsxcss/core': 0.3.1(react@18.2.0)
       react: 18.2.0
     dev: false
 
