@@ -6,8 +6,6 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "lint:style": "stylelint './**/*.{ts,tsx}'",
-    "lint:style:fix": "stylelint './**/*.{ts,tsx}' --fix",
     "start": "next start"
   },
   "dependencies": {
@@ -17,7 +15,7 @@
     "@emotion/styled": "^11.10.4",
     "@hookform/devtools": "^4.2.2",
     "@hookform/resolvers": "^2.9.8",
-    "@jsxcss/emotion": "^0.4.0",
+    "@jsxcss/emotion": "^0.4.1",
     "@sentry/nextjs": "^7.15.0",
     "@slam/hooks": "workspace:*",
     "@slam/types": "workspace:*",
@@ -46,7 +44,6 @@
     "@babel/core": "^7.0.0",
     "@slam/eslint": "workspace:*",
     "@slam/tsconfig": "workspace:*",
-    "@stylelint/postcss-css-in-js": "^0.38.0",
     "@types/feather-icons": "^4.7.0",
     "@types/node": "18.7.18",
     "@types/react": "^18.0.22",
@@ -54,17 +51,7 @@
     "@types/uuid": "^8.3.4",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.0",
-    "eslint-config-stylelint": "^17.1.0",
     "kakao.maps.d.ts": "^0.1.33",
-    "postcss": "^8.4.21",
-    "postcss-styled-syntax": "^0.3.1",
-    "postcss-syntax": "^0.36.2",
-    "stylelint": "^14.16.1",
-    "stylelint-config-prettier": "^9.0.4",
-    "stylelint-config-rational-order": "^0.1.2",
-    "stylelint-config-recommended": "^9.0.0",
-    "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-processor-styled-components": "^1.10.0",
     "typescript": "4.8.3"
   }
 }

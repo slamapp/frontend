@@ -7,18 +7,10 @@
 
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": true
-    }
+    "editor.formatOnSave": false
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": true
-    }
-  },
-  "stylelint.enable": true,
-  "stylelint.validate": ["css", "scss", "typescript", "typescriptreact"]
+    "editor.formatOnSave": false
+  }
 }
