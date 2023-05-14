@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
-import { Spinner } from '@chakra-ui/react'
 import { css } from '@emotion/react'
+import { Spinner } from '~/components/common'
 
 const Page: NextPage = () => (
   <div

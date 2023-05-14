@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Box } from '@chakra-ui/react'
+import { Box } from '@jsxcss/emotion'
 
 type Props = {
   isOpen?: boolean
@@ -9,12 +9,12 @@ type Props = {
 const BottomModal = ({ isOpen = true, children }: Props) =>
   isOpen ? (
     <Box
-      pos="sticky"
+      position="sticky"
       bottom={0}
       left={0}
       right={0}
-      bgColor="white"
-      h="auto"
+      backgroundColor="white"
+      height="auto"
       boxShadow="0px 0px 16px rgba(0, 0, 0, 0.3)"
       overflow="hidden"
     >

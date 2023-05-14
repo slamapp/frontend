@@ -1,8 +1,8 @@
 import type { ComponentPropsWithoutRef, ReactPortal } from 'react'
 import { useEffect, useState } from 'react'
-import type { Flex } from '@chakra-ui/react'
-import { Box } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
+import type { Flex } from '@jsxcss/emotion'
+import { Box } from '@jsxcss/emotion'
 import { motion } from 'framer-motion'
 import ReactDOM from 'react-dom'
 import { useScrollContainer } from '~/layouts'
@@ -21,11 +21,11 @@ const BottomFixedGradient = ({ children }: ComponentPropsWithoutRef<typeof Flex>
             as={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            w={`${scrollContainer.width}px`}
-            h="120px"
-            pos="fixed"
+            width={`${scrollContainer.width}px`}
+            height="120px"
+            position="fixed"
             bottom={0}
-            maxW="640px"
+            maxWidth="640px"
             background={`linear-gradient(
             180deg,
             rgba(255, 255, 255, 0) 0%,
@@ -37,10 +37,10 @@ const BottomFixedGradient = ({ children }: ComponentPropsWithoutRef<typeof Flex>
             as={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            w={`${scrollContainer.width}px`}
-            pos="fixed"
+            width={`${scrollContainer.width}px`}
+            position="fixed"
             bottom={0}
-            maxW="640px"
+            maxWidth="640px"
             zIndex={1}
           >
             {children}

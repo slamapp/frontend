@@ -2,8 +2,8 @@ import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { Box, Flex, Stack } from '@jsxcss/emotion'
 import { useLocalStorage } from '@slam/hooks'
 import type { APICourt } from '@slam/types'
 import { Delay, Suspense } from '@suspensive/react'
@@ -53,19 +53,23 @@ const Page = () => {
           const currentUserQuery = useCurrentUserQuery()
 
           return (
-            <HStack spacing="4px" onClick={() => router.push(currentUserQuery.isSuccess ? '/courts/create' : '/login')}>
+            <Stack.Horizontal
+              spacing={4}
+              align="center"
+              onClick={() => router.push(currentUserQuery.isSuccess ? '/courts/create' : '/login')}
+            >
               <EssentialImagePreload lazyLoadTime={10} />
-              <Text color={theme.colors.gray0500} fontSize="12px">
+              <Box color={theme.colors.gray0500} fontSize={12}>
                 새 농구장을 추가해보세요
-              </Text>
+              </Box>
               <Icon name="plus-circle" />
-            </HStack>
+            </Stack.Horizontal>
           )
         },
       }}
       bottom
     >
-      <Flex direction="column" h="100%">
+      <Flex direction="column" height="100%">
         <DatePicker
           initialValue={selectedDate}
           onChange={(date) => {
@@ -105,25 +109,25 @@ const Page = () => {
           )}
         </Map>
         <BottomModal isOpen={!!selectedCourtId}>
-          <Box p="24px 20px 20px 20px" h="170px">
+          <Box padding="24px 20px 20px 20px" height={170}>
             <Suspense.CSROnly
               fallback={
-                <VStack align="stretch" justify="space-between" h="100%">
-                  <VStack align="stretch">
-                    <HStack>
+                <Stack.Vertical justify="space-between">
+                  <Stack.Vertical spacing={8}>
+                    <Stack.Horizontal spacing={8} align="center">
                       <Skeleton.Circle size={32} />
                       <Skeleton.Box height={24} style={{ flex: 1, marginRight: 80 }} />
-                    </HStack>
+                    </Stack.Horizontal>
                     <Skeleton.Paragraph fontSize={12} line={2} />
-                  </VStack>
+                  </Stack.Vertical>
 
-                  <HStack spacing="8px">
+                  <Stack.Horizontal spacing="8px">
                     <Skeleton.Box height={36} width={36} />
                     <Skeleton.Box height={36} width={36} />
                     <Skeleton.Box height={36} width={36} />
                     <Skeleton.Box height={36} style={{ flex: 1 }} />
-                  </HStack>
-                </VStack>
+                  </Stack.Horizontal>
+                </Stack.Vertical>
               }
             >
               {selectedCourtId && (
@@ -296,29 +300,29 @@ const Markers = ({
                   }}
                   alt="basketball court status"
                 />
-                <HStack
+                <Stack.Horizontal
                   as={motion.div}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  pos="absolute"
+                  position="absolute"
                   bottom="-34px"
                   whiteSpace="nowrap"
                   textAlign="center"
-                  bgColor={selectedCourtId === court.id ? 'black' : '#00000095'}
-                  transition="background-color 200ms"
+                  backgroundColor={selectedCourtId === court.id ? 'black' : '#00000095'}
                   backdropFilter="blur(2px)"
                   color="white"
                   borderRadius="8px"
-                  py="4px"
-                  px="8px"
+                  padding="4px 8px"
                   pointerEvents="none"
                   boxShadow="0 0 16px #00000040"
+                  align="center"
+                  spacing={4}
                 >
                   <Icon name="map-pin" size={12} color={theme.colors.orange0600} />
-                  <Text fontSize="12px" fontWeight="bold">
+                  <Box fontSize="12px" fontWeight="bold">
                     {court.name}
-                  </Text>
-                </HStack>
+                  </Box>
+                </Stack.Horizontal>
               </Flex>
             </motion.div>
           </Map.Marker.CustomMarkerOverlay>
@@ -350,12 +354,12 @@ const CourtData = ({
   })
 
   return (
-    <VStack align="stretch" justify="space-between" h="100%">
-      <VStack align="stretch" spacing={0}>
+    <Stack.Vertical justify="space-between" height="100%">
+      <Stack.Vertical>
         <CourtItem.Header>{courtQuery.data.name}</CourtItem.Header>
         <CourtItem.Address>{addressQuery.data}</CourtItem.Address>
-      </VStack>
-      <HStack spacing="8px">
+      </Stack.Vertical>
+      <Stack.Horizontal spacing="8px">
         {getFavoritesQuery.isSuccess && (
           <CourtItem.FavoritesToggle
             courtId={courtQuery.data.id}
@@ -381,7 +385,7 @@ const CourtData = ({
             </Button>
           </Link>
         </Box>
-      </HStack>
-    </VStack>
+      </Stack.Horizontal>
+    </Stack.Vertical>
   )
 }

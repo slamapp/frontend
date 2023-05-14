@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Router, { useRouter } from 'next/router'
 import { css, useTheme } from '@emotion/react'
+import { Box } from '@jsxcss/emotion'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useScrollContainer } from '~/layouts'
 import { useSetNavigation } from '../../navigations'
@@ -50,34 +51,29 @@ const PageLoader = () => {
   return (
     <AnimatePresence mode="wait">
       {isProgressBar && (
-        <motion.div
+        <Box
+          as={motion.div}
           initial={{ backgroundColor: '#e8e8e800' }}
           animate={{ backgroundColor: '#e8e8e8' }}
           exit={{ backgroundColor: '#e8e8e800' }}
-          css={css`
-            position: fixed;
-            width: ${scrollContainer.width}px;
-            height: 100%;
-          `}
+          position="fixed"
+          width={scrollContainer.width}
+          height="100%"
         >
-          <motion.div
+          <Box
+            as={motion.div}
             animate={{
               width: ['0%', '80%', '81%', '82%', '83%', '84%', '85%', '86%', '87%', '88%', '89%', '90%'],
               transition: { duration: 10 },
             }}
             exit={{ width: `100%`, height: 0 }}
+            position="absolute"
+            top={0}
+            height={8}
+            borderRadius="0 16px 16px 0"
+            background={`linear-gradient(to right, ${theme.colors.gray0100} 8%, ${theme.colors.gray0500} 18%, ${theme.colors.gray0100} 33%)`}
+            backgroundSize="800px 100px"
             css={css`
-              position: absolute;
-              top: 0;
-              height: 8px;
-              background: linear-gradient(
-                to right,
-                ${theme.colors.gray0100} 8%,
-                ${theme.colors.gray0500} 18%,
-                ${theme.colors.gray0100} 33%
-              );
-              background-size: 800px 104px;
-              border-radius: 0 16px 16px 0;
               animation-name: placeHolderShimmer;
               animation-duration: 2s;
               animation-timing-function: linear;
@@ -93,7 +89,7 @@ const PageLoader = () => {
               }
             `}
           />
-        </motion.div>
+        </Box>
       )}
     </AnimatePresence>
   )

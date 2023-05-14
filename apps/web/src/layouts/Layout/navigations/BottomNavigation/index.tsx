@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Flex } from '@chakra-ui/react'
+import { Flex } from '@jsxcss/emotion'
 import { useCurrentUserQuery } from '~/features/users'
 import NavIcon from './NavIcon'
 
@@ -39,7 +39,7 @@ const BottomNavigation = () => {
 
   return (
     <Flex as="nav" background="white" zIndex={2000}>
-      <Flex justify="space-around" align="center" mx="16px" h="52px" w="100%">
+      <Flex justify="space-around" align="center" margin="0 16px" height={52} width="100%">
         {navIconPropsList.map(({ href, iconName, label }) => (
           <NavIcon
             key={iconName}

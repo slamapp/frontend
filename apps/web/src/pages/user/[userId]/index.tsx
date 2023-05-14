@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
 import Link from 'next/link'
-import { Avatar, Box, Flex, HStack, Tag, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Tag } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { Box, Flex, Stack } from '@jsxcss/emotion'
 import type { APICourt, APIUser, positionType, proficiencyType } from '@slam/types'
 import type { Keyof, ValueOf } from '@slam/utility-types'
 import { Delay, Suspense } from '@suspensive/react'
@@ -147,8 +148,8 @@ const Template = ({
 
   return (
     <Navigation top={{ isBack: true, isMenu: true, title: user.nickname }} bottom>
-      <VStack align="stretch" p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}>
-        <VStack align="stretch">
+      <Stack.Vertical align="stretch" padding={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}>
+        <Stack.Vertical align="stretch">
           <Flex justify="space-between" align="center">
             <Avatar size="xl" src={user.profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
             <Flex
@@ -168,7 +169,7 @@ const Template = ({
                 <Link href={`/user/${user.id}/following`}>
                   <dt>팔로잉</dt>
                   <dd>
-                    <Text fontWeight="bold">{followingCount}</Text>
+                    <Box fontWeight="bold">{followingCount}</Box>
                   </dd>
                 </Link>
               </div>
@@ -176,7 +177,7 @@ const Template = ({
                 <Link href={`/user/${user.id}/follower`}>
                   <dt>팔로워</dt>
                   <dd>
-                    <Text fontWeight="bold">{followerCount}</Text>
+                    <Box fontWeight="bold">{followerCount}</Box>
                   </dd>
                 </Link>
               </div>
@@ -190,50 +191,50 @@ const Template = ({
           >
             {user.description}
           </div>
-        </VStack>
+        </Stack.Vertical>
         {buttonArea}
-        <VStack align="stretch" spacing="36px" pt="24px">
-          <VStack align="stretch">
-            <Text>포지션</Text>
-            <HStack>
+        <Stack.Vertical align="stretch" spacing="36px" paddingTop="24px">
+          <Stack.Vertical align="stretch">
+            <Box>포지션</Box>
+            <Stack.Horizontal>
               {user.positions.length ? (
                 getTranslatedPositions(user.positions).map(({ english, korean }) => <Tag key={english}>{korean}</Tag>)
               ) : (
                 <Tag>선택한 포지션이 없습니다</Tag>
               )}
-            </HStack>
-          </VStack>
-          <VStack align="stretch">
-            <Text>숙련도</Text>
-            <HStack>
+            </Stack.Horizontal>
+          </Stack.Vertical>
+          <Stack.Vertical align="stretch">
+            <Box>숙련도</Box>
+            <Stack.Horizontal>
               <Tag>{user.proficiency === null ? '미정' : getTranslatedProficiency(user.proficiency).korean}</Tag>
-            </HStack>
-          </VStack>
-          <VStack align="stretch">
-            <Text>즐겨찾는 농구장</Text>
+            </Stack.Horizontal>
+          </Stack.Vertical>
+          <Stack.Vertical align="stretch">
+            <Box>즐겨찾는 농구장</Box>
             {favoriteCourts.length === 0 ? (
-              <HStack>
+              <Stack.Horizontal>
                 <Tag>등록한 농구장이 없습니다</Tag>
-              </HStack>
+              </Stack.Horizontal>
             ) : (
-              <VStack spacing="4px" align="stretch">
+              <Stack.Vertical spacing="4px" align="stretch">
                 {favoriteCourts.map((court) => (
-                  <Flex key={court.id} justify="space-between" align="center" py="8px">
-                    <HStack spacing="10px">
+                  <Flex key={court.id} justify="space-between" align="center" padding="8px 0">
+                    <Stack.Horizontal spacing="10px">
                       <Icon name="map-pin" color="#FE6D04" />
-                      <Text size="base">{court.name}</Text>
-                    </HStack>
+                      <Box fontSize={12}>{court.name}</Box>
+                    </Stack.Horizontal>
 
                     <Link href={{ pathname: '/map', query: { courtId: court.id } }} passHref>
                       <Button>지도 보기</Button>
                     </Link>
                   </Flex>
                 ))}
-              </VStack>
+              </Stack.Vertical>
             )}
-          </VStack>
-        </VStack>
-      </VStack>
+          </Stack.Vertical>
+        </Stack.Vertical>
+      </Stack.Vertical>
     </Navigation>
   )
 }
@@ -289,67 +290,67 @@ const Fallback = () => {
   const theme = useTheme()
 
   return (
-    <VStack align="stretch" p={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}>
+    <Stack.Vertical align="stretch" padding={`${theme.gaps.lg} ${theme.gaps.base} ${theme.gaps.md}`}>
       <Flex justify="space-between" align="center">
         <Skeleton.Circle size={96} />
-        <HStack spacing="16px">
-          <VStack>
+        <Stack.Horizontal spacing="16px">
+          <Stack.Vertical>
             <Skeleton.Box width={30} height={14} />
             <Skeleton.Box width={42} height={20} />
-          </VStack>
-          <VStack>
+          </Stack.Vertical>
+          <Stack.Vertical>
             <Skeleton.Box width={30} height={14} />
             <Skeleton.Box width={42} height={20} />
-          </VStack>
-        </HStack>
+          </Stack.Vertical>
+        </Stack.Horizontal>
       </Flex>
       <Skeleton.Box width="100%" height={32} />
-      <VStack align="stretch" spacing="36px" p="24px 0">
-        <VStack align="stretch">
+      <Stack.Vertical align="stretch" spacing="36px" padding="24px 0">
+        <Stack.Vertical align="stretch">
           <Skeleton.Box width={30} height={14} />
-          <HStack>
+          <Stack.Horizontal>
             <Skeleton.Box width={42} height={20} />
             <Skeleton.Box width={42} height={20} />
-          </HStack>
-        </VStack>
-        <VStack align="stretch">
+          </Stack.Horizontal>
+        </Stack.Vertical>
+        <Stack.Vertical align="stretch">
           <Skeleton.Box width={30} height={14} />
-          <HStack>
+          <Stack.Horizontal>
             <Skeleton.Box width={42} height={20} />
-          </HStack>
-        </VStack>
-        <VStack align="stretch">
+          </Stack.Horizontal>
+        </Stack.Vertical>
+        <Stack.Vertical align="stretch">
           <Skeleton.Box width={30} height={14} />
-          <HStack>
+          <Stack.Horizontal>
             <Skeleton.Circle size={36} />
             <Box flex={1}>
               <Skeleton.Paragraph line={1} />
             </Box>
             <Skeleton.Box width={42} height={20} />
-          </HStack>
-          <HStack>
+          </Stack.Horizontal>
+          <Stack.Horizontal>
             <Skeleton.Circle size={36} />
             <Box flex={1}>
               <Skeleton.Paragraph line={1} />
             </Box>
             <Skeleton.Box width={42} height={20} />
-          </HStack>
-          <HStack>
+          </Stack.Horizontal>
+          <Stack.Horizontal>
             <Skeleton.Circle size={36} />
             <Box flex={1}>
               <Skeleton.Paragraph line={1} />
             </Box>
             <Skeleton.Box width={42} height={20} />
-          </HStack>
-          <HStack>
+          </Stack.Horizontal>
+          <Stack.Horizontal>
             <Skeleton.Circle size={36} />
             <Box flex={1}>
               <Skeleton.Paragraph line={1} />
             </Box>
             <Skeleton.Box width={42} height={20} />
-          </HStack>
-        </VStack>
-      </VStack>
-    </VStack>
+          </Stack.Horizontal>
+        </Stack.Vertical>
+      </Stack.Vertical>
+    </Stack.Vertical>
   )
 }

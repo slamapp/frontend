@@ -1,9 +1,7 @@
 import { Fragment } from 'react'
-import { Box, HStack, VStack } from '@chakra-ui/react'
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
+import { Stack } from '@jsxcss/emotion'
 import { Delay, Suspense } from '@suspensive/react'
-import { motion } from 'framer-motion'
 import { NoItemMessage, ReservationItem } from '~/components/domains'
 import { InfiniteScrollSensor, Skeleton, Tab } from '~/components/uis'
 import { useGetExpiredReservationsInfiniteQuery, useGetUpcomingReservationsQuery } from '~/features/reservations'
@@ -29,18 +27,18 @@ const Page = () => (
     >
       <Tab defaultTabName="다가올 예약">
         <Tab.Panel tabName="다가올 예약">
-          <VStack align="stretch" spacing="12px">
+          <Stack.Vertical spacing="12px">
             <Suspense.CSROnly fallback={<Delay>{fallback}</Delay>}>
               <UpcomingReservations />
             </Suspense.CSROnly>
-          </VStack>
+          </Stack.Vertical>
         </Tab.Panel>
         <Tab.Panel tabName="지난 예약">
-          <VStack align="stretch" spacing="12px">
+          <Stack.Vertical spacing="12px">
             <Suspense.CSROnly fallback={<Delay>{fallback}</Delay>}>
               <ExpiredReservations />
             </Suspense.CSROnly>
-          </VStack>
+          </Stack.Vertical>
         </Tab.Panel>
       </Tab>
     </div>
@@ -112,18 +110,18 @@ const ExpiredReservations = () => {
 }
 
 const ReservationSkeleton = () => (
-  <VStack justify="stretch" align="start" p="16px" spacing="16px">
-    <VStack justify="stretch" align="start">
+  <Stack.Vertical justify="stretch" align="start" padding={16} spacing={16}>
+    <Stack.Vertical justify="stretch" align="start">
       <Skeleton.Box width={120} height={24} />
       <Skeleton.Box width={90} height={16} />
-    </VStack>
+    </Stack.Vertical>
     <Skeleton.Box width={42} height={16} />
-    <HStack alignSelf="end">
+    <Stack.Horizontal alignSelf="end">
       <Skeleton.Box width={42} height={42} />
       <Skeleton.Box width={42} height={42} />
       <Skeleton.Box width={42} height={42} />
-    </HStack>
-  </VStack>
+    </Stack.Horizontal>
+  </Stack.Vertical>
 )
 
 const fallback = (

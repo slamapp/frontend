@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Box, HStack, Text, VStack } from '@chakra-ui/react'
 import { css } from '@emotion/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import { Delay, Suspense } from '@suspensive/react'
 import { motion } from 'framer-motion'
 import { CourtItem, NoItemMessage } from '~/components/domains'
@@ -44,7 +44,7 @@ const Contents = () => {
       <Head>
         <title>Slam - 우리 주변 농구장을 빠르게</title>
       </Head>
-      <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
+      <Stack.Vertical spacing={18} margin="32px 16px 16px 16px" align="stretch">
         {favorites.length === 0 ? (
           <NoItemMessage
             title="즐겨찾는 농구장이 없으시네요? 🤔"
@@ -53,9 +53,9 @@ const Contents = () => {
             buttonTitle="즐겨찾는 농구장 등록하기"
           />
         ) : (
-          <VStack spacing="12px" align="stretch">
+          <Stack.Vertical spacing={12} align="stretch">
             {favorites.map(({ id, court }, index) => (
-              <VStack
+              <Stack.Vertical
                 key={id}
                 as={motion.div}
                 variants={{
@@ -74,18 +74,18 @@ const Contents = () => {
                 border="1px solid white"
                 spacing="16px"
                 align="stretch"
-                p="12px"
+                padding={12}
                 borderRadius="16px"
                 boxShadow="0 8px 32px -16px #00000020"
               >
-                <HStack spacing="4px">
+                <Stack.Horizontal align="center" spacing={4}>
                   <Icon name="map-pin" size="sm" color="#FE6D04" />
-                  <Text fontSize="xl" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight="bold">
+                  <Box fontSize={20} overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight="bold">
                     {court.name}
-                  </Text>
-                </HStack>
-                <HStack spacing="8px">
-                  <HStack spacing="8px">
+                  </Box>
+                </Stack.Horizontal>
+                <Stack.Horizontal align="center" spacing={8}>
+                  <Stack.Horizontal spacing={8}>
                     <CourtItem.FavoritesToggle
                       courtId={court.id}
                       favoriteId={
@@ -101,7 +101,7 @@ const Contents = () => {
                       }}
                     />
                     <CourtItem.Map court={court} />
-                  </HStack>
+                  </Stack.Horizontal>
                   <Link
                     href={{
                       pathname: '/map',
@@ -116,12 +116,12 @@ const Contents = () => {
                       예약하기
                     </Button>
                   </Link>
-                </HStack>
-              </VStack>
+                </Stack.Horizontal>
+              </Stack.Vertical>
             ))}
-          </VStack>
+          </Stack.Vertical>
         )}
-      </VStack>
+      </Stack.Vertical>
     </Box>
   )
 }
@@ -138,16 +138,16 @@ const Fallback = () => {
   }
 
   return (
-    <VStack spacing="18px" mt="32px" mb="16px" mx="16px" align="stretch">
-      <VStack spacing="18px" align="stretch">
+    <Stack.Vertical spacing={18} margin="32px 16px 16px 16px" align="stretch">
+      <Stack.Vertical spacing={18} align="stretch">
         {Array.from({ length: 6 }).map((_, index) => (
-          <Box key={index} p="12px">
-            <VStack align="stretch" spacing="12px">
-              <HStack align="stretch">
+          <Box key={index} padding={12}>
+            <Stack.Vertical align="stretch" spacing={12}>
+              <Stack.Horizontal align="stretch">
                 <Skeleton.Box width={28} height={28} />
                 <SkeletonName />
-              </HStack>
-              <HStack spacing="8px">
+              </Stack.Horizontal>
+              <Stack.Horizontal spacing={8}>
                 <Skeleton.Box width={42} height={42} />
                 <Skeleton.Box width={42} height={42} />
                 <Skeleton.Box width={42} height={42} />
@@ -157,11 +157,11 @@ const Fallback = () => {
                     flex: 1;
                   `}
                 />
-              </HStack>
-            </VStack>
+              </Stack.Horizontal>
+            </Stack.Vertical>
           </Box>
         ))}
-      </VStack>
-    </VStack>
+      </Stack.Vertical>
+    </Stack.Vertical>
   )
 }

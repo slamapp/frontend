@@ -2,8 +2,8 @@ import type { ComponentProps } from 'react'
 import { useCallback, useState } from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { Box, Center, Flex, Text, VStack } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
+import { Box, Flex, Stack } from '@jsxcss/emotion'
 import type { APICourt } from '@slam/types'
 import { Suspense } from '@suspensive/react'
 import { useQueryClient } from '@tanstack/react-query'
@@ -159,13 +159,19 @@ const Contents = ({ courtId, date }: Props) => {
       </ReservationTable>
 
       <BottomModal>
-        <Flex flexDir="column" justify="space-between" p="24px 20px 20px 20px" gap="16px" bgColor={theme.colors.white}>
-          <VStack align="stretch">
-            <Text fontSize="1xl" fontWeight="bold">
+        <Flex
+          direction="column"
+          justify="space-between"
+          padding="24px 20px 20px 20px"
+          gap="16px"
+          backgroundColor={theme.colors.white}
+        >
+          <Stack.Vertical align="stretch">
+            <Box fontSize={24} fontWeight="bold">
               {!reservation?.startTime || !reservation?.endTime
                 ? '예약시간을 먼저 선택하세요'
                 : '예약하기를 눌러 확정하세요'}
-            </Text>
+            </Box>
             <DateInput
               text={reservation ? `${reservation.startTime.tz().format('YYYY.MM.DD(dd) HH:mm')} 부터` : undefined}
               clear={reservation?.startTime ? clearReservation : null}
@@ -188,7 +194,7 @@ const Contents = ({ courtId, date }: Props) => {
                 }
               />
             )}
-          </VStack>
+          </Stack.Vertical>
           {reservation && (
             <LayerOver
               trigger={(layer) =>
@@ -212,12 +218,12 @@ const Contents = ({ courtId, date }: Props) => {
               layer={({ close, isOpen }) => (
                 <AnimatePresence mode="wait">
                   {isOpen && reservation.endTime && (
-                    <Center
+                    <Flex.Center
                       as={motion.div}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      pos="fixed"
+                      position="fixed"
                       top={0}
                       bottom={0}
                       left={0}
@@ -226,37 +232,37 @@ const Contents = ({ courtId, date }: Props) => {
                     >
                       <Box
                         onClick={close}
-                        pos="fixed"
+                        position="fixed"
                         top={0}
                         bottom={0}
                         left={0}
                         right={0}
-                        bgColor="#00000005"
+                        backgroundColor="#00000005"
                         zIndex={-1}
                       />
                       <Box
                         width="90%"
                         maxWidth={`${scrollContainer.width - 60}px`}
-                        bgColor="white"
+                        backgroundColor="white"
                         borderRadius="16px"
-                        p="16px"
+                        padding="16px"
                         boxShadow="0 8px 32px -16px #00000020"
                       >
-                        <VStack align="stretch" spacing="24px">
-                          <Text fontSize="2xl" textAlign="center" fontWeight="bold">
+                        <Stack.Vertical spacing="24px">
+                          <Box fontSize="2xl" textAlign="center" fontWeight="bold">
                             농구공을 가져가나요?
-                          </Text>
-                          <VStack>
-                            <Text fontSize="sm">
+                          </Box>
+                          <Stack.Vertical>
+                            <Box fontSize={16}>
                               {'•시작: '}
                               {`${reservation.startTime.tz().format('YYYY.MM.DD(dd) HH:mm')} 부터`}
-                            </Text>
-                            <Text fontSize="sm">
+                            </Box>
+                            <Box fontSize={16}>
                               {'•종료: '}
                               {`${reservation.endTime.tz().format('YYYY.MM.DD(dd) HH:mm')} 까지`}
-                            </Text>
-                          </VStack>
-                          <VStack align="stretch">
+                            </Box>
+                          </Stack.Vertical>
+                          <Stack.Vertical align="stretch">
                             <Button
                               fullWidth
                               size="lg"
@@ -278,10 +284,10 @@ const Contents = ({ courtId, date }: Props) => {
                             <Button fullWidth size="lg" scheme="white" onClick={() => close()}>
                               닫기
                             </Button>
-                          </VStack>
-                        </VStack>
+                          </Stack.Vertical>
+                        </Stack.Vertical>
                       </Box>
-                    </Center>
+                    </Flex.Center>
                   )}
                 </AnimatePresence>
               )}
@@ -308,20 +314,16 @@ const DateInput = ({
     <Flex
       key={text}
       as={motion.div}
-      initial={{
-        backgroundColor: text ? theme.colors.gray0500 : theme.colors.gray0050,
-      }}
-      animate={{
-        backgroundColor: theme.colors.gray0050,
-      }}
+      initial={{ backgroundColor: text ? theme.colors.gray0500 : theme.colors.gray0050 }}
+      animate={{ backgroundColor: theme.colors.gray0050 }}
       justify="space-between"
-      p="8px 16px"
+      padding="8px 16px"
       borderRadius="12px"
     >
-      <Text fontSize="1xl" color={text ? undefined : theme.colors.gray0200}>
+      <Box fontSize="24px" color={text ? undefined : theme.colors.gray0200}>
         {text ?? placeHolder}
-      </Text>
-      {clear && <Text onClick={clear}>×</Text>}
+      </Box>
+      {clear && <Box onClick={clear}>×</Box>}
     </Flex>
   )
 }

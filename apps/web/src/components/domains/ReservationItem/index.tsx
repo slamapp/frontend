@@ -1,4 +1,4 @@
-import { Box, Center, Flex, HStack, Text, VStack } from '@chakra-ui/react'
+import { Box, Flex, Stack } from '@jsxcss/emotion'
 import type { APIReservation } from '@slam/types'
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
@@ -21,22 +21,22 @@ const ReservationItem = ({ reservation }: Props) => {
   const queryClient = useQueryClient()
 
   return (
-    <VStack mt="16px" align="stretch" p="16px" borderRadius="16px" backgroundColor="white">
+    <Stack.Vertical marginTop={16} padding={16} borderRadius={16} backgroundColor="white">
       <Box>
-        <Text fontSize="18px" fontWeight="bold">
+        <Box fontSize="18px" fontWeight="bold">
           {dayjs(reservation.startTime).tz().format('YYYY. MM. DD (dd)')}
-        </Text>
-        <Text>
+        </Box>
+        <Box>
           {dayjs(reservation.startTime).tz().format('HH:mm')}-{dayjs(reservation.endTime).tz().format('HH:mm')}
-        </Text>
+        </Box>
       </Box>
 
-      <HStack>
+      <Stack.Horizontal align="center">
         <Icon name="map-pin" color="#FE6D04" />
-        <Text>{reservation.court.name}</Text>
-      </HStack>
+        <Box>{reservation.court.name}</Box>
+      </Stack.Horizontal>
 
-      <HStack justify="flex-end" spacing="8px" m="16px 0 20px 0">
+      <Stack.Horizontal justify="flex-end" spacing={8} margin="16px 0 20px 0">
         <CourtItem.FavoritesToggle
           courtId={reservation.court.id}
           favoriteId={
@@ -52,12 +52,12 @@ const ReservationItem = ({ reservation }: Props) => {
             layer={(layer) => (
               <AnimatePresence mode="wait">
                 {layer.isOpen && (
-                  <Center
+                  <Flex.Center
                     as={motion.div}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    pos="fixed"
+                    position="fixed"
                     top={0}
                     bottom={0}
                     left={0}
@@ -66,37 +66,37 @@ const ReservationItem = ({ reservation }: Props) => {
                   >
                     <Box
                       onClick={layer.close}
-                      pos="fixed"
+                      position="fixed"
                       top={0}
                       bottom={0}
                       left={0}
                       right={0}
-                      bgColor="#00000005"
+                      backgroundColor="#00000005"
                       zIndex={-1}
                     />
                     <Box
                       width="90%"
                       maxWidth={`${scrollContainer.width - 60}px`}
-                      bgColor="white"
-                      borderRadius="16px"
-                      p="16px"
+                      backgroundColor="white"
+                      borderRadius={16}
+                      padding={16}
                       boxShadow="0 8px 32px -16px #00000020"
                     >
-                      <VStack align="stretch" spacing="24px">
-                        <Text>정말 예약을 삭제할까요? 🤔</Text>
+                      <Stack.Vertical align="stretch" spacing={24}>
+                        <Box>정말 예약을 삭제할까요? 🤔</Box>
                         <Box>
-                          <Text fontSize="18px" fontWeight="bold">
+                          <Box fontSize="18px" fontWeight="bold">
                             {dayjs(reservation.startTime).tz().format('YYYY. MM. DD (dd)')}
-                          </Text>
-                          <Text>
+                          </Box>
+                          <Box>
                             {dayjs(reservation.startTime).tz().format('HH:mm')}-
                             {dayjs(reservation.endTime).tz().format('HH:mm')}
-                          </Text>
+                          </Box>
                         </Box>
-                        <HStack>
+                        <Stack.Horizontal align="center">
                           <Icon name="map-pin" color="#FE6D04" />
-                          <Text>{reservation.court.name}</Text>
-                        </HStack>
+                          <Box>{reservation.court.name}</Box>
+                        </Stack.Horizontal>
                         <Flex justify="space-between">
                           <Button scheme="white" onClick={layer.close}>
                             닫기
@@ -120,16 +120,16 @@ const ReservationItem = ({ reservation }: Props) => {
                             삭제하기
                           </Button>
                         </Flex>
-                      </VStack>
+                      </Stack.Vertical>
                     </Box>
-                  </Center>
+                  </Flex.Center>
                 )}
               </AnimatePresence>
             )}
           />
         )}
-      </HStack>
-    </VStack>
+      </Stack.Horizontal>
+    </Stack.Vertical>
   )
 }
 

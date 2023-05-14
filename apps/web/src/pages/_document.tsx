@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react'
 import type { DocumentContext, DocumentInitialProps } from 'next/document'
 import Document, { Head, Html, Main, NextScript } from 'next/document'
-import { ColorModeScript } from '@chakra-ui/react'
 import { env } from '~/constants'
 import { chakraTheme } from '~/styles'
 
@@ -33,7 +32,6 @@ class MyDocument extends Document {
           <script defer src="https://developers.kakao.com/sdk/js/kakao.min.js" />
         </Head>
         <body>
-          <ColorModeScript initialColorMode={chakraTheme.config.initialColorMode} />
           <Main />
           <NextScript />
         </body>

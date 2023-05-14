@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heading, Text, VStack } from '@chakra-ui/react'
+import { useTheme } from '@emotion/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import { Button, Icon } from '~/components/uis'
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 }
 
 const NoItemMessage = ({ title, description, buttonTitle, type }: Props) => {
+  const theme = useTheme()
+
   const src =
     type === 'favorite'
       ? '/assets/basketball/fire_off_favorited.gif'
@@ -21,24 +24,24 @@ const NoItemMessage = ({ title, description, buttonTitle, type }: Props) => {
       : '/assets/basketball/fire_off_400.gif'
 
   return (
-    <VStack spacing={3}>
+    <Stack.Vertical align="center" spacing={3}>
       <Image width={90} height={170} unoptimized src={src} alt="basketball" />
-      <VStack spacing={1}>
-        <Heading as="h5" fontSize="16px">
+      <Stack.Vertical align="center" spacing={1}>
+        <Box as="h5" fontSize={16} fontWeight={700}>
           {title}
-        </Heading>
-        <Text color="gray.500" fontSize="12px">
+        </Box>
+        <Box color={theme.colors.gray0500} fontSize={12}>
           {description}
-        </Text>
-      </VStack>
+        </Box>
+      </Stack.Vertical>
       <Link href="/map" passHref>
         <Button fullWidth>
           <Icon name="map" size="sm" color="white" />
           {buttonTitle}
         </Button>
       </Link>
-      <div style={{ height: 40 }} />
-    </VStack>
+      <Box height={40} />
+    </Stack.Vertical>
   )
 }
 

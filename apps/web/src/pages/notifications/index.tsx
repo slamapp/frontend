@@ -1,8 +1,8 @@
 import { Fragment, forwardRef, useEffect } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import { Box, HStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import { useIsMounted } from '@slam/hooks'
 import type { APINotification } from '@slam/types'
 import { Delay, Suspense } from '@suspensive/react'
@@ -53,7 +53,7 @@ const Contents = () => {
   }, [isMounted])
 
   return (
-    <Box mx="16px" mt="24px">
+    <Box margin="24px 16px 0 16px">
       {notifications.data.pages.length === 0 && (
         <NoItemMessage
           type="notification"
@@ -125,7 +125,9 @@ const NotificationItem = ({ notification }: { notification: APINotification }) =
         box-shadow: 0px 12px 12px -12px rgb(0 0 0 / 10%);
       `}
     >
-      <HStack spacing="6px">{getNotificationMarkUp({ notification })}</HStack>
+      <Stack.Horizontal align="center" spacing={6}>
+        {getNotificationMarkUp({ notification })}
+      </Stack.Horizontal>
       <div>
         <div
           style={{

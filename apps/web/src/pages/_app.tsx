@@ -1,14 +1,15 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { ChakraProvider, Spinner } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import { ThemeProvider, css } from '@emotion/react'
+import { MediaQueryProvider } from '@jsxcss/emotion'
 import { Delay, SuspensiveConfigs, SuspensiveProvider } from '@suspensive/react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import { RecoilRoot } from 'recoil'
-import { OpenGraph } from '~/components/common'
+import { OpenGraph, Spinner } from '~/components/common'
 import { FullHeight } from '~/components/uis'
 import { env } from '~/constants'
 import { AnalyticsProvider } from '~/contexts'
@@ -58,16 +59,18 @@ const App = ({ Component, pageProps }: AppProps) => {
       <SuspensiveProvider configs={suspensiveConfigs}>
         <RecoilRoot>
           <QueryClientProvider>
-            <ChakraProvider resetCSS theme={chakraTheme}>
-              <ThemeProvider theme={emotionTheme}>
-                <GlobalCSS />
-                <AnalyticsProvider>
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                </AnalyticsProvider>
-              </ThemeProvider>
-            </ChakraProvider>
+            <MediaQueryProvider>
+              <ChakraProvider resetCSS theme={chakraTheme}>
+                <ThemeProvider theme={emotionTheme}>
+                  <GlobalCSS />
+                  <AnalyticsProvider>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </AnalyticsProvider>
+                </ThemeProvider>
+              </ChakraProvider>
+            </MediaQueryProvider>
           </QueryClientProvider>
         </RecoilRoot>
       </SuspensiveProvider>

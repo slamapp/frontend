@@ -1,4 +1,4 @@
-import { HStack, Text } from '@chakra-ui/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import type { APIUser } from '@slam/types'
 import { Button } from '~/components/uis'
 import ProfileAvatar from '../ProfileAvatar'
@@ -10,11 +10,11 @@ const FollowListItem = ({
   isFollowed: boolean
   user: Pick<APIUser, 'profileImage' | 'nickname' | 'id'>
 }) => (
-  <HStack width="100%" px="4">
+  <Stack.Horizontal align="center" spacing={8} width="100%" padding="0 4px">
     <ProfileAvatar user={{ id: user.id, profileImage: user.profileImage }} />
-    <Text flex={1}>{user.nickname}</Text>
+    <Box flex={1}>{user.nickname}</Box>
     <div>{isFollowed === undefined ? <></> : isFollowed ? <Button>팔로잉</Button> : <Button>팔로우</Button>}</div>
-  </HStack>
+  </Stack.Horizontal>
 )
 
 export default FollowListItem

@@ -1,6 +1,6 @@
 import { Fragment, forwardRef } from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
-import { Box, HStack, VStack } from '@chakra-ui/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import type { APIUser } from '@slam/types'
 import { Delay, Suspense } from '@suspensive/react'
 import { FollowListItem, NoItemMessage } from '~/components/domains'
@@ -32,7 +32,7 @@ const Contents = ({ userId }: Props) => {
   const userFollowerInfiniteQuery = useUserFollowerInfiniteQuery(userId)
 
   return (
-    <VStack spacing="16px" mt="16px">
+    <Stack.Vertical align="center" spacing={16} marginTop={16}>
       {userFollowerInfiniteQuery.isSuccess &&
         userFollowerInfiniteQuery.data.pages.map(({ contents, lastId }, pageIndex) => (
           <Fragment key={pageIndex}>
@@ -54,7 +54,7 @@ const Contents = ({ userId }: Props) => {
             )}
           </Fragment>
         ))}
-    </VStack>
+    </Stack.Vertical>
   )
 }
 
@@ -66,12 +66,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
 
 const NotificationItemSkeleton = forwardRef<HTMLDivElement>(function NotificationItemSkeleton(_, ref) {
   return (
-    <HStack ref={ref} width="100%" px="16px" my="16px">
+    <Stack.Horizontal align="center" ref={ref} width="100%" padding="0 16px" margin="16px 0">
       <Skeleton.Circle size={32} />
       <Box flex={1}>
         <Skeleton.Box width={80} height={20} />
       </Box>
       <Skeleton.Box width={70} height={30} />
-    </HStack>
+    </Stack.Horizontal>
   )
 })

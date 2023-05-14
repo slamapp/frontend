@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import { useRouter } from 'next/router'
-import { VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { Stack } from '@jsxcss/emotion'
 import { motion } from 'framer-motion'
 import { Icon } from '~/components/uis'
 
@@ -37,7 +37,7 @@ const NavIcon = ({ href, iconName, label = '이름', isActive, onTap }: Props) =
       onTapStart={handleTap}
       whileTap={tap}
     >
-      <VStack spacing="2px">
+      <Stack.Vertical align="center" spacing={2}>
         <Icon name={iconName} color={color} />
         <span
           css={css`
@@ -48,7 +48,7 @@ const NavIcon = ({ href, iconName, label = '이름', isActive, onTap }: Props) =
         >
           {label}
         </span>
-      </VStack>
+      </Stack.Vertical>
     </motion.a>
   )
 }

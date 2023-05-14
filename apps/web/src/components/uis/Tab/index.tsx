@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import { Children, createContext, isValidElement, useContext, useMemo, useState } from 'react'
-import { Box, HStack } from '@chakra-ui/react'
 import { css } from '@emotion/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import { motion } from 'framer-motion'
 
 const TabContext = createContext({ tabName: '' })
@@ -15,7 +15,7 @@ const Tab = ({ children, defaultTabName }: PropsWithChildren<{ defaultTabName: s
 
   return (
     <TabContext.Provider value={value}>
-      <HStack spacing={0}>
+      <Stack.Horizontal align="center" spacing={0}>
         {Children.map(children, (child) => {
           if (!isValidElement<PanelProps>(child)) {
             return null
@@ -26,7 +26,7 @@ const Tab = ({ children, defaultTabName }: PropsWithChildren<{ defaultTabName: s
           return (
             <Box
               as={motion.div}
-              borderRadius="50px"
+              borderRadius={50}
               padding="8px 16px"
               flex={1}
               onClick={() => setTabName(child.props.tabName)}
@@ -42,7 +42,7 @@ const Tab = ({ children, defaultTabName }: PropsWithChildren<{ defaultTabName: s
             </Box>
           )
         })}
-      </HStack>
+      </Stack.Horizontal>
       <div>{children}</div>
     </TabContext.Provider>
   )

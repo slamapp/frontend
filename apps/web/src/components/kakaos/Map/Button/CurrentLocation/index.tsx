@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { Box } from '@jsxcss/emotion'
 import type { Coord } from '@slam/types'
 import { motion } from 'framer-motion'
 import { IconButton } from '~/components/uis'
@@ -42,20 +42,19 @@ const CurrentLocationButton = () => {
   }
 
   return (
-    <motion.div
+    <Box
+      as={motion.div}
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       whileHover={{ scale: 1.2 }}
       onTapStart={handleClick}
-      css={css`
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        z-index: 10;
-      `}
+      position="absolute"
+      top={15}
+      left={15}
+      zIndex={10}
     >
-      <IconButton icon={{ name: 'crosshair', color: '#6B94E5' }} border="none" bgColor="white" />
-    </motion.div>
+      <IconButton icon={{ name: 'crosshair', color: '#6B94E5' }} border="none" backgroundColor="white" />
+    </Box>
   )
 }
 

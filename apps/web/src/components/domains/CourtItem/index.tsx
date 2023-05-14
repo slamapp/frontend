@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
-import { Box, HStack, Text } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import type { APIChatRoom, APICourt, APIFavorite } from '@slam/types'
 import { Icon, IconButton } from '~/components/uis'
 import { useCancelFavoriteMutation, useCreateFavoriteMutation } from '~/features/favorites'
@@ -57,12 +57,12 @@ const CourtItem = {
 
   Header: ({ children }: { children: ReactNode }) => {
     return (
-      <HStack spacing="4px">
+      <Stack.Horizontal spacing={4} align="center">
         <Icon name="map-pin" color="#FE6D04" />
-        <Text fontSize="22px" fontWeight="bold" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
+        <Box fontSize="22px" fontWeight="bold" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
           {children}
-        </Text>
-      </HStack>
+        </Box>
+      </Stack.Horizontal>
     )
   },
   Address: ({ children }: { children: ReactNode }) => {
@@ -70,19 +70,19 @@ const CourtItem = {
 
     return (
       <Box>
-        <Text
+        <Box
+          display="box"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          wordWrap="break-word"
           color={theme.colors.gray0700}
           css={css`
-            display: box;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            word-wrap: break-word;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
           `}
         >
           {children}
-        </Text>
+        </Box>
       </Box>
     )
   },

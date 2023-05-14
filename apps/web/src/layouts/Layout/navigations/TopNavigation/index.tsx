@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Center } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
+import { Flex } from '@jsxcss/emotion'
 import { Delay, Suspense } from '@suspensive/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ProfileAvatar } from '~/components/domains'
@@ -68,9 +68,9 @@ const TopNavigation = ({ isShrink }: Props) => {
       >
         <IconGroup>
           {navigation.top.isBack && (
-            <Center h="32px" w="24px" cursor="pointer" onClick={() => router.back()}>
+            <Flex.Center height="32px" width="24px" cursor="pointer" onClick={() => router.back()}>
               <Icon name="chevron-left" size="md" />
-            </Center>
+            </Flex.Center>
           )}
         </IconGroup>
         <IconGroup>

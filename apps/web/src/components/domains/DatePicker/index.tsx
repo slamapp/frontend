@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
-import { HStack, Text, VStack } from '@chakra-ui/react'
-import { css, useTheme } from '@emotion/react'
+import { useTheme } from '@emotion/react'
+import { Box, Stack } from '@jsxcss/emotion'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { motion } from 'framer-motion'
@@ -34,18 +34,11 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <motion.div
-      ref={ref}
-      whileTap={{ cursor: 'grabbing' }}
-      css={css`
-        position: relative;
-        margin: 12px 0;
-      `}
-    >
-      <HStack
+    <motion.div ref={ref} whileTap={{ cursor: 'grabbing' }} css={{ position: 'relative', margin: `12px 0` }}>
+      <Stack.Horizontal
         as={motion.div}
-        ml={`${DATE_ITEM_GAP}px`}
-        spacing={`${DATE_ITEM_GAP}px`}
+        marginLeft={DATE_ITEM_GAP}
+        spacing={DATE_ITEM_GAP}
         drag="x"
         dragConstraints={{
           right: 0,
@@ -57,7 +50,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
           const dayOfWeekIndex = date.day()
 
           return (
-            <VStack
+            <Stack.Vertical
               key={date.toISOString()}
               as={motion.div}
               initial={{ x: 40, opacity: 0 }}
@@ -65,8 +58,7 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.1 }}
               cursor="pointer"
-              bgColor={theme.colors[selected ? 'black' : 'white']}
-              transition="background-color border 200ms"
+              backgroundColor={theme.colors[selected ? 'black' : 'white']}
               boxShadow="0 8px 32px -16px #00000040"
               borderRadius="12px"
               onClick={() => {
@@ -74,9 +66,9 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
                 onChange(date)
               }}
             >
-              <VStack w={`${DATE_ITEM_WIDTH}px`} spacing="2px" py="8px">
-                <Text
-                  fontSize="16px"
+              <Stack.Vertical align="center" width={DATE_ITEM_WIDTH} spacing={2} padding="8px 0">
+                <Box
+                  fontSize={16}
                   fontWeight="bold"
                   color={
                     dayOfWeekIndex === SUNDAY_INDEX
@@ -89,15 +81,15 @@ const DatePicker = ({ initialValue, onChange }: Props) => {
                   }
                 >
                   {week[dayOfWeekIndex]}
-                </Text>
-                <Text fontSize="21px" fontWeight="bold" color={theme.colors[selected ? 'white' : 'gray0900']}>
+                </Box>
+                <Box fontSize={21} fontWeight="bold" color={theme.colors[selected ? 'white' : 'gray0900']}>
                   {date.date()}
-                </Text>
-              </VStack>
-            </VStack>
+                </Box>
+              </Stack.Vertical>
+            </Stack.Vertical>
           )
         })}
-      </HStack>
+      </Stack.Horizontal>
       <GradientCover position="left" />
       <GradientCover position="right" />
     </motion.div>
@@ -110,18 +102,20 @@ const GradientCover = ({ position }: { position: 'left' | 'right' }) => {
   const theme = useTheme()
 
   return (
-    <motion.div
-      css={css`
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: ${DATE_ITEM_GAP}px;
-        background: ${position === 'left'
+    <Box
+      as={motion.div}
+      width={DATE_ITEM_GAP}
+      position="absolute"
+      top={0}
+      bottom={0}
+      left={position === 'left' ? 0 : undefined}
+      right={position === 'right' ? 0 : undefined}
+      background={
+        position === 'left'
           ? `linear-gradient(0.25turn,${theme.colors.gray0050},transparent)`
-          : `linear-gradient(0.25turn,transparent,${theme.colors.gray0050})`};
-        pointer-events: none;
-        ${position}: 0;
-      `}
+          : `linear-gradient(0.25turn,transparent,${theme.colors.gray0050})`
+      }
+      pointerEvents="none"
     />
   )
 }

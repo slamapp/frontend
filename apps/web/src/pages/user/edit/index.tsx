@@ -6,15 +6,10 @@ import { useRouter } from 'next/router'
 import type { UseCheckboxGroupProps, UseCheckboxProps, UseRadioGroupProps, UseRadioProps } from '@chakra-ui/react'
 import {
   Avatar,
-  Box,
-  Center,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
-  Text,
-  VStack,
   chakra,
   useCheckbox,
   useCheckboxGroup,
@@ -23,6 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { useTheme } from '@emotion/react'
 import { DevTool } from '@hookform/devtools'
+import { Box, Flex, Stack } from '@jsxcss/emotion'
 import type { APIUser } from '@slam/types'
 import { Suspense } from '@suspensive/react'
 import { motion } from 'framer-motion'
@@ -99,7 +95,7 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
         <meta name="description" content="혼자서도 농구를 더 빠르게" />
       </Head>
       <form>
-        <VStack px="16px" spacing="24px">
+        <Stack.Vertical padding="0 16px" spacing="24px">
           <AvatarEdit src={initialData.profileImage ?? DEFAULT_PROFILE_IMAGE_URL} />
           <FormControl isRequired isInvalid={!!errors.nickname}>
             <FormLabel htmlFor="nickname">닉네임</FormLabel>
@@ -212,8 +208,8 @@ const EditForm = ({ initialData }: { initialData: APIUser }) => {
               )}
             />
           </FormControl>
-          <Box h="100px" />
-        </VStack>
+          <Box height={100} />
+        </Stack.Vertical>
         <BottomFixedGradient>
           <Box
             as={motion.div}
@@ -252,7 +248,7 @@ const ChipCheckboxGroup = ({
   const { getCheckboxProps } = useCheckboxGroup(props)
 
   return (
-    <Flex wrap="wrap" width="100%" gap="8px">
+    <Flex flexWrap="wrap" width="100%" gap="8px">
       {options.map(({ value, label }) => (
         <ChipCheckbox key={value} {...getCheckboxProps({ value })}>
           {label}
@@ -275,15 +271,14 @@ const ChipCheckbox = ({ children, ...props }: UseCheckboxProps & { children: Rea
         border="2px solid"
         borderColor={state.isChecked ? theme.colors.black : theme.colors.gray0100}
         borderRadius="full"
-        bgColor={state.isChecked ? theme.colors.black : 'transparent'}
+        backgroundColor={state.isChecked ? theme.colors.black : 'transparent'}
         color={state.isChecked ? theme.colors.white : theme.colors.black}
-        px="16px"
-        py="4px"
+        padding="4px 16px"
         {...getCheckboxProps()}
       >
-        <Text {...getLabelProps()} whiteSpace="nowrap">
+        <Box {...getLabelProps()} whiteSpace="nowrap">
           {children}
-        </Text>
+        </Box>
       </Box>
     </chakra.label>
   )
@@ -298,7 +293,7 @@ const ChipRadioGroup = ({
   const { getRadioProps } = useRadioGroup(props)
 
   return (
-    <Flex wrap="wrap" width="100%" gap="8px">
+    <Flex flexWrap="wrap" width="100%" gap="8px">
       {options.map(({ value, label }) => (
         <ChipRadio key={value} {...getRadioProps({ value })}>
           {label}
@@ -321,15 +316,14 @@ const ChipRadio = ({ children, ...props }: UseRadioProps & { children: ReactNode
         border="2px solid"
         borderColor={state.isChecked ? theme.colors.black : theme.colors.gray0100}
         borderRadius="full"
-        bgColor={state.isChecked ? theme.colors.black : 'transparent'}
+        backgroundColor={state.isChecked ? theme.colors.black : 'transparent'}
         color={state.isChecked ? theme.colors.white : theme.colors.black}
-        px="16px"
-        py="4px"
+        padding="4px 16px"
         {...getCheckboxProps()}
       >
-        <Text {...getLabelProps()} whiteSpace="nowrap">
+        <Box {...getLabelProps()} whiteSpace="nowrap">
           {children}
-        </Text>
+        </Box>
       </Box>
     </chakra.label>
   )
@@ -358,14 +352,14 @@ const AvatarEdit = ({ src }: { src: string }) => {
   }, [file])
 
   return (
-    <Box pt="24px">
+    <Box paddingTop="24px">
       <Upload droppable value={file} onChange={(file) => setFile(file)}>
         {({ dragging }) => (
-          <Box pointerEvents="none" pos="relative">
+          <Box pointerEvents="none" position="relative">
             <Avatar size="xl" src={src} border={dragging ? '5px solid black' : undefined} />
-            <Center pos="absolute" top={0} right={0} left={0} bottom={0}>
+            <Flex.Center position="absolute" top={0} right={0} left={0} bottom={0}>
               <Icon name="plus" color={theme.colors.gray0900} />
-            </Center>
+            </Flex.Center>
           </Box>
         )}
       </Upload>

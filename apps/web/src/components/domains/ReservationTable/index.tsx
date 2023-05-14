@@ -1,9 +1,9 @@
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Center, Flex, VStack } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
+import { Box, Flex, Stack } from '@jsxcss/emotion'
 import { useIntersectionObserver } from '@slam/hooks'
 import type { APICourt } from '@slam/types'
 import type { Dayjs } from 'dayjs'
@@ -120,9 +120,9 @@ const ReservationTable = ({ courtId, date, children }: ReservationTableProps) =>
 
   return (
     <Context.Provider value={value}>
-      <VStack ref={vwElementRef} w="100%" minH="100vh" align="stretch" position="relative" spacing={0}>
+      <Stack.Vertical ref={vwElementRef} width="100%" minHeight="100vh" align="stretch" position="relative" spacing={0}>
         {isReadyTableCellHeight ? children({ dates }) : <>readyTableCellHeight is required</>}
-      </VStack>
+      </Stack.Vertical>
     </Context.Provider>
   )
 }
@@ -203,7 +203,7 @@ const Cell = ({ timeNumber, date, onClick }: CellProps) => {
         backgroundColor: isDisabled ? theme.colors.gray0100 : undefined,
       }}
     >
-      <Center flex={5}>
+      <Flex.Center flex={5}>
         <Box textAlign="center">
           {isTop && <div>{date}</div>}
           {cellTime.start.tz().format('HH:mm')}
@@ -211,8 +211,8 @@ const Cell = ({ timeNumber, date, onClick }: CellProps) => {
           {cellTime.end.tz().format('HH:mm')}
           {isBottom && <div>{date}</div>}
         </Box>
-      </Center>
-      <Center flex={1}>🏀</Center>
+      </Flex.Center>
+      <Flex.Center flex={1}>🏀</Flex.Center>
     </Flex>
   )
 }
@@ -248,7 +248,7 @@ const Cursor = ({ startTime, endTime }: CursorProps) => {
       `}
     >
       {startTime && (
-        <Center
+        <Flex.Center
           css={css`
             position: absolute;
             top: 0;
@@ -260,10 +260,10 @@ const Cursor = ({ startTime, endTime }: CursorProps) => {
           `}
         >
           <Pin />
-        </Center>
+        </Flex.Center>
       )}
       {endTime && (
-        <Center
+        <Flex.Center
           css={css`
             position: absolute;
             right: 0;
@@ -275,7 +275,7 @@ const Cursor = ({ startTime, endTime }: CursorProps) => {
           `}
         >
           <Pin />
-        </Center>
+        </Flex.Center>
       )}
     </motion.div>
   )
@@ -285,16 +285,16 @@ const Pin = () => {
   const theme = useTheme()
 
   return (
-    <Center
-      w="8px"
-      h="8px"
+    <Flex.Center
+      width="8px"
+      height="8px"
       fontSize="6px"
-      bgColor={theme.colors.white}
+      backgroundColor={theme.colors.white}
       color={theme.colors.gray0600}
       borderRadius="full"
     >
       ×
-    </Center>
+    </Flex.Center>
   )
 }
 
@@ -418,18 +418,7 @@ const NoAccess = styled.div<{ height: number }>`
 const VerticalDivider = () => {
   const { tableCellHeight } = useReservationTable()
 
-  return (
-    <div
-      css={css`
-        position: absolute;
-        top: 0;
-        right: ${tableCellHeight}px;
-        bottom: 0;
-        width: 4px;
-        background-color: black;
-      `}
-    />
-  )
+  return <Box position="absolute" top={0} right={tableCellHeight} bottom={0} width={4} backgroundColor="black" />
 }
 
 export default ReservationTable

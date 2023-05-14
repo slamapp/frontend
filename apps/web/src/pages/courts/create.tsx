@@ -1,21 +1,10 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  HStack,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
+import { FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import { css, useTheme } from '@emotion/react'
 import { DevTool } from '@hookform/devtools'
+import { Box, Flex, Stack } from '@jsxcss/emotion'
 import type { APICourt } from '@slam/types'
 import { motion } from 'framer-motion'
 import { Controller, useForm } from 'react-hook-form'
@@ -58,7 +47,7 @@ const Page = () => {
       </Head>
 
       <form>
-        <VStack as={motion.div} layout mx="16px" mt="24px" spacing="24px">
+        <Stack.Vertical as={motion.div} layout margin="24px 16px 0 16px" spacing={24}>
           <Controller
             name="position"
             control={control}
@@ -103,7 +92,7 @@ const Page = () => {
                   })}
                 />
                 <InputRightElement>
-                  <Text>개</Text>
+                  <Box>개</Box>
                 </InputRightElement>
               </InputGroup>
               <FormErrorMessage>{formState.errors.basketCount?.message}</FormErrorMessage>
@@ -133,8 +122,8 @@ const Page = () => {
             </FormControl>
           )}
 
-          <Box h="100px" />
-        </VStack>
+          <Box height={100} />
+        </Stack.Vertical>
       </form>
       <BottomFixedGradient>
         <Box
@@ -324,28 +313,28 @@ const MapEditor = ({
                 alt="basketball_animation_off"
               />
               {address && (
-                <HStack
+                <Stack.Horizontal
+                  align="center"
                   as={motion.div}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  pos="absolute"
+                  position="absolute"
                   bottom="-34px"
                   whiteSpace="nowrap"
                   textAlign="center"
-                  bgColor="#00000095"
+                  backgroundColor="#00000095"
                   backdropFilter="blur(2px)"
                   color="white"
                   borderRadius="8px"
-                  py="4px"
-                  px="8px"
+                  padding="4px 8px"
                   pointerEvents="none"
                   boxShadow="0 0 16px #00000040"
                 >
                   <Icon name="map-pin" size={12} color={theme.colors.orange0600} />
-                  <Text fontSize="12px" fontWeight="bold">
+                  <Box fontSize="12px" fontWeight="bold">
                     {address}
-                  </Text>
-                </HStack>
+                  </Box>
+                </Stack.Horizontal>
               )}
             </Flex>
           </motion.div>
